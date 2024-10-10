@@ -4,6 +4,7 @@ header{color:#855454;font-size: 18px;}
 header .top{display: flex;height: 50px;line-height: 50px;justify-content: space-between;padding: 0 50px;border-bottom: 1px solid rgb(202, 183, 183);}
 header .top ul{display: flex;gap: 20px;}
 header .top ul li{list-style: none;}
+header .top ul li a{text-decoration: none;color: #855454;}
 header .top ul b{color: rgb(71, 71, 249);font-size: 19px;}
 header .bottom{display:flex;justify-content:space-between;padding: 10px 50px;align-items: center;}
 header .bottom img{height: 90px;}
@@ -192,4 +193,53 @@ footer {
     color: #fff;
 
   }
-  
+  /* -------------------------------------------------------------------------------------------------------------------- */
+  #gioithieu img{width:100%;height: 500px;}
+  #gioithieu .ve-chung-toi {padding:80px 20px;text-align: center;max-width: 1080px;width: 100%;margin: 0 auto;}
+  #gioithieu .ve-chung-toi h2{font-size: 32px;font-weight: 700;margin:0 auto 24px;color: #202325;}
+  #gioithieu .ve-chung-toi p{margin: 0 auto 30px;color: #797b7c;font-size: 16px;line-height: 28px;}
+  #gioithieu .ve-chung-toi span{font-size: 18px;color: #1c95cd;}
+  #gioithieu .text-box{display: flex;justify-content: center;}
+  #gioithieu .text-item{
+    max-width: 400px;
+    margin: 0 15px 0;
+    text-align: center;
+    background: #fff;
+    box-shadow: 0 2px 4px 1px rgba(0, 0, 0, .25);
+    border-radius: 8px;
+    padding: 25px;}
+  #gioithieu .text-item h1{
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 32px;
+    margin-bottom: 8px;
+    color: #202325;}
+    #gioithieu .text-item p{
+      color: #797b7c;
+      font-size: 16px;
+      line-height: 28px;}
+    #gioithieu .product-box{
+      box-shadow: 0 2px 4px 1px rgba(0, 0, 0, .25);
+      text-align: center;max-width: 1200px;width: 100%;margin: 60px auto 60px;
+      border-radius: 8px;display: flex;justify-content:space-between;
+      padding: 20px;
+    }
+    #gioithieu .product-box .trai h1{
+      color: #202325;
+      font-size: 30px;
+      padding-bottom: 50px;
+    }
+    #gioithieu .product-box .trai ul{
+      color: #56595b;
+      font-size: 17px;
+      line-height: 40px;
+      text-align: left;
+      padding-left: 30px;
+    }
+    #gioithieu .product-box .trai ul li{
+      text-shadow: 0 2px 4px 1px rgba(0, 0, 0, .25);
+    }
+    #gioithieu .product-box .phai{display: grid;
+      grid-template-columns: repeat(5, 1fr); 
+      gap: 10px;}
+      #gioithieu .product-box .phai img{width:170px;height: 170px;}
