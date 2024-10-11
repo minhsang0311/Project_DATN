@@ -1,24 +1,24 @@
 import logo from './logo.svg';
 import './App.css';
+import ProductDetail from './client/pages/ProductDetail'; 
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom'; 
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <header className="App-header">
+        
+          <Link to="/" className="App-link">Trang Chủ</Link>
+          <Link to="/product-detail" className="App-link">Xem Chi Tiết Sản Phẩm</Link>
+        </header>
+
+        <Routes>
+         
+          <Route path="/product-detail" element={<ProductDetail />} /> {/* Đường dẫn đến ProductDetail */}
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
