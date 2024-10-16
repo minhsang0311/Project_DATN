@@ -1,82 +1,31 @@
 import React, { useState } from 'react';
+import { useParams } from "react-router-dom";
 import '../styles/components/ProductDetail.css'; // Đảm bảo bạn tạo một tệp CSS tương ứng
-
+import { useEffect } from 'react';
 const ProductDetail = () => {
     // State để quản lý ảnh chính và trạng thái hiển thị của danh mục
     const [mainImage, setMainImage] = useState('../assets/img/sp1.webp');
-    const [isDanhMucOpen, setIsDanhMucOpen] = useState(false);
+    
 
     // Hàm xử lý khi click vào ảnh nhỏ
     const handleThumbnailClick = (src) => {
         setMainImage(src); // Đổi ảnh chính
     };
 
-    // Hàm bật/tắt hiển thị danh mục
-    const toggleDanhMuc = () => {
-        setIsDanhMucOpen(!isDanhMucOpen); // Đổi trạng thái hiển thị của danh mục
-    };
+    let { id } = useParams();
+    const [sp, ganSP] = useState([]);
+    useEffect (()=>{
+        let url = `http://localhost:3000/sp/${id}`;
+        fetch(url).then(res=>res.json()).then(data=> ganSP(data))
+      },[id]);
 
     return (
         <div classNameName="container">
-            <header>
-                <div className="top">
-                    <ul>
-                        <li>Giới thiệu</li>
-                        <li>Hỗ trợ</li>
-                        <li>Hướng dẫn</li>
-                        <li>Bài viết</li>
-                    </ul>
-                    <ul>
-                        <li>Liên hệ: <b>01234567</b></li>
-                    </ul>
-                </div>
-                <div className="bottom">
-                    <img alt="" src="../assets/img/logo.png" />
-                    <div className="phai">
-                        <div className="input">
-                            <input type="text" placeholder="Sản phẩm muốn tìm..." style={{ fontSize: '15px' }} />
-                            <i className="fa-solid fa-magnifying-glass"></i>
-                        </div>
-                        <i className="fa-solid fa-user"></i>
-                        <i className="fa-solid fa-cart-shopping"></i>
-                    </div>
-                </div>
-                <nav>
-                    <div className="menu-doc">
-                        <div className="danh-muc" onClick={toggleDanhMuc}>
-                            <i className="fa-solid fa-bars"></i> Danh mục
-                        </div>
-                        <ul id="danh-muc-list" style={{ display: isDanhMucOpen ? 'block' : 'none' }}>
-                            <li><i className="fa-solid fa-laptop"></i> Danh mục 1</li>
-                            <li><i className="fa-solid fa-mobile"></i> Danh mục 2</li>
-                            <li><i className="fa-solid fa-tv"></i> Danh mục 3</li>
-                            <li><i className="fa-solid fa-headphones"></i> Danh mục 4</li>
-                            <li><i className="fa-solid fa-tablet"></i> Danh mục 5</li>
-                            <li><i className="fa-solid fa-microchip"></i> Danh mục 6</li>
-                            <li><i className="fa-solid fa-camera"></i> Danh mục 7</li>
-                            <li><i className="fa-solid fa-gamepad"></i> Danh mục 8</li>
-                        </ul>
-                    </div>
-                    <div className="menu-ngang-banner">
-                        <ul className="menu-ngang">
-                            <li>TRANG CHỦ</li>
-                            <li>CỬA HÀNG</li>
-                            <li>DANH MỤC 1</li>
-                            <li>DANH MỤC 2</li>
-                            <li>DANH MỤC 3</li>
-                            <li>DANH MỤC 4</li>
-                            <li>DANH MỤC 5</li>
-                        </ul>
-                        <div className="banner">
-                            <img alt="" src="../assets/img/banner1.jpg" />
-                        </div>
-                    </div>
-                </nav>
-            </header>
+          
             <div className="home">
                 <div className="spbanchay">
                     <div className="left-image">
-                        <img alt="" src="../assets/img/banner1.jpg" />
+                    <img src={sp["Image"]} alt={sp["ten_sp"]} />{" "}
                     </div>
 
                     {/* <div className="breadcrumbs">
@@ -95,7 +44,7 @@ const ProductDetail = () => {
                         </div>
 
                         <div className="product-info">
-                            <h1>Máy xay sinh tố BLACK FRIDAY SIÊU SALE</h1>
+                        <h1 className="h3"> {sp["Product_Name"]} </h1>
                             <hr />
                             <p>– CHỈ TRONG DỊP BLACK FRIDAY 23/11</p>
                             <p>– Mã sp: HP 308H</p>
@@ -107,7 +56,7 @@ const ProductDetail = () => {
                             <p>– Màu: Đỏ mận – Xuất xứ: ĐÀI LOAN</p>
                             <div className="price">
                                 <p className="old-price">3.560.000đ</p>
-                                <p className="sale-price">3.150.000đ</p>
+                                : {Number(sp["Price"]).toLocaleString("vi")} VNĐ
                             </div>
                             <button className="add-to-cart">Thêm vào giỏ</button>
                             <button className="buy-now">Mua ngay</button>
@@ -186,109 +135,8 @@ const ProductDetail = () => {
                     <button className="submit-comment">Gửi bình luận</button>
                 </div>
             
-            <div class="products">
-                <div className="header">
-                    <h1>Sản phẩm liên quan</h1>
-                    <div className="xem_them">
-                        <h5>Xem thêm</h5>
-                        <i className="fa-solid fa-arrow-right"></i>
-                    </div>
-                </div>
-                <div className="product-list">
-                    <div className="product">
-                        <div className="discount-label">-20%</div>
-                        <div className="img-wrapper">
-                            <img alt="" src="../assets/img/sp1.webp" />
-                        </div>
-                        <h1>name product</h1>
-                        <div className="price">
-                            <p className="old-price">900,000đ</p>
-                            <p className="new-price">765,000đ</p>
-                        </div>
-                        <button className="add-to-cart">Thêm vào giỏ hàng</button>
-                    </div>
-                    <div className="product">
-                        <div className="discount-label">-20%</div>
-                        <div className="img-wrapper">
-                            <img alt="" src="../assets/img/sp1.webp" />
-                        </div>
-                        <h1>name product</h1>
-                        <div className="price">
-                            <p className="old-price">900,000đ</p>
-                            <p className="new-price">765,000đ</p>
-                        </div>
-                        <button className="add-to-cart">Thêm vào giỏ hàng</button>
-                    </div>
-                    <div className="product">
-                        <div className="discount-label">-20%</div>
-                        <div className="img-wrapper">
-                            <img alt="" src="../assets/img/noi2.jpg" />
-                        </div>
-                        <h1>name productproduct product product </h1>
-                        <div className="price">
-                            <p className="old-price">900,000đ</p>
-                            <p className="new-price">765,000đ</p>
-                        </div>
-                        <button className="add-to-cart">Thêm vào giỏ hàng</button>
-                    </div>
-                    <div className="product">
-                        <div className="discount-label">-20%</div>
-                        <div className="img-wrapper">
-                            <img alt="" src="../assets/img/sp1.webp" />
-                        </div>
-                        <h1>name product</h1>
-                        <div className="price">
-                            <p className="old-price">900,000đ</p>
-                            <p className="new-price">765,000đ</p>
-                        </div>
-                        <button className="add-to-cart">Thêm vào giỏ hàng</button>
-                    </div>
-                    <div className="product">
-                        <div className="discount-label">-20%</div>
-                        <div className="img-wrapper">
-                            <img alt="" src="../assets/img/sp1.webp" />
-                        </div>
-                        <h1>name product</h1>
-                        <div className="price">
-                            <p className="old-price">900,000đ</p>
-                            <p className="new-price">765,000đ</p>
-                        </div>
-                        <button className="add-to-cart">Thêm vào giỏ hàng</button>
-                    </div>
-                </div>
-
-            </div>
-            <footer className="footer">
-            <div className="footer-column">
-                <h3>Địa chỉ</h3>
-                <p>ĐT: 0981.599.399</p>
-                <p>17/20, ngõ Tân Lạc, Đại La, Hai Bà Trưng, Hà Nội</p>
-                <p>54 Đông An, Tân Đông Hiệp, Dĩ An, Bình Dương</p>
-                <p>Bình Dương</p>
-                <p>Email: thegioigiadungonline.vn@gmail.com</p>
-            </div>
-            <div className="footer-column">
-                <h3>Đại lý – Hỗ trợ</h3>
-                <p> DANH SÁCH CÁC ĐẠI LÝ</p>
-                <p> Hướng dẫn mua hàng</p>
-                <p> Hướng dẫn mua trả góp</p>
-                <p> Hỗ trợ khách hàng</p>
-            </div>
-            <div className="footer-column">
-                <h3>Chính sách</h3>
-                <p> Quy định, chính sách</p>
-                <p> Chính sách bảo hành – đổi trả</p>
-                <p> Giao hàng và lắp đặt</p>
-                <p> Chính sách bảo mật TT cá nhân</p>
-                <p> Tin tức Khuyến mại</p>
-            </div>
-            <div className="footer-column">
-                <h3>Đăng ký nhận ưu đãi</h3>
-                <p>Hãy đăng ký email của bạn để cập nhật thông tin khuyến mại nhanh nhất</p>
-                <input type="email" placeholder="Nhập email của bạn" />
-                <button>Đăng ký</button>
-            </div>
-        </footer>
+          
+           
         </div>
     );
 };
