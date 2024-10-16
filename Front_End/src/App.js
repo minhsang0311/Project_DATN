@@ -1,5 +1,6 @@
 
 import './App.css';
+<<<<<<< HEAD
 import ProductDetail from './client/pages/ProductDetail';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Register from './client/pages/register/register.jsx';
@@ -34,6 +35,32 @@ function App() {
         </Routes>
       </div>
     </BrowserRouter>
+=======
+import Footer from './client/components/Footer';
+import ProductDetail from './client/pages/ProductDetail'; 
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import Header from './client/components/Header'; 
+import RelatedProducts from './client/pages/RelatedProducts';
+function App() {
+  return (
+    <Router>
+      <header><Header/></header>
+      <div className="App">
+        <header className="App-header">
+        
+          <Link to="/" className="App-link">Trang Chủ</Link>
+          <Link to="/product-detail" className="App-link">Xem Chi Tiết Sản Phẩm</Link>
+        </header>
+
+        <Routes>
+         
+          <Route path="/product-detail" element={<ProductDetail />} /> {/* Đường dẫn đến ProductDetail */}
+          
+        </Routes>
+      </div>
+      <footer><Footer/></footer>
+    </Router>
+>>>>>>> 6881b444f5473881057b1bf77e3b62f963c4a416
   );
 }
 
