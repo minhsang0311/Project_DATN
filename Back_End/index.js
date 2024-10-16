@@ -24,7 +24,7 @@ db.connect(err => {
 //USER
 //Route lấy danh sách sản phẩm
 app.get('/productList', (req, res) => {
-    let sql = `SELECT Product_ID, Category_ID, Product_Name, Image, Price, Description, Views, Show_Hidden FROM Products`;
+    let sql = `SELECT Product_ID, Category_ID, Product_Name, Image, Price, Description, Views, Shop_Hidden FROM Products`;
     db.query(sql, (err, data) => {
         if (err) {
             res.json({ "message": "Lỗi lấy danh sách sản phẩm", err });
@@ -44,15 +44,15 @@ app.get('/categoryList', (req, res) => {
         }
     })
 })
-//Rpute lấy sản phẩm của một loại
+//Route lấy sản phẩm của một loại
 app.get('/Products/:id', (req, res) => {
-    let id = req.params.id;
+    let id = parseInt(req.params.id)
     if (isNaN(id) || isNaN(id) <= 0) {
         res.json({ 'message': 'Lỗi không tìm thấy ID của loại.' });
         return;
     }
-    let sql = `SELECT Product_ID, Category_ID, Product_Name, Image, Price, Description, Views, Show_Hidden 
-                FROM Products WHERE Category_ID = ? AND Show_Hidden = 1`;
+    let sql = `SELECT Product_ID, Category_ID, Product_Name, Image, Price, Description, Views, Shop_Hidden 
+                FROM products WHERE Category_ID = ? AND Show_Hidden = 1`;
     db.query(sql, id, (err, data) => {
         if (err) {
             res.json({ 'message': 'Lỗi không lấy được sản phẩm của loại ', err })
@@ -63,18 +63,19 @@ app.get('/Products/:id', (req, res) => {
 })
 //Route lấy chi tiết của một sản phẩm
 app.get('/productDetail/:id', function (req, res) {
-    let id = parseInt(req.params.id);
+    let id = parseInt(req.params.id ||0);
     if (isNaN(id) || id <= 0) {
         res.json({ "message": "Không tìm được sản phẩm", "id": id });
         return;
     }
-    let sql = `SELECT Product_ID, Category_ID, Product_Name, Image, Price, Description, Views, Show_Hidden 
-                FROM Products WHERE Product_ID = ?`
+    let sql = `SELECT Product_ID, Category_ID, Product_Name, Image, Price, Description, Views, Shop_Hidden 
+                FROM products WHERE Product_ID = ?`
     db.query(sql, id, (err, data) => {
         if (err) res.json({ "message": "Lỗi lấy chi tiết một sản phẩm", err })
         else res.json(data[0]);
     });
 });
+
 //Route lấy chi tiết một loại
 app.get('/categoryDetail/:id', (err, data) => {
     let id = parseInt(req.params.id)

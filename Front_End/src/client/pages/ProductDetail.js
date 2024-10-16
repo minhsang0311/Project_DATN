@@ -1,53 +1,81 @@
-import React, { useState } from 'react';
-import { useParams } from "react-router-dom";
-import '../styles/components/ProductDetail.css'; // Đảm bảo bạn tạo một tệp CSS tương ứng
-import { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import '../styles/components/ProductDetail.css'; // Đảm bảo bạn đã tạo tệp CSS tương ứng
+
 const ProductDetail = () => {
-    // State để quản lý ảnh chính và trạng thái hiển thị của danh mục
     const [mainImage, setMainImage] = useState('../assets/img/sp1.webp');
-    
+    const [sp, setProduct] = useState(null); // Khởi tạo state để chứa thông tin sản phẩm
+    let { id } = useParams();
 
     // Hàm xử lý khi click vào ảnh nhỏ
     const handleThumbnailClick = (src) => {
         setMainImage(src); // Đổi ảnh chính
     };
 
-    let { id } = useParams();
-    const [sp, ganSP] = useState([]);
-    useEffect (()=>{
-        let url = `http://localhost:3000/sp/${id}`;
-        fetch(url).then(res=>res.json()).then(data=> ganSP(data))
-      },[id]);
+    // Lấy thông tin sản phẩm từ API
+    useEffect(() => {
+        const fetchProductDetail = async () => {
+            const response = await fetch(`http://localhost:3000/productDetail/${id}`);
+            const data = await response.json();
+            console.log('Fetched product data:', data); // Kiểm tra dữ liệu đã nhận
+            setProduct(data);
+        };
+        fetchProductDetail();
+    }, [id]);
+
+    // Kiểm tra xem dữ liệu sản phẩm đã được tải chưa
+    if (!sp) {
+        return <div>Loading...</div>; // Hiển thị loading trong khi dữ liệu đang được lấy
+    }
 
     return (
-        <div classNameName="container">
-          
+        <div className="container">
             <div className="home">
                 <div className="spbanchay">
                     <div className="left-image">
-                    <img src={sp["Image"]} alt={sp["ten_sp"]} />{" "}
+                        {/* Ở đây bạn có thể thêm ảnh lớn */}
                     </div>
-
-                    {/* <div className="breadcrumbs">
-                        <p>Trang chủ  Đồ gia dụng  Máy xay sinh tố</p>
-                    </div> */}
 
                     <div className="product-section">
                         <div className="product-image">
                             <img id="mainImage" src={mainImage} alt="Sản phẩm" width="400px" />
                             <div className="thumbnail-images">
-                                <img className="thumbnail" src="../assets/img/sp1.webp" alt="Thumbnail 1" width="100px" onClick={() => handleThumbnailClick('../assets/img/sp1.webp')} />
-                                <img className="thumbnail" src="../assets/img/sp2.jpg" alt="Thumbnail 2" width="100px" onClick={() => handleThumbnailClick('../assets/img/sp2.jpg')} />
-                                <img className="thumbnail" src="../assets/img/sp3.webp" alt="Thumbnail 3" width="100px" onClick={() => handleThumbnailClick('../assets/img/sp3.webp')} />
-                                <img className="thumbnail" src="../assets/img/sp4.jpg" alt="Thumbnail 4" width="100px" onClick={() => handleThumbnailClick('../assets/img/sp4.jpg')} />
+                                <img
+                                    className="thumbnail"
+                                    src="../assets/img/sp1.webp"
+                                    alt="Thumbnail 1"
+                                    width="100px"
+                                    onClick={() => handleThumbnailClick('../assets/img/sp1.webp')}
+                                />
+                                <img
+                                    className="thumbnail"
+                                    src="../assets/img/sp2.jpg"
+                                    alt="Thumbnail 2"
+                                    width="100px"
+                                    onClick={() => handleThumbnailClick('../assets/img/sp2.jpg')}
+                                />
+                                <img
+                                    className="thumbnail"
+                                    src="../assets/img/sp3.webp"
+                                    alt="Thumbnail 3"
+                                    width="100px"
+                                    onClick={() => handleThumbnailClick('../assets/img/sp3.webp')}
+                                />
+                                <img
+                                    className="thumbnail"
+                                    src="../assets/img/sp4.jpg"
+                                    alt="Thumbnail 4"
+                                    width="100px"
+                                    onClick={() => handleThumbnailClick('../assets/img/sp4.jpg')}
+                                />
                             </div>
                         </div>
 
                         <div className="product-info">
-                        <h1 className="h3"> {sp["Product_Name"]} </h1>
+                            <h1 className="h3">{sp.Product_Name}</h1> {/* Hiển thị tên sản phẩm */}
                             <hr />
                             <p>– CHỈ TRONG DỊP BLACK FRIDAY 23/11</p>
-                            <p>– Mã sp: HP 308H</p>
+                            <p>– Mã sp: {sp.Product_ID}</p>
                             <p>– Trọng lượng: 5,5kg</p>
                             <p>– Dung tích cối đựng: 1,75 lít</p>
                             <p>– Công suất nấu 800W; Công suất xay: tối đa 1450W</p>
@@ -56,29 +84,29 @@ const ProductDetail = () => {
                             <p>– Màu: Đỏ mận – Xuất xứ: ĐÀI LOAN</p>
                             <div className="price">
                                 <p className="old-price">3.560.000đ</p>
-                                : {Number(sp["Price"]).toLocaleString("vi")} VNĐ
+                                <p>Giá: {Number(sp.Price).toLocaleString('vi')} VNĐ</p>
                             </div>
                             <button className="add-to-cart">Thêm vào giỏ</button>
                             <button className="buy-now">Mua ngay</button>
                         </div>
                     </div>
                 </div>
-                </div>
+
                 <div className="product-details">
                     <h3>Thông số kỹ thuật</h3>
                     <table>
                         <tbody>
                             <tr>
                                 <td>Tên sản phẩm</td>
-                                <td>Máy xay nấu đa năng Haipai HP 308H</td>
+                                <td>{sp.Product_Name}</td>
                             </tr>
                             <tr>
                                 <td>Hãng</td>
-                                <td>Promix</td>
+                                <td>{sp.Shop_Hidden}</td>
                             </tr>
                             <tr>
                                 <td>Model</td>
-                                <td>PM-9003</td>
+                                <td>{sp.Product_ID}</td>
                             </tr>
                             <tr>
                                 <td>Chất liệu</td>
@@ -134,9 +162,7 @@ const ProductDetail = () => {
                     <textarea placeholder="Viết bình luận..." rows="3"></textarea>
                     <button className="submit-comment">Gửi bình luận</button>
                 </div>
-            
-          
-           
+            </div>
         </div>
     );
 };

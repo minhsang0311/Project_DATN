@@ -1,20 +1,5 @@
-<<<<<<< HEAD
-
-import { Link } from "react-router-dom"
-const Header = () => {
-    return (
-        <header className="App-header">
-
-          <Link to="/" className="App-link">Trang Chủ</Link>
-          <Link to="/product-detail" className="App-link">Xem Chi Tiết Sản Phẩm</Link>
-          <Link to="/register" className="App-link">Đăng ký</Link>
-          <Link to="/login" className="App-link">Đăng nhập</Link>
-        </header>
-    )
-}
-export default Header;
-=======
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 
 function Header() {
     const [isDanhMucOpen, setIsDanhMucOpen] = useState(false);
@@ -27,17 +12,17 @@ function Header() {
         <header>
             <div className="top">
                 <ul>
-                    <li>Giới thiệu</li>
-                    <li>Hỗ trợ</li>
-                    <li>Hướng dẫn</li>
-                    <li>Bài viết</li>
+                    <li><Link to="/" className="App-link">Trang Chủ</Link></li>
+                    <li><Link to="/product-detail" className="App-link">Xem Chi Tiết Sản Phẩm</Link></li>
+                    <li><Link to="/register" className="App-link">Đăng ký</Link></li>
+                    <li><Link to="/login" className="App-link">Đăng nhập</Link></li>
                 </ul>
                 <ul>
                     <li>Liên hệ: <b>01234567</b></li>
                 </ul>
             </div>
             <div className="bottom">
-                <img alt="" src="../assets/img/logo.png" />
+                <img alt="" src="../assets/img/logo.png" /> {/* Check if this path is correct */}
                 <div className="phai">
                     <div className="input">
                         <input type="text" placeholder="Sản phẩm muốn tìm..." style={{ fontSize: '15px' }} />
@@ -72,9 +57,9 @@ function Header() {
                         <li>DANH MỤC 3</li>
                         <li>DANH MỤC 4</li>
                         <li>DANH MỤC 5</li>
-                    </ul>
+                    </ul> 
                     <div className="banner">
-                        <img alt="" src="../assets/img/banner1.jpg" />
+                        <img alt="" src="../assets/img/banner1.jpg" /> {/* Check if this path is correct */}
                     </div>
                 </div>
             </nav>
@@ -83,4 +68,3 @@ function Header() {
 }
 
 export default Header;
->>>>>>> 6881b444f5473881057b1bf77e3b62f963c4a416
