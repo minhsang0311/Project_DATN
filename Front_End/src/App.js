@@ -1,24 +1,25 @@
-import logo from './logo.svg';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; 
 import './App.css';
+import Cart from './client/giohang/cart';
+import Checkout from './client/giohang/checkout';
+
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+
+
+        {/* Định nghĩa các route */}
+        <Routes>
+          {/* <Route path="/" element={<Home />} />   Trang chủ */}
+          <Route path="/cart" element={<Cart />} /> {/* Trang giỏ hàng */}
+          <Route path="/checkout" element={<Checkout />} /> {/* Trang giỏ hàng */}
+
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
