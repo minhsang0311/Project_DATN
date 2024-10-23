@@ -7,6 +7,7 @@ import ProductList from './admin/pages/productPage/ProductList.jsx';
 import CategoryList from './admin/pages/categoryPage/CategoryList.jsx';
 import ProductAdd from './admin/pages/productPage/ProductAdd.jsx';
 import ProductUpdate from './admin/pages/productPage/ProductUpdate.jsx';
+import Statistics from './admin/pages/Statistics/Statistics.jsx';
 
 // Component Client
 import ProductDetail from './client/pages/ProductDetail';
@@ -18,6 +19,7 @@ import Home from './client/pages/HomePage.js';
 import Nav from './client/components/Nav.js';
 import Footer from './client/components/Footer.js';
 
+
 function App() {
   return (
     <BrowserRouter basename="/">
@@ -28,6 +30,7 @@ function App() {
           {/* Routes dành cho Admin */}
           <Route element={<ProtectedRoute />}>
             <Route path="/admin" element={<HomeAdmin />}>
+              <Route index element={<Statistics />} />
               <Route path="products" element={<ProductList />} />
               <Route path="categories" element={<CategoryList />} />
               <Route path="product-add" element={<ProductAdd />} />
@@ -40,12 +43,12 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/" element={<Home />}>
-         
 
-            </Route>
-          {/* Các route khác của user */} 
+
+          </Route>
+          {/* Các route khác của user */}
           <Route path="/productDetail/:id" element={<ProductDetail />} >
-          
+
           </Route>
         </Routes>
         <Footer />
