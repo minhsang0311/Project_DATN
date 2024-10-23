@@ -5,7 +5,8 @@ const Checkout = () => {
   const location = useLocation();  // Sử dụng useLocation để nhận dữ liệu
   const { cartItems } = location.state || { cartItems: [] };  // Nhận dữ liệu cartItems từ state
 
-  const totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+  // Sửa tên thuộc tính Price thành Price
+  const totalPrice = cartItems.reduce((total, item) => total + item.Price * item.quantity, 0);
 
   return (
     <div>
@@ -13,8 +14,8 @@ const Checkout = () => {
       <h3>Sản phẩm trong giỏ hàng:</h3>
       <div>
         {cartItems.map(item => (
-          <div key={item.id}>
-            <p>{item.name} - {item.price.toLocaleString()} đ - Số lượng: {item.quantity}</p>
+          <div key={item.Product_ID}>  {/* Sử dụng Product_ID làm key */}
+            <p>{item.Product_Name} - {item.Price.toLocaleString()} đ - Số lượng: {item.quantity}</p>
           </div>
         ))}
       </div>

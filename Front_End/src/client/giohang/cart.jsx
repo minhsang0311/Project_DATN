@@ -1,47 +1,57 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';  // Import useNavigate
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; 
 import './giohang.css';
 
 const Cart = () => {
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      name: "Sản phẩm 1",
-      price: 200000,
-      quantity: 1,
-      image: "https://via.placeholder.com/60",
-    },
-    {
-      id: 2,
-      name: "Sản phẩm 2",
-      price: 150000,
-      quantity: 1,
-      image: "https://via.placeholder.com/60",
-    },
-  ]);
-
+  const [cartItems, setCartItems] = useState([]);
   const navigate = useNavigate();  
 
-  // Hàm điều hướng đến trang thanh toán và truyền cartItems
-  const handleCheckout = () => {
-    navigate('/checkout', { state: { cartItems } });
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/products/1');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const product = await response.json();
+        setCartItems([{ ...product, quantity: 1 }]);
+      } catch (error) {
+        console.error('Error fetching product:', error);
+      }
+    };
+
+    fetchProduct();
+  }, []);
+
+
+
+
+
+
+
+
+  // Hàm xử lý xóa sản phẩm
+  const handleRemoveItem = (productId) => {
+    setCartItems((prevItems) => prevItems.filter(item => item.Product_ID !== productId));
   };
 
-  // Hàm xử lý thay đổi số lượng sản phẩm
-  const handleQuantityChange = (id, newQuantity) => {
-    setCartItems(
-      cartItems.map(item =>
-        item.id === id ? { ...item, quantity: newQuantity } : item
+  // Hàm xử lý thay đổi số lượng
+  const handleQuantityChange = (productId, quantity) => {
+    if (quantity < 1) return; // Không cho phép số lượng < 1
+    setCartItems((prevItems) => 
+      prevItems.map(item => 
+        item.Product_ID === productId ? { ...item, quantity } : item
       )
     );
   };
 
-  // Hàm xử lý xóa sản phẩm
-  const handleRemoveItem = (id) => {
-    setCartItems(cartItems.filter(item => item.id !== id));
+  // Hàm xử lý thanh toán
+  const handleCheckout = () => {
+    // Chuyển hướng đến trang thanh toán và truyền cartItems
+    navigate('/checkout', { state: { cartItems } });
   };
 
-  const totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+  const totalPrice = cartItems.reduce((total, item) => total + item.Price * item.quantity, 0);
 
   return (
 
@@ -52,10 +62,10 @@ const Cart = () => {
       <header>
         <div className="top-bar">
           <ul>
-            <li><a href="#">Giới thiệu</a></li>
-            <li><a href="#">Hướng dẫn</a></li>
-            <li><a href="#">Hỗ trợ</a></li>
-            <li><a href="#">Bài viết</a></li>
+            <li><a href="/">Giới thiệu</a></li>
+            <li><a href="/">Hướng dẫn</a></li>
+            <li><a href="/">Hỗ trợ</a></li>
+            <li><a href="/">Bài viết</a></li>
           </ul>
           <div className="support">
             <span>Tư vấn bán hàng: <a href="tel:012346699" className="phone-number">012346699</a></span>
@@ -63,7 +73,7 @@ const Cart = () => {
         </div>
         <div className="main-menu">
           <div className="logo">
-            <a href="#">
+            <a href="/">
               <img src="logo.jpg" alt="Logo" />
             </a>
           </div>
@@ -72,27 +82,24 @@ const Cart = () => {
             <button><i className="fas fa-search"></i></button>
           </div>
           <div className="user-cart">
-            <a href="#"><i className="fas fa-user"></i></a>
-            <a href="#"><i className="fas fa-shopping-cart"></i></a>
+            <a href="/"><i className="fas fa-user"></i></a>
+            <a href="/"><i className="fas fa-shopping-cart"></i></a>
           </div>
         </div>
         <div className="nav-menu">
           <ul>
-            <li><a href="#">Trang chủ</a></li>
-            <li><a href="#">Cửa hàng</a></li>
-            <li><a href="#">Nồi các loại</a></li>
-            <li><a href="#">Bếp điện</a></li>
-            <li><a href="#">Lò vi sóng</a></li>
-            <li><a href="#">Máy hút bụi</a></li>
-            <li><a href="#">Máy xay sinh tố</a></li>
+            <li><a href="/">Trang chủ</a></li>
+            <li><a href="/">Cửa hàng</a></li>
+            <li><a href="/">Nồi các loại</a></li>
+            <li><a href="/">Bếp điện</a></li>
+            <li><a href="/">Lò vi sóng</a></li>
+            <li><a href="/">Máy hút bụi</a></li>
+            <li><a href="/">Máy xay sinh tố</a></li>
           </ul>
         </div>
       </header>
 
       <div className="container">
-        <div className="menu">
-          {/* Danh mục sản phẩm */}
-        </div>
         <div className="cart">
           <div className="title-cart">
             <h2>Giỏ hàng của bạn</h2>
@@ -107,22 +114,22 @@ const Cart = () => {
             </div>
 
             {cartItems.map(item => (
-              <div className="cart-item" key={item.id}>
-                <button className="delete-btn" onClick={() => handleRemoveItem(item.id)}>
+              <div className="cart-item" key={item.Product_ID}>
+                <button className="delete-btn" onClick={() => handleRemoveItem(item.Product_ID)}>
                   <i className="fas fa-trash-alt"></i>
                 </button>
-                <img src={item.image} alt={item.name} className="product-image" />
-                <div className="product-name">{item.name}</div>
-                <div className="product-price">{item.price.toLocaleString()} đ</div>
+                <img src={item.Image} alt={item.Product_Name} className="product-image" />
+                <div className="product-name">{item.Product_Name}</div>
+                <div className="product-price">{item.Price.toLocaleString()} đ</div>
                 <div className="product-quantity">
                   <input
                     type="number"
                     value={item.quantity}
                     min="1"
-                    onChange={(e) => handleQuantityChange(item.id, parseInt(e.target.value))}
+                    onChange={(e) => handleQuantityChange(item.Product_ID, parseInt(e.target.value))}
                   />
                 </div>
-                <div className="product-total">{(item.price * item.quantity).toLocaleString()} đ</div>
+                <div className="product-total">{(item.Price * item.quantity).toLocaleString()} đ</div>
               </div>
             ))}
           </div>
