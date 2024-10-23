@@ -1,7 +1,7 @@
 // import { listsp } from "./data";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-
+import '../styles/components/Home.css'
 
 
 function Home() {

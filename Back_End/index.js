@@ -24,7 +24,7 @@ db.connect(err => {
 //USER
 //Route lấy danh sách sản phẩm
 app.get('/productList', (req, res) => {
-    let sql = `SELECT Product_ID, Category_ID, Product_Name, Image, Price, Description, Views, Shop_Hidden FROM Products`;
+    let sql = `SELECT Product_ID, Category_ID, Product_Name, Image, Price, Description, Views, Show_Hidden FROM Products`;
     db.query(sql, (err, data) => {  
         if (err) {
             res.json({ "message": "Lỗi lấy danh sách sản phẩm", err });
@@ -51,7 +51,7 @@ app.get('/Products/:id', (req, res) => {
         res.json({ 'message': 'Lỗi không tìm thấy ID của loại.' });
         return;
     }
-    let sql = `SELECT Product_ID, Category_ID, Product_Name, Image, Price, Description, Views, Shop_Hidden 
+    let sql = `SELECT Product_ID, Category_ID, Product_Name, Image, Price, Description, Views, Show_Hidden 
                 FROM products WHERE Category_ID = ? AND Show_Hidden = 1`;
     db.query(sql, id, (err, data) => {
         if (err) {
@@ -68,7 +68,7 @@ app.get('/productDetail/:id', function (req, res) {
         res.json({ "message": "Không tìm được sản phẩm", "id": id });
         return;
     }
-    let sql = `SELECT Product_ID, Category_ID, Product_Name, Image, Price, Description, Views, Shop_Hidden 
+    let sql = `SELECT Product_ID, Category_ID, Product_Name, Image, Price, Description, Views, Show_Hidden 
                FROM products WHERE Product_ID = ?`;
 
     db.query(sql, id, (err, data) => {
@@ -103,7 +103,7 @@ app.get('/san_pham_lien_quan/:id/:limit', function(req, res) {
         // Lấy danh sách các sản phẩm liên quan theo Category_ID, bỏ qua sản phẩm hiện tại
         let sql2 = `SELECT Product_ID, Category_ID, Product_Name, Image, Price, Description, Views 
                     FROM products 
-                    WHERE Shop_Hidden = 1 AND Category_ID = ? AND Product_ID <> ? 
+                    WHERE Show_Hidden = 1 AND Category_ID = ? AND Product_ID <> ? 
                     ORDER BY Price DESC 
                     LIMIT ?`;
 
@@ -131,6 +131,23 @@ app.get('/categoryDetail/:id', (err, data) => {
         else res.json(data[0]);
     });
 })
+app.get('/category', function(req, res) {
+    db.query(`SELECT Category_ID , Category_Name FROM categories`,(err, data)=>{
+    if (err) res.json({"thongbao":"Lỗi lay loai", err })
+    else res.json(data);
+    });
+  });
+  app.get('/category/:Category_ID', function(req, res) {
+    let Category_ID = parseInt(req.params.Category_ID);      
+    if ( isNaN(Category_ID) || Category_ID <= 0) { 
+      res.json({"thong bao":"Không biết Loại", "id_loai": id_loai});  return; 
+    } 
+    let sql = `SELECT Category_ID, Category_Name FROM categories WHERE Category_ID = ?` 
+    db.query( sql , Category_ID,  (err, data) => {
+      if (err) res.json({"thongbao":"Lỗi lấy loai", err })
+      else res.json(data[0]);
+     });   
+  });
 
 // Route đăng ký
 app.post('/register', async (req, res) => {
