@@ -7,6 +7,7 @@ import ProductList from '../pages/productPage/ProductList';
 import CategoryList from '../pages/categoryPage/CategoryList';
 import ProductAdd from '../pages/productPage/ProductAdd';
 import ProductUpdate from '../pages/productPage/ProductUpdate';
+import Statistics from '../pages/Statistics/Statistics';
 
 const HomeAdmin = () => {
     const navigate = useNavigate();
@@ -32,7 +33,7 @@ const HomeAdmin = () => {
                 </div>
                 <ul className="menu">
                     <li>
-                        <Link to="/">
+                        <Link to="/admin">
                             <i className="bi bi-house-door"></i>
                             <span>Trang chủ</span>
                         </Link>
@@ -109,10 +110,11 @@ const HomeAdmin = () => {
 
                 <div className="main--wrapper">
                     <Routes>
+                        <Route path="/" element={<Statistics />} />
                         <Route path="products" element={<ProductList />} />
                         <Route path="categories" element={<CategoryList />} />
-                        <Route path="product-add" element={<ProductAdd/>}/>
-                        <Route path="productUpdate/:id" element={<ProductUpdate/>}/>
+                        <Route path="product-add" element={<ProductAdd />} />
+                        <Route path="productUpdate/:id" element={<ProductUpdate />} />
 
                     </Routes>
                 </div>

@@ -16,6 +16,7 @@ import Nav from './client/components/Nav.js';
 import Footer from './client/components/Footer.js';
 import ProductAdd from './admin/pages/productPage/ProductAdd.jsx';
 import ProductUpdate from './admin/pages/productPage/ProductUpdate.jsx';
+import Statistics from './admin/pages/Statistics/Statistics.jsx';
 
 
 
@@ -23,18 +24,19 @@ function App() {
   return (
     <BrowserRouter basename="/">
       <div className="container">
-        <Header/>
-        <Nav/>
+        <Header />
+        <Nav />
         <Routes>
           {/* Routes dành cho Admin */}
           <Route element={ProtectedRoute} />
-            <Route path="/admin" element={<HomeAdmin />}>
-              <Route path="products" element={<ProductList/>}/>
-              <Route path="categories" element={<CategoryList/>}/>
-              <Route path="product-add" element={<ProductAdd/>}/>
-              <Route path="productUpdate/:id" element={<productUpdate/>}/>
-              {/* Viết các route của admin bên dưới đây nha */}
-            </Route>
+          <Route path="/admin" element={<HomeAdmin />}>
+            <Route index element={<Statistics />} />
+            <Route path="products" element={<ProductList />} />
+            <Route path="categories" element={<CategoryList />} />
+            <Route path="product-add" element={<ProductAdd />} />
+            <Route path="productUpdate/:id" element={<productUpdate />} />
+            {/* Viết các route của admin bên dưới đây nha */}
+          </Route>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route>
@@ -44,7 +46,7 @@ function App() {
             </Route>
           </Route>
         </Routes>
-        <Footer/>
+        <Footer />
       </div>
     </BrowserRouter>
   );
