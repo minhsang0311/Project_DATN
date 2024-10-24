@@ -16,14 +16,14 @@ function Header() {
                 </ul>
             </div>
             <div className="bottom">
-                <img src="../img/logo.png" alt=''/>
+                <img src="" alt=''/>
                 <div className="input">
                     <input type="text" placeholder="Sản phẩm muốn tìm..."/>
                     <i className="fa-solid fa-magnifying-glass"></i>
                 </div>
                 <div className="phai">
                     <i className="fa-solid fa-user"></i>
-                    <i className="fa-solid fa-cart-shopping"></i>
+                    <Link to="/productsaddtocart"><i className="fa-solid fa-cart-shopping"></i></Link>
                 </div>
             </div>
         </header>

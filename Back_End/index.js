@@ -14,7 +14,7 @@ const db = mysql.createConnection({
     user: 'root',
     password: '',
     port: 3306,
-    database: 'du-an-tot-nghiep'
+    database: 'datn'
 });
 
 db.connect(err => {
@@ -33,6 +33,7 @@ app.get('/productList', (req, res) => {
         }
     });
 });
+
 //Route lấy danh mục
 app.get('/categoryList', (req, res) => {
     let sql = `SELECT Category_ID, Category_Name, Show_Hidden FROM Categories`
@@ -223,5 +224,30 @@ app.delete('/admin/productDelete/:id', function (req, res) {
         }
     })
 })
+// Route lấy sản phẩm của một loại (category)
+app.get('/productsbycategory/:id', (req, res) => {
+    let id = parseInt(req.params.id);
+    
+    if (isNaN(id) || id <= 0) {
+        res.json({ 'message': 'Lỗi không tìm thấy ID của loại.' });
+        return;
+    }
+
+    console.log('Category ID:', id); 
+
+    let sql = `SELECT Product_ID, Category_ID, Product_Name, Image, Price, Description, Views, Shop_Hidden 
+               FROM products WHERE Category_ID = ?`;
+
+    db.query(sql, [id], (err, data) => {
+        if (err) {
+            res.json({ 'message': 'Lỗi không lấy được sản phẩm của loại ', err });
+        } else {
+            res.json(data);
+        }
+    });
+});
+// giỏ hàng 
+
+
 app.listen(3000, () => console.log(`Ứng dụng đang chạy với port 3000`));
 module.exports = db;

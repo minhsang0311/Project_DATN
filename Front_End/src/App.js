@@ -16,8 +16,8 @@ import Nav from './client/components/Nav.js';
 import Footer from './client/components/Footer.js';
 import ProductAdd from './admin/pages/productPage/ProductAdd.jsx';
 import ProductUpdate from './admin/pages/productPage/ProductUpdate.jsx';
-
-
+import Productsbycategory from './client/pages/Productsbycategory.js';
+import ProductAddtocart from './client/pages/Addtocart.js';
 
 function App() {
   return (
@@ -39,9 +39,12 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route>
             <Route path="/" element={<Home />}>
-              <Route index element={<ProductDetail />} />
+           
               {/* Viết các route của user dưới đây nha */}
             </Route>
+            <Route path="/productDetail/:id" element={<ProductDetail/>}/>
+            <Route path="/productsbycategory/:id" element={<Productsbycategory />} />
+            <Route path="/productsaddtocart" element={<ProductAddtocart/>}/>
           </Route>
         </Routes>
         <Footer/>
