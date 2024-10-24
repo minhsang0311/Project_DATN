@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
+import '../styles/components/sanphamlienquan.css'
+
+
 const SPLienQuan = ({ id, sosp }) => {
   const [listsp, setListSP] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:3000/san_pham_lien_quan/${id}/${sosp}`)
+    fetch(`http://localhost:3000/user/san_pham_lien_quan/${id}/${sosp}`)
       .then((res) => res.json())
       .then((data) => setListSP(data));
   }, [id, sosp]);

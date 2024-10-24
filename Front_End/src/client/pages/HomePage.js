@@ -1,14 +1,14 @@
 // import { listsp } from "./data";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-
+import '../styles/components/Home.css'
 
 
 function Home() {
     const [listsp, ganListSP] = useState( [] );
 
     useEffect ( () => {
-       fetch("http://localhost:3000/productList")
+       fetch("http://localhost:3000/user/productList")
        .then(res=>res.json()).then(data => ganListSP(data));
     } , []);
 

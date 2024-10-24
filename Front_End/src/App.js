@@ -34,7 +34,7 @@ function App() {
               <Route path="products" element={<ProductList />} />
               <Route path="categories" element={<CategoryList />} />
               <Route path="product-add" element={<ProductAdd />} />
-              <Route path="product-update/:id" element={<ProductUpdate />} />
+              <Route path="productUpdate/:id" element={<ProductUpdate />} />
               {/* Các route admin khác có thể thêm bên dưới */}
             </Route>
           {/* </Route> */}
