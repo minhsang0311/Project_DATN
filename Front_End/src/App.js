@@ -26,7 +26,7 @@ function App() {
         <Nav />
         <Routes>
           {/* Routes dành cho Admin */}
-          <Route element={<ProtectedRoute />}>
+          {/* <Route element={<ProtectedRoute />}> */}
             <Route path="/admin" element={<HomeAdmin />}>
               <Route path="products" element={<ProductList />} />
               <Route path="categories" element={<CategoryList />} />
@@ -34,7 +34,7 @@ function App() {
               <Route path="product-update/:id" element={<ProductUpdate />} />
               {/* Các route admin khác có thể thêm bên dưới */}
             </Route>
-          </Route>
+          {/* </Route> */}
 
           {/* Routes dành cho người dùng */}
           <Route path="/login" element={<Login />} />

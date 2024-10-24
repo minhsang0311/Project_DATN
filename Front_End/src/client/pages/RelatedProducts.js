@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-
+import '../styles/components/sanphamlienquan.css'
 
 
 const SPLienQuan = ({ id, sosp }) => {
