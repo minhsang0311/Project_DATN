@@ -8,12 +8,12 @@ import Header from './client/components/Header.js';
 import ProductPage from './admin/pages/ProductPage.js';
 import ProtectedRoute from './client/reducers/ProtectedRoute.js';
 import CartPage from './client/pages/CartPage.js';
-
+import { CartProvider } from './client/context/cartcontext.js';
 
 
 function App() {
   return (
-
+<CartProvider> {/* Bọc toàn bộ ứng dụng bằng CartProvider */}
     <BrowserRouter basename="/">
       <div className="main--content">
         <Routes>
@@ -41,6 +41,7 @@ function App() {
         </Routes>
       </div>
     </BrowserRouter>
+    </CartProvider>
 // import Footer from './client/components/Footer';
 // import ProductDetail from './client/pages/ProductDetail'; 
 // import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import '../styles/components/ProductDetail.css'; // Đảm bảo bạn đã tạo tệp CSS tương ứng
+import { CartContext } from '../context/cartcontext';
 
 const ProductDetail = () => {
     const [mainImage, setMainImage] = useState('../assets/img/sp1.webp');
@@ -86,7 +87,12 @@ const ProductDetail = () => {
                                 <p className="old-price">3.560.000đ</p>
                                 <p>Giá: {Number(sp.Price).toLocaleString('vi')} VNĐ</p>
                             </div>
-                            <button className="add-to-cart">Thêm vào giỏ</button>
+                            <button
+                                className="add-to-cart"
+                                onClick={() => addToCart(sp)} // Thêm vào giỏ hàng
+                            >
+                                Thêm vào giỏ
+                            </button>
                             <button className="buy-now">Mua ngay</button>
                         </div>
                     </div>
