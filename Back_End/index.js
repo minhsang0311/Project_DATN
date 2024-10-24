@@ -13,8 +13,13 @@ const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
+<<<<<<< HEAD
+    port: 3307,
+    database: 'datn'
+=======
     port: 3306,
     database: 'du-an-tot-nghiep'
+>>>>>>> f6530d423db6eab92ccc5726d394e37c7717ebba
 });
 
 db.connect(err => {
@@ -25,6 +30,9 @@ db.connect(err => {
 //Route lấy danh sách sản phẩm
 app.get('/productList', (req, res) => {
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> f6530d423db6eab92ccc5726d394e37c7717ebba
     let sql = `SELECT Product_ID, Category_ID, Product_Name, Image, Price, Description, Views, Show_Hidden FROM Products`;
     db.query(sql, (err, data) => {  
 =======
@@ -38,6 +46,33 @@ app.get('/productList', (req, res) => {
         }
     });
 });
+//lấy sản phẩm mới (giảm theo id)
+app.get('/productNew', (req, res) => {
+    let sql = `SELECT Product_ID, Category_ID, Product_Name, Image, Price, Description, Views, Show_Hidden 
+               FROM Products 
+               ORDER BY Product_ID DESC`;  // Sắp xếp theo ID giảm dần
+    db.query(sql, (err, data) => {
+        if (err) {
+            res.json({ "message": "Lỗi lấy danh sách sản phẩm", err });
+        } else {
+            res.json(data);
+        }
+    });
+});
+//lấy sản phẩm xem nhiều
+app.get('/productMostView', (req, res) => {
+    let sql = `SELECT Product_ID, Category_ID, Product_Name, Image, Price, Description, Views, Show_Hidden 
+               FROM Products 
+               ORDER BY Views DESC`;  // Sắp xếp theo ID giảm dần
+    db.query(sql, (err, data) => {
+        if (err) {
+            res.json({ "message": "Lỗi lấy danh sách sản phẩm", err });
+        } else {
+            res.json(data);
+        }
+    });
+});
+
 //Route lấy danh mục
 app.get('/categoryList', (req, res) => {
     let sql = `SELECT Category_ID, Category_Name, Show_Hidden FROM Categories`
@@ -74,6 +109,9 @@ app.get('/productDetail/:id', function (req, res) {
         return;
     }
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> f6530d423db6eab92ccc5726d394e37c7717ebba
     let sql = `SELECT Product_ID, Category_ID, Product_Name, Image, Price, Description, Views, Show_Hidden 
                FROM products WHERE Product_ID = ?`;
 
