@@ -8,7 +8,7 @@ function Home() {
     const [listsp, ganListSP] = useState( [] );
 
     useEffect ( () => {
-       fetch("http://localhost:3000/productList")
+       fetch("http://localhost:3000/user/productList")
        .then(res=>res.json()).then(data => ganListSP(data));
     } , []);
 

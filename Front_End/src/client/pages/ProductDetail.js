@@ -17,7 +17,7 @@ const ProductDetail = () => {
     useEffect(() => {
         const fetchProductDetail = async () => {
             try {
-                const response = await fetch(`http://localhost:3000/productDetail/${id}`);
+                const response = await fetch(`http://localhost:3000/user/productDetail/${id}`);
                 const data = await response.json();
                 if (data.message) {
                     setError(data.message);
