@@ -13,8 +13,13 @@ const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
+<<<<<<< HEAD
     port: 3307,
     database: 'datn'
+=======
+    port: 3306,
+    database: 'du-an-tot-nghiep'
+>>>>>>> f6530d423db6eab92ccc5726d394e37c7717ebba
 });
 
 db.connect(err => {
@@ -24,8 +29,16 @@ db.connect(err => {
 //USER
 //Route lấy danh sách sản phẩm
 app.get('/productList', (req, res) => {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> f6530d423db6eab92ccc5726d394e37c7717ebba
     let sql = `SELECT Product_ID, Category_ID, Product_Name, Image, Price, Description, Views, Show_Hidden FROM Products`;
     db.query(sql, (err, data) => {  
+=======
+    let sql = `SELECT Product_ID, Category_ID, Product_Name, Image, Price, Description, Views, Shop_Hidden FROM Products`;
+    db.query(sql, (err, data) => {
+>>>>>>> aaf891c15d826ad81ee8fd9de39b27b7abafdd86
         if (err) {
             res.json({ "message": "Lỗi lấy danh sách sản phẩm", err });
         } else {
@@ -90,25 +103,29 @@ app.get('/Products/:id', (req, res) => {
 })
 //Route lấy chi tiết của một sản phẩm
 app.get('/productDetail/:id', function (req, res) {
-    let id = parseInt(req.params.id || 0);
+    let id = parseInt(req.params.id ||0);
     if (isNaN(id) || id <= 0) {
         res.json({ "message": "Không tìm được sản phẩm", "id": id });
         return;
     }
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> f6530d423db6eab92ccc5726d394e37c7717ebba
     let sql = `SELECT Product_ID, Category_ID, Product_Name, Image, Price, Description, Views, Show_Hidden 
                FROM products WHERE Product_ID = ?`;
 
+=======
+    let sql = `SELECT Product_ID, Category_ID, Product_Name, Image, Price, Description, Views, Shop_Hidden 
+                FROM products WHERE Product_ID = ?`
+>>>>>>> aaf891c15d826ad81ee8fd9de39b27b7abafdd86
     db.query(sql, id, (err, data) => {
-        if (err) {
-            res.json({ "message": "Lỗi lấy chi tiết một sản phẩm", err });
-        } else if (data.length === 0) {
-            res.json({ "message": "Sản phẩm không tồn tại", "id": id });
-        } else {
-            res.json(data[0]);  // Trả về thông tin sản phẩm
-        }
+        if (err) res.json({ "message": "Lỗi lấy chi tiết một sản phẩm", err })
+        else res.json(data[0]);
     });
 });
 
+<<<<<<< HEAD
 // sp liên quan 
 app.get('/san_pham_lien_quan/:id/:limit', function(req, res) {
     let id = Number(req.params.id); 
@@ -145,6 +162,8 @@ app.get('/san_pham_lien_quan/:id/:limit', function(req, res) {
 });
 
 
+=======
+>>>>>>> aaf891c15d826ad81ee8fd9de39b27b7abafdd86
 //Route lấy chi tiết một loại
 app.get('/categoryDetail/:id', (err, data) => {
     let id = parseInt(req.params.id)
@@ -158,6 +177,23 @@ app.get('/categoryDetail/:id', (err, data) => {
         else res.json(data[0]);
     });
 })
+app.get('/category', function(req, res) {
+    db.query(`SELECT Category_ID , Category_Name FROM categories`,(err, data)=>{
+    if (err) res.json({"thongbao":"Lỗi lay loai", err })
+    else res.json(data);
+    });
+  });
+  app.get('/category/:Category_ID', function(req, res) {
+    let Category_ID = parseInt(req.params.Category_ID);      
+    if ( isNaN(Category_ID) || Category_ID <= 0) { 
+      res.json({"thong bao":"Không biết Loại", "id_loai": id_loai});  return; 
+    } 
+    let sql = `SELECT Category_ID, Category_Name FROM categories WHERE Category_ID = ?` 
+    db.query( sql , Category_ID,  (err, data) => {
+      if (err) res.json({"thongbao":"Lỗi lấy loai", err })
+      else res.json(data[0]);
+     });   
+  });
 
 // Route đăng ký
 app.post('/register', async (req, res) => {

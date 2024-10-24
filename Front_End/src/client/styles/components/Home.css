@@ -1,3 +1,4 @@
+
 .home .spbanchay {display: flex;margin-top: 50px; padding:0 50px;}
 .home .spbanchay .left-image {width: 20%;}
 .home .spbanchay .left-image img {width: 100%;height: 425px;border-radius: 10px;}
@@ -22,6 +23,9 @@
 .home .spbanchay .product-list .product .add-to-cart:hover {background-color: #4fc3f7;color: white;}
 
 /* .home {
+
+/* CSS cho trang Home */
+.home {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 20px;
@@ -61,6 +65,7 @@
   
   .sp h4 a:hover {
     color: #ff6347; 
+    color: #ff6347; /* Thay đổi màu khi hover */
   }
   
   .price-container {
@@ -100,4 +105,3 @@
   button a:hover {
     color: white;
   }
-   */
