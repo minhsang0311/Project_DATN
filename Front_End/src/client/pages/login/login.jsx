@@ -23,9 +23,9 @@ const Login = () => {
             
             // Chuyển hướng người dùng
             if (response.data.userInfo.role === 1) {
-                navigate('/admin'); // Nếu là admin, điều hướng đến trang admin
+                navigate('/admin'); 
             } else {
-                navigate('/product-detail'); // Nếu là người dùng bình thường
+                navigate('/'); // Nếu là người dùng bình thường
             }
         } catch (error) {
             if (error.response) {
@@ -58,7 +58,7 @@ const Login = () => {
                         required 
                     />
                 </div>
-                {error && <p style={{ color: 'red' }}>{error}</p>}
+                {error && <p>{error}</p>}
                 <button type="submit">Đăng Nhập</button>
             </form>
         </div>

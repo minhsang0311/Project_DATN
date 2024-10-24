@@ -9,7 +9,7 @@ const ProtectedRoute = () => {
   const isAdmin = user?.role === 'admin';
 
   if (!daDangNhap) {
-    return <Navigate to="/dangnhap" />;
+    return <Navigate to="/register" />;
   }
 
   if (!isAdmin) {

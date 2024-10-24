@@ -1,72 +1,54 @@
 import './App.css';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
+// Component Admin
+import HomeAdmin from './admin/components/HomeAdmin.js';
+import ProductList from './admin/pages/productPage/ProductList.jsx';
+import CategoryList from './admin/pages/categoryPage/CategoryList.jsx';
+// Component Client
 import ProductDetail from './client/pages/ProductDetail';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Register from './client/pages/register/register.jsx';
 import Login from './client/pages/login/login.jsx';
-import HeaderAdmin from './admin/components/HeaderAdmin.js';
 import Header from './client/components/Header.js';
-import ProductPage from './admin/pages/ProductPage.js';
 import ProtectedRoute from './client/reducers/ProtectedRoute.js';
-import CartPage from './client/pages/CartPage.js';
+import Home from './client/pages/HomePage.js';
+import Nav from './client/components/Nav.js';
+import Footer from './client/components/Footer.js';
+import ProductAdd from './admin/pages/productPage/ProductAdd.jsx';
+import ProductUpdate from './admin/pages/productPage/ProductUpdate.jsx';
 import { CartProvider } from './client/context/cartcontext.js';
-
 
 function App() {
   return (
-<CartProvider> {/* Bọc toàn bộ ứng dụng bằng CartProvider */}
-    <BrowserRouter basename="/">
-      <div className="main--content">
-        <Routes>
-          {/* Routes dành cho Admin */}
-          <Route element={ProtectedRoute} />
-            <Route path="/admin" element={<HeaderAdmin />}>
-              <Route index element={<ProductPage />} />
-              {/* Viết các route của admin bên dưới đây nha */}
+    <CartProvider> {/* Bọc toàn bộ ứng dụng bằng CartProvider */}
+      <BrowserRouter basename="/">
+        <div className="container">
+          <Header />
+          <Nav />
+          <Routes>
+            {/* Routes dành cho Admin */}
+            <Route element={<ProtectedRoute />} />
+            <Route path="/admin" element={<HomeAdmin />}>
+              <Route path="products" element={<ProductList />} />
+              <Route path="categories" element={<CategoryList />} />
+              <Route path="product-add" element={<ProductAdd />} />
+              <Route path="productUpdate/:id" element={<ProductUpdate />} />
+              {/* Viết các route của admin bên dưới đây nha */}
             </Route>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route>
-            <Route path="/" element={<Header />}>
-              <Route index element={<ProductDetail />} />
-              <Route path='register' element={<Register />} />
-              <Route path='login' element={<Login />} />
-              <Route path='cart' element={<CartPage />} />
-              
-
-              
-
-              {/* Viết các route của user dưới đây nha */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route>
+              <Route path="/" element={<Home />}>
+                <Route index element={<ProductDetail />} />
+                {/* Viết các route của user dưới đây nha */}
+              </Route>
             </Route>
-          </Route>
-        </Routes>
-      </div>
-    </BrowserRouter>
+          </Routes>
+          <Footer />
+        </div>
+      </BrowserRouter>
     </CartProvider>
-// import Footer from './client/components/Footer';
-// import ProductDetail from './client/pages/ProductDetail'; 
-// import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-// import Header from './client/components/Header'; 
-// import RelatedProducts from './client/pages/RelatedProducts';
-// function App() {
-//   return (
-//     <Router>
-//       <header><Header/></header>
-//       <div className="App">
-//         <header className="App-header">
-        
-//           <Link to="/" className="App-link">Trang Chủ</Link>
-//           <Link to="/product-detail" className="App-link">Xem Chi Tiết Sản Phẩm</Link>
-//         </header>
-
-//         <Routes>
-         
-//           <Route path="/product-detail" element={<ProductDetail />} /> {/* Đường dẫn đến ProductDetail */}
-          
-//         </Routes>
-//       </div>
-//       <footer><Footer/></footer>
-//     </Router>
-
   );
 }
+
 export default App;

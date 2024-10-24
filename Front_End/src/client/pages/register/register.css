@@ -6,7 +6,7 @@
 
 body {
     background: #f6f5f7;
-    display: flex;
+    
     justify-content: center;
     align-items: center;
     flex-direction: column;
@@ -43,7 +43,7 @@ a {
     margin: 15px 0;
 }
 
-button {
+.button_register {
     border-radius: 20px;
     border: 1px solid #2f5fd8b7;
     background-color: #2f5fd8b7;
@@ -69,7 +69,7 @@ button.ghost {
     border-color: #FFFFFF;
 }
 
-form {
+.form {
     background-color: #FFFFFF;
     display: flex;
     align-items: center;
@@ -95,7 +95,6 @@ input {
         0 10px 10px rgba(0, 0, 0, 0.22);
     position: relative;
     overflow: hidden;
-    width: 768px;
     max-width: 100%;
     min-height: 480px;
 }

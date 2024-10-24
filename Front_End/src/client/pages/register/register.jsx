@@ -51,7 +51,7 @@ const Register = () => {
     return (
         <div className={`container ${isRightPanelActive ? 'right-panel-active' : ''}`} id="container">
             <div className="form-container sign-up-container">
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} className="form">
                     <h1>Tạo tài khoản</h1>
                     <input
                         type="text"
@@ -85,7 +85,7 @@ const Register = () => {
                         onChange={handleChange}
                         required
                     />
-                    <button type="submit">Sign Up</button>
+                    <button className='button_register' type="submit">Sign Up</button>
                 </form>
                 {message && <p className="message">{message}</p>}
             </div>
@@ -95,7 +95,7 @@ const Register = () => {
                     <input type="email" placeholder="Email" required />
                     <input type="password" placeholder="Password" required />
                     <a href="/#">Forgot your password?</a>
-                    <button type="submit">Sign In</button>
+                    <button className='button_register' type="submit">Sign In</button>
                 </form>
                 {message && <p className="message">{message}</p>}
             </div>
@@ -104,14 +104,14 @@ const Register = () => {
                     <div className="overlay-panel overlay-left">
                         <h1>Chào bạn!</h1>
                         <p>Vui lòng đăng nhập để mua hàng</p>
-                        <button className="ghost" onClick={handleSignInClick}>
+                        <button className="ghost button_register" onClick={handleSignInClick}>
                             Sign In
                         </button>
                     </div>
                     <div className="overlay-panel overlay-right">
                         <h1>Chào bạn!</h1>
                         <p>Chào mừng bạn đã quay trở lại với chúng tôi</p>
-                        <button className="ghost" onClick={handleSignUpClick}>
+                        <button className="ghost button_register" onClick={handleSignUpClick}>
                             Sign Up
                         </button>
                     </div>
