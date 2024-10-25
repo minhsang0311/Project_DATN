@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import '../styles/components/CategoryProducts.css';
 function CategoryProducts() {
     const { Category_ID } = useParams();  // Lấy ID danh mục từ URL
-    const [listsp, ganListSP] = useState( [] );  // Lưu danh sách sản phẩm
+    const [listsp, ganListSP] = useState([]);  // Lưu danh sách sản phẩm
     const [category_Name, setCategoryName] = useState("");  // Lưu tên danh mục
 
     useEffect(() => {
@@ -37,18 +37,18 @@ function CategoryProducts() {
                     <div className="header1">
                         <h1>Sản phẩm trong danh mục: {category_Name}</h1>
                         <div className="xem_them">
-                            <h5>Xem thêm</h5> 
+                            <h5>Xem thêm</h5>
                             <i className="fa-solid fa-arrow-right"></i>
-                        </div> 
                         </div>
-                        <div className="product-list">
+                    </div>
+                    <div className="products-grid">
                         {listsp.slice(0, 4).map((sp, i) =>
                             <div className="product" key={i}>
                                 <div className="discount-label">-20%</div>
                                 <div className="img-wrapper">
                                     <img src={sp.Image} alt="" />
                                 </div>
-                                <Link to={"/productDetail/"+ sp.Product_ID}><h1>{sp.Product_Name}</h1></Link>
+                                <Link to={"/productDetail/" + sp.Product_ID}><h1>{sp.Product_Name}</h1></Link>
                                 <div className="price">
                                     <p className="old-price">{sp.Price}</p>
                                     <p className="new-price">765,000đ</p>
@@ -57,9 +57,9 @@ function CategoryProducts() {
                             </div>
                         )}
                     </div>
-                    </div>
                 </div>
-           
+            </div>
+
         </div>
     );
 }

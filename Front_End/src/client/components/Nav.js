@@ -55,6 +55,7 @@ function Nav() {
             </div>
             <div className="menu-ngang-banner">
                 <ul className="menu-ngang">
+
                     <li><Link to="/">TRANG CHỦ</Link></li>
                     <li><Link to="/shop">CỬA HÀNG</Link></li>
                     {categories.slice(0, 6).map((category) => (  // Hiển thị 5 danh mục đầu
@@ -62,6 +63,9 @@ function Nav() {
                             <Link to={`/category/${category.Category_ID}`}>{category.Category_Name}</Link>
                         </li>
                     ))}
+
+                  
+
                 </ul>
                 <div className="banner">
                     <img src={images[currentImageIndex]} className="active" alt='' />
