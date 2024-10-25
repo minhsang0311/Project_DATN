@@ -8,7 +8,7 @@ function SpMostView() {
     const [listsp, ganListSP] = useState( [] );
 
     useEffect ( () => {
-       fetch("http://localhost:3000/productMostView")
+       fetch("http://localhost:3000/user/productMostView")
        .then(res=>res.json()).then(data => ganListSP(data));
     } , []);
 
