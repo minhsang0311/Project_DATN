@@ -8,7 +8,7 @@ function SpMoi() {
     const [listsp, ganListSP] = useState( [] );
 
     useEffect ( () => {
-       fetch("http://localhost:3000/productNew")
+       fetch("http://localhost:3000/user/productNew")
        .then(res=>res.json()).then(data => ganListSP(data));
     } , []);
 

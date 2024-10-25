@@ -46,7 +46,9 @@ function Nav() {
             </div>
             <div className="menu-ngang-banner">
                 <ul className="menu-ngang">
-                    <li>TRANG CHỦ</li>
+                    <li>
+                        TRANG CHỦ
+                    </li>
                     <li>CỬA HÀNG</li>
                     <li>DANH MỤC 1</li>
                     <li>DANH MỤC 2</li>
