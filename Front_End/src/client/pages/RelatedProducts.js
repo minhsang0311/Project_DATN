@@ -1,78 +1,50 @@
-import React from "react";
-function RelatedProducts(){
-    return(
-<div class="products">
-<div className="header">
-    <h1>Sản phẩm liên quan</h1>
-    <div className="xem_them">
-        <h5>Xem thêm</h5>
-        <i className="fa-solid fa-arrow-right"></i>
-    </div>
-</div>
-<div className="product-list">
-    <div className="product">
-        <div className="discount-label">-20%</div>
-        <div className="img-wrapper">
-            <img alt="" src="../assets/img/sp1.webp" />
-        </div>
-        <h1>name product</h1>
-        <div className="price">
-            <p className="old-price">900,000đ</p>
-            <p className="new-price">765,000đ</p>
-        </div>
-        <button className="add-to-cart">Thêm vào giỏ hàng</button>
-    </div>
-    <div className="product">
-        <div className="discount-label">-20%</div>
-        <div className="img-wrapper">
-            <img alt="" src="../assets/img/sp1.webp" />
-        </div>
-        <h1>name product</h1>
-        <div className="price">
-            <p className="old-price">900,000đ</p>
-            <p className="new-price">765,000đ</p>
-        </div>
-        <button className="add-to-cart">Thêm vào giỏ hàng</button>
-    </div>
-    <div className="product">
-        <div className="discount-label">-20%</div>
-        <div className="img-wrapper">
-            <img alt="" src="../assets/img/noi2.jpg" />
-        </div>
-        <h1>name productproduct product product </h1>
-        <div className="price">
-            <p className="old-price">900,000đ</p>
-            <p className="new-price">765,000đ</p>
-        </div>
-        <button className="add-to-cart">Thêm vào giỏ hàng</button>
-    </div>
-    <div className="product">
-        <div className="discount-label">-20%</div>
-        <div className="img-wrapper">
-            <img alt="" src="../assets/img/sp1.webp" />
-        </div>
-        <h1>name product</h1>
-        <div className="price">
-            <p className="old-price">900,000đ</p>
-            <p className="new-price">765,000đ</p>
-        </div>
-        <button className="add-to-cart">Thêm vào giỏ hàng</button>
-    </div>
-    <div className="product">
-        <div className="discount-label">-20%</div>
-        <div className="img-wrapper">
-            <img alt="" src="../assets/img/sp1.webp" />
-        </div>
-        <h1>name product</h1>
-        <div className="price">
-            <p className="old-price">900,000đ</p>
-            <p className="new-price">765,000đ</p>
-        </div>
-        <button className="add-to-cart">Thêm vào giỏ hàng</button>
-    </div>
-</div>
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import '../styles/components/sanphamlienquan.css'
 
-</div>
-);
-}
-export default RelatedProducts;
+
+const SPLienQuan = ({ id, sosp }) => {
+  const [listsp, setListSP] = useState([]);
+
+  useEffect(() => {
+    fetch(`http://localhost:3000/user/san_pham_lien_quan/${id}/${sosp}`)
+      .then((res) => res.json())
+      .then((data) => setListSP(data));
+  }, [id, sosp]);
+
+  return (
+    <div id="splienquan">
+      <h2>Sản phẩm liên quan</h2>
+      <div id="data">
+        {listsp.map((sp, i) => {
+          return (
+            <div className="sp" key={i}>
+              {/* Sử dụng đúng tên trường trong JSON trả về từ API */}
+              <img src={sp['Image']} alt={sp['Product_Name']} />
+              <h4>
+                <Link to={"/sp/" + sp['Product_ID']}> {sp['Product_Name']} </Link>
+              </h4>
+              <div className="price-container">
+                <h4>{Number(sp['Price']).toLocaleString('vi-VN')} đ</h4>
+                {/* Nếu có giá khuyến mãi */}
+                {sp['gia_km'] && (
+                  <h6>{Number(sp['gia_km']).toLocaleString('vi-VN')} đ</h6>
+                )}
+              </div>
+              <button>
+                <Link to={"/sp/" + sp['Product_ID']}>Xem sản phẩm</Link>
+              </button>
+              <p>
+                {/* <a href="#" onClick={() => dispatch(themSP(sp))}>
+               
+                </a> */}
+              </p>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+export default SPLienQuan;

@@ -16,7 +16,7 @@ function Header() {
                 </ul>
             </div>
             <div className="bottom">
-                <img src="" alt=''/>
+            <img src={process.env.PUBLIC_URL + '/assets/img/logo.png'} alt=''/>
                 <div className="input">
                     <input type="text" placeholder="Sản phẩm muốn tìm..."/>
                     <i className="fa-solid fa-magnifying-glass"></i>
