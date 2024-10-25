@@ -1,12 +1,31 @@
-header{color:#855454;font-size: 18px;}
-header .top{display: flex;height: 50px;line-height: 50px;justify-content: space-between;padding: 0 50px;border-bottom: 1px solid rgb(202, 183, 183);}
-header .top ul{display: flex;gap: 20px;}
-header .top ul li{list-style: none;}
-header .top ul li a{text-decoration: none;color: #855454;}
-header .top ul b{color: rgb(71, 71, 249);font-size: 19px;}
-header .bottom{display:flex;justify-content:space-between;padding: 10px 50px;align-items: center;}
-header .bottom img{height: 90px;}
-header .bottom .input {position: relative; display: inline-block;margin-right: 30px;}
-header .bottom .input input {padding-left: 20px; width:350px;height: 50px;border: none;border-radius: 4px;background-color: rgba(237, 234, 234, 1);}
-header .bottom .input i {position: absolute;left: 290px;top: 13px;color: #888;}
-header .bottom i {margin-left: 20px;font-size: 24px; color: #555; }
+header {background-color: #F3F3F3;height: 130px;width: 100%;position: fixed;z-index: 1000;top:0;box-shadow:rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px}
+header .hr {border: none; height: 1px;background-color: #dfe8df; }
+header .top{display:flex;justify-content: space-between;padding: 5px 6%;}
+header .top ul.trai, ul.phai1{display: flex; gap:20px}
+header .top ul.trai, ul.phai1 li{list-style: none;}
+header .top .trai a{text-decoration: none;color:rgb(84, 73, 73);font-size: 15px;margin:0 auto}
+header .top a:hover{color: #4fc3f7}
+header .top span{color:blue}
+header .middle {display: flex;justify-content: space-between; padding: 0px 6%;margin-bottom: 5px;}
+header .middle .logo_trangchu img {height: 50px;width:200px}
+header .middle .input {position: relative;display: inline-block;padding-left: 450px;line-height: 60px;}
+header .middle .input input {
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, 
+              rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  padding-left: 20px;
+  width: 500px;
+  height: 35px;
+  border: none;
+  border-radius: 4px;
+  background-color: #fff;
+  outline: none;
+}
+header .middle i.fa-magnifying-glass {position: absolute;left: 900px;top: 25px;color: #888}
+header .middle i.fa-cart-shopping {font-size: 24px;cursor: pointer;color: #574141;line-height: 60px;}
+
+
+header .bottom_trangchu .menu_trangchu {display: flex;list-style: none;gap: 20px;font-weight:600;  padding: 0px 5%;justify-content:center;}
+header .bottom_trangchu .menu_trangchu a {text-decoration: none;font-size: 17px;color: #784040;padding: 8px 15px;cursor: pointer;transition: background-color 0.3s ease, color 0.3s ease;border-radius: 20px;}
+header .bottom_trangchu .menu_trangchu a:hover {
+    background: linear-gradient(to right, rgba(0, 0, 255, 0.5), rgba(18, 153, 190, 0.5));
+    color: #ffffff; } 

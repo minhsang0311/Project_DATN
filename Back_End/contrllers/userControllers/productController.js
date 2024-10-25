@@ -18,6 +18,16 @@ exports.getAllProducts = (req, res) => {
         }
     });
 };
+exports.getProductsNew = (req, res) => {
+    let sql = `SELECT * FROM products ORDER BY Product_ID DESC`;  
+    db.query(sql, (err, data) => {
+        if (err) {
+            res.json({ "message": "Lỗi lấy danh sách sản phẩm", err });
+        } else {
+            res.json(data);
+        }
+    });
+};
 exports.getAllproductDetail =  function (req, res) {
     let id = parseInt(req.params.id || 0);
     if (isNaN(id) || id <= 0) {
