@@ -20,7 +20,13 @@ import ProtectedRoute from './client/reducers/ProtectedRoute.js';
 import Home from './client/pages/HomePage.js';
 import Nav from './client/components/Nav.js';
 import Footer from './client/components/Footer.js';
+
 import CategoryProducts from './client/pages/CategoryProducts.js';
+
+
+
+import Productsbycategory from './client/pages/Productsbycategory.js';
+import ProductAddtocart from './client/pages/Addtocart.js';
 
 
 function App() {
@@ -47,14 +53,25 @@ function App() {
           {/* Routes dành cho người dùng */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          {/* <HEAD></HEAD> */}
+          <Route/>
+            <Route path="/" element={<Home />}>
+           
+              {/* Viết các route của user dưới đây nha */}
+            </Route>
+            <Route path="/productDetail/:id" element={<ProductDetail/>}/>
+            <Route path="/productsbycategory/:id" element={<Productsbycategory />} />
+            <Route path="/productsaddtocart" element={<ProductAddtocart/>}/>
           <Route path="/" element={<Home />}>
-
 
           </Route>
           {/* Các route khác của user */}
+
           <Route path="/productDetail/:id" element={<ProductDetail />} />
           <Route path="/category/:Category_ID" element={<CategoryProducts />} />  {/* Thêm route */}
          
+  <Route path="/productDetail/:id" element={<ProductDetail />} ></Route>
+
         </Routes>
 
         <Footer />
