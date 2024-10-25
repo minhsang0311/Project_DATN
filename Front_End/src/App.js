@@ -4,8 +4,10 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 // Component Admin
 import HomeAdmin from './admin/components/HomeAdmin.js';
 import ProductList from './admin/pages/productPage/ProductList.jsx';
-import CategoryList from './admin/pages/categoryPage/CategoryList.jsx';
 import ProductAdd from './admin/pages/productPage/ProductAdd.jsx';
+import CategoryList from './admin/pages/categoryPage/CategoryList.jsx';
+import CategoryAdd from './admin/pages/categoryPage/CategoryAdd.jsx';
+import CategoryUpdate from './admin/pages/categoryPage/CategoryUpdate.jsx';
 import ProductUpdate from './admin/pages/productPage/ProductUpdate.jsx';
 import Statistics from './admin/pages/Statistics/Statistics.jsx';
 
@@ -18,10 +20,14 @@ import ProtectedRoute from './client/reducers/ProtectedRoute.js';
 import Home from './client/pages/HomePage.js';
 import Nav from './client/components/Nav.js';
 import Footer from './client/components/Footer.js';
-import ProductAdd from './admin/pages/productPage/ProductAdd.jsx';
-import ProductUpdate from './admin/pages/productPage/ProductUpdate.jsx';
+
+import CategoryProducts from './client/pages/CategoryProducts.js';
+
+
+
 import Productsbycategory from './client/pages/Productsbycategory.js';
 import ProductAddtocart from './client/pages/Addtocart.js';
+
 
 function App() {
   return (
@@ -35,9 +41,11 @@ function App() {
             <Route path="/admin" element={<HomeAdmin />}>
               <Route index element={<Statistics />} />
               <Route path="products" element={<ProductList />} />
-              <Route path="categories" element={<CategoryList />} />
               <Route path="product-add" element={<ProductAdd />} />
-              <Route path="productUpdate/:id" element={<ProductUpdate />} />
+              <Route path="productUpdate/:id" element={<ProductUpdate />} /> 
+              <Route path="category" element={<CategoryList />} />
+              <Route path="categoryAdd" element={<CategoryAdd />} />
+              <Route path="categoryUpdate/:id" element={<CategoryUpdate />} />
               {/* Các route admin khác có thể thêm bên dưới */}
             </Route>
           {/* </Route> */}
@@ -58,8 +66,14 @@ function App() {
 
           </Route>
           {/* Các route khác của user */}
-          <Route path="/productDetail/:id" element={<ProductDetail />} ></Route>
+
+          <Route path="/productDetail/:id" element={<ProductDetail />} />
+          <Route path="/category/:Category_ID" element={<CategoryProducts />} />  {/* Thêm route */}
+         
+  <Route path="/productDetail/:id" element={<ProductDetail />} ></Route>
+
         </Routes>
+
         <Footer />
       </div>
     </BrowserRouter>

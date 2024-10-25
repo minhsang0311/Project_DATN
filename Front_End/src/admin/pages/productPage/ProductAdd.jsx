@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 // import { useSelector } from 'react-redux';
-import '../../styles/pages/productAdd.css'
+import '../../styles/pages/CategoryAdd.css'
 const ProductAdd = () => {
     const [product, setProduct] = useState({})
     const [image, setImage] = useState(null)

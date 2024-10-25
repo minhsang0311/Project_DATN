@@ -13,36 +13,25 @@ const SPLienQuan = ({ id, sosp }) => {
   }, [id, sosp]);
 
   return (
+    
     <div id="splienquan">
       <h2>Sản phẩm liên quan</h2>
-      <div id="data">
-        {listsp.map((sp, i) => {
-          return (
-            <div className="sp" key={i}>
-              {/* Sử dụng đúng tên trường trong JSON trả về từ API */}
-              <img src={sp['Image']} alt={sp['Product_Name']} />
-              <h4>
-                <Link to={"/sp/" + sp['Product_ID']}> {sp['Product_Name']} </Link>
-              </h4>
-              <div className="price-container">
-                <h4>{Number(sp['Price']).toLocaleString('vi-VN')} đ</h4>
-                {/* Nếu có giá khuyến mãi */}
-                {sp['gia_km'] && (
-                  <h6>{Number(sp['gia_km']).toLocaleString('vi-VN')} đ</h6>
-                )}
-              </div>
-              <button>
-                <Link to={"/sp/" + sp['Product_ID']}>Xem sản phẩm</Link>
-              </button>
-              <p>
-                {/* <a href="#" onClick={() => dispatch(themSP(sp))}>
-               
-                </a> */}
-              </p>
-            </div>
-          );
-        })}
-      </div>
+      <div className="products-grid">
+                        {listsp.slice(0, 5).map((sp, i) =>
+                            <div className="product" key={i}>
+                                <div className="discount-label">-20%</div>
+                                <div className="img-wrapper">
+                                    <img src={sp.Image} alt="" />
+                                </div>
+                                <Link to={"/productDetail/" + sp.Product_ID}><h1>{sp.Product_Name}</h1></Link>
+                                <div className="price">
+                                    <p className="old-price">{sp.Price}</p>
+                                    <p className="new-price">765,000đ</p>
+                                </div>
+                                <button className="add-to-cart">Thêm vào giỏ hàng</button>
+                            </div>
+                        )}
+                    </div>
     </div>
   );
 };
