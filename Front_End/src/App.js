@@ -18,6 +18,7 @@ import ProtectedRoute from './client/reducers/ProtectedRoute.js';
 import Home from './client/pages/HomePage.js';
 import Nav from './client/components/Nav.js';
 import Footer from './client/components/Footer.js';
+import CategoryProducts from './client/pages/CategoryProducts.js';
 
 
 function App() {
@@ -47,10 +48,11 @@ function App() {
 
           </Route>
           {/* Các route khác của user */}
-          <Route path="/productDetail/:id" element={<ProductDetail />} >
-
-          </Route>
+          <Route path="/productDetail/:id" element={<ProductDetail />} />
+          <Route path="/category/:Category_ID" element={<CategoryProducts />} />  {/* Thêm route */}
+         
         </Routes>
+
         <Footer />
       </div>
     </BrowserRouter>

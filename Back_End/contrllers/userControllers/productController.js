@@ -70,3 +70,37 @@ exports.getAllsan_pham_lien_quan = function(req, res) {
         });
     });
 };
+exports.getAllproductNew = (req, res) => {
+    let sql = `SELECT Product_ID, Category_ID, Product_Name, Image, Price, Description, Views, Show_Hidden 
+               FROM Products 
+               ORDER BY Product_ID DESC`;  // Sắp xếp theo ID giảm dần
+    db.query(sql, (err, data) => {
+        if (err) {
+            res.json({ "message": "Lỗi lấy danh sách sản phẩm", err });
+        } else {
+            res.json(data);
+        }
+    });
+};
+//lấy sản phẩm xem nhiều
+exports.getAllproductMostView =  (req, res) => {
+    let sql = `SELECT Product_ID, Category_ID, Product_Name, Image, Price, Description, Views, Show_Hidden 
+               FROM Products 
+               ORDER BY Views DESC`;  // Sắp xếp theo ID giảm dần
+    db.query(sql, (err, data) => {
+        if (err) {
+            res.json({ "message": "Lỗi lấy danh sách sản phẩm", err });
+        } else {
+            res.json(data);
+        }
+    });
+};
+//Route lấy sản phẩm của một loại
+exports.getAllProducts =  (req, res) => {
+    const { Category_ID } = req.params;
+    const sql = 'SELECT * FROM Products WHERE Category_ID = ?';
+    db.query(sql, [Category_ID], (err, result) => {
+        if (err) return res.json({ message: 'Lỗi lấy sản phẩm', err });
+        res.json(result);
+    });
+};
