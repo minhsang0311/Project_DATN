@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import '../styles/components/Home.css'
 
 
-function SpMoi() {
+function SpMostView() {
     const [listsp, ganListSP] = useState( [] );
 
     useEffect ( () => {
@@ -64,4 +64,4 @@ function SpMoi() {
             </div>
     );
 }
-export default SpMoi;
+export default SpMostView;

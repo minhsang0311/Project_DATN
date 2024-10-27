@@ -1,7 +1,7 @@
 const db = require('../../config/db');
 // Hiện danh mục
 exports.getAllcategory = function(req, res){
-    let sql = `SELECT Category_ID, Category_Name, Show_Hidden FROM categories`;
+    let sql = `SELECT * FROM categories`;
     db.query(sql, (err, data)=>{
       if(err) res.json({"thongbao": "Lỗi lấy loai", err})
         else res.json(data);

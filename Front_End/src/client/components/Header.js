@@ -25,15 +25,15 @@ function Header() {
             <div className="input">
                 <input type="text" placeholder="Sản phẩm muốn tìm..." />
                 <i className="fa-solid fa-magnifying-glass"></i> 
-            <div classNameName="bottom">
-            
-                <div classNameName="phai">
-                    <i classNameName="fa-solid fa-user"></i>
-                    <Link to="/productsaddtocart"><i classNameName="fa-solid fa-cart-shopping"></i></Link>
-                </div>
-            </div>
             <i className="fa-solid fa-cart-shopping"></i>
-        </div>
+          </div>
+          <div classNameName="bottom">       
+              <div classNameName="phai">
+                  <i classNameName="fa-solid fa-user"></i>
+              </div>
+              <Link to="/productsaddtocart"><i classNameName="fa-solid fa-cart-shopping"></i></Link>
+
+            </div>
         </div>
         <Nav/>
     </header>
