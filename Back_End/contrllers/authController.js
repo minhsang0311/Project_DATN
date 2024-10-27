@@ -39,20 +39,25 @@ exports.register = async (req, res) => {
         return res.status(400).json({ message: 'Vui lòng cung cấp đầy đủ thông tin.' });
     }
     try {
-        const [results] = await db.execute("SELECT * FROM user WHERE User_Name = ?", [User_Name]);
+        // Gọi db.query và kiểm tra giá trị trả về
+        const results = await db.query("SELECT * FROM user WHERE User_Name = ?", [User_Name]);
+        console.log("results, ", results)
+        // Nếu results là một đối tượng, có thể bạn cần truy cập một thuộc tính nào đó để lấy dữ liệu
+        // Ví dụ, nếu kết quả có dạng { results: [...] }, bạn có thể sử dụng results.results
         if (results.length > 0) {
             return res.status(400).json({ message: 'Username đã tồn tại.' });
         }
-        
+
         const hashedPassword = await bcrypt.hash(Password, saltRounds);
-        const [result] = await db.execute("INSERT INTO user (User_Name, Email, Password, Phone) VALUES (?, ?, ?, ?)", 
-                                          [User_Name, Email, hashedPassword, Phone]);
+        const insertResult = await db.query("INSERT INTO user (User_Name, Email, Password, Phone) VALUES (?, ?, ?, ?)", 
+                                             [User_Name, Email, hashedPassword, Phone]);
         return res.status(201).json({ message: 'Tạo tài khoản thành công.' });
     } catch (error) {
         console.error('Lỗi khi tạo tài khoản:', error);
         return res.status(500).json({ message: 'Lỗi máy chủ.', error });
     }
 };
+
 
 exports.login = (req, res) => {
     const { User_Name, Password } = req.body;

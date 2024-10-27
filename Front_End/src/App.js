@@ -13,7 +13,7 @@ import Statistics from './admin/pages/Statistics/Statistics.jsx';
 
 // Component Client
 import ProductDetail from './client/pages/ProductDetail';
-import Register from './client/pages/register/register.jsx';
+// import Register from './client/pages/register/register.jsx';
 import Login from './client/pages/login/login.jsx';
 import Header from './client/components/Header.js';
 import ProtectedRoute from './client/reducers/ProtectedRoute.js';
@@ -24,6 +24,7 @@ import DangNhap from './client/pages/login/login.jsx';
 import CategoryProducts from './client/pages/CategoryProducts.js';
 import Productsbycategory from './client/pages/Productsbycategory.js';
 import ProductAddtocart from './client/pages/Addtocart.js';
+import RegisterLogin from './client/pages/register/register_login.jsx';
 
 function App() {
   return (
@@ -48,7 +49,7 @@ function App() {
 
           {/* Routes dành cho người dùng */}
           <Route path="/login" element={<DangNhap />} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/register" element={<RegisterLogin />} />
           {/* <HEAD></HEAD> */}
           <Route/>
             <Route path="/" element={<Home />}>
