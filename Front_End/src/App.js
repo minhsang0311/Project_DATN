@@ -18,6 +18,7 @@ import ProtectedRoute from './client/reducers/ProtectedRoute.js';
 import Home from './client/pages/HomePage.js';
 import Nav from './client/components/Nav.js';
 import Footer from './client/components/Footer.js';
+import DangNhap from './client/pages/login/login.jsx';
 
 
 function App() {
@@ -40,7 +41,7 @@ function App() {
           {/* </Route> */}
 
           {/* Routes dành cho người dùng */}
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<DangNhap />} />
           <Route path="/register" element={<Register />} />
           <Route path="/" element={<Home />}>
 

@@ -29,7 +29,7 @@ const HomeAdmin = () => {
         <div className="home_admin">
             <div className="sidebar">
                 <div className="logo">
-                    <img src="img/logo.png" alt="" />
+                    <img src="assets/img/logo.png" alt="" />
                 </div>
                 <ul className="menu">
                     <li>
@@ -81,8 +81,10 @@ const HomeAdmin = () => {
                         </Link>
                     </li>
                     <li className="logout" onClick={handleLogout}>
+                        <Link>
                         <i className="bi bi-box-arrow-right"></i>
                         <span>Thoát</span>
+                        </Link>
                     </li>
                 </ul>
             </div>
@@ -115,7 +117,6 @@ const HomeAdmin = () => {
                         <Route path="categories" element={<CategoryList />} />
                         <Route path="product-add" element={<ProductAdd />} />
                         <Route path="productUpdate/:id" element={<ProductUpdate />} />
-
                     </Routes>
                 </div>
             </div>

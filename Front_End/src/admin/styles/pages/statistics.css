@@ -1,0 +1,65 @@
+
+.container-statistics {
+    margin-top: 15px;
+    padding: 15px;
+    background-color: white;
+}
+.statistics {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+.statistics-chillrend {
+    margin-top: 100px;
+}
+.vertical-table {
+    width: 70%;
+    border-collapse: collapse;
+}
+
+.vertical-table th, .vertical-table td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.vertical-table th {
+    background-color: #f2f2f2;
+    width: 70%;
+}
+
+.vertical-table td {
+    width: 50%;
+    text-align: center;
+}
+
+.right {
+    flex: 1;
+    margin-right: 20px;
+}
+
+.left {
+    flex: 1;
+    margin-left: 20px;
+}
+
+.left h2 {
+    text-align: center;
+}
+
+.left h3 {
+    text-align: center;
+    margin-top: 20px;
+}
+.left div {
+    margin: auto;
+    border-radius: 50%; /* Make it circular */
+    padding: 20px; /* Padding inside the circle */
+    display: inline-block; /* Fit to the content */
+    background-color: #ffffff;
+}
+.left div canvas {
+    width: 300px;
+    height: 300px;
+}
