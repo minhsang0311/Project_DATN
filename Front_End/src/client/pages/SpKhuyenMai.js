@@ -1,11 +1,12 @@
 // import { listsp } from "./data";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import '../styles/components/Home.css'
 
 
 function SpMoi() {
     const [listsp, ganListSP] = useState( [] );
+    const navigate = useNavigate(); 
 
     useEffect ( () => {
        fetch("http://localhost:3000/user/productKhuyenMai")
@@ -17,6 +18,19 @@ function SpMoi() {
             style: 'currency',
             currency: 'VND',
         }).format(value);
+    };
+
+    const handleAddToCart = (product) => {
+        const savedCart = JSON.parse(localStorage.getItem('cart')) || [];
+        const existingProduct = savedCart.find(item => item.Product_ID === product.Product_ID);
+
+        if (existingProduct) {
+            existingProduct.quantity = (existingProduct.quantity || 1) + 1;
+        } else {
+            savedCart.push({ ...product, quantity: 1 });
+        }
+        localStorage.setItem('cart', JSON.stringify(savedCart));
+        navigate('/cart'); 
     };
 
     return (
@@ -49,7 +63,9 @@ function SpMoi() {
                                     <p className="new-price">{formatCurrency(sp.Price)}</p>
                                 )}
                                 </div>
-                                <button className="add-to-cart">Giỏ hàng</button>
+                                <button className="add-to-cart" onClick={() => handleAddToCart(sp)}>
+                                            Thêm vào giỏ hàng
+                                        </button>
                             </div>
                         </div>
                     )}

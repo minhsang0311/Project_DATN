@@ -24,12 +24,14 @@ import DangNhap from './client/pages/login/login.jsx';
 import CategoryProducts from './client/pages/CategoryProducts.js';
 import Productsbycategory from './client/pages/Productsbycategory.js';
 import ProductAddtocart from './client/pages/Addtocart.js';
+import Search from './client/pages/search/search.js';
+import CartPage from './client/pages/CartPage.js';
 
 function App() {
   return (
     <BrowserRouter basename="/">
       <div className="container">
-        {/* <Header /> */}
+         <Header />
        
         <Routes>
           {/* Routes dành cho Admin */}
@@ -67,7 +69,9 @@ function App() {
 
           <Route path="/productDetail/:id" element={<ProductDetail />} />
           <Route path="/category/:Category_ID" element={<CategoryProducts />} />  {/* Thêm route */}
-         
+          <Route path="/search" element={<Search />} />
+          <Route path="/cart" element={<CartPage />} />
+
   <Route path="/productDetail/:id" element={<ProductDetail />} ></Route>
 
         </Routes>

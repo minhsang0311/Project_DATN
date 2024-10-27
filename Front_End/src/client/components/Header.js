@@ -1,9 +1,19 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import Nav from './Nav';
 import '../styles/components/Header.css';
+import { useState } from 'react';
 
 function Header() {
+  const [keyword, setKeyword] = useState(''); // State để lưu từ khóa tìm kiếm
+    const navigate = useNavigate(); // Hook để điều hướng đến trang mới
+
+    const handleSearch = (e) => {
+        e.preventDefault(); // Ngăn chặn hành động mặc định của form
+        if (keyword) {
+            navigate(`/search?q=${keyword}`); // Điều hướng đến trang tìm kiếm với từ khóa
+        }
+    };
   return (
     <header>
         <div className="top">
@@ -23,9 +33,18 @@ function Header() {
               <img src="assets/img/logo3.png" alt="logo" />
             </div>
             <div className="input">
-                <input type="text" placeholder="Sản phẩm muốn tìm..." />
-                <i className="fa-solid fa-magnifying-glass"></i> 
-            <i className="fa-solid fa-cart-shopping"></i>
+            <form className="d-flex ms-4" onSubmit={handleSearch}> {/* Sử dụng handleSearch khi submit */}
+                        <input 
+                            type="text" 
+                            name="keyword" 
+                            placeholder="Sản phẩm muốn tìm..." 
+                            value={keyword} 
+                            onChange={(e) => setKeyword(e.target.value)} 
+                        />
+                        <button className="btn btn-outline-success" type="submit">
+                            <i className="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </form>
           </div>
           <div classNameName="bottom">       
               <div classNameName="phai">

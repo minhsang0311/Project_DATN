@@ -11,5 +11,6 @@ router.get('/productList/:id',authMiddleware, productController.getProductDetail
 router.post('/productAdd', authMiddleware, upload.single('Image'), productController.postProduct);
 router.put('/productUpdate/:id', authMiddleware, upload.single('Image'), productController.putProduct);
 router.delete('/productDelete/:id', authMiddleware, productController.deleteProduct);
+router.get('/search', productController.searchProducts);
 
 module.exports = router;
