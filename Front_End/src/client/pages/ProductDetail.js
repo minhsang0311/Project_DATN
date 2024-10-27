@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import '../styles/components/ProductDetail.css';
 import SPLienQuan from './RelatedProducts';
+import Comments from './Comments'; // Import component Comments
 
 const ProductDetail = () => {
     const [mainImage, setMainImage] = useState('');
@@ -14,6 +15,7 @@ const ProductDetail = () => {
         setMainImage(src);
     };
 
+    // Lấy dữ liệu chi tiết sản phẩm
     useEffect(() => {
         const fetchProductDetail = async () => {
             try {
@@ -67,7 +69,6 @@ const ProductDetail = () => {
                                     width="100px"
                                     onClick={() => handleThumbnailClick(sp.Image)}
                                 />
-                                {/* Thêm các ảnh khác nếu cần */}
                             </div>
                         </div>
 
@@ -104,17 +105,19 @@ const ProductDetail = () => {
                                     <td>Thông số</td>
                                     <td>{sp.Description}</td>
                                 </tr>
-                                {/* Các thông số khác */}
                             </tbody>
                         </table>
                     </div>
-                </div></div>
-                <div className="related-products">
-                    <SPLienQuan id={id} sosp={5} />
                 </div>
-            </div>
-        
 
+               
+              
+            </div>
+            <Comments productId={id} />
+            <div className="related-products">
+                <SPLienQuan id={id} sosp={5} />
+            </div>
+        </div>
     );
 };
 
