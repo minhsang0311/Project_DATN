@@ -27,7 +27,7 @@ function SpMoi() {
                         </div>
                     </div>
                     <div className="product-list">
-                        {listsp.slice(0, 4).map((sp, i) =>
+                        {listsp.map((sp, i) =>
                             <div className="product" key={i}>
                                 <div className="discount-label">-20%</div>
                                 <div className="img-wrapper">

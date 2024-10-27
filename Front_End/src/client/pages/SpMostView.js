@@ -13,7 +13,7 @@ function SpMostView() {
     } , []);
 
     return (
-        <div className="home">
+        <div className="home_SpMostView">
             <div className="spbanchay">
                 <div className="left-image">
                     <img src="/assets/img/banner4.jpg" alt=""/>
@@ -27,7 +27,7 @@ function SpMostView() {
                         </div>
                     </div>
                     <div className="product-list">
-                        {listsp.slice(0, 4).map((sp, i) =>
+                        {listsp.map((sp, i) =>
                             <div className="product" key={i}>
                                 <div className="discount-label">-20%</div>
                                 <div className="img-wrapper">
