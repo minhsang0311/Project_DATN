@@ -2,7 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 
-const { authMiddleware, adminMiddleware } = require('../Back_End/middlewares/authMiddlware')
+const { authMiddleware, adminMiddleware } = require('../Back_End/middlewares/authMiddlware');
+const { searchProducts } = require('./contrllers/adminControllers/productController');
 
 const app = express();
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
@@ -14,6 +15,7 @@ const StatisticsRoutesAdmin = require('./routes/adminRoutes/Statistics')
 //User
 const productRoutesClient = require('./routes/userRoutes/productRoutes');
 const categoryRoutesClient = require('./routes/userRoutes/categoryRoutes');
+
 
 app.use(cors());
 app.use(express.json());
@@ -28,23 +30,9 @@ app.use('/user',[
     categoryRoutesClient
 ]);
 
+app.get('/search', searchProducts);
+
+// giỏ hàng
+
+
 app.listen(3000, () => console.log('Server running on port 3000'));
-
-
-// const express = require('express');
-// const { authMiddleware, adminMiddleware } = require('./middleware/authMiddleware');
-// const app = express();
-
-// app.use(express.json());
-
-// // Route cho admin (chỉ cho phép admin truy cập)
-// app.get('/api/admin', authMiddleware, adminMiddleware, (req, res) => {
-//     res.json({ message: 'Đây là trang admin.' });
-// });
-
-// // Route cho người dùng bình thường
-// app.get('/api/user', authMiddleware, (req, res) => {
-//     res.json({ message: 'Đây là trang người dùng.' });
-// });
-
-// // Các route khác và cấu hình server

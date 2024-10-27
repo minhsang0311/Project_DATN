@@ -303,5 +303,33 @@ app.delete('/admin/productDelete/:id', function (req, res) {
         }
     })
 })
+
+// tim kiếm
+router.get('/search/:keyword', async (req, res, next) => {
+    const { keyword } = req.params;
+
+    if (!keyword || typeof keyword !== 'string' || keyword.trim() === '') {
+        return res.status(400).json({ message: "Từ khóa không hợp lệ" });
+    }
+
+    try {
+        const db = await connectDb();
+        const productCollection = db.collection('products');
+        const products = await productCollection.find({
+            name: new RegExp(keyword, 'i')
+        }).toArray();
+
+        if (products.length > 0) {
+            res.status(200).json(products);
+        } else {
+            res.status(404).json({ message: "Không tìm thấy sản phẩm nào." });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Lỗi máy chủ" });
+    }
+});
+
+
 app.listen(3000, () => console.log(`Ứng dụng đang chạy với port 3000`));
 module.exports = db;

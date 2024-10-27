@@ -18,6 +18,8 @@ import ProtectedRoute from './client/reducers/ProtectedRoute.js';
 import Home from './client/pages/HomePage.js';
 import Nav from './client/components/Nav.js';
 import Footer from './client/components/Footer.js';
+import Search from './client/pages/search/search.js';
+import CartPage from './client/pages/CartPage.js';
 
 
 function App() {
@@ -47,9 +49,9 @@ function App() {
 
           </Route>
           {/* Các route khác của user */}
-          <Route path="/productDetail/:id" element={<ProductDetail />} >
-
-          </Route>
+          <Route path="/productDetail/:id" element={<ProductDetail />} ></Route>
+          <Route path="/search" element={<Search />} />
+          <Route path="/cart" element={<CartPage />} />
         </Routes>
         <Footer />
       </div>

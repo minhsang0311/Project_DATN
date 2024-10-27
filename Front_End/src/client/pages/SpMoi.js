@@ -9,7 +9,11 @@ function SpMoi() {
 
     useEffect ( () => {
        fetch("http://localhost:3000/user/productNew")
-       .then(res=>res.json()).then(data => ganListSP(data));
+       .then(res=>res.json())
+       .then(data => {ganListSP(data);
+        console.log(data)
+       });
+       
     } , []);
 
     return (
@@ -27,7 +31,8 @@ function SpMoi() {
                         </div>
                     </div>
                     <div className="product-list">
-                        {listsp.slice(0, 4).map((sp, i) =>
+                        {listsp.map((sp, i) =>{
+                            return(
                             <div className="product" key={i}>
                                 <div className="discount-label">-20%</div>
                                 <div className="img-wrapper">
@@ -39,7 +44,7 @@ function SpMoi() {
                                     <p className="new-price">765,000đ</p>
                                 </div>
                                 <button className="add-to-cart">Thêm vào giỏ hàng</button>
-                            </div>
+                            </div>)}
                         )}
                     </div>
                 </div>

@@ -10,5 +10,6 @@ router.get('/productList/:id', productController.getProductDetail);
 router.post('/productAdd',upload.single('Image'), productController.postProduct);
 router.put('/productUpdate/:id',upload.single('Image'), productController.putProduct);
 router.delete('/productDelete/:id', productController.deleteProduct);
+router.get('/search', productController.searchProducts);
 
 module.exports = router;
