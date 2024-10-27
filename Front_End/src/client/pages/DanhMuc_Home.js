@@ -6,7 +6,7 @@ import '../styles/components/Home.css'
 function DanhMuc_Home() {
     const [list, ganListLoai] = useState( [] );
     useEffect ( () => {
-        fetch(`http://localhost:3000/user/categoryList`)
+        fetch(`http://localhost:3000/user/category`)
         .then(res=>res.json())
         .then( data => ganListLoai(data) );
     } , []);

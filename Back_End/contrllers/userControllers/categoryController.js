@@ -1,7 +1,7 @@
 const db = require('../../config/db');
 
 exports.getAllcategory = function(req, res) {
-    db.query(`SELECT Category_ID , Category_Name FROM categories`,(err, data)=>{
+    db.query(`SELECT * FROM categories`,(err, data)=>{
     if (err) res.json({"thongbao":"Lỗi lay loai", err })
     else res.json(data);
     });

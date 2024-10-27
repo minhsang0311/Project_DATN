@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import '../styles/components/Home.css'
 
 
-function SpMoi() {
+function SpMostView() {
     const [listsp, ganListSP] = useState( [] );
 
     useEffect ( () => {
@@ -33,7 +33,7 @@ function SpMoi() {
                         </div>
                     </div>
                     <div className="box-sp">
-                        {listsp.slice(0, 8).map((sp, i) =>
+                        {listsp.slice(0,8).map((sp, i) =>
                             <div className="product" key={i}>
                                 {sp.Promotion > 0 && (
                                     <div className="discount-label">
@@ -64,4 +64,4 @@ function SpMoi() {
             </div>
     );
 }
-export default SpMoi;
+export default SpMostView;
