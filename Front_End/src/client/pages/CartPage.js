@@ -94,8 +94,7 @@ function CartPage() {
             )}
             {cartItems.length > 0 && (
                 <div className="thanhtoantien">
-                    <h3 className="tongtien">Tổng Tiền: {calculateTotal().toLocaleString()}đ</h3>
-
+                    <h3>Tổng Tiền: {calculateTotal().toLocaleString()}đ</h3>
                     <button>Thanh Toán</button>
                 </div>
             )}
