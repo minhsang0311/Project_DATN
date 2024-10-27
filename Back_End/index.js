@@ -137,7 +137,6 @@ app.get('/san_pham_lien_quan/:id/:limit', function(req, res) {
     });
 });
 
-
 //Route lấy chi tiết một loại
 app.get('/categoryDetail/:id', (err, data) => {
     let id = parseInt(req.params.id)

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import '../styles/components/Header.css';
-const Menu = () =>{
+import '../styles/components/Nav.css';
+const Nav = () =>{
     const [list, ganListLoai] = useState( [] );
     useEffect ( () => {
         fetch(`http://localhost:3000/user/categoryList`)
@@ -24,4 +24,4 @@ const Menu = () =>{
         </div>
     )
 }
-export default Menu;
+export default Nav;

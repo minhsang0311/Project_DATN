@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Menu from './Menu';
+import Nav from './Nav';
 import '../styles/components/Header.css';
 
 function Header() {
@@ -28,7 +28,7 @@ function Header() {
             </div>
             <i class="fa-solid fa-cart-shopping"></i>
         </div>
-        <Menu/>
+        <Nav/>
     </header>
   );
 }

@@ -1,115 +1,188 @@
-/* .home .spbanchay {display: flex;width: 100%;max-width: 1450px;margin: 30px auto 10px;background-color: white;padding: 15px;border-radius: 10px;}
-.home .spbanchay .left-image {width: 20%;}
-.home .spbanchay .left-image img {width: 100%;min-height: 400px;border-radius: 10px;padding: 5px;}
-.home .spbanchay .right-products {width: 80%; padding-left: 20px; }
-.home .spbanchay .right-products .header1 {display: flex;justify-content: space-between;align-items: center;}
-.home .spbanchay .right-products .header1 h1 {font-weight: 100;font-size: 30px;color: #784040}
-.home .spbanchay .right-products .header1 .xem_them{border: 1px solid #855454; border-radius: 100px;padding: 10px 20px;font-size: 15px;cursor: pointer;display: inline-flex; align-items: center;gap: 10px; transition: all 0.3s ease; color: #9e6868;}
-.home .spbanchay .right-products .header1 .xem_them i {transition: transform 0.3s ease; }
-.home .spbanchay .right-products .header1 .xem_them:hover i {transform: translateX(5px);}
-.home .spbanchay .box-sp {display: grid;grid-template-columns:repeat(5, 1fr);margin-top: 30px;gap:15px  }
-.home .spbanchay .box-sp .product {position: relative;border:none;border-radius: 5px;box-shadow: 0 0px 2px 0 rgba(60,64,67,0.1),0 0px 6px 0px rgba(60,64,67,0.25);}
-.home .spbanchay .box-sp .product .discount-label {z-index: 1;position: absolute;top: 10px;right: 10px;background-color: #4fc3f7;color: white;padding: 5px 10px;border-radius: 5px;font-size: 15px;}
-.home .spbanchay .box-sp .product .img-wrapper {min-width: 200px;height: 190px;overflow: hidden;}
-.home .spbanchay .box-sp .product .img-wrapper img {max-width: 200px;min-height: 190px;transition: transform 0.3s ease;padding: 10px;}
-.home .spbanchay .box-sp .product .img-wrapper img:hover {transform: scale(1.1);}
-.home .spbanchay .box-sp .product h1 {font-size: 17px;color: #575353;padding: 10px 0;font-weight: 500;}
-.home .spbanchay .box-sp .product .price {display: flex;gap: 20px;padding: 10px 0;}
-.home .spbanchay .box-sp .product .price .old-price {text-decoration: line-through;color: #AE9595;font-size: 20px;}
-.home .spbanchay .box-sp .product .price .new-price {font-weight: 500;color: #ee7c2a;font-size: 22px;}
-.home .spbanchay .box-sp .product .add-to-cart {color: #4fc3f7;background-color: #ffffff;border: 1px solid #4fc3f7;border-radius: 50px;padding: 10px 20px;cursor: pointer;transition: background-color 0.3s ease, color 0.3s ease;margin-top: 10px;font-size: 16px;text-align: center; }
-.home .spbanchay .box-sp .product .add-to-cart:hover {background-color: #4fc3f7;color: white;}
-.home {background-color: #F3F3F3;}
- */
- .home .spbanchay {
-    display: flex;
-    width: 100%;
-    max-width: 1450px;
-    margin: 30px auto 10px;
-    background-color: white;
-    padding: 15px;
-    border-radius: 10px;
-    overflow: hidden; /* Ẩn các phần tử bị tràn */
-}
- .home .spbanchay .left-image {width: 20%;}
- .home .spbanchay .left-image img {width: 100%;min-height: 400px;border-radius: 10px;padding: 5px;}
- .home .spbanchay .right-products {width: 80%; padding-left: 20px; }
- .home .spbanchay .right-products .header1 {display: flex;justify-content: space-between;align-items: center;}
- .home .spbanchay .right-products .header1 h1 {font-weight: 100;font-size: 30px;color: #784040}
- .home .spbanchay .right-products .header1 .xem_them{border: 1px solid #855454; border-radius: 100px;padding: 10px 20px;font-size: 15px;cursor: pointer;display: inline-flex; align-items: center;gap: 10px; transition: all 0.3s ease; color: #9e6868;}
- .home .spbanchay .right-products .header1 .xem_them i {transition: transform 0.3s ease; }
- .home .spbanchay .right-products .header1 .xem_them:hover i {transform: translateX(5px);}
- .home .spbanchay .box-sp {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 5 cột đều nhau */
-    margin-top: 30px;
-    gap: 15px; /* Điều chỉnh khoảng cách giữa các cột */
-    padding: 0 15px; /* Thêm padding nếu cần thiết */
-    overflow: hidden; /* Giúp ẩn các phần tử tràn ra ngoài */
-}
+* {margin: 0;padding: 0;box-sizing: border-box;font-family:'Montserrat', sans-serif;}
+.home .spbanchay {
+   display: grid;grid-template-columns: 1fr 4fr;gap: 10px;
+   background-color: rgb(255, 255, 255);border-radius: 10px;
+   padding: 20px;max-width: 1350px;margin: 30px auto 10px;}
+.home .spbanchay .left-image {display: grid;gap: 10px;background-color: white;}
+.home .spbanchay .left-image img {height: 400px;max-width: 300px;width: 100%;border-radius: 15px;}
+.home .spbanchay .right-products .header1 {display: flex;justify-content: space-between;background-color: white;margin: 0 10px 30px;}
+.home .spbanchay .right-products .header1 p {font-size: 25px;font-weight: 500;color: #333333;}
+.home .spbanchay .right-products .header1 .xem_them {font-weight: 600;border: 1px solid #855454; border-radius: 100px;padding: 5px 10px;cursor: pointer; color:#AE9595;}
+.home .spbanchay .box-sp {display: grid;grid-template-columns: repeat(4, 1fr);gap: 15px;}
 .home .spbanchay .box-sp .product {
-    position: relative;
-    border: none;
-    border-radius: 5px;
-    box-shadow: 0 0px 2px 0 rgba(60,64,67,0.1), 0 0px 6px 0px rgba(60,64,67,0.25);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 15px;
-    min-height: 420px; /* Có thể điều chỉnh cho phù hợp */
-    box-sizing: border-box; /* Đảm bảo padding và border được tính trong kích thước */
+   min-width: 200px;background-color: rgb(255, 255, 255);height: 370px;box-shadow: 0 0px 2px 0 rgba(60,64,67,0.1), 0 0px 6px 0px rgba(60,64,67,0.25);border-radius: 10px;position: relative;
 }
- .home .spbanchay .box-sp .product .discount-label {z-index: 1;position: absolute;top: 10px;right: 10px;background-color: #4fc3f7;color: white;padding: 5px 10px;border-radius: 5px;font-size: 15px;}
+ .home .spbanchay .box-sp .product .discount-label {z-index: 2;color: white;font-size: 14px;font-weight: 500;position: absolute; top:10px;left: 5px;background-color: #4FC3F7;border-radius: 5px;padding: 5px 10px}
  .home .spbanchay .box-sp .product .img-wrapper {
     width: 100%; /* Đảm bảo hình ảnh chiếm toàn bộ chiều rộng */
-    height: 200px; /* Cố định chiều cao */
+    height: 230px; /* Cố định chiều cao */
     overflow: hidden; /* Ẩn các phần của hình ảnh bị tràn */
     display: flex;
     justify-content: center;
     align-items: center;
 }
+.home .spbanchay .box-sp .product .img-wrapper img {width: 100%;height: 90%;transition: 0.5s;margin-top: 10px;}
+ .home .spbanchay .box-sp .product .img-wrapper img:hover {transform: scale(1.1);}
+.home .spbanchay .box-sp .product a {
+   display: -webkit-box;
+   -webkit-line-clamp: 2; /* Giới hạn 2 dòng */
+   -webkit-box-orient: vertical;
+   overflow: hidden;
+   text-overflow: ellipsis;
+   margin: 10px 0;
+   line-height: 1.5; /* Điều chỉnh chiều cao dòng */
+   max-height: calc(2em * 2); /* Tương ứng với 2 dòng */
+   font-size: 15px;
+   color: #333;
+   text-decoration: none;
+   margin: 10px 5px;
+} 
+.home .spbanchay .box-sp .product .price_giohang{align-items: center;;display: flex;justify-content:space-between;margin-top: 10px;}
+ .home .spbanchay .box-sp .product .price .old-price {text-decoration: line-through;color: #AE9595;font-size: 14px;margin: 5px;}
+ .home .spbanchay .box-sp .product .price .new-price {font-weight: 600;color: #ee7c2a;font-size: 16px;margin: 5px}
+ .home .spbanchay .box-sp .product .add-to-cart {
+   font-size: 15px;background-color: #ffffff;padding:5px 10px;color: #4fc3f7;
+   border: 1px solid #4fc3f7;
+   border-radius: 50px;
+   transition: background-color 0.3s ease, color 0.3s ease;
+   cursor: pointer;
+   margin-right: 10px;
 
-.home .spbanchay .box-sp .product .img-wrapper img {
-    max-width: 100%; /* Giữ cho hình ảnh không vượt quá chiều rộng khung */
-    max-height: 100%; /* Giữ cho hình ảnh không vượt quá chiều cao khung */
-    object-fit: cover; /* Giúp ảnh bao trọn khung mà không bị biến dạng */
-    transition: transform 0.3s ease;
-    padding: 10px; /* Có thể điều chỉnh padding */
+} 
+.home .spbanchay .box-sp .product .add-to-cart:hover {background-color: #4fc3f7;color: white;}
+ .home {background-color: #F3F3F3;}
+ 
+
+
+.home .spkhuyenmai {
+    width: 100%;
+    max-width: 1350px;
+    margin: 60px auto 10px;
+    background-image: url('/public/assets/img/banner23.jpg');
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+    padding:20px 0;
+    border-radius: 10px;
+    overflow: hidden; 
+}
+.home .spkhuyenmai .box{  padding: 10px 20px;   }
+.home .spkhuyenmai .box .header1 {display: flex;gap:20px;align-items: center;margin: 0 15px;}
+.home .spkhuyenmai .box .header1 h1 ,
+.home .spkhuyenmai .box .header1 i{font-size:25px;color: #ffffff}
+.home .spkhuyenmai .box-sp {
+   display: grid;
+   grid-template-columns: repeat(5, 1fr); 
+   margin-top: 30px;
+   gap: 20px 15px
+}
+.home .spkhuyenmai .box-sp .product {
+   min-width: 200px;background-color: rgb(255, 255, 255);height: 370px;box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;;border-radius: 10px;position: relative;
+}
+.home .spkhuyenmai .box-sp .product .discount-label {z-index: 2;color: white;font-size: 14px;font-weight: 500;position: absolute; top:10px;left: 5px;background-color: #4FC3F7;border-radius: 5px;padding: 5px 10px}
+.home .spkhuyenmai .box-sp .product .img-wrapper {
+   width: 100%; /* Đảm bảo hình ảnh chiếm toàn bộ chiều rộng */
+   height: 230px; /* Cố định chiều cao */
+   overflow: hidden; /* Ẩn các phần của hình ảnh bị tràn */
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+.home .spkhuyenmai .box-sp .product .img-wrapper img {
+   width: 100%;height: 90%;transition: 0.5s;margin-top: 10px;}
+.home .spkhuyenmai .box-sp .product .img-wrapper img:hover {transform: scale(1.1);}
+.home .spkhuyenmai .box-sp .product a {
+   display: -webkit-box;
+   -webkit-line-clamp: 2; /* Giới hạn 2 dòng */
+   -webkit-box-orient: vertical;
+   overflow: hidden;
+   text-overflow: ellipsis;
+   margin: 10px 0;
+   line-height: 1.5; /* Điều chỉnh chiều cao dòng */
+   max-height: calc(2em * 2); /* Tương ứng với 2 dòng */
+   font-size: 15px;
+   color: #333;
+   text-decoration: none;
+   margin: 10px 5px;
+
+} 
+.home .spkhuyenmai .box-sp .product .price_giohang{align-items: center;display: flex;justify-content:space-between;margin-top: 10px;}
+.home .spkhuyenmai .box-sp .product .price {gap: 20px; text-align: center;justify-content: center; } 
+.home .spkhuyenmai .box-sp .product .price .old-price {text-decoration: line-through;color: #AE9595;font-size: 14px;}
+.home .spkhuyenmai .box-sp .product .price .new-price {font-weight: 600;color: #ee7c2a;font-size: 16px;margin: 5px}
+.home .spkhuyenmai .box-sp .product .add-to-cart {
+   font-size: 15px;background-color: #ffffff;padding:5px 10px;color: #4fc3f7;
+   border: 1px solid #4fc3f7;
+   border-radius: 50px;
+   transition: background-color 0.3s ease, color 0.3s ease;
+   cursor: pointer;
+   margin-right: 10px;
+} .home .spkhuyenmai .box-sp .product .add-to-cart:hover {background-color: #4fc3f7;color: white;}
+
+.home .listdanhmuc_home{max-width: 1350px;margin: 30px auto 10px;background-color:white;padding: 20px;}
+.home .listdanhmuc_home h1{font-size: 25px;font-weight: 500;color:#5d5555}
+.home .listdanhmuc_home .box{display: grid;grid-template-columns: repeat(6,1fr);width: 100%;gap:15px}
+.home .listdanhmuc_home .box-dm{margin-top: 20px;border-radius: 10px;box-shadow: 0px 0px 5px 0px #e5e5e5;height: 130px;text-align: center;justify-content: center;display: flex;flex-direction: column;transition: 0.6s;}
+.home .listdanhmuc_home .box-dm:hover{box-shadow: 0px 0px 5px 0px blueviolet;cursor: pointer;}
+.home .listdanhmuc_home .box-dm a{margin:10px 0;color:#000000}
+.home .listdanhmuc_home img{max-width: 70px;margin: 0 auto;}
+
+
+.box_gt_home {
+   display: grid;
+   grid-template-columns: repeat(3, 1fr); 
+   gap: 20px; 
+   /* background-color: #1D396B;  */
+   background: linear-gradient(to bottom, #1D396B, #3D6FE1);
+   padding: 0 5%;
+   position: relative;
+   margin:150px auto 50px;
+ }
+ 
+ .item {
+   padding: 20px;
+   border-radius: 10px;
+   text-align: center;
+   position: relative; 
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   gap: 10px; 
+ }
+ .item img {
+   position: absolute;
+   top: -100px; 
+   max-width: 200px;
+   height: auto;
+   border-radius: 1000px;
+   box-shadow: rgba(255, 255, 255, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset; }
+ .item p.tieude {
+   margin-top: 120px; 
+   color: #ffffff; 
+   font-size: 16px;
+ }
+ .item p {
+   margin-top: 40px; 
+   color: #ffffff; 
+   font-size: 14px;
+   line-height: 1.7;
+ }
+ 
+ 
+@media (max-width: 800px) {
+   .home .spbanchay { grid-template-columns: 1fr;}
+   .home .spbanchay .left-image img{display: none; }
+   .home .spbanchay .right-products .box-sp {grid-template-columns: repeat(2, 1fr);}
+   .home .spkhuyenmai .box-sp { grid-template-columns:repeat(2 ,1fr)}
+   .home .listdanhmuc_home .box { grid-template-columns:repeat(3 ,1fr)}
+}
+@media (min-width: 769px) and (max-width: 1024px) {
+   .home .spbanchay {grid-template-columns: 1fr;}
+   .home .spbanchay .left-image img{display: none; }
+   .home .spbanchay .right-products .box-sp {grid-template-columns: repeat(3, 1fr);}
+   .home .spkhuyenmai .box-sp { grid-template-columns: repeat(3,1fr)}
+
 }
 
 
- .home .spbanchay .box-sp .product .img-wrapper img:hover {transform: scale(1.1);}
-.home .spbanchay .box-sp .product h1 {
-    font-size: 17px;
-    color: #575353;
-    padding: 10px 0;
-    font-weight: 500;
-    text-align: center;
-    height: 60px; /* Giữ cố định chiều cao tiêu đề */
-    overflow: hidden; /* Nếu tiêu đề dài quá, nó sẽ được cắt bớt */
-    text-overflow: ellipsis;
-    white-space: nowrap;
-} 
-.home .spbanchay .box-sp .product .price {
-    display: flex;
-    gap: 20px;
-    padding: 10px 0;
-    justify-content: center; /* Căn giữa giá */
-} .home .spbanchay .box-sp .product .price .old-price {text-decoration: line-through;color: #AE9595;font-size: 20px;}
- .home .spbanchay .box-sp .product .price .new-price {font-weight: 500;color: #ee7c2a;font-size: 22px;}
- .home .spbanchay .box-sp .product .add-to-cart {
-    color: #4fc3f7;
-    background-color: #ffffff;
-    border: 1px solid #4fc3f7;
-    border-radius: 50px;
-    padding: 10px 20px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    margin-top: 10px;
-    font-size: 16px;
-    text-align: center;
-    width: 100%; /* Nút sẽ rộng bằng khung sản phẩm */
-} .home .spbanchay .box-sp .product .add-to-cart:hover {background-color: #4fc3f7;color: white;}
- .home {background-color: #F3F3F3;}
- 
- 
