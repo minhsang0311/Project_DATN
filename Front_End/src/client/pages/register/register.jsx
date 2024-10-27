@@ -49,7 +49,7 @@ const Register = () => {
     };
 
     return (
-        <div className={`container ${isRightPanelActive ? 'right-panel-active' : ''}`} id="container">
+        <div className={`container_register ${isRightPanelActive ? 'right-panel-active' : ''}`} id="container">
             <div className="form-container sign-up-container">
                 <form onSubmit={handleSubmit} className="form">
                     <h1>Tạo tài khoản</h1>

@@ -29,7 +29,7 @@ function App() {
   return (
     <BrowserRouter basename="/">
       <div className="container">
-        {/* <Header /> */}
+        <Header />
        
         <Routes>
           {/* Routes dành cho Admin */}
@@ -56,7 +56,7 @@ function App() {
               {/* Viết các route của user dưới đây nha */}
             </Route>
             <Route path="/productDetail/:id" element={<ProductDetail/>}/>
-            <Route path="/productsbycategory/:id" element={<Productsbycategory />} />
+            {/* <Route path="/productsbycategory/:id" element={<Productsbycategory />} /> */}
             <Route path="/productsaddtocart" element={<ProductAddtocart/>}/>
           <Route path="/" element={<Home />}>
 

@@ -192,7 +192,9 @@
    line-height: 1.7;
  }
  
- 
+.gt_home img{
+   width: 100%;
+}
 @media (max-width: 800px) {
    .home .spbanchay { grid-template-columns: 1fr;}
    .home .spbanchay .left-image img{display: none; }
