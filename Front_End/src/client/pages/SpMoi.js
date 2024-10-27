@@ -9,39 +9,61 @@ function SpMoi() {
 
     useEffect ( () => {
        fetch("http://localhost:3000/user/productNew")
-       .then(res=>res.json()).then(data => ganListSP(data));
+       .then(res=>res.json()).then(data => {
+        ganListSP(data)
+        console.log("data", data);
+        
+    }
+    );
     } , []);
 
+    const formatCurrency = (value) => {
+        return new Intl.NumberFormat('vi-VN', {
+            style: 'currency',
+            currency: 'VND',
+        }).format(value);
+    };
+
     return (
-        <div className="home">
-            <div className="spbanchay">
-                <div className="left-image">
-                    <img src="/assets/img/banner4.jpg" alt=""/>
+        <div className="spbanchay">
+            <div className="left-image">
+                <img src="/assets/img/banner20.jpg" alt="img1"/>
+                <img src="/assets/img/banner20.jpg" alt="img2"/>
+            </div>
+            <div className="right-products">
+                <div className="header1">
+                    <p>SẢN PHẨM MỚI</p>
+                    <div className="xem_them">
+                        <h5>Xem thêm</h5> 
+                    </div>
                 </div>
-                <div className="right-products">
-                    <div className="header1">
-                        <h1>Sản phẩm mới</h1>
-                        <div className="xem_them">
-                            <h5>Xem thêm</h5> 
-                            <i className="fa-solid fa-arrow-right"></i>
-                        </div>
-                    </div>
-                    <div className="product-list">
-                        {listsp.slice(0, 4).map((sp, i) =>
-                            <div className="product" key={i}>
-                                <div className="discount-label">-20%</div>
-                                <div className="img-wrapper">
-                                    <img src={sp.Image} alt="" />
+                <div className="box-sp">
+                    {listsp.slice(0,8).map((sp, i) =>
+                        <div className="product" key={i}>
+                            {sp.Promotion > 0 && (
+                                <div className="discount-label">
+                                    -{sp.Promotion}%
                                 </div>
-                                <Link to={"/productDetail/"+ sp.Product_ID}><h1>{sp.Product_Name}</h1></Link>
-                                <div className="price">
-                                    <p className="old-price">{sp.Price}</p>
-                                    <p className="new-price">765,000đ</p>
-                                </div>
-                                <button className="add-to-cart">Thêm vào giỏ hàng</button>
+                            )}
+                            <div className="img-wrapper">
+                                <img src={sp.Image} alt="" />
                             </div>
-                        )}
-                    </div>
+                            <Link to={"/productDetail/"+ sp.Product_ID}><a href="/">{sp.Product_Name}</a></Link>
+                            <div className="price_giohang">
+                                <div className="price">
+                                {sp.Promotion > 0 ? (
+                                    <>
+                                        <p className="old-price">{formatCurrency(sp.Price)}</p>
+                                        <p className="new-price">{formatCurrency(sp.Price - (sp.Promotion * sp.Price) / 100)}</p>
+                                    </>
+                                ) : (
+                                    <p className="new-price">{formatCurrency(sp.Price)}</p>
+                                )}
+                                </div>
+                                <button className="add-to-cart">Giỏ hàng</button>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
