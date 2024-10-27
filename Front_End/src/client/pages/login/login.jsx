@@ -1,68 +1,88 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import React, { useRef, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { dalogin } from "../../reducers/authSlice";
 
-const Login = () => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+function DangNhap() {
+    const userNameRef = useRef();
+    const pwRef = useRef();
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const handleLogin = async (e) => {
-        e.preventDefault();
-
-        try {
-            const response = await axios.post('http://localhost:3000/auth/login', {
-                User_Name: username,
-                Password: password,
-            });
-
-            // Lưu token vào localStorage (hoặc state quản lý)
-            localStorage.setItem('token', response.data.token);
-            console.log('token', response.data.token);
-            
-            // Chuyển hướng người dùng
-            if (response.data.userInfo.role === 1) {
-                navigate('/admin'); 
-            } else {
-                navigate('/'); // Nếu là người dùng bình thường
-            }
-        } catch (error) {
-            if (error.response) {
-                setError(error.response.data.message);
-            } else {
-                setError('Có lỗi xảy ra, vui lòng thử lại sau.');
-            }
+    useEffect(() => {
+        // Kiểm tra token từ localStorage khi tải lại trang
+        const token = localStorage.getItem('token');
+        if (token) {
+            const checkTokenUrl = "http://localhost:3000/auth/check-token";
+            fetch(checkTokenUrl, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.valid) {
+                        dispatch(dalogin({ token })); // Lưu token vào Redux state
+                        navigate('/admin'); // Điều hướng đến trang admin
+                    } else {
+                        localStorage.removeItem('token'); // Xóa token nếu không hợp lệ
+                    }
+                })
+                .catch(error => console.error("Đã xảy ra lỗi:", error));
         }
+    }, [dispatch, navigate]);
+
+    const submitDuLieu = (event) => {
+        event.preventDefault();
+        if (userNameRef.current.value === "" || pwRef.current.value === "") {
+            alert("Nhập đủ thông tin nhé bạn ơi!");
+            return;
+        }
+
+        const url = "http://localhost:3000/auth/login";
+        const tt = { User_Name: userNameRef.current.value, Password: pwRef.current.value };
+        const opt = {
+            method: "POST",
+            body: JSON.stringify(tt),
+            headers: { 'Content-Type': 'application/json' },
+        };
+
+        fetch(url, opt)
+            .then(res => res.json())
+            .then(data => {
+                if (data.token) {
+                    localStorage.setItem('token', data.token); // Lưu token vào localStorage
+                    dispatch(dalogin(data)); // Lưu token vào Redux state
+                    navigate('/admin'); // Điều hướng đến trang admin
+                } else {
+                    alert(data.message || "Đăng nhập thất bại, vui lòng thử lại!");
+                }
+            })
+            .catch(error => console.error("Đã xảy ra lỗi:", error));
     };
 
     return (
-        <div>
-            <h2>Đăng Nhập</h2>
-            <form onSubmit={handleLogin}>
-                <div>
-                    <label>Tên đăng nhập:</label>
-                    <input 
-                        type="text" 
-                        value={username} 
-                        onChange={(e) => setUsername(e.target.value)} 
-                        required 
-                    />
-                </div>
-                <div>
-                    <label>Mật khẩu:</label>
-                    <input 
-                        type="password" 
-                        value={password} 
-                        onChange={(e) => setPassword(e.target.value)} 
-                        required 
-                    />
-                </div>
-                {error && <p>{error}</p>}
-                <button type="submit">Đăng Nhập</button>
-            </form>
-        </div>
+        <form id="frmlogin" className="col-7 m-auto mt-3 border border-danger" onSubmit={submitDuLieu}>
+            <h2 className="bg-danger-subtle h5 p-2">Thành viên đăng nhập</h2>
+            <div className="m-3">Tên đăng nhập
+                <input
+                    className="form-control shadow-none border-danger-subtle"
+                    type="text"
+                    ref={userNameRef}
+                    required
+                />
+            </div>
+            <div className="m-3">Mật khẩu
+                <input
+                    className="form-control shadow-none border-danger-subtle"
+                    type="password"
+                    ref={pwRef}
+                    required
+                />
+            </div>
+            <div className="m-3">
+                <button type="submit" className="btn btn-danger px-3">Đăng nhập</button>
+            </div>
+        </form>
     );
-};
+}
 
-export default Login;
+export default DangNhap;
