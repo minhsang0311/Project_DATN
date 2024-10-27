@@ -25,6 +25,17 @@ exports.productMostView =  (req, res) => {
         }
     });
 }
+exports.productKhuyenMai =  (req, res) => {
+    let sql = `SELECT * FROM Products ORDER BY Promotion DESC`;  
+    db.query(sql, (err, data) => {
+        if (err) {
+            res.json({ "message": "Lỗi lấy danh sách sản phẩm", err });
+        } else {
+            res.json(data);
+        }
+    });
+}
+
 exports.getAllProducts = (req, res) => {
     let sql = `SELECT * FROM Products`;
     db.query(sql, (err, data) => {
@@ -43,7 +54,17 @@ exports.getAllProducts = (req, res) => {
         }
     });
 };
-exports.getAllproductDetail = function (req, res) {
+exports.getProductsNew = (req, res) => {
+    let sql = `SELECT * FROM products ORDER BY Product_ID DESC`;  
+    db.query(sql, (err, data) => {
+        if (err) {
+            res.json({ "message": "Lỗi lấy danh sách sản phẩm", err });
+        } else {
+            res.json(data);
+        }
+    });
+};
+exports.getAllproductDetail =  function (req, res) {
     let id = parseInt(req.params.id || 0);
     if (isNaN(id) || id <= 0) {
         res.json({ "message": "Không tìm được sản phẩm", "id": id });

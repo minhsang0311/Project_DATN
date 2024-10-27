@@ -8,13 +8,8 @@ function SpMoi() {
     const [listsp, ganListSP] = useState( [] );
 
     useEffect ( () => {
-       fetch("http://localhost:3000/user/productNew")
-       .then(res=>res.json()).then(data => {
-        ganListSP(data)
-        console.log("data", data);
-        
-    }
-    );
+       fetch("http://localhost:3000/user/productKhuyenMai")
+       .then(res=>res.json()).then(data => ganListSP(data));
     } , []);
 
     const formatCurrency = (value) => {
@@ -25,20 +20,14 @@ function SpMoi() {
     };
 
     return (
-        <div className="spbanchay">
-            <div className="left-image">
-                <img src="/assets/img/banner20.jpg" alt="img1"/>
-                <img src="/assets/img/banner20.jpg" alt="img2"/>
-            </div>
-            <div className="right-products">
+        <div className="spkhuyenmai">
+            <div className="box">
                 <div className="header1">
-                    <p>SẢN PHẨM MỚI</p>
-                    <div className="xem_them">
-                        <h5>Xem thêm</h5> 
-                    </div>
+                    <i class="fas fa-tags"></i> 
+                    <h1>DEAL DÀNH CHO BẠN</h1>             
                 </div>
                 <div className="box-sp">
-                    {listsp.slice(0,8).map((sp, i) =>
+                    {listsp.slice(0, 10).map((sp, i) =>
                         <div className="product" key={i}>
                             {sp.Promotion > 0 && (
                                 <div className="discount-label">
@@ -48,7 +37,7 @@ function SpMoi() {
                             <div className="img-wrapper">
                                 <img src={sp.Image} alt="" />
                             </div>
-                            <Link to={"/productDetail/"+ sp.Product_ID}><a href="/">{sp.Product_Name}</a></Link>
+                            <Link to={"/productDetail/"+ sp.Product_ID}><a>{sp.Product_Name}</a></Link>
                             <div className="price_giohang">
                                 <div className="price">
                                 {sp.Promotion > 0 ? (

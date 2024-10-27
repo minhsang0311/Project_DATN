@@ -1,4 +1,4 @@
-nav { display: flex;justify-content: space-between;padding: 10px 50px;}
+/* nav { display: flex;justify-content: space-between;padding: 10px 50px;}
 nav .menu-doc {width: 20%}
 nav .menu-doc .danh-muc {cursor: pointer;padding: 10px 20px;color:#fff;background-color: #56A4FF;width:280px;height:60px; border-radius: 5px;line-height: 40px;font-size: 20px;}
 nav .menu-doc #danh-muc-list {
@@ -64,4 +64,9 @@ nav .menu-ngang-banner .banner {position: relative;margin-top: 15px;height: auto
 
 .indicators .dot.active {
     background-color: red;
-}
+} */
+header .bottom_trangchu .menu_trangchu {display: flex;list-style: none;gap: 20px;font-weight:600;  padding: 0px 5%;justify-content:center;}
+header .bottom_trangchu .menu_trangchu a {text-decoration: none;font-size: 17px;color: #784040;padding: 8px 15px;cursor: pointer;transition: background-color 0.3s ease, color 0.3s ease;border-radius: 20px;}
+header .bottom_trangchu .menu_trangchu a:hover {
+    background: linear-gradient(to right, rgba(0, 0, 255, 0.5), rgba(18, 153, 190, 0.5));
+    color: #ffffff; } 

@@ -18,8 +18,8 @@ import Login from './client/pages/login/login.jsx';
 import Header from './client/components/Header.js';
 import ProtectedRoute from './client/reducers/ProtectedRoute.js';
 import Home from './client/pages/HomePage.js';
-import Nav from './client/components/Nav.js';
 import Footer from './client/components/Footer.js';
+import About from './client/pages/About.js';
 import DangNhap from './client/pages/login/login.jsx';
 import CategoryProducts from './client/pages/CategoryProducts.js';
 import Productsbycategory from './client/pages/Productsbycategory.js';
@@ -29,8 +29,8 @@ function App() {
   return (
     <BrowserRouter basename="/">
       <div className="container">
-        <Header />
-        <Nav />
+        {/* <Header /> */}
+       
         <Routes>
           {/* Routes dành cho Admin */}
           {/* <Route element={<ProtectedRoute />}> */}
@@ -61,6 +61,8 @@ function App() {
           <Route path="/" element={<Home />}>
 
           </Route>
+          <Route path="/about" element={<About />} />
+        
           {/* Các route khác của user */}
 
           <Route path="/productDetail/:id" element={<ProductDetail />} />

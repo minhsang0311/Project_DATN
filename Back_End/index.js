@@ -13,10 +13,9 @@ const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
-    port: 3306,
+    port: 3307,
     database: 'datn'
-});
-
+})
 db.connect(err => {
     if (err) throw err;
     console.log('Đã kết nối database')
@@ -24,7 +23,6 @@ db.connect(err => {
 //USER
 //Route lấy danh sách sản phẩm
 app.get('/productList', (req, res) => {
-
     let sql = `SELECT Product_ID, Category_ID, Product_Name, Image, Price, Description, Views, Show_Hidden FROM Products`;
     db.query(sql, (err, data) => {  
         if (err) {
