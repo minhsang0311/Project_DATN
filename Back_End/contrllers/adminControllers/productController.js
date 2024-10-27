@@ -1,4 +1,5 @@
 const db = require('../../config/db');
+const removeDiacritics = require('diacritics').remove;
 
 //Routes lấy danh sách sản phẩm
 exports.getAllProducts = (req, res) => {

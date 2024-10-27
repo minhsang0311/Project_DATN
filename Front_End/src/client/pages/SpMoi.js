@@ -16,7 +16,6 @@ function SpMoi() {
         
     }
     );
-    } , []);
 
     const formatCurrency = (value) => {
         return new Intl.NumberFormat('vi-VN', {
@@ -84,5 +83,5 @@ function SpMoi() {
             </div>
         </div>
     );
-}
+})}
 export default SpMoi;

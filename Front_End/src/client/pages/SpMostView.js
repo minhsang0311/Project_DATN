@@ -1,14 +1,16 @@
 // import { listsp } from "./data";
 import { Link,useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import '../styles/components/Home.css'
 
+import { useState, useEffect } from "react";
+import '../styles/components/Home.css';
 
 function SpMostView() {
     const [listsp, setListSP] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
     const navigate = useNavigate(); 
+
 
     useEffect(() => {
         fetch("http://localhost:3000/user/productMostView")
@@ -43,11 +45,13 @@ function SpMostView() {
         }).format(value);
     };
 
+    
     return (
             <div className="spbanchay">
                 <div className="left-image">
                     <img src="/assets/img/banner21.png" alt=""/>
                     <img src="/assets/img/banner21.png" alt=""/>
+
                 </div>
                 <div className="right-products">
                     <div className="header1">
@@ -58,6 +62,7 @@ function SpMostView() {
                     </div>
                     <div className="box-sp">
                         {listsp.slice(0,8).map((sp, i) =>
+
                             <div className="product" key={i}>
                                 {sp.Promotion > 0 && (
                                     <div className="discount-label">
@@ -65,7 +70,7 @@ function SpMostView() {
                                     </div>
                                 )}
                                 <div className="img-wrapper">
-                                    <img src={sp.Image} alt="" />
+                                    <img src={sp.Image} alt={sp.Product_Name} />
                                 </div>
                                 <Link to={"/productDetail/"+ sp.Product_ID}><a>{sp.Product_Name}</a></Link>
                                 <div className="price_giohang">
@@ -83,6 +88,7 @@ function SpMostView() {
                                     Thêm vào giỏ hàng
                                 </button> 
                             </div>
+
                             </div>
                         )}
                     </div>
@@ -91,3 +97,4 @@ function SpMostView() {
     );
 }
 export default SpMostView;
+
