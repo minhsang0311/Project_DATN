@@ -15,7 +15,7 @@ const StatisticsRoutesAdmin = require('./routes/adminRoutes/Statistics')
 //User
 const productRoutesClient = require('./routes/userRoutes/productRoutes');
 const categoryRoutesClient = require('./routes/userRoutes/categoryRoutes');
-
+const componentRoutesClient = require('./routes/userRoutes/commentRoutes')
 app.use(cors());
 app.use(express.json());
 
@@ -27,7 +27,8 @@ app.use('/admin', [
 ]);
 app.use('/user',[
     productRoutesClient, 
-    categoryRoutesClient
+    categoryRoutesClient,
+    componentRoutesClient
 ]);
 
 app.listen(3000, () => console.log('Server running on port 3000'));
