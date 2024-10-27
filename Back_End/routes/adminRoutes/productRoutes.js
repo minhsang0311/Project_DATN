@@ -4,11 +4,12 @@ const upload = require('../../config/multer')
 const express = require('express');
 const router = express.Router();
 const productController = require('../../contrllers/adminControllers/productController');
+const { authMiddleware } = require('../../middlewares/authMiddlware');
 
-router.get('/productList',  productController.getAllProducts);
-router.get('/productList/:id', productController.getProductDetail);
-router.post('/productAdd',upload.single('Image'), productController.postProduct);
-router.put('/productUpdate/:id',upload.single('Image'), productController.putProduct);
-router.delete('/productDelete/:id', productController.deleteProduct);
+router.get('/productList',authMiddleware,  productController.getAllProducts);
+router.get('/productList/:id',authMiddleware, productController.getProductDetail);
+router.post('/productAdd', authMiddleware, upload.single('Image'), productController.postProduct);
+router.put('/productUpdate/:id', authMiddleware, upload.single('Image'), productController.putProduct);
+router.delete('/productDelete/:id', authMiddleware, productController.deleteProduct);
 
 module.exports = router;
