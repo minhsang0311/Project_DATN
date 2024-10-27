@@ -16,6 +16,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 const authRoutes = require('./routes/authRoutes');
 //Admin
 const productRoutesAdmin = require('./routes/adminRoutes/productRoutes');
+const categoryRoutesAdmin = require('./routes/adminRoutes/categoryRoutes');
 const StatisticsRoutesAdmin = require('./routes/adminRoutes/Statistics')
 //User
 const productRoutesClient = require('./routes/userRoutes/productRoutes');
@@ -26,6 +27,7 @@ app.use(express.json());
 
 app.use('/auth', authRoutes);
 app.use('/admin', [
+    categoryRoutesAdmin,
     productRoutesAdmin,
     StatisticsRoutesAdmin
 ]);

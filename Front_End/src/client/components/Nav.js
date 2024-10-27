@@ -5,6 +5,7 @@ import '../styles/components/Nav.css';
 function Nav() {
     const [isDanhMucOpen, setIsDanhMucOpen] = useState(false);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [categories, setCategories] = useState([]);  // Lưu trữ danh mục sản phẩm từ API
 
     const images = [
         `${process.env.PUBLIC_URL}/assets/img/banner1.jpg`,
@@ -25,6 +26,14 @@ function Nav() {
         return () => clearInterval(interval); // Dọn dẹp interval khi component bị unmount
     }, [images.length]);
 
+    // Gọi API để lấy danh mục sản phẩm
+    useEffect(() => {
+        fetch("http://localhost:3000/user/category")  
+            .then((res) => res.json())
+            .then((data) => setCategories(data))  // Lưu danh mục vào state
+            .catch((err) => console.log("Lỗi lấy danh mục:", err));
+    }, []);
+
     return (
         <nav>
             <div className="menu-doc">
@@ -33,49 +42,51 @@ function Nav() {
                 </div>
                 {isDanhMucOpen && (
                     <ul id="danh-muc-list">
-                        <li><i className="fa-solid fa-laptop"></i><a href="/#">Danh mục 1</a></li>
-                        <li><i className="fa-solid fa-mobile"></i><a href="/#">Danh mục 2</a></li>
-                        <li><i className="fa-solid fa-tv"></i><a href="/#">Danh mục 3</a></li>
-                        <li><i className="fa-solid fa-headphones"></i><a href="/#">Danh mục 4</a></li>
-                        <li><i className="fa-solid fa-tablet"></i><a href="/#">Danh mục 5</a></li>
-                        <li><i className="fa-solid fa-microchip"></i><a href="/#">Danh mục 6</a></li>
-                        <li><i className="fa-solid fa-camera"></i><a href="/#">Danh mục 7</a></li>
-                        <li><i className="fa-solid fa-gamepad"></i><a href="/#">Danh mục 8</a></li>
+                        {categories.map((category) => (
+                            <li key={category.Category_ID}>
+                                <i className="fa-solid fa-laptop"></i>
+                                <Link to={`/category/${category.Category_ID}`}>
+                                    {category.Category_Name}
+                                </Link>
+                            </li>
+                        ))}
                     </ul>
                 )}
             </div>
             <div className="menu-ngang-banner">
                 <ul className="menu-ngang">
-                    <li>
-                        TRANG CHỦ
-                    </li>
-                    <li>CỬA HÀNG</li>
-                    <li>DANH MỤC 1</li>
-                    <li>DANH MỤC 2</li>
-                    <li>DANH MỤC 3</li>
-                    <li>DANH MỤC 4</li>
-                    <li>DANH MỤC 5</li>
+
+                    <li><Link to="/">TRANG CHỦ</Link></li>
+                    <li><Link to="/shop">CỬA HÀNG</Link></li>
+                    {categories.slice(0, 6).map((category) => (  // Hiển thị 5 danh mục đầu
+                        <li key={category.Category_ID}>
+                            <Link to={`/category/${category.Category_ID}`}>{category.Category_Name}</Link>
+                        </li>
+                    ))}
+
+                  
+
                 </ul>
                 <div className="banner">
                     <img src={images[currentImageIndex]} className="active" alt='' />
                     <div className="nav">
-                        <i 
-                            className="fa-solid fa-chevron-left" 
-                            id="prev" 
+                        <i
+                            className="fa-solid fa-chevron-left"
+                            id="prev"
                             onClick={() => setCurrentImageIndex((currentImageIndex - 1 + images.length) % images.length)}
                         ></i>
-                        <i 
-                            className="fa-solid fa-chevron-right" 
-                            id="next" 
+                        <i
+                            className="fa-solid fa-chevron-right"
+                            id="next"
                             onClick={() => setCurrentImageIndex((currentImageIndex + 1) % images.length)}
                         ></i>
                     </div>
                     <div className="indicators">
                         {images.map((_, index) => (
-                            <div 
-                                key={index} 
-                                className={`dot ${index === currentImageIndex ? 'active' : ''}`} 
-                                data-index={index} 
+                            <div
+                                key={index}
+                                className={`dot ${index === currentImageIndex ? 'active' : ''}`}
+                                data-index={index}
                                 onClick={() => setCurrentImageIndex(index)}
                             ></div>
                         ))}

@@ -20,5 +20,9 @@
 .home .spbanchay .product-list .product .price .old-price {text-decoration: line-through;color: #AE9595;font-size: 20px;}
 .home .spbanchay .product-list .product .price .new-price {font-weight: 500;color: #ee7c2a;font-size: 22px;}
 .home .spbanchay .product-list .product .add-to-cart {color: #4fc3f7;background-color: #ffffff;border: 1px solid #4fc3f7;border-radius: 50px;padding: 10px 20px;cursor: pointer;transition: background-color 0.3s ease, color 0.3s ease;margin-top: 10px;font-size: 16px;text-align: center; }
+
 .home .spbanchay .product-list .product .add-to-cart:hover {background-color: #4fc3f7;color: white;}
+
+.home .spbanchay .product-list .product .add-to-cart:hover {background-color: #4fc3f7;color: white;}
+
 

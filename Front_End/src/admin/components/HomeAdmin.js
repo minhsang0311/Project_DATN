@@ -5,9 +5,12 @@ import { useNavigate, Link } from 'react-router-dom';
 import '../styles/components/HomeAdmin.css';
 import ProductList from '../pages/productPage/ProductList';
 import CategoryList from '../pages/categoryPage/CategoryList';
+import CategoryAdd from '../pages/categoryPage/CategoryAdd';
+import CategoryUpdate from '../pages/categoryPage/CategoryUpdate';
 import ProductAdd from '../pages/productPage/ProductAdd';
 import ProductUpdate from '../pages/productPage/ProductUpdate';
 import Statistics from '../pages/Statistics/Statistics';
+
 
 const HomeAdmin = () => {
     const navigate = useNavigate();
@@ -45,7 +48,7 @@ const HomeAdmin = () => {
                         </Link>
                     </li>
                     <li>
-                        <Link to="/admin/categories">
+                        <Link to="/admin/category">
                             <i className="bi bi-list"></i>
                             <span>Danh mục</span>
                         </Link>
@@ -114,9 +117,11 @@ const HomeAdmin = () => {
                     <Routes>
                         <Route path="/" element={<Statistics />} />
                         <Route path="products" element={<ProductList />} />
-                        <Route path="categories" element={<CategoryList />} />
                         <Route path="product-add" element={<ProductAdd />} />
                         <Route path="productUpdate/:id" element={<ProductUpdate />} />
+                        <Route path="category" element={<CategoryList />} />
+                        <Route path="categoryAdd" element={<CategoryAdd />} />
+                        <Route path="categoryUpdate/:id" element={<CategoryUpdate />} />
                     </Routes>
                 </div>
             </div>
