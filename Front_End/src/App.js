@@ -21,14 +21,9 @@ import Home from './client/pages/HomePage.js';
 import Nav from './client/components/Nav.js';
 import Footer from './client/components/Footer.js';
 import DangNhap from './client/pages/login/login.jsx';
-
 import CategoryProducts from './client/pages/CategoryProducts.js';
-
-
-
 import Productsbycategory from './client/pages/Productsbycategory.js';
 import ProductAddtocart from './client/pages/Addtocart.js';
-
 
 function App() {
   return (
