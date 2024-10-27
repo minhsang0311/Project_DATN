@@ -14,7 +14,7 @@ function Header() {
           </ul>
           <ul className="phai1">
             <li><Link to="/register">Đăng kí</Link></li>|
-            <li><Link to="/login">Đăng nhập</Link></li>
+            {/* <li><Link to="/login">Đăng nhập</Link></li> */}
           </ul>
         </div>
         <hr className="hr"/>
