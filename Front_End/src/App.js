@@ -14,7 +14,7 @@ import Statistics from './admin/pages/Statistics/Statistics.jsx';
 // Component Client
 import ProductDetail from './client/pages/ProductDetail';
 import Register from './client/pages/register/register.jsx';
-import Login from './client/pages/login/login.jsx';
+
 import Header from './client/components/Header.js';
 import ProtectedRoute from './client/reducers/ProtectedRoute.js';
 import Home from './client/pages/HomePage.js';
