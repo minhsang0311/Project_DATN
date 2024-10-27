@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import "../../styles/pages/productUpdate.css";
 
 const ProductUpdate = () => {
@@ -8,10 +9,11 @@ const ProductUpdate = () => {
     const [productUpdate, setProductUpdate] = useState([])
     const [image, setImage] = useState(null)
     const [imageFile, setImageFile] = useState(null);//lưu hình ảnh cũ khi không thay đổi hình ảnh cũ
+    var token = useSelector(state => state.auth.token)
     useEffect(() => {
         fetch(`${url}/productList/${id}`, {
             method: 'GET',
-            headers: { "Content-type": "application/json", 'Authorization': 'Bearer ' }
+            headers: { "Content-type": "application/json", 'Authorization': 'Bearer '+ token }
         })
             .then(res => res.json())
             .then(data => {
@@ -41,8 +43,8 @@ const ProductUpdate = () => {
         let opt = {
             method: "PUT",
             body: formData,
-            // headers: { 'Authorization': 'Bearer ' + token }
-            headers: { 'Authorization': 'Bearer ' }
+            headers: { 'Authorization': 'Bearer ' + token }
+            // headers: { 'Authorization': 'Bearer ' }
         };
         fetch(url, opt)
             .then(res => res.json())

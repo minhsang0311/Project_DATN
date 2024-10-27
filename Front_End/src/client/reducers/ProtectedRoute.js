@@ -1,22 +1,15 @@
-// // src/components/ProtectedRoute.js
-// import React from 'react';
-// import { Navigate, Outlet } from 'react-router-dom';
-// import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
+import { Navigate, Outlet } from 'react-router-dom'
+import { useDispatch } from 'react-redux';
+import { checklogin } from "./authSlice";
 
-// const ProtectedRoute = () => {
-//   const user = useSelector(state => state.auth?.user);
-//   const daDangNhap = useSelector(state => state.auth?.daDangNhap);
-//   const isAdmin = user?.role === 'admin';
-
-//   if (!daDangNhap) {
-//     return <Navigate to="/register" />;
-//   }
-
-//   if (!isAdmin) {
-//     return <Navigate to="/" />; // Hoặc chuyển hướng đến trang không có quyền truy cập
-//   }
-
-//   return <Outlet />;
-// };
-
-// export default ProtectedRoute;
+const ProtectedRoute = () => {
+    const dispatch = useDispatch();
+    dispatch(checklogin());
+    let token = useSelector(state => state.auth.token);
+    let user = useSelector(state => state.auth.user);
+    if (!token) return <Navigate to="/login" />
+    else if (user.role !== 1) return <Navigate to="/login" />
+    else return (<Outlet/>);   // ok cho qua
+};
+export default ProtectedRoute;

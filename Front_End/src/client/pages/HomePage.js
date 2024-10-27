@@ -1,6 +1,4 @@
-// import { listsp } from "./data";
-import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+
 import SpMoi from './SpMoi';
 import SpMostView from './SpMostView';
 import SpKhuyenMai from './SpKhuyenMai';

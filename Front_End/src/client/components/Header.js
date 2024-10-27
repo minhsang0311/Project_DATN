@@ -6,27 +6,34 @@ import '../styles/components/Header.css';
 function Header() {
   return (
     <header>
-        <div class="top">
-          <ul class="trai">
+        <div className="top">
+          <ul className="trai">
             <Link to="/about">Giới thiệu</Link>|
             <Link to="/tintuc">Tin tức</Link>|
             <li><a href="/#">Holine : <span><b>077718379</b></span></a></li>
           </ul>
-          <ul class="phai1">
+          <ul className="phai1">
             <li><a href="/#">Đăng kí</a></li>|
             <li><a href="/#">Đăng nhập</a></li>
           </ul>
         </div>
-        <hr class="hr"/>
-        <div class="middle">
-            <div class="logo_trangchu">
+        <hr className="hr"/>
+        <div className="middle">
+            <div className="logo_trangchu">
               <img src="assets/img/logo3.png" alt="logo" />
             </div>
-            <div class="input">
+            <div className="input">
                 <input type="text" placeholder="Sản phẩm muốn tìm..." />
-                <i class="fa-solid fa-magnifying-glass"></i> 
+                <i className="fa-solid fa-magnifying-glass"></i> 
+            <div classNameName="bottom">
+            
+                <div classNameName="phai">
+                    <i classNameName="fa-solid fa-user"></i>
+                    <Link to="/productsaddtocart"><i classNameName="fa-solid fa-cart-shopping"></i></Link>
+                </div>
             </div>
-            <i class="fa-solid fa-cart-shopping"></i>
+            <i className="fa-solid fa-cart-shopping"></i>
+        </div>
         </div>
         <Nav/>
     </header>
