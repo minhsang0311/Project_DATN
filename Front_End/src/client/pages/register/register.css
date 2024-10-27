@@ -1,9 +1,11 @@
-/* @import url('https://fonts.googleapis.com/css?family=Montserrat:400,800'); */
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
 
 * {
     box-sizing: border-box;
 }
-
+.container_register {
+    margin-top: 100px;
+}
 body {
     background: #f6f5f7;
     
@@ -88,7 +90,7 @@ input {
     width: 100%;
 }
 
-.container {
+.container_register {
     background-color: #fff;
     border-radius: 10px;
     box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25),
@@ -112,7 +114,7 @@ input {
     z-index: 2;
 }
 
-.container.right-panel-active .sign-in-container {
+.container_register.right-panel-active .sign-in-container {
     transform: translateX(100%);
 }
 
@@ -123,7 +125,7 @@ input {
     z-index: 1;
 }
 
-.container.right-panel-active .sign-up-container {
+.container_register.right-panel-active .sign-up-container {
     transform: translateX(100%);
     opacity: 1;
     z-index: 5;
@@ -156,7 +158,7 @@ input {
     z-index: 100;
 }
 
-.container.right-panel-active .overlay-container {
+.container_register.right-panel-active .overlay-container {
     transform: translateX(-100%);
 }
 
@@ -177,7 +179,7 @@ input {
     transition: transform 0.6s ease-in-out;
 }
 
-.container.right-panel-active .overlay {
+.container_register.right-panel-active .overlay {
     transform: translateX(50%);
 }
 
@@ -200,7 +202,7 @@ input {
     transform: translateX(-20%);
 }
 
-.container.right-panel-active .overlay-left {
+.container_register.right-panel-active .overlay-left {
     transform: translateX(0);
 }
 
@@ -209,7 +211,7 @@ input {
     transform: translateX(0);
 }
 
-.container.right-panel-active .overlay-right {
+.container_register.right-panel-active .overlay-right {
     transform: translateX(20%);
 }
 
