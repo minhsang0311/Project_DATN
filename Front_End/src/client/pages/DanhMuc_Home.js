@@ -16,10 +16,12 @@ function DanhMuc_Home() {
                 <h1>DANH MỤC NỔI BẬT</h1>
                 <div className="box">
                 { list.map( (loai, index)=>{ return (
+                    <Link to = { "/category/" + loai.Category_ID }>
                     <div className="box-dm" key={index}>
                         <img src={loai.Category_Image} alt={loai.Category_Name} />
-                        <Link to = { "/loai/" + loai.Category_ID }>{loai.Category_Name}</Link> 
+                        <Link to = { "/category/" + loai.Category_ID }>{loai.Category_Name}</Link> 
                     </div>
+                    </Link>
                 )})}
                 </div>
             </div>

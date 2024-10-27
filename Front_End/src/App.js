@@ -13,7 +13,7 @@ import Statistics from './admin/pages/Statistics/Statistics.jsx';
 
 // Component Client
 import ProductDetail from './client/pages/ProductDetail';
-import Register from './client/pages/register/register.jsx';
+// import Register from './client/pages/register/register.jsx';
 import Login from './client/pages/login/login.jsx';
 import Header from './client/components/Header.js';
 import ProtectedRoute from './client/reducers/ProtectedRoute.js';
@@ -24,14 +24,19 @@ import DangNhap from './client/pages/login/login.jsx';
 import CategoryProducts from './client/pages/CategoryProducts.js';
 import Productsbycategory from './client/pages/Productsbycategory.js';
 import ProductAddtocart from './client/pages/Addtocart.js';
+
 import Search from './client/pages/search/search.js';
 import CartPage from './client/pages/CartPage.js';
+
+import RegisterLogin from './client/pages/register/register_login.jsx';
+
 
 function App() {
   return (
     <BrowserRouter basename="/">
       <div className="container">
          <Header />
+        <Header />
        
         <Routes>
           {/* Routes dành cho Admin */}
@@ -50,7 +55,7 @@ function App() {
 
           {/* Routes dành cho người dùng */}
           <Route path="/login" element={<DangNhap />} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/register" element={<RegisterLogin />} />
           {/* <HEAD></HEAD> */}
           <Route/>
             <Route path="/" element={<Home />}>
@@ -58,7 +63,7 @@ function App() {
               {/* Viết các route của user dưới đây nha */}
             </Route>
             <Route path="/productDetail/:id" element={<ProductDetail/>}/>
-            <Route path="/productsbycategory/:id" element={<Productsbycategory />} />
+            {/* <Route path="/productsbycategory/:id" element={<Productsbycategory />} /> */}
             <Route path="/productsaddtocart" element={<ProductAddtocart/>}/>
           <Route path="/" element={<Home />}>
 

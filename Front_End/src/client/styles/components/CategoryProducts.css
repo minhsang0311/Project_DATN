@@ -1,5 +1,5 @@
 
-.home .sptrongloai {display: flex;margin-top: 50px; padding:0 50px;}
+.home .sptrongloai {display: flex;margin-top: 150px; padding:50px 50px;}
 .home .sptrongloai .left-image {width: 20%;}
 .home .sptrongloai .left-image img {width: 100%;height: 425px;border-radius: 10px;}
 .home .sptrongloai .right-products {width: 80%; padding-left: 20px; }
@@ -8,12 +8,12 @@
 .home .sptrongloai .right-products .header1 .xem_them{border: 1px solid #855454; border-radius: 100px;padding: 10px 20px;font-size: 15px;cursor: pointer;display: inline-flex; align-items: center;gap: 10px; transition: all 0.3s ease; color: #9e6868;}
 .home .sptrongloai .right-products .header1 .xem_them i {transition: transform 0.3s ease; }
 .home .sptrongloai .right-products .header1 .xem_them:hover i {transform: translateX(5px);}
-.home .sptrongloai .products-grid {display: flex;margin-top: 30px;box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em;  }
+.home .sptrongloai .products-grid {display: grid;grid-template-columns: repeat(4,1fr); margin-top: 30px;box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em;  }
 .home .sptrongloai .products-grid .product {border-top: 1px solid rgba(210, 180, 180, 1);border-left: 1px solid rgba(210, 180, 180, 1);border-bottom: 1px solid rgba(210, 180, 180, 1);position: relative;overflow: hidden;padding: 10px;display: flex;flex-direction: column;}
 .home .sptrongloai .products-grid .product:last-child {border: 1px solid rgba(210, 180, 180, 1);}
 .home .sptrongloai .products-grid .product .discount-label {z-index: 1;position: absolute;top: 10px;right: 10px;background-color: #4fc3f7;color: white;padding: 5px 10px;border-radius: 5px;font-size: 15px;}
 .home .sptrongloai .products-grid .product .img-wrapper {width: 270px;height: 180px;overflow: hidden;}
-.home .sptrongloai .products-grid .product .img-wrapper img {width: 80%;height: 100%;transition: transform 0.3s ease;padding: 10px;}
+.home .sptrongloai .products-grid .product .img-wrapper img {width: 100%;height: 100%;transition: transform 0.3s ease;padding: 10px;}
 .home .sptrongloai .products-grid .product .img-wrapper img:hover {transform: scale(1.1);}
 .home .sptrongloai .products-grid .product h1 {font-size: 17px;color: #575353;padding: 10px 0;font-weight: 500;}
 .home .sptrongloai .products-grid .product .price {display: flex;gap: 20px;padding: 10px 0;}
