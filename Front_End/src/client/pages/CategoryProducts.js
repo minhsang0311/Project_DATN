@@ -42,7 +42,7 @@ function CategoryProducts() {
                         </div>
                     </div>
                     <div className="products-grid">
-                        {listsp.slice(0, 4).map((sp, i) =>
+                        {listsp.slice(0,4).map((sp, i) =>
                             <div className="product" key={i}>
                                 <div className="discount-label">-20%</div>
                                 <div className="img-wrapper">

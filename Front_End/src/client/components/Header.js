@@ -13,14 +13,14 @@ function Header() {
             <li><a href="/#">Holine : <span><b>077718379</b></span></a></li>
           </ul>
           <ul className="phai1">
-            <li><a href="/#">Đăng kí</a></li>|
-            <li><a href="/#">Đăng nhập</a></li>
+            <li><Link to="/register">Đăng kí</Link></li>|
+            <li><Link to="/login">Đăng nhập</Link></li>
           </ul>
         </div>
         <hr className="hr"/>
         <div className="middle">
             <div className="logo_trangchu">
-              <img src="assets/img/logo3.png" alt="logo" />
+              <img src="assets/img/logo3.png" alt="" />
             </div>
             <div className="input">
                 <input type="text" placeholder="Sản phẩm muốn tìm..." />
