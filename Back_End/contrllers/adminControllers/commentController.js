@@ -7,18 +7,19 @@ exports.getAllreviews = function(req, res){
         else res.json(data);
     });
   };
-// Sửa một bình luận
-exports.putreviews = (req, res) => {
-    const reviewId = req.params.id;
-    const { Ratting, Comment, Show_Hidden } = req.body;
-    
-    const sql = 'UPDATE reviews SET Ratting = ?, Comment = ?, Show_Hidden = ? WHERE Review_ID = ?';
-    
-    db.query(sql, [Ratting, Comment, Show_Hidden, reviewId], (err, result) => {
+
+
+// Cập nhật trạng thái hiển thị của bình luận
+exports.updateReview = (req, res) => {
+    const { id } = req.params;
+    const { Show_Hidden } = req.body;
+
+    const sql = 'UPDATE reviews SET Show_Hidden = ? WHERE Review_ID = ?';
+
+    db.query(sql, [Show_Hidden, id], (err, result) => {
         if (err) {
-            return res.status(500).json({ message: 'Lỗi khi sửa bình luận', error: err });
+            return res.status(500).json({ message: 'Lỗi khi cập nhật trạng thái hiển thị', error: err });
         }
-        res.json({ message: 'Sửa bình luận thành công' });
+        res.json({ message: 'Cập nhật trạng thái hiển thị thành công' });
     });
 };
-

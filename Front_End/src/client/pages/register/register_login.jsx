@@ -1,9 +1,12 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { registerUser } from '../../services/authService';
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { dalogin } from "../../reducers/authSlice";
 import './register.css';
 
-const Register = () => {
+const RegisterLogin = () => {
     const [formData, setFormData] = useState({
         User_Name: '',
         Email: '',
@@ -46,6 +49,60 @@ const Register = () => {
     const handleSignInClick = () => {
         setIsRightPanelActive(false);
         setMessage('');
+    };
+    const userNameRef = useRef();
+    const pwRef = useRef();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        // Kiểm tra token từ localStorage khi tải lại trang
+        const token = localStorage.getItem('token');
+        if (token) {
+            const checkTokenUrl = "http://localhost:3000/auth/check-token";
+            fetch(checkTokenUrl, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.valid) {
+                        dispatch(dalogin({ token })); // Lưu token vào Redux state
+                        navigate('/admin'); // Điều hướng đến trang admin
+                    } else {
+                        localStorage.removeItem('token'); // Xóa token nếu không hợp lệ
+                    }
+                })
+                .catch(error => console.error("Đã xảy ra lỗi:", error));
+        }
+    }, [dispatch, navigate]);
+
+    const submitDuLieu = (event) => {
+        event.preventDefault();
+        if (userNameRef.current.value === "" || pwRef.current.value === "") {
+            alert("Nhập đủ thông tin nhé bạn ơi!");
+            return;
+        }
+
+        const url = "http://localhost:3000/auth/login";
+        const tt = { User_Name: userNameRef.current.value, Password: pwRef.current.value };
+        const opt = {
+            method: "POST",
+            body: JSON.stringify(tt),
+            headers: { 'Content-Type': 'application/json' },
+        };
+
+        fetch(url, opt)
+            .then(res => res.json())
+            .then(data => {
+                if (data.token) {
+                    localStorage.setItem('token', data.token); // Lưu token vào localStorage
+                    dispatch(dalogin(data)); // Lưu token vào Redux state
+                    navigate('/admin'); // Điều hướng đến trang admin
+                } else {
+                    alert(data.message || "Đăng nhập thất bại, vui lòng thử lại!");
+                }
+            })
+            .catch(error => console.error("Đã xảy ra lỗi:", error));
     };
 
     return (
@@ -90,10 +147,20 @@ const Register = () => {
                 {message && <p className="message">{message}</p>}
             </div>
             <div className="form-container sign-in-container">
-                <form action="#">
+                <form action="#" onSubmit={submitDuLieu}>
                     <h1>Đăng nhập</h1>
-                    <input type="email" placeholder="Email" required />
-                    <input type="password" placeholder="Password" required />
+                    <input
+                    className="form-control shadow-none border-danger-subtle"
+                    type="text"
+                    ref={userNameRef}
+                    required
+                />
+                    <input
+                    className="form-control shadow-none border-danger-subtle"
+                    type="password"
+                    ref={pwRef}
+                    required
+                />
                     <a href="/#">Forgot your password?</a>
                     <button className='button_register' type="submit">Sign In</button>
                 </form>
@@ -121,4 +188,4 @@ const Register = () => {
     );
 };
 
-export default Register;
+export default RegisterLogin;
