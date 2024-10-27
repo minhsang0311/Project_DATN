@@ -1,38 +1,37 @@
-footer {
+
+   footer {
     background-color:#3d6fe1 ;
     color: #fff;
-    display: flex;
-    justify-content:space-between;
-    padding: 30px 7%;
+    display: grid;grid-template-columns: repeat(4 , 1fr);
+    padding: 30px 5%;
   }
-  
-  .footer-section {
-    flex: 1;
+
+  .footer-column {
     padding: 10px;
     min-width: 200px;
-    font-weight:100;
+    font-weight:400;
     font-size:15px;
     line-height: 25px;
-  }
+  } 
   
-  .footer-section h2 {
+  .footer-column h2 {
     font-size: 18px;
     margin-bottom: 30px;
   }
   
-  .footer-section p,
-  .footer-section input,
-  .footer-section button {
+  .footer-column p,
+  .footer-column input,
+  .footer-column button {
     margin: 15px 0px;
   }
-  .footer-section i{margin-right: 5px;}
+  .footer-column i{margin-right: 5px;}
   
-  .footer-section input[type="email"] {
+  .footer-column input[type="email"] {
     padding: 10px;
     width: calc(100% - 22px);
   }
   
-  .footer-section button {
+  .footer-column button {
     padding: 10px 20px;
     background-color: #ff6600;
     color: #fff;
@@ -40,13 +39,27 @@ footer {
     cursor: pointer;
   }
   
-  .footer-section .social-icons a {
+  .footer-column .social-icons a {
     margin: 0 5px;
     display: inline-block;
   }
   
-  .footer-section .social-icons i {
+  .footer-column .social-icons i {
     font-size: 24px;
     color: #fff;
 
   }
+  .hrr hr {
+    border: none; 
+    height: 3px;
+    background-color: #3D6FE1; 
+    margin: 20px auto 5px; 
+    width: 100%; 
+    border-radius: 5px; 
+  }
+  @media (max-width: 800px) {
+     .footer { grid-template-columns: 1fr;}
+ }
+ @media (min-width: 769px) and (max-width: 1024px) {
+     .footer {grid-template-columns: 1fr 1fr;}
+ }
