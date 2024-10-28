@@ -24,7 +24,6 @@ const productRoutesClient = require('./routes/userRoutes/productRoutes');
 const categoryRoutesClient = require('./routes/userRoutes/categoryRoutes');
 
 const componentRoutesClient = require('./routes/userRoutes/commentRoutes')
-app.use(cors());
 
 
 app.use(cors(corsOpt));
