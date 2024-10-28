@@ -164,7 +164,7 @@
  }
  
  .item {
-   padding: 20px;
+   padding: 100px 20px;
    border-radius: 10px;
    text-align: center;
    position: relative; 
@@ -180,11 +180,27 @@
    height: auto;
    border-radius: 1000px;
    box-shadow: rgba(255, 255, 255, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset; }
- .item p.tieude {
-   margin-top: 120px; 
-   color: #ffffff; 
-   font-size: 16px;
+ .item p.tieude {margin-top: 30px; color: #ffffff; font-size: 16px}
+ .item p {margin-top: 40px; color: #ffffff; font-size: 14px;line-height: 1.7;}
+ .scroll-to-top {
+   position: fixed;
+   bottom: 20px;
+   right: 20px;
+   background-color: #3d6fe1;
+   color: white;
+   border: 2px solid white;
+   border-radius: 10px;
+   width: 50px;
+   height: 50px;
+   font-size: 20px;
+   cursor: pointer;
+   display: none; /* Ẩn nút ban đầu */
+   justify-content: center;
+   align-items: center;
+   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+   transition: opacity 0.3s ease-in-out;
  }
+ .scroll-to-top:hover {background-color: #1D396B;}
  .item p {
    margin-top: 40px; 
    color: #ffffff; 
@@ -201,6 +217,7 @@
    .home .spbanchay .right-products .box-sp {grid-template-columns: repeat(2, 1fr);}
    .home .spkhuyenmai .box-sp { grid-template-columns:repeat(2 ,1fr)}
    .home .listdanhmuc_home .box { grid-template-columns:repeat(3 ,1fr)}
+   .home .box_gt_home{grid-template-columns: 1fr;}
 }
 @media (min-width: 769px) and (max-width: 1024px) {
    .home .spbanchay {grid-template-columns: 1fr;}
@@ -211,6 +228,5 @@
 }
 
 
-.home_SpMostView .spbanchay .product-list .product .add-to-cart:hover {background-color: #4fc3f7;color: white;}
 
 

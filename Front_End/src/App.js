@@ -40,7 +40,19 @@ function App() {
           {/* </Route> */}
 
           {/* Routes dành cho người dùng */}
+<<<<<<< HEAD
+          <Route path="/register" element={<RegisterLogin />} />
+          <Route/>
+            <Route path="/" element={<Home />}>
+           
+              {/* Viết các route của user dưới đây nha */}
+            </Route>
+            <Route path="/productDetail/:id" element={<ProductDetail/>}/>
+            {/* <Route path="/productsbycategory/:id" element={<Productsbycategory />} /> */}
+            <Route path="/productsaddtocart" element={<ProductAddtocart/>}/>
+=======
           <Route />
+>>>>>>> ec9c989ba26190367e57e61d83fff1ef92df40d4
           <Route path="/" element={<Home />}>
           </Route>
           {/* </Route> */}
