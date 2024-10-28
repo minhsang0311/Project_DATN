@@ -9,7 +9,7 @@ import CategoryList from './admin/pages/categoryPage/CategoryList.jsx';
 import CategoryAdd from './admin/pages/categoryPage/CategoryAdd.jsx';
 import CategoryUpdate from './admin/pages/categoryPage/CategoryUpdate.jsx';
 import ProductUpdate from './admin/pages/productPage/ProductUpdate.jsx';
-import Comments from './admin/pages/commentPage/commentList.jsx';
+import Comments from './admin/pages/commentPage/commentList.jsx';    
 import Statistics from './admin/pages/Statistics/Statistics.jsx';
 
 // Component Client
@@ -17,7 +17,8 @@ import ProductDetail from './client/pages/ProductDetail';
 import Home from './client/pages/HomePage.js';
 import About from './client/pages/About.js';
 import CategoryProducts from './client/pages/CategoryProducts.js';
-import RegisterLogin from './client/pages/register_login/register_login.jsx';
+import RegisterLogin from './client/pages/register/register_login.jsx';
+import Search from './client/pages/Search.js';
 
 function App() {
   return (
@@ -44,9 +45,10 @@ function App() {
           <Route path="/register_login" element={<RegisterLogin />} />
           <Route />
 
-
+        
           <Route path="/" element={<Home />}></Route>
           <Route path="/about" element={<About />} />
+          <Route path="/search" element={<Search />} />
           <Route path="/productDetail/:id" element={<ProductDetail />} />
           <Route path="/category/:Category_ID" element={<CategoryProducts />} />
 
