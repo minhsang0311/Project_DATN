@@ -83,7 +83,7 @@ const RegisterLogin = () => {
             return;
         }
 
-        const url = "http://localhost:3001/auth/login";
+        const url = "http://localhost:3000/auth/login";
         const tt = { User_Name: userNameRef.current.value, Password: pwRef.current.value };
         const opt = {
             method: "POST",
