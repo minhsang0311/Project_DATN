@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-
+import '../../styles/pages/CategoryUpdate.css';
 function CategoryUpdate() {
     const [category, setCategory] = useState({});
     const { id } = useParams();

@@ -9,12 +9,18 @@ import CategoryList from './admin/pages/categoryPage/CategoryList.jsx';
 import CategoryAdd from './admin/pages/categoryPage/CategoryAdd.jsx';
 import CategoryUpdate from './admin/pages/categoryPage/CategoryUpdate.jsx';
 import ProductUpdate from './admin/pages/productPage/ProductUpdate.jsx';
+import Comments from './admin/pages/commentPage/commentList.jsx';
 import Statistics from './admin/pages/Statistics/Statistics.jsx';
 
 // Component Client
 import ProductDetail from './client/pages/ProductDetail';
+
+
+
+
 // import Register from './client/pages/register/register.jsx';
 import Login from './client/pages/login/login.jsx';
+
 import Header from './client/components/Header.js';
 import ProtectedRoute from './client/reducers/ProtectedRoute.js';
 import Home from './client/pages/HomePage.js';
@@ -43,6 +49,7 @@ function App() {
               <Route path="category" element={<CategoryList />} />
               <Route path="categoryAdd" element={<CategoryAdd />} />
               <Route path="categoryUpdate/:id" element={<CategoryUpdate />} />
+              <Route path="comments" element={<Comments />} />
               {/* Các route admin khác có thể thêm bên dưới */}
             </Route>
           {/* </Route> */}

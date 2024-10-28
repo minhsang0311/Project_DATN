@@ -1,0 +1,60 @@
+.admin-comments {
+    width: 90%;
+    margin: 20px auto;
+    font-family: Arial, sans-serif;
+}
+
+.admin-comments h1 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.admin-comments table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.admin-comments table th,
+.admin-comments table td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ccc;
+}
+
+.admin-comments table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.admin-comments table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.admin-comments button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.admin-comments button:hover {
+    opacity: 0.9;
+}
+
+.admin-comments button:nth-child(1) {
+    background-color: #4CAF50;
+    color: white;
+    margin-right: 10px;
+}
+
+.admin-comments button:nth-child(2) {
+    background-color: #f44336;
+    color: white;
+}
+
+.error-message {
+    text-align: center;
+    color: red;
+}
