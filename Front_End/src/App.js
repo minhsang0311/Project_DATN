@@ -24,33 +24,23 @@ import RegisterLogin from './client/pages/register_login/register_login.jsx';
 function App() {
   return (
     <BrowserRouter basename="/">
-      <div className="container">
         <Routes>
           {/* <Route element={<ProtectedRoute />}> */}
-            <Route path="/admin" element={<HomeAdmin />}>
-              <Route index element={<Statistics />} />
-              <Route path="products" element={<ProductList />} />
-              <Route path="product-add" element={<ProductAdd />} />
-              <Route path="productUpdate/:id" element={<ProductUpdate />} /> 
-              <Route path="category" element={<CategoryList />} />
-              <Route path="categoryAdd" element={<CategoryAdd />} />
-              <Route path="categoryUpdate/:id" element={<CategoryUpdate />} />
-              <Route path="comments" element={<Comments />} />
-              {/* Các route admin khác có thể thêm bên dưới */}
-            </Route>
+          <Route path="/admin" element={<HomeAdmin />}>
+            <Route index element={<Statistics />} />
+            <Route path="products" element={<ProductList />} />
+            <Route path="product-add" element={<ProductAdd />} />
+            <Route path="productUpdate/:id" element={<ProductUpdate />} />
+            <Route path="category" element={<CategoryList />} />
+            <Route path="categoryAdd" element={<CategoryAdd />} />
+            <Route path="categoryUpdate/:id" element={<CategoryUpdate />} />
+            <Route path="comments" element={<Comments />} />
+            {/* Các route admin khác có thể thêm bên dưới */}
+          </Route>
           {/* </Route> */}
 
           {/* Routes dành cho người dùng */}
-          <Route path="/login" element={<DangNhap />} />
-          <Route path="/register" element={<RegisterLogin />} />
-          <Route/>
-            <Route path="/" element={<Home />}>
-           
-              {/* Viết các route của user dưới đây nha */}
-            </Route>
-            <Route path="/productDetail/:id" element={<ProductDetail/>}/>
-            {/* <Route path="/productsbycategory/:id" element={<Productsbycategory />} /> */}
-            <Route path="/productsaddtocart" element={<ProductAddtocart/>}/>
+          <Route />
           <Route path="/" element={<Home />}>
           </Route>
           {/* </Route> */}
@@ -65,10 +55,8 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/productDetail/:id" element={<ProductDetail />} />
           <Route path="/category/:Category_ID" element={<CategoryProducts />} />
-          <Route path="/productDetail/:id" element={<ProductDetail />} ></Route>
 
         </Routes>
-      </div>
     </BrowserRouter>
   );
 }

@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import '../styles/components/ProductDetail.css';
 import SPLienQuan from './RelatedProducts';
 import Comments from './Comments'; // Import component Comments
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 const ProductDetail = () => {
     const [mainImage, setMainImage] = useState('');
@@ -49,75 +51,79 @@ const ProductDetail = () => {
     }
 
     return (
-        <div className="home">
-            <div className="spchitiet">
-                <div className="left-image">
-                    <img src="/assets/img/banner4.jpg" alt="" />
-                </div>
-                <div className="right-products">
-                    <div className="product-detail">
-                        <div className="product-images">
-                            <div className="main-image">
-                                <img id="mainImage" src={mainImage} alt="Sản phẩm" width="400px" />
+        <Fragment>
+            <Header/>
+            <div className="home">
+                <div className="spchitiet">
+                    <div className="left-image">
+                        <img src="/assets/img/banner4.jpg" alt="" />
+                    </div>
+                    <div className="right-products">
+                        <div className="product-detail">
+                            <div className="product-images">
+                                <div className="main-image">
+                                    <img id="mainImage" src={mainImage} alt="Sản phẩm" width="400px" />
+                                </div>
+
+                                <div className="thumbnail-images">
+                                    <img
+                                        className="thumbnail"
+                                        src={sp.Image}
+                                        alt="Thumbnail 1"
+                                        width="100px"
+                                        onClick={() => handleThumbnailClick(sp.Image)}
+                                    />
+                                </div>
                             </div>
 
-                            <div className="thumbnail-images">
-                                <img
-                                    className="thumbnail"
-                                    src={sp.Image}
-                                    alt="Thumbnail 1"
-                                    width="100px"
-                                    onClick={() => handleThumbnailClick(sp.Image)}
-                                />
+                            <div className="product-info">
+                                <h1 className="product-title">{sp.Product_Name}</h1>
+                                <hr />
+                                <p className="product-description">{sp.Description}</p>
+                                <div className="product-price">
+                                    <p className="old-price">3.560.000đ</p>
+                                    <p>Giá: {Number(sp.Price).toLocaleString('vi')} VNĐ</p>
+                                </div>
+                                <button className="btn-add-to-cart">Thêm vào giỏ</button>
+                                <button className="btn-buy-now">Mua ngay</button>
                             </div>
                         </div>
 
-                        <div className="product-info">
-                            <h1 className="product-title">{sp.Product_Name}</h1>
-                            <hr />
-                            <p className="product-description">{sp.Description}</p>
-                            <div className="product-price">
-                                <p className="old-price">3.560.000đ</p>
-                                <p>Giá: {Number(sp.Price).toLocaleString('vi')} VNĐ</p>
-                            </div>
-                            <button className="btn-add-to-cart">Thêm vào giỏ</button>
-                            <button className="btn-buy-now">Mua ngay</button>
+                        <div className="product-specifications">
+                            <h3>Thông số kỹ thuật</h3>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>Tên sản phẩm</td>
+                                        <td>{sp.Product_Name}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Hãng</td>
+                                        <td>{sp.Shop_Hidden}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Model</td>
+                                        <td>{sp.Product_ID}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Thông số</td>
+                                        <td>{sp.Description}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
 
-                    <div className="product-specifications">
-                        <h3>Thông số kỹ thuật</h3>
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <td>Tên sản phẩm</td>
-                                    <td>{sp.Product_Name}</td>
-                                </tr>
-                                <tr>
-                                    <td>Hãng</td>
-                                    <td>{sp.Shop_Hidden}</td>
-                                </tr>
-                                <tr>
-                                    <td>Model</td>
-                                    <td>{sp.Product_ID}</td>
-                                </tr>
-                                <tr>
-                                    <td>Thông số</td>
-                                    <td>{sp.Description}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
 
-               
-              
+
+                </div>
+                <Comments productId={id} />
+                <div className="related-products">
+                    <SPLienQuan id={id} sosp={5} />
+                </div>
             </div>
-            <Comments productId={id} />
-            <div className="related-products">
-                <SPLienQuan id={id} sosp={5} />
-            </div>
-        </div>
+            <Footer/>
+        </Fragment>
     );
 };
 
