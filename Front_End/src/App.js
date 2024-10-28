@@ -17,8 +17,6 @@ import ProductDetail from './client/pages/ProductDetail';
 import Home from './client/pages/HomePage.js';
 import About from './client/pages/About.js';
 import CategoryProducts from './client/pages/CategoryProducts.js';
-// import Productsbycategory from './client/pages/Productsbycategory.js';
-import ProductAddtocart from './client/pages/Addtocart.js';
 import RegisterLogin from './client/pages/register_login/register_login.jsx';
 
 function App() {
@@ -39,28 +37,12 @@ function App() {
           </Route>
           {/* </Route> */}
 
-          {/* Routes dành cho người dùng */}
-<<<<<<< HEAD
-          <Route path="/register" element={<RegisterLogin />} />
-          <Route/>
-            <Route path="/" element={<Home />}>
-           
-              {/* Viết các route của user dưới đây nha */}
-            </Route>
-            <Route path="/productDetail/:id" element={<ProductDetail/>}/>
-            {/* <Route path="/productsbycategory/:id" element={<Productsbycategory />} /> */}
-            <Route path="/productsaddtocart" element={<ProductAddtocart/>}/>
-=======
-          <Route />
->>>>>>> ec9c989ba26190367e57e61d83fff1ef92df40d4
+
           <Route path="/" element={<Home />}>
           </Route>
           {/* </Route> */}
           <Route path="/register_login" element={<RegisterLogin />} />
           <Route />
-          <Route path="/" element={<Home />}></Route>
-          <Route path="/productDetail/:id" element={<ProductDetail />} />
-          <Route path="/productsaddtocart" element={<ProductAddtocart />} />
 
 
           <Route path="/" element={<Home />}></Route>
