@@ -16,7 +16,7 @@ const Nav = () =>{
                 <li><Link to="/cuahang">Cửa hàng</Link></li>
                 { list.map( (loai, index)=>{ return (
                     <li key={index}>
-                        <Link to = { "/loai/" + loai.Category_ID }>{loai.Category_Name}</Link> 
+                        <Link to = { "/productsbycategory/" + loai.Category_ID }>{loai.Category_Name}</Link> 
                     </li>
                 )})
                 }
