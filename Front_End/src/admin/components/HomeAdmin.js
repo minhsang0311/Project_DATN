@@ -19,13 +19,13 @@ const HomeAdmin = () => {
         const token = localStorage.getItem('token');
         if (!token) {
             alert('Bạn cần đăng nhập để truy cập trang này.');
-            navigate('/login');
+            navigate('/register_login');
         }
     }, [navigate]);
 
     const handleLogout = () => {
         localStorage.removeItem('token');
-        navigate('/login');
+        navigate('/register_login');
     };
 
     return (
