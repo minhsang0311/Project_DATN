@@ -2,8 +2,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Nav from './Nav';
 import '../styles/components/Header.css';
+import { useSelector } from 'react-redux';
 
 function Header() {
+  const cartItems = useSelector((state) => state.cart.items);
+  
+  // Tính tổng số lượng sản phẩm trong giỏ hàng
+  const totalQuantity = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   return (
     <header>
         <div className="top">
@@ -13,7 +18,7 @@ function Header() {
             <li><a href="/#">Holine : <span><b>077718379</b></span></a></li>
           </ul>
           <ul className="phai1">
-            <li><Link to="/register">Đăng kí</Link></li>|
+            <li><Link to="/register_login">Đăng kí</Link></li>|
             {/* <li><Link to="/login">Đăng nhập</Link></li> */}
           </ul>
         </div>
@@ -25,7 +30,9 @@ function Header() {
             <div className="input">
                 <input type="text" placeholder="Sản phẩm muốn tìm..." />
                 <i className="fa-solid fa-magnifying-glass"></i> 
-            <i className="fa-solid fa-cart-shopping"></i>
+            <Link to="/cart">
+                  <i className="fa-solid fa-cart-shopping">{totalQuantity > 0 ? totalQuantity : ''}</i>
+                </Link>
           </div>
           <div classNameName="bottom">       
               <div classNameName="phai">

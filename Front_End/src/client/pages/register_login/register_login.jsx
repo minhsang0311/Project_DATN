@@ -66,7 +66,7 @@ const RegisterLogin = () => {
                 .then(data => {
                     if (data.valid) {
                         dispatch(dalogin({ token })); // Lưu token vào Redux state
-                        navigate('/admin'); // Điều hướng đến trang admin
+                        navigate('/register_login'); // Điều hướng đến trang admin
                     } else {
                         localStorage.removeItem('token'); // Xóa token nếu không hợp lệ
                     }
@@ -160,7 +160,7 @@ const RegisterLogin = () => {
                     ref={pwRef}
                     required
                 />
-                    <a href="/#">Forgot your password?</a>
+                    {/* <a href="/#">Forgot your password?</a> */}
                     <button className='button_register' type="submit">Sign In</button>
                 </form>
                 {message && <p className="message">{message}</p>}

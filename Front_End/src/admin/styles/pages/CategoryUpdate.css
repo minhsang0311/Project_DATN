@@ -21,16 +21,6 @@ input[type="radio"] {
     margin-top: 5px; /* Khoảng cách trên của input */
 }
 
-input[type="text"] {
-    border: 2px solid #dc3545; /* Viền đỏ */
-    border-radius: 4px; /* Bo tròn góc cho input */
-    transition: border-color 0.3s; /* Hiệu ứng chuyển tiếp */
-}
-
-input[type="text"]:focus {
-    border-color: #28a745; /* Đổi màu viền khi focus */
-    outline: none; /* Bỏ outline */
-}
 
 .btn {
     background-color: #ffc107; /* Màu nền cho nút */
