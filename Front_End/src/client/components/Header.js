@@ -13,7 +13,7 @@ function Header() {
             <li><a href="/#">Holine : <span><b>077718379</b></span></a></li>
           </ul>
           <ul className="phai1">
-            <li><Link to="/register">Đăng kí</Link></li>|
+            <li><Link to="/register_login">Đăng kí</Link></li>|
             {/* <li><Link to="/login">Đăng nhập</Link></li> */}
           </ul>
         </div>
