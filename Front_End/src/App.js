@@ -17,7 +17,6 @@ import ProductDetail from './client/pages/ProductDetail';
 import Home from './client/pages/HomePage.js';
 import About from './client/pages/About.js';
 import CategoryProducts from './client/pages/CategoryProducts.js';
-import ProductAddtocart from './client/pages/Addtocart.js';
 
 import RegisterLogin from './client/pages/register_login/register_login.jsx';
 import CartPage from './client/pages/CartPage.js';
@@ -44,8 +43,7 @@ function App() {
           </Route>
           {/* </Route> */}
 
-          {/* Routes dành cho người dùng */}
-          <Route />
+
           <Route path="/" element={<Home />}>
 
           </Route>
@@ -53,8 +51,14 @@ function App() {
           {/* Client Routes */}
           <Route path="/" element={<Home />} />
           <Route path="/register_login" element={<RegisterLogin />} />
+
           <Route path="/productDetail/:id" element={<ProductDetail />} />
           {/* <Route path="/productsaddtocart" element={<ProductAddtocart />} /> */}
+          <Route />
+
+
+          <Route path="/" element={<Home />}></Route>
+
           <Route path="/about" element={<About />} />
           <Route path="/category/:Category_ID" element={<CategoryProducts />} />
           <Route path="/cart" element={<CartPage />} />
