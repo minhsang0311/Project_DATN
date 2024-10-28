@@ -17,6 +17,7 @@ const authRoutes = require('./routes/authRoutes');
 //Admin
 const productRoutesAdmin = require('./routes/adminRoutes/productRoutes');
 const categoryRoutesAdmin = require('./routes/adminRoutes/categoryRoutes');
+const commentRoutesAdmin = require('./routes/adminRoutes/commentRoutes');
 const StatisticsRoutesAdmin = require('./routes/adminRoutes/Statistics')
 //User
 const productRoutesClient = require('./routes/userRoutes/productRoutes');
@@ -34,6 +35,7 @@ app.use('/auth', authRoutes);
 app.use('/admin', [
     categoryRoutesAdmin,
     productRoutesAdmin,
+    commentRoutesAdmin,
     StatisticsRoutesAdmin
 ]);
 
