@@ -9,7 +9,12 @@ function SpMoi() {
 
     useEffect ( () => {
        fetch("http://localhost:3000/user/productNew")
-       .then(res=>res.json()).then(data => ganListSP(data));
+       .then(res=>res.json()).then(data => {
+        ganListSP(data)
+        console.log("data", data);
+        
+    }
+    );
     } , []);
 
     const formatCurrency = (value) => {
@@ -33,7 +38,7 @@ function SpMoi() {
                     </div>
                 </div>
                 <div className="box-sp">
-                    {listsp.slice(0, 8).map((sp, i) =>
+                    {listsp.slice(0,8).map((sp, i) =>
                         <div className="product" key={i}>
                             {sp.Promotion > 0 && (
                                 <div className="discount-label">

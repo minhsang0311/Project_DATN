@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react'; // Import useEffect để xử lý sự kiện
+import React, { Fragment, useEffect } from 'react'; // Import useEffect để xử lý sự kiện
+import Header from '../client/components/Header';
 import SpMoi from './SpMoi';
 import SpMostView from './SpMostView';
 import SpKhuyenMai from './SpKhuyenMai';
@@ -7,11 +8,9 @@ import Banner from "./Banner";
 import '../styles/components/Home.css';
 
 function Home() {
-
   // Sử dụng useEffect để thêm sự kiện cuộn và xử lý nút cuộn lên
   useEffect(() => {
     const scrollToTopBtn = document.getElementById("scrollToTop");
-
     const handleScroll = () => {
       if (window.scrollY > 200) {
         scrollToTopBtn.style.display = "flex"; // Hiển thị nút khi cuộn xuống hơn 200px
@@ -19,9 +18,7 @@ function Home() {
         scrollToTopBtn.style.display = "none"; // Ẩn nút khi cuộn lên trên
       }
     };
-
     window.addEventListener("scroll", handleScroll); // Lắng nghe sự kiện cuộn
-
     // Cleanup sự kiện khi component bị hủy
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -31,13 +28,14 @@ function Home() {
   };
 
   return (
+    <Fragment>
+    <Header />
     <div className="home">
       <Banner />
       <SpKhuyenMai />
       <DanhMuc_Home />
       <SpMoi />
       <SpMostView />
-
       <div className="gt_home">
         <img src="/assets/img/banner22.png" alt="" />
         <div className="box_gt_home">
@@ -51,7 +49,6 @@ function Home() {
               cho chúng tôi.
             </p>
           </div>
-
           <div className="item">
             <img src="/assets/img/item2.jpg" alt="" />
             <p className="tieude">Tư vấn sản phẩm theo yêu cầu.</p>
@@ -60,7 +57,6 @@ function Home() {
               Chúng tôi sẽ tiến hành liên hệ để xác nhận đơn hàng và thực hiện theo yêu cầu.
             </p>
           </div>
-
           <div className="item">
             <img src="/assets/img/item3.png" alt="" />
             <p className="tieude">Hoàn thiện sản phẩm, giao hàng và thanh toán.</p>
@@ -72,12 +68,12 @@ function Home() {
           </div>
         </div>
       </div>
-
       {/* Nút cuộn lên đầu trang */}
       <button id="scrollToTop" className="scroll-to-top" onClick={scrollToTop}>
         <i className="fas fa-arrow-up"></i>
       </button>
     </div>
+    </Fragment>
   );
 }
 

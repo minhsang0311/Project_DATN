@@ -10,7 +10,7 @@ import CategoryUpdate from '../pages/categoryPage/CategoryUpdate';
 import ProductAdd from '../pages/productPage/ProductAdd';
 import ProductUpdate from '../pages/productPage/ProductUpdate';
 import Statistics from '../pages/Statistics/Statistics';
-
+import Comments from '../pages/commentPage/commentList';
 
 const HomeAdmin = () => {
     const navigate = useNavigate();
@@ -19,13 +19,13 @@ const HomeAdmin = () => {
         const token = localStorage.getItem('token');
         if (!token) {
             alert('Bạn cần đăng nhập để truy cập trang này.');
-            navigate('/login');
+            navigate('/register_login');
         }
     }, [navigate]);
 
     const handleLogout = () => {
         localStorage.removeItem('token');
-        navigate('/login');
+        navigate('/register_login');
     };
 
     return (
@@ -66,7 +66,7 @@ const HomeAdmin = () => {
                         </Link>
                     </li>
                     <li>
-                        <Link to="/comments">
+                        <Link to="/admin/comments">
                             <i className="bi bi-chat-dots"></i>
                             <span>Bình luận</span>
                         </Link>
@@ -122,6 +122,7 @@ const HomeAdmin = () => {
                         <Route path="category" element={<CategoryList />} />
                         <Route path="categoryAdd" element={<CategoryAdd />} />
                         <Route path="categoryUpdate/:id" element={<CategoryUpdate />} />
+                        <Route path="comments" element={<Comments />} />
                     </Routes>
                 </div>
             </div>

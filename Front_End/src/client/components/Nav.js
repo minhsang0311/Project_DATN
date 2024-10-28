@@ -8,7 +8,6 @@ const Nav = () =>{
         .then(res=>res.json())
         .then( data => ganListLoai(data) );
     } , []);
-
     return(
         <div className="bottom_trangchu">
             <ul className="menu_trangchu"> 
@@ -16,7 +15,7 @@ const Nav = () =>{
                 <li><Link to="/cuahang">Cửa hàng</Link></li>
                 { list.map( (loai, index)=>{ return (
                     <li key={index}>
-                        <Link to = { "/productsbycategory/" + loai.Category_ID }>{loai.Category_Name}</Link> 
+                        <Link to = { "/category/" + loai.Category_ID }>{loai.Category_Name}</Link> 
                     </li>
                 )})
                 }
