@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { registerUser } from '../../services/authService';
 import { useDispatch } from "react-redux";
@@ -78,8 +77,7 @@ const RegisterLogin = () => {
 
     const submitDuLieu = (event) => {
         event.preventDefault();
-        if (userNameRef.current.value === "" || pwRef.current.value === "") {
-            alert("Nhập đủ thông tin nhé bạn ơi!");
+        if (userNameRef.current.value === "" || pwRef.current.value === "") {alert("Nhập đủ thông tin nhé bạn ơi!");
             return;
         }
 
@@ -97,11 +95,13 @@ const RegisterLogin = () => {
                 if (data.token) {
                     localStorage.setItem('token', data.token); // Lưu token vào localStorage
                     dispatch(dalogin(data)); // Lưu token vào Redux state
+                    console.log("Login thành công, điều hướng tới admin");
                     navigate('/admin'); // Điều hướng đến trang admin
                 } else {
                     alert(data.message || "Đăng nhập thất bại, vui lòng thử lại!");
                 }
             })
+            
             .catch(error => console.error("Đã xảy ra lỗi:", error));
     };
 
@@ -150,8 +150,7 @@ const RegisterLogin = () => {
                 <form action="#" onSubmit={submitDuLieu}>
                     <h1>Đăng nhập</h1>
                     <input
-                    className="form-control shadow-none border-danger-subtle"
-                    type="text"
+                    className="form-control shadow-none border-danger-subtle"type="text"
                     ref={userNameRef}
                     required
                 />

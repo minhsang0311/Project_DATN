@@ -17,7 +17,6 @@ import ProductDetail from './client/pages/ProductDetail';
 import Home from './client/pages/HomePage.js';
 import About from './client/pages/About.js';
 import CategoryProducts from './client/pages/CategoryProducts.js';
-// import Productsbycategory from './client/pages/Productsbycategory.js';
 import ProductAddtocart from './client/pages/Addtocart.js';
 import RegisterLogin from './client/pages/register_login/register_login.jsx';
 
@@ -26,47 +25,25 @@ function App() {
     <BrowserRouter basename="/">
       <div className="container">
         <Routes>
-          {/* <Route element={<ProtectedRoute />}> */}
-            <Route path="/admin" element={<HomeAdmin />}>
-              <Route index element={<Statistics />} />
-              <Route path="products" element={<ProductList />} />
-              <Route path="product-add" element={<ProductAdd />} />
-              <Route path="productUpdate/:id" element={<ProductUpdate />} /> 
-              <Route path="category" element={<CategoryList />} />
-              <Route path="categoryAdd" element={<CategoryAdd />} />
-              <Route path="categoryUpdate/:id" element={<CategoryUpdate />} />
-              <Route path="comments" element={<Comments />} />
-              {/* Các route admin khác có thể thêm bên dưới */}
-            </Route>
-          {/* </Route> */}
-
-          {/* Routes dành cho người dùng */}
-          <Route path="/login" element={<DangNhap />} />
-          <Route path="/register" element={<RegisterLogin />} />
-          <Route/>
-            <Route path="/" element={<Home />}>
-           
-              {/* Viết các route của user dưới đây nha */}
-            </Route>
-            <Route path="/productDetail/:id" element={<ProductDetail/>}/>
-            {/* <Route path="/productsbycategory/:id" element={<Productsbycategory />} /> */}
-            <Route path="/productsaddtocart" element={<ProductAddtocart/>}/>
-          <Route path="/" element={<Home />}>
+          {/* Admin Routes */}
+          <Route path="/admin" element={<HomeAdmin />}>
+            <Route index element={<Statistics />} />
+            <Route path="products" element={<ProductList />} />
+            <Route path="product-add" element={<ProductAdd />} />
+            <Route path="productUpdate/:id" element={<ProductUpdate />} />
+            <Route path="category" element={<CategoryList />} />
+            <Route path="categoryAdd" element={<CategoryAdd />} />
+            <Route path="categoryUpdate/:id" element={<CategoryUpdate />} />
+            <Route path="comments" element={<Comments />} />
           </Route>
-          {/* </Route> */}
+
+          {/* Client Routes */}
+          <Route path="/" element={<Home />} />
           <Route path="/register_login" element={<RegisterLogin />} />
-          <Route />
-          <Route path="/" element={<Home />}></Route>
           <Route path="/productDetail/:id" element={<ProductDetail />} />
           <Route path="/productsaddtocart" element={<ProductAddtocart />} />
-
-
-          <Route path="/" element={<Home />}></Route>
           <Route path="/about" element={<About />} />
-          <Route path="/productDetail/:id" element={<ProductDetail />} />
           <Route path="/category/:Category_ID" element={<CategoryProducts />} />
-          <Route path="/productDetail/:id" element={<ProductDetail />} ></Route>
-
         </Routes>
       </div>
     </BrowserRouter>
