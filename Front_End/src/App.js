@@ -20,10 +20,35 @@ import CategoryProducts from './client/pages/CategoryProducts.js';
 import Search from './client/pages/Search.js';
 import RegisterLogin from './client/pages/register_login/register_login.jsx';
 import CartPage from './client/pages/CartPage.js';
+import ForgotPassword from './client/pages/forgotPassword.js';
+import ResetPassword from './client/pages/resetPassword.js';
 
 function App() {
   return (
     <BrowserRouter basename="/">
+<<<<<<< HEAD
+      <Routes>
+        {/* <Route element={<ProtectedRoute />}> */}
+        <Route path="/admin" element={<HomeAdmin />}>
+          <Route index element={<Statistics />} />
+          <Route path="products" element={<ProductList />} />
+          <Route path="product-add" element={<ProductAdd />} />
+          <Route path="productUpdate/:id" element={<ProductUpdate />} />
+          <Route path="category" element={<CategoryList />} />
+          <Route path="categoryAdd" element={<CategoryAdd />} />
+          <Route path="categoryUpdate/:id" element={<CategoryUpdate />} />
+          <Route path="comments" element={<Comments />} />
+        </Route>
+        <Route path="/" element={<Home />} />
+        <Route path="/register_login" element={<RegisterLogin />} />
+        <Route path="/productDetail/:id" element={<ProductDetail />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/category/:Category_ID" element={<CategoryProducts />} />
+        <Route path="/cart" element={<CartPage />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
+      </Routes>
+=======
         <Routes>
 
           {/* Admin Routes */}
@@ -67,6 +92,7 @@ function App() {
 
 
         </Routes>
+>>>>>>> 67532b05ca6f15896d26b8bdbac23ba24afe3ee8
     </BrowserRouter>
   );
 }
