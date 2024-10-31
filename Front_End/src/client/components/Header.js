@@ -40,6 +40,7 @@ function Header() {
         <div className="logo_trangchu">
           <img src="assets/img/logo3.png" alt="Logo" />
         </div>
+        <div>
         <form className="timkiem" onSubmit={handleSearch}>
           <input
             type="text"
@@ -48,33 +49,14 @@ function Header() {
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </form>
-        <div className="bottom">
-          <Link to="/productsaddtocart">
-            <i className="fa-solid fa-cart-shopping"></i>
-          </Link>
-          <hr className="hr" />
-          <div className="middle">
-            <div className="logo_trangchu">
-              <img src="assets/img/logo3.png" alt="" />
-            </div>
-            <div className="input">
-              <input type="text" placeholder="Sản phẩm muốn tìm..." />
-              <i className="fa-solid fa-magnifying-glass"></i>
-              <Link to="/cart">
-                <i className="fa-solid fa-cart-shopping">{totalQuantity > 0 ? totalQuantity : ''}</i>
-              </Link>
-            </div>
-            <div classNameName="bottom">
-              <div classNameName="phai">
-                <i classNameName="fa-solid fa-user"></i>
-              </div>
-              <Link to="/productsaddtocart"><i classNameName="fa-solid fa-cart-shopping"></i></Link>
-
-            </div>
-          </div>
         </div>
-        <Nav />
-        </div>
+        <div className='giohang'>
+        <Link to="/cart">
+          <i className="fa-solid fa-cart-shopping">{totalQuantity > 0 ? totalQuantity : ''}</i>
+        </Link>
+      </div>
+      </div>
+      <Nav />  
     </header>
   );
 }
