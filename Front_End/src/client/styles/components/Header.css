@@ -6,14 +6,15 @@ header .top ul.trai, ul.phai1 li{list-style: none;}
 header .top .trai a{text-decoration: none;color:rgb(84, 73, 73);font-size: 13px;margin:0 auto}
 header .top a:hover{color: #4fc3f7}
 header .top span{color:blue}
-header .middle {display: flex;justify-content: space-between; padding: 0px 6%;margin-bottom: 5px;}
+header .middle {display: flex; justify-content: space-between; padding: 0px 6%;}
 header .middle .logo_trangchu img {height: 45px;width:180px}
 header .middle form.timkiem {
   position: relative;
   display: flex; /* Sử dụng flex để sắp xếp input và button */
   align-items: center; /* Căn giữa theo chiều dọc */
   padding: 0; /* Thêm padding để tạo khoảng cách */
-  margin-left: 300px;
+  margin-top: 10px;
+  margin-bottom: 20px;
   height: 40px;
 }
 
@@ -25,8 +26,8 @@ header .middle input {
   transition: border-color 0.3s; /* Hiệu ứng chuyển tiếp cho viền */
 }
 
-
+header .middle .giohang{margin-top: 20px;margin: 20px;}
 header .middle i.fa-magnifying-glass {position: absolute;left: 900px;top: 25px;color: #888}
-header .middle i.fa-cart-shopping {font-size: 24px;cursor: pointer;color: #574141;line-height: 60px;}
+header .middle i.fa-cart-shopping {font-size: 24px;cursor: pointer;color: #574141}
 
 
