@@ -17,14 +17,23 @@ import ProductDetail from './client/pages/ProductDetail';
 import Home from './client/pages/HomePage.js';
 import About from './client/pages/About.js';
 import CategoryProducts from './client/pages/CategoryProducts.js';
+<<<<<<< HEAD
 import RegisterLogin from './client/pages/register/register_login.jsx';
 import Search from './client/pages/Search.js';
+=======
+
+import RegisterLogin from './client/pages/register_login/register_login.jsx';
+import CartPage from './client/pages/CartPage.js';
+>>>>>>> 9591229ff981111532d0681c463bf221b36eadea
 
 function App() {
   return (
     <BrowserRouter basename="/">
         <Routes>
-          {/* <Route element={<ProtectedRoute />}> */}
+
+          {/* Admin Routes */}
+  {/* <Route element={<ProtectedRoute />}> */}
+
           <Route path="/admin" element={<HomeAdmin />}>
             <Route index element={<Statistics />} />
             <Route path="products" element={<ProductList />} />
@@ -34,23 +43,36 @@ function App() {
             <Route path="categoryAdd" element={<CategoryAdd />} />
             <Route path="categoryUpdate/:id" element={<CategoryUpdate />} />
             <Route path="comments" element={<Comments />} />
+
             {/* Các route admin khác có thể thêm bên dưới */}
           </Route>
           {/* </Route> */}
 
 
           <Route path="/" element={<Home />}>
+
           </Route>
-          {/* </Route> */}
+
+          {/* Client Routes */}
+          <Route path="/" element={<Home />} />
           <Route path="/register_login" element={<RegisterLogin />} />
+
+          <Route path="/productDetail/:id" element={<ProductDetail />} />
+          {/* <Route path="/productsaddtocart" element={<ProductAddtocart />} /> */}
           <Route />
 
         
           <Route path="/" element={<Home />}></Route>
+
           <Route path="/about" element={<About />} />
+<<<<<<< HEAD
           <Route path="/search" element={<Search />} />
           <Route path="/productDetail/:id" element={<ProductDetail />} />
+=======
+>>>>>>> 9591229ff981111532d0681c463bf221b36eadea
           <Route path="/category/:Category_ID" element={<CategoryProducts />} />
+          <Route path="/cart" element={<CartPage />} />
+
 
         </Routes>
     </BrowserRouter>
