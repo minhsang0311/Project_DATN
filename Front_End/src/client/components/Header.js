@@ -5,7 +5,6 @@ import '../styles/components/Header.css';
 import { useSelector } from 'react-redux';
 
 function Header() {
-<<<<<<< HEAD
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
 
@@ -16,12 +15,10 @@ function Header() {
     }
   };
 
-=======
   const cartItems = useSelector((state) => state.cart.items);
-  
+
   // Tính tổng số lượng sản phẩm trong giỏ hàng
   const totalQuantity = cartItems.reduce((sum, item) => sum + item.quantity, 0);
->>>>>>> 9591229ff981111532d0681c463bf221b36eadea
   return (
     <header>
       <div className="top">
@@ -43,7 +40,6 @@ function Header() {
         <div className="logo_trangchu">
           <img src="assets/img/logo3.png" alt="Logo" />
         </div>
-<<<<<<< HEAD
         <form className="timkiem" onSubmit={handleSearch}>
           <input
             type="text"
@@ -56,30 +52,29 @@ function Header() {
           <Link to="/productsaddtocart">
             <i className="fa-solid fa-cart-shopping"></i>
           </Link>
-=======
-        <hr className="hr"/>
-        <div className="middle">
+          <hr className="hr" />
+          <div className="middle">
             <div className="logo_trangchu">
               <img src="assets/img/logo3.png" alt="" />
             </div>
             <div className="input">
-                <input type="text" placeholder="Sản phẩm muốn tìm..." />
-                <i className="fa-solid fa-magnifying-glass"></i> 
-            <Link to="/cart">
-                  <i className="fa-solid fa-cart-shopping">{totalQuantity > 0 ? totalQuantity : ''}</i>
-                </Link>
-          </div>
-          <div classNameName="bottom">       
+              <input type="text" placeholder="Sản phẩm muốn tìm..." />
+              <i className="fa-solid fa-magnifying-glass"></i>
+              <Link to="/cart">
+                <i className="fa-solid fa-cart-shopping">{totalQuantity > 0 ? totalQuantity : ''}</i>
+              </Link>
+            </div>
+            <div classNameName="bottom">
               <div classNameName="phai">
-                  <i classNameName="fa-solid fa-user"></i>
+                <i classNameName="fa-solid fa-user"></i>
               </div>
               <Link to="/productsaddtocart"><i classNameName="fa-solid fa-cart-shopping"></i></Link>
 
             </div>
->>>>>>> 9591229ff981111532d0681c463bf221b36eadea
+          </div>
         </div>
-      </div>
-      <Nav />
+        <Nav />
+        </div>
     </header>
   );
 }
