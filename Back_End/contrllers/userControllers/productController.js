@@ -150,3 +150,23 @@ exports.getAllProducts =  (req, res) => {
         res.json(result);
     });
 };
+exports.getAllProducts_Search = (req, res) => {
+    const searchQuery = req.query.query; 
+    if (!searchQuery) {
+        return res.status(400).json({ error: 'Query parameter is required' });
+    }
+
+    const sql = `
+      SELECT *
+      FROM products 
+      WHERE Product_Name LIKE ? `;
+    const values = [`%${searchQuery}%`, `%${searchQuery}%`];
+    
+    db.query(sql, values, (err, results) => {
+        if (err) {
+            console.error('Error executing query:', err);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+        res.json(results);
+    });
+};

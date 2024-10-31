@@ -8,18 +8,24 @@ header .top a:hover{color: #4fc3f7}
 header .top span{color:blue}
 header .middle {display: flex;justify-content: space-between; padding: 0px 6%;margin-bottom: 5px;}
 header .middle .logo_trangchu img {height: 45px;width:180px}
-header .middle .input {position: relative;display: inline-block;padding-left: 450px;line-height: 60px;}
-header .middle .input input {
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, 
-              rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
-  padding-left: 20px;
-  width: 500px;
-  height: 35px;
-  border: none;
-  border-radius: 4px;
-  background-color: #fff;
-  outline: none;
+header .middle form.timkiem {
+  position: relative;
+  display: flex; /* Sử dụng flex để sắp xếp input và button */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  padding: 0; /* Thêm padding để tạo khoảng cách */
+  margin-left: 300px;
+  height: 40px;
 }
+
+header .middle input {
+  width: 500px; /* Chiều rộng của ô tìm kiếm */
+  border: none;
+  background-color: #fff; /* Màu nền trắng */
+  outline: none; /* Không viền khi focus */
+  transition: border-color 0.3s; /* Hiệu ứng chuyển tiếp cho viền */
+}
+
+
 header .middle i.fa-magnifying-glass {position: absolute;left: 900px;top: 25px;color: #888}
 header .middle i.fa-cart-shopping {font-size: 24px;cursor: pointer;color: #574141;line-height: 60px;}
 
