@@ -28,7 +28,7 @@ function CategoryProducts() {
             <div className="home">
                 <div className="sptrongloai">
                     <div className="left-image">
-                        <img src="/assets/img/banner4.jpg" alt="" />
+                        <img src="/assets/img/banner4.jpg" alt=""/>
                     </div>
                     <div className="right-products">
                         <div className="header1">

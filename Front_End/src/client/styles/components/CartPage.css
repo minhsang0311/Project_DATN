@@ -45,4 +45,16 @@
   .btn-clear-cart:hover {
     background-color: #c9302c;
   }
-  
+  .btn-payment {
+    padding: 10px 15px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 20px; /* Tạo khoảng cách cho nút */
+}
+
+.btn-payment:hover {
+    background-color: #45a049;
+}

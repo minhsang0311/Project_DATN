@@ -22,11 +22,11 @@ import RegisterLogin from './client/pages/register_login/register_login.jsx';
 import CartPage from './client/pages/CartPage.js';
 import ForgotPassword from './client/pages/forgotPassword.js';
 import ResetPassword from './client/pages/resetPassword.js';
-
+import PaymentPage from './client/pages/PaymentPage.js'
 function App() {
   return (
     <BrowserRouter basename="/">
-<<<<<<< HEAD
+
       <Routes>
         {/* <Route element={<ProtectedRoute />}> */}
         <Route path="/admin" element={<HomeAdmin />}>
@@ -41,58 +41,21 @@ function App() {
         </Route>
         <Route path="/" element={<Home />} />
         <Route path="/register_login" element={<RegisterLogin />} />
+        <Route path="/search" element={<Search />} />
         <Route path="/productDetail/:id" element={<ProductDetail />} />
         <Route path="/about" element={<About />} />
         <Route path="/category/:Category_ID" element={<CategoryProducts />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password/:token" element={<ResetPassword />} />
+        <Route path="/payment" element={<PaymentPage />} />
       </Routes>
-=======
-        <Routes>
 
-          {/* Admin Routes */}
-  {/* <Route element={<ProtectedRoute />}> */}
+      
+  
 
-          <Route path="/admin" element={<HomeAdmin />}>
-            <Route index element={<Statistics />} />
-            <Route path="products" element={<ProductList />} />
-            <Route path="product-add" element={<ProductAdd />} />
-            <Route path="productUpdate/:id" element={<ProductUpdate />} />
-            <Route path="category" element={<CategoryList />} />
-            <Route path="categoryAdd" element={<CategoryAdd />} />
-            <Route path="categoryUpdate/:id" element={<CategoryUpdate />} />
-            <Route path="comments" element={<Comments />} />
+     
 
-            {/* Các route admin khác có thể thêm bên dưới */}
-          </Route>
-          {/* </Route> */}
-
-
-          <Route path="/" element={<Home />}>
-
-          </Route>
-
-          {/* Client Routes */}
-          <Route path="/" element={<Home />} />
-          <Route path="/register_login" element={<RegisterLogin />} />
-
-          <Route path="/productDetail/:id" element={<ProductDetail />} />
-          {/* <Route path="/productsaddtocart" element={<ProductAddtocart />} /> */}
-          <Route />
-
-        
-          <Route path="/" element={<Home />}></Route>
-
-          <Route path="/about" element={<About />} />
-          <Route path="/search" element={<Search />} />
-          <Route path="/productDetail/:id" element={<ProductDetail />} />
-          <Route path="/category/:Category_ID" element={<CategoryProducts />} />
-          <Route path="/cart" element={<CartPage />} />
-
-
-        </Routes>
->>>>>>> 67532b05ca6f15896d26b8bdbac23ba24afe3ee8
     </BrowserRouter>
   );
 }
