@@ -11,6 +11,8 @@ const path = require('path');
 
 const { authMiddleware, adminMiddleware } = require('../Back_End/middlewares/authMiddlware')
 
+const { searchProducts } = require('./contrllers/adminControllers/productController');
+
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const authRoutes = require('./routes/authRoutes');
@@ -25,6 +27,7 @@ const productRoutesClient = require('./routes/userRoutes/productRoutes');
 const categoryRoutesClient = require('./routes/userRoutes/categoryRoutes');
 const componentRoutesClient = require('./routes/userRoutes/commentRoutes');
 const contactRouterClient = require('./routes/userRoutes/contactRoutes');
+
 
 
 app.use(cors(corsOpt));
@@ -47,4 +50,7 @@ app.use('/user',[
     contactRouterClient
 ]);
 
+app.get('/search', searchProducts);
+
 app.listen(3000, () => console.log('Server running on port 3000'));
+

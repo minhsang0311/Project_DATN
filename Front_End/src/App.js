@@ -25,6 +25,8 @@ import ForgotPassword from './client/pages/forgotPassword.js';
 import ResetPassword from './client/pages/resetPassword.js';
 import Contact from './client/pages/Contact.js'
 
+
+
 function App() {
   return (
     <BrowserRouter basename="/">
@@ -51,6 +53,7 @@ function App() {
         <Route path="/reset-password/:token" element={<ResetPassword />} />
         <Route path="/contact" element={<Contact />} />
       </Routes>
+
     </BrowserRouter>
   );
 }
