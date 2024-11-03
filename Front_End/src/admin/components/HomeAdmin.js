@@ -11,6 +11,7 @@ import ProductAdd from '../pages/productPage/ProductAdd';
 import ProductUpdate from '../pages/productPage/ProductUpdate';
 import Statistics from '../pages/Statistics/Statistics';
 import Comments from '../pages/commentPage/commentList';
+import Customer from '../pages/customerPage/customerList';
 
 const HomeAdmin = () => {
     const navigate = useNavigate();
@@ -54,7 +55,7 @@ const HomeAdmin = () => {
                         </Link>
                     </li>
                     <li>
-                        <Link to="/customers">
+                        <Link to="/admin/customers">
                             <i className="bi bi-people"></i>
                             <span>Khách hàng</span>
                         </Link>
@@ -123,6 +124,7 @@ const HomeAdmin = () => {
                         <Route path="categoryAdd" element={<CategoryAdd />} />
                         <Route path="categoryUpdate/:id" element={<CategoryUpdate />} />
                         <Route path="comments" element={<Comments />} />
+                        <Route path="customers" element={<Customer/>} />
                     </Routes>
                 </div>
             </div>

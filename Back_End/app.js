@@ -18,12 +18,13 @@ const authRoutes = require('./routes/authRoutes');
 const productRoutesAdmin = require('./routes/adminRoutes/productRoutes');
 const categoryRoutesAdmin = require('./routes/adminRoutes/categoryRoutes');
 const commentRoutesAdmin = require('./routes/adminRoutes/commentRoutes');
-const StatisticsRoutesAdmin = require('./routes/adminRoutes/Statistics')
+const StatisticsRoutesAdmin = require('./routes/adminRoutes/Statistics');
+const customerRoutesAdmin = require('./routes/adminRoutes/customerRoutes');
 //User
 const productRoutesClient = require('./routes/userRoutes/productRoutes');
 const categoryRoutesClient = require('./routes/userRoutes/categoryRoutes');
-
-const componentRoutesClient = require('./routes/userRoutes/commentRoutes')
+const componentRoutesClient = require('./routes/userRoutes/commentRoutes');
+const contactRouterClient = require('./routes/userRoutes/contactRoutes');
 
 
 app.use(cors(corsOpt));
@@ -35,13 +36,15 @@ app.use('/admin', [
     categoryRoutesAdmin,
     productRoutesAdmin,
     commentRoutesAdmin,
-    StatisticsRoutesAdmin
+    StatisticsRoutesAdmin,
+    customerRoutesAdmin
 ]);
 
 app.use('/user',[
     productRoutesClient, 
     categoryRoutesClient,
-    componentRoutesClient
+    componentRoutesClient,
+    contactRouterClient
 ]);
 
 app.listen(3000, () => console.log('Server running on port 3000'));
