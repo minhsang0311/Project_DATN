@@ -31,3 +31,31 @@ header .middle i.fa-magnifying-glass {position: absolute;left: 900px;top: 25px;c
 header .middle i.fa-cart-shopping {font-size: 24px;cursor: pointer;color: #574141}
 
 
+/* styles/components/Header.css */
+.dropdown {
+  /* position: absolute; */
+  background-color: white;
+  border: 1px solid #ddd;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  /* right: 0; */
+  /* top: 100%; */
+  width: 150px;
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdown a,
+.dropdown button {
+  /* padding: 10px; */
+  text-align: left;
+  background-color: transparent;
+  border: none;
+  color: #333;
+  cursor: pointer;
+  /* width: 100%; */
+}
+
+.dropdown a:hover,
+.dropdown button:hover {
+  background-color: #f2f2f2;
+}

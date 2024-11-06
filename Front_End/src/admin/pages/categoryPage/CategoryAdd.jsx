@@ -1,15 +1,14 @@
 import { useState } from 'react';
-
+import { useNavigate } from 'react-router-dom'
 const CategoryAdd = () => {
+    const navigate = useNavigate()
     const [category, setCategory] = useState({ Category_Name: '', Show_Hidden: false });
-   
     const Submit = (evt) => {
         evt.preventDefault();
         let data = {
             Category_Name: category.Category_Name,
             Show_Hidden: category.Show_Hidden
         };
-        
         let url = `http://localhost:3000/admin/categoryAdd`;
         let opt = {
             method: "POST",
@@ -27,13 +26,11 @@ const CategoryAdd = () => {
                     alert(data.thongbao); 
                 } else {
                     setCategory({ Category_Name: '', Show_Hidden: false });
-                    console.log("data", data);
-                    window.location.href = '/admin/category'; 
+                    navigate('/admin/category'); 
                 }
             })
             .catch(error => {
-                console.error("Đã có lỗi thêm danh mục", error);
-                alert("Đã có lỗi thêm danh mục");
+                alert("Đã có lỗi thêm danh mục", error);
             });
     }
 

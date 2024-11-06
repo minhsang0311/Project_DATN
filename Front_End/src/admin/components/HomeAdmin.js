@@ -17,9 +17,15 @@ const HomeAdmin = () => {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
+        const tokenRole = JSON.parse(localStorage.getItem("user"));
         if (!token) {
             alert('Bạn cần đăng nhập để truy cập trang này.');
             navigate('/register_login');
+        } else {
+            if (tokenRole.role !== 1) {
+                alert('Tài khoản chưa đủ quyền để vào')
+                navigate('/register_login');
+            }
         }
     }, [navigate]);
 
@@ -27,7 +33,6 @@ const HomeAdmin = () => {
         localStorage.removeItem('token');
         navigate('/register_login');
     };
-
     return (
         <div className="home_admin">
             <div className="sidebar">
@@ -85,8 +90,8 @@ const HomeAdmin = () => {
                     </li>
                     <li className="logout" onClick={handleLogout}>
                         <Link>
-                        <i className="bi bi-box-arrow-right"></i>
-                        <span>Thoát</span>
+                            <i className="bi bi-box-arrow-right"></i>
+                            <span>Thoát</span>
                         </Link>
                     </li>
                 </ul>

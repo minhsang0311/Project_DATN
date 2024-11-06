@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 import '../../styles/pages/CategoryList.css';
 function Loai_Ds() {
-   
     const [listSP, setListSP] = useState([]);
     const navigate = useNavigate();
     let opt= {

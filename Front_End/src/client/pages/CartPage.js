@@ -5,11 +5,12 @@ import { removeFromCart, clearCart, incrementQuantity, decrementQuantity } from 
 import '../styles/components/CartPage.css';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { useNavigate } from 'react-router-dom';
 
 const formatCurrency = (value) => {
     return Number(value).toLocaleString('vi') + ' VNĐ';
 };
-
+const navigate = useNavigate()
 const CartPage = () => {
     const dispatch = useDispatch();
     const items = useSelector(state => state.cart.items);
@@ -66,6 +67,15 @@ const CartPage = () => {
                         dispatch(clearCart());
                     }
                 }} className="btn-clear-cart">Xóa tất cả</button>
+                 {items.length > 0 && (
+                    <button 
+                        onClick={navigate('./payment')} 
+                        className="btn-payment"
+                        style={{ marginTop: '10px' }}
+                    >
+                        Thanh Toán
+                    </button>
+                )}
             </div>
             <Footer />
         </Fragment>

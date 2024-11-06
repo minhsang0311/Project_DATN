@@ -8,7 +8,7 @@ const commentController = require('../../contrllers/adminControllers/commentCont
 
 
 router.get('/reviews', commentController.getAllreviews);
-router.put('/reviews/:id', commentController.updateReview); // Cập nhật trạng thái hiển thị
+router.put('/reviews/:id', commentController.updateReview);
 
 
 
