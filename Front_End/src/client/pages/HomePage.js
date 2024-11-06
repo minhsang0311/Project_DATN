@@ -10,32 +10,6 @@ import Header from '../components/Header';
 
 
 function Home() {
-<<<<<<< HEAD
-
-    return (
-        <Fragment>
-            <Header/>
-            <div className="home">
-            <Banner />
-            <SpKhuyenMai />
-            <DanhMuc_Home/>
-            <SpMoi />
-            <SpMostView />
-            <div className="gt_home">
-                <img src="/assets/img/banner22.png" alt=""/>
-                <div className="box_gt_home">
-                    <div className="item">
-                        <img src="/assets/img/item1.png" alt="" />
-                        <p className="tieude">Lựa chọn sản phẩm yêu thích</p>
-                        <p>Khách hàng truy cập website để lựa chọn mẫu sản phẩm yêu thích. Sau đó thêm vào giỏ hàng để tiến hành đặt hàng. Hoặc khách hàng cũng có thể inbox trực tiếp qua zalo/messenger và gửi ảnh/mã sản phẩm cho chúng tôi</p>
-                    </div>
-                    
-                    <div className="item">
-                        <img src="/assets/img/item2.jpg" alt="" />
-                        <p className="tieude">Tư vấn sản phẩm theo yêu cầu.</p>
-                        <p>Khi khách hàng đặt hàng thành công, sẽ có mail gửi về để xác nhận thông tin đặt hàng của khách hàng. Chúng tôi sẽ tiến hành liên hệ để xác nhận đơn hàng và thực hiện theo yêu cầu của khách hàng.</p>
-                    </div>
-=======
     return (
         <Fragment>
             <Header />
@@ -53,7 +27,6 @@ function Home() {
                             <p className="tieude">Lựa chọn sản phẩm yêu thích</p>
                             <p>Khách hàng truy cập website để lựa chọn mẫu sản phẩm yêu thích. Sau đó thêm vào giỏ hàng để tiến hành đặt hàng. Hoặc khách hàng cũng có thể inbox trực tiếp qua zalo/messenger và gửi ảnh/mã sản phẩm cho chúng tôi</p>
                         </div>
->>>>>>> 5117474e269c11090d5a30e5bb5cea54701fa436
 
                         <div className="item">
                             <img src="/assets/img/item2.jpg" alt="" />

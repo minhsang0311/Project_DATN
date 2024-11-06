@@ -41,7 +41,7 @@ exports.productKhuyenMai =  (req, res) => {
 // };
 //Route lấy danh sách sản phẩm
 exports.getAllProducts_Cuahang = (req, res) => {
-    let sql = `SELECT Product_ID, Category_ID ,Brand_ID, Product_Name, Image, Price, Description, Views, Show_Hidden FROM Products`;
+    let sql = `SELECT * FROM Products`;
     db.query(sql, (err, data) => {
         if (err) {
             res.json({ "message": "Lỗi lấy danh sách sản phẩm", err });

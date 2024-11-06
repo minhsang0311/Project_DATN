@@ -31,52 +31,6 @@ import OrderStatusList from './client/pages/OrderStatusList.js'
 function App() {
   return (
     <BrowserRouter basename="/">
-<<<<<<< HEAD
-        <Routes>
-
-          {/* Admin Routes */}
-  {/* <Route element={<ProtectedRoute />}> */}
-
-          <Route path="/admin" element={<HomeAdmin />}>
-            <Route index element={<Statistics />} />
-            <Route path="products" element={<ProductList />} />
-            <Route path="product-add" element={<ProductAdd />} />
-            <Route path="productUpdate/:id" element={<ProductUpdate />} />
-            <Route path="category" element={<CategoryList />} />
-            <Route path="categoryAdd" element={<CategoryAdd />} />
-            <Route path="categoryUpdate/:id" element={<CategoryUpdate />} />
-            <Route path="comments" element={<Comments />} />
-
-            {/* Các route admin khác có thể thêm bên dưới */}
-          </Route>
-          {/* </Route> */}
-
-
-          <Route path="/" element={<Home />}>
-
-          </Route>
-
-          {/* Client Routes */}
-          <Route path="/" element={<Home />} />
-          <Route path="/register_login" element={<RegisterLogin />} />
-
-          <Route path="/productDetail/:id" element={<ProductDetail />} />
-          {/* <Route path="/productsaddtocart" element={<ProductAddtocart />} /> */}
-          <Route />
-
-        
-          <Route path="/" element={<Home />}></Route>
-
-          <Route path="/about" element={<About />} />
-          <Route path="/cuahang" element={<Cuahang />} />
-          <Route path="/search" element={<Search />} />
-          <Route path="/productDetail/:id" element={<ProductDetail />} />
-          <Route path="/category/:Category_ID" element={<CategoryProducts />} />
-          <Route path="/cart" element={<CartPage />} />
-
-
-        </Routes>
-=======
       <Routes>
         {/* <Route element={<ProtectedRoute />}> */}
         <Route path="/admin" element={<HomeAdmin />}>
@@ -91,6 +45,8 @@ function App() {
           <Route path="order" element={<AdminOrder />} />
         </Route>
         <Route path="/" element={<Home />} />
+        <Route path="/cuahang" element={<Cuahang />} />
+
         <Route path="/register_login" element={<RegisterLogin />} />
         <Route path="/search" element={<Search />} />
         <Route path="/productDetail/:id" element={<ProductDetail />} />
@@ -107,7 +63,6 @@ function App() {
           <Route path="/change-password" element={<ChangePassword />} />
         </Route>
       </Routes>
->>>>>>> 5117474e269c11090d5a30e5bb5cea54701fa436
     </BrowserRouter>
   );
 }

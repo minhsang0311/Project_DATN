@@ -88,17 +88,11 @@ function Header() {
           </Link>
         </div>
         <div className='giohang'>
-<<<<<<< HEAD
-        <Link to="/cart">
-          <i className="fa-solid fa-cart-shopping"><h2>{totalQuantity > 0 ? totalQuantity : ''}</h2></i>
-        </Link>
-=======
           <Link to="/cart">
             <i className="fa-solid fa-cart-shopping">{totalQuantity > 0 ? totalQuantity : ''}</i>
           </Link>
         </div>
         <Link to="/order"><i className="bi bi-clock">Trạng thái đơn hàng</i></Link>
->>>>>>> 5117474e269c11090d5a30e5bb5cea54701fa436
       </div>
       <Nav />
     </header >
