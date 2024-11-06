@@ -1,8 +1,21 @@
-
 import React from 'react';
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../pages/cartSlice"; // Đảm bảo đường dẫn đúng với file cartSlice
 
 function Product({ spTrongTrang }) {
+    const dispatch = useDispatch();
+
+    const handleAddToCart = (sp) => {
+        const cartItem = {
+            id: sp.Product_ID,
+            image: sp.Image,
+            name: sp.Product_Name,
+            price: sp.Price,
+        };
+        dispatch(addToCart(cartItem));
+    };
+
     return (
         <div className="products-grid">
             {spTrongTrang.map((sp, i) => (
@@ -16,7 +29,7 @@ function Product({ spTrongTrang }) {
                         <p className="old-price">{sp.Price}</p>
                         <p className="new-price">765,000đ</p>
                     </div>
-                    <button className="add-to-cart">Thêm vào giỏ hàng</button>
+                    <button className="add-to-cart" onClick={() => handleAddToCart(sp)}>Thêm vào giỏ hàng</button>
                 </div>
             ))}
         </div>

@@ -1,27 +1,35 @@
-// import { listsp } from "./data";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import '../styles/components/Home.css'
-
+import { useDispatch } from "react-redux";
+import { addToCart } from "./cartSlice";
+import '../styles/components/Home.css';
 
 function SpMoi() {
-    const [listsp, ganListSP] = useState( [] );
+    const [listsp, ganListSP] = useState([]);
+    const dispatch = useDispatch();
 
-    useEffect ( () => {
-       fetch("http://localhost:3000/user/productNew")
-       .then(res=>res.json()).then(data => {
-        ganListSP(data)
-        console.log("data", data);
-        
-    }
-    );
-    } , []);
+    useEffect(() => {
+        fetch("http://localhost:3000/user/productNew")
+            .then(res => res.json())
+            .then(data => ganListSP(data));
+    }, []);
 
     const formatCurrency = (value) => {
         return new Intl.NumberFormat('vi-VN', {
             style: 'currency',
             currency: 'VND',
         }).format(value);
+    };
+
+    const handleAddToCart = (product) => {
+        const cartItem = {
+            id: product.Product_ID,
+            image: product.Image,
+            name: product.Product_Name,
+            price: product.Promotion > 0 ? product.Price - (product.Promotion * product.Price) / 100 : product.Price,
+            quantity: 1
+        };
+        dispatch(addToCart(cartItem));
     };
 
     return (
@@ -48,19 +56,19 @@ function SpMoi() {
                             <div className="img-wrapper">
                                 <img src={sp.Image} alt="" />
                             </div>
-                            <Link to={"/productDetail/"+ sp.Product_ID}><a href="/">{sp.Product_Name}</a></Link>
+                            <Link to={"/productDetail/"+ sp.Product_ID}><a>{sp.Product_Name}</a></Link>
                             <div className="price_giohang">
                                 <div className="price">
-                                {sp.Promotion > 0 ? (
-                                    <>
-                                        <p className="old-price">{formatCurrency(sp.Price)}</p>
-                                        <p className="new-price">{formatCurrency(sp.Price - (sp.Promotion * sp.Price) / 100)}</p>
-                                    </>
-                                ) : (
-                                    <p className="new-price">{formatCurrency(sp.Price)}</p>
-                                )}
+                                    {sp.Promotion > 0 ? (
+                                        <>
+                                            <p className="old-price">{formatCurrency(sp.Price)}</p>
+                                            <p className="new-price">{formatCurrency(sp.Price - (sp.Promotion * sp.Price) / 100)}</p>
+                                        </>
+                                    ) : (
+                                        <p className="new-price">{formatCurrency(sp.Price)}</p>
+                                    )}
                                 </div>
-                                <button className="add-to-cart">Giỏ hàng</button>
+                                <button className="add-to-cart" onClick={() => handleAddToCart(sp)}>Giỏ hàng</button>
                             </div>
                         </div>
                     )}
@@ -69,4 +77,5 @@ function SpMoi() {
         </div>
     );
 }
+
 export default SpMoi;

@@ -26,6 +26,9 @@ const categoryRoutesClient = require('./routes/userRoutes/categoryRoutes');
 const forgotPassword = require('./routes/userRoutes/forgotPassword')
 const changePassword = require('./routes/userRoutes/changePassword')
 const componentRoutesClient = require('./routes/userRoutes/commentRoutes');
+const orderRoutesAdmin = require('./routes/adminRoutes/orderRoutes')
+//User
+const orderRoutesClient = require('./routes/userRoutes/orderRoutes')
 
 
 app.use(cors(corsOpt));
@@ -38,7 +41,8 @@ app.use('/admin', [
     productRoutesAdmin,
     commentRoutesAdmin,
     StatisticsRoutesAdmin,
-    brandRoutesAdmin
+    brandRoutesAdmin,
+    orderRoutesAdmin
 ]);
 
 app.use('/user',[
@@ -46,7 +50,8 @@ app.use('/user',[
     categoryRoutesClient,
     componentRoutesClient,
     forgotPassword,
-    changePassword
+    changePassword,
+    orderRoutesClient
 ]);
 
 app.listen(3000, () => console.log('Server running on port 3000'));

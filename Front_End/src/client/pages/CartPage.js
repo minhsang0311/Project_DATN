@@ -5,14 +5,13 @@ import { removeFromCart, clearCart, incrementQuantity, decrementQuantity } from 
 import '../styles/components/CartPage.css';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import { useNavigate } from 'react-router-dom';
 
 const formatCurrency = (value) => {
     return Number(value).toLocaleString('vi') + ' VNĐ';
 };
-const navigate = useNavigate()
 const CartPage = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate(); // Khai báo useNavigate
     const items = useSelector(state => state.cart.items);
     const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
@@ -54,7 +53,7 @@ const CartPage = () => {
                                     </td>
                                     <td>{formatCurrency(item.price * item.quantity)}</td>
                                     <td>
-                                        <button onClick={() => dispatch(removeFromCart(item.id))}>Xóa</button>
+                                        <button onClick={() => dispatch(removeFromCart(item.id))}>🗑️</button>
                                     </td>
                                 </tr>
                             ))}

@@ -48,25 +48,25 @@ function Header() {
             </a>
           </li>
         </ul>
-        <ul className="phai1">
-          {userName ? (
-            <li
-              onMouseEnter={() => setShowDropdown(true)}
-              onMouseLeave={() => setShowDropdown(false)}
-            >
-              Xin chào, {userName}
-              {showDropdown && (
-                <div className="dropdown">
-                  <Link to="/change-password">Đổi mật khẩu</Link>
-                  <button onClick={handleLogout}>Thoát</button>
-                </div>
-              )}
-            </li>
-          ) : (
-            <li><Link to="/register_login">Đăng kí</Link></li>
-          )}
-        </ul>
-      </div>
+  <ul className="phai1">
+    {userName ? (
+      <li
+        onMouseEnter={() => setShowDropdown(true)}
+        onMouseLeave={() => setShowDropdown(false)}
+      >
+        Xin chào, {userName}
+        {showDropdown && (
+          <div className="dropdown">
+            <Link to="/change-password">Đổi mật khẩu</Link>
+            <button onClick={handleLogout}>Thoát</button>
+          </div>
+        )}
+      </li>
+    ) : (
+      <li><Link to="/register_login">Đăng kí</Link></li>
+    )}
+  </ul>
+      </div >
       <hr className="hr" />
       <div className="middle">
         <div className="logo_trangchu">
@@ -82,14 +82,20 @@ function Header() {
             />
           </form>
         </div>
+        <div className="icon_user">
+          <Link to="/register_login">
+            <i className="fa-solid fa-user fa-2x"></i>
+          </Link>
+        </div>
         <div className='giohang'>
           <Link to="/cart">
             <i className="fa-solid fa-cart-shopping">{totalQuantity > 0 ? totalQuantity : ''}</i>
           </Link>
         </div>
+        <Link to="/order"><i className="bi bi-clock">Trạng thái đơn hàng</i></Link>
       </div>
       <Nav />
-    </header>
+    </header >
   );
 }
 

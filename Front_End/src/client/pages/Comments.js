@@ -41,9 +41,10 @@ const Comments = ({ productId }) => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(newCommentData),
+                
             });
 
-            const data = await response.json();
+            const data = await response.json();console.log("API response:", data);
             if (data.message === 'Thêm bình luận thành công') {
                 // Cập nhật lại danh sách bình luận sau khi thêm mới
                 setComments([...comments, newCommentData]);

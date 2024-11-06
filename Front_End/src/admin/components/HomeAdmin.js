@@ -11,6 +11,7 @@ import ProductAdd from '../pages/productPage/ProductAdd';
 import ProductUpdate from '../pages/productPage/ProductUpdate';
 import Statistics from '../pages/Statistics/Statistics';
 import Comments from '../pages/commentPage/commentList';
+import AdminOrder from '../pages/orderPage/AdminOrder';
 
 const HomeAdmin = () => {
     const navigate = useNavigate();
@@ -65,7 +66,7 @@ const HomeAdmin = () => {
                         </Link>
                     </li>
                     <li>
-                        <Link to="/orders">
+                        <Link to="/admin/order">
                             <i className="bi bi-receipt"></i>
                             <span>Đơn hàng</span>
                         </Link>
@@ -128,6 +129,7 @@ const HomeAdmin = () => {
                         <Route path="categoryAdd" element={<CategoryAdd />} />
                         <Route path="categoryUpdate/:id" element={<CategoryUpdate />} />
                         <Route path="comments" element={<Comments />} />
+                        <Route path="order" element={<AdminOrder />} />
                     </Routes>
                 </div>
             </div>
