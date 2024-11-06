@@ -58,6 +58,7 @@ function Header() {
             <i className="fa-solid fa-cart-shopping">{totalQuantity > 0 ? totalQuantity : ''}</i>
           </Link>
         </div>
+        <Link to="/order"><i className="bi bi-clock">Trạng thái đơn hàng</i></Link>
       </div>
       <Nav />
     </header>

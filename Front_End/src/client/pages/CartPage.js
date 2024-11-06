@@ -55,7 +55,7 @@ const CartPage = () => {
                                     </td>
                                     <td>{formatCurrency(item.price * item.quantity)}</td>
                                     <td>
-                                        <button onClick={() => dispatch(removeFromCart(item.id))}>Xóa</button>
+                                        <button onClick={() => dispatch(removeFromCart(item.id))}>🗑️</button>
                                     </td>
                                 </tr>
                             ))}

@@ -11,6 +11,7 @@ import CategoryUpdate from './admin/pages/categoryPage/CategoryUpdate.jsx';
 import ProductUpdate from './admin/pages/productPage/ProductUpdate.jsx';
 import Comments from './admin/pages/commentPage/commentList.jsx';    
 import Statistics from './admin/pages/Statistics/Statistics.jsx';
+import AdminOrder from './admin/pages/orderPage/AdminOrder.jsx';
 
 // Component Client
 import ProductDetail from './client/pages/ProductDetail';
@@ -23,6 +24,7 @@ import CartPage from './client/pages/CartPage.js';
 import ForgotPassword from './client/pages/forgotPassword.js';
 import ResetPassword from './client/pages/resetPassword.js';
 import PaymentPage from './client/pages/PaymentPage.js'
+import OrderStatusList from './client/pages/OrderStatusList.js'
 function App() {
   return (
     <BrowserRouter basename="/">
@@ -38,6 +40,7 @@ function App() {
           <Route path="categoryAdd" element={<CategoryAdd />} />
           <Route path="categoryUpdate/:id" element={<CategoryUpdate />} />
           <Route path="comments" element={<Comments />} />
+          <Route path="order" element={<AdminOrder />} />
         </Route>
         <Route path="/" element={<Home />} />
         <Route path="/register_login" element={<RegisterLogin />} />
@@ -49,6 +52,8 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password/:token" element={<ResetPassword />} />
         <Route path="/payment" element={<PaymentPage />} />
+        <Route path="/order" element={<OrderStatusList />} />
+        
       </Routes>
 
       
