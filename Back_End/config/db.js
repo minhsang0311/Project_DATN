@@ -1,6 +1,6 @@
 
 const mysql = require('mysql');
-
+const util = require('util')
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -8,11 +8,9 @@ const db = mysql.createConnection({
     port: 3306,
     database: 'datn'
 });
-
-
 db.connect(err => {
     if (err) throw err;
     console.log('Đã kết nối database');
-});
-
+}); 
+db.query = util.promisify(db.query);
 module.exports = db;

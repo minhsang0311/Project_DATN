@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import '../../styles/pages/CategoryList.css';
 
+
 function CategoryList() {
     const [categories, setCategories] = useState([]);
    
@@ -21,6 +22,7 @@ function CategoryList() {
     // Hàm để xóa danh mục
     const deleteCategory = (id) => {
         if (window.confirm('Bạn có muốn xóa loại không?') === false) return;
+
 
         fetch(`http://localhost:3000/admin/category/${id}`, {
             method: "delete",

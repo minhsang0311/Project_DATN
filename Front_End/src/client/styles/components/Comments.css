@@ -1,5 +1,7 @@
 .comments-section {
-    margin-top: 20px;
+    margin-top: 30px;
+    max-width: 50%;
+    margin: 0 auto;
 }
 
 .comments-section h3 {
@@ -43,4 +45,40 @@
 
 .comments-section button:hover {
     background-color: hsl(220, 81%, 41%);
+}
+.comment-item {
+    display: flex;
+    margin-bottom: 15px;
+    align-items: flex-start; 
+}
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+.comment-content {
+    display: flex;
+    flex-direction: column; /* Đảm bảo các phần tử con xuống hàng */
+}
+.comment-content strong {
+    font-size: 16px;
+    margin-bottom: 7px; /* Khoảng cách giữa tên và sao */
+}
+
+.rating {
+    margin-bottom: 7px; /* Khoảng cách giữa sao và bình luận */
+}
+
+
+.comment-content p {
+    margin-top: 0;
+    font-size: 14px; /* Thay đổi font-size của bình luận */
+}
+.comments-section > .comment-item > .comment-content > .rating > .filled {
+    color: gold; /* Màu sao đầy */
+}
+
+.empty {
+    color: lightgray; /* Màu sao trống */
 }

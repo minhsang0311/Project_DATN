@@ -91,10 +91,10 @@
   background-color: #a71212;
 }
 
-.product-specifications {
+.home > .spchitiet > .product-specifications {
   margin-top: 20px;
-  margin-left: 20%;
-  max-width: 60%;
+ 
+  max-width: 50%;
 }
 
 table {

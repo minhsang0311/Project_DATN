@@ -33,7 +33,25 @@
 .form-group {
     margin-bottom: 15px;
 }
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group input[type="file"],
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: white;
+    color: #333;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
 
+.form-group select {
+    appearance: none;
+    background-color: #fff;
+}
 .form-group label {
     font-size: 16px;
     color: #333;

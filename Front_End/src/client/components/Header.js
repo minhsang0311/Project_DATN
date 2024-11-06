@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Nav from './Nav';
 import '../styles/components/Header.css';
@@ -6,6 +6,8 @@ import { useSelector } from 'react-redux';
 
 function Header() {
   const [searchQuery, setSearchQuery] = useState('');
+  const [userName, setUserName] = useState(null);//Lấy thông tin người dùng từ localStorage
+  const [showDropdown, setShowDropdown] = useState(false);//Hiện mune dropdown
   const navigate = useNavigate();
 
   const handleSearch = (e) => {
@@ -13,6 +15,21 @@ function Header() {
     if (searchQuery.trim()) {
       navigate(`/search?query=${searchQuery}`); // Điều hướng với query
     }
+  };
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      const user = JSON.parse(storedUser); // Parse chuỗi JSON từ localStorage
+      if (user.role === 0) {
+        setUserName(user.username); // Lấy tên người dùng từ dữ liệu và lưu vào state
+      }
+    }
+  }, []);
+  const handleLogout = () => {
+    localStorage.removeItem('tokenUser');
+    localStorage.removeItem('user');
+    setUserName(null);
+    navigate('/');
   };
 
   const cartItems = useSelector((state) => state.cart.items);
@@ -31,8 +48,25 @@ function Header() {
             </a>
           </li>
         </ul>
-
-      </div>
+  <ul className="phai1">
+    {userName ? (
+      <li
+        onMouseEnter={() => setShowDropdown(true)}
+        onMouseLeave={() => setShowDropdown(false)}
+      >
+        Xin chào, {userName}
+        {showDropdown && (
+          <div className="dropdown">
+            <Link to="/change-password">Đổi mật khẩu</Link>
+            <button onClick={handleLogout}>Thoát</button>
+          </div>
+        )}
+      </li>
+    ) : (
+      <li><Link to="/register_login">Đăng kí</Link></li>
+    )}
+  </ul>
+      </div >
       <hr className="hr" />
       <div className="middle">
         <div className="logo_trangchu">
@@ -61,7 +95,7 @@ function Header() {
         <Link to="/order"><i className="bi bi-clock">Trạng thái đơn hàng</i></Link>
       </div>
       <Nav />
-    </header>
+    </header >
   );
 }
 

@@ -41,6 +41,7 @@ exports.postProduct = (req, res) => {
         }
     })
 }
+
 // //Route cập nhật sản phẩm
 exports.putProduct = (req, res) => {
     let data = req.body;
@@ -60,15 +61,25 @@ exports.putProduct = (req, res) => {
     })
 }
 
-// //Route xóa một sản phẩm
+// Route xóa một sản phẩm
 exports.deleteProduct = (req, res) => {
     let id = req.params.id;
-    let sql = `DELETE FROM Products WHERE Product_ID=?`;
-    db.query(sql, id, (err, data) => {
+    let checkOrderDetailSql = `SELECT COUNT(*) AS count FROM order_details WHERE Product_ID = ?`;
+    db.query(checkOrderDetailSql, id, (err, result) => {
         if (err) {
-            res.json({ "message": "Lỗi xóa sản phẩm", err })
-        } else {
-            res.json({ "message": "Đã xóa sản phẩm", "id": id })
+            return res.json({ "message": "Lỗi kiểm tra đơn hàng chi tiết", err });
         }
-    })
-}
+        // Nếu sản phẩm đã tồn tại trong orderDetail, thông báo không thể xóa
+        if (result[0].count > 0) {
+            return res.status(400).json({ message: "Không thể xóa sản phẩm vì đã tồn tại trong đơn hàng chi tiết." });
+        }
+        let deleteSql = `DELETE FROM Products WHERE Product_ID=?`;
+        db.query(deleteSql, id, (err, data) => {
+            if (err) {
+                res.json({ "message": "Lỗi xóa sản phẩm", err });
+            } else {
+                res.json({ message: "Đã xóa sản phẩm ", "id": id });
+            }
+        });
+    });
+};
