@@ -30,12 +30,8 @@ function CategoryUpdate() {
                 'Authorization': 'Bearer '
             }
         };
-<<<<<<< HEAD
-        fetch(`http://localhost:3000/admin/category/${id}`, opt)
-=======
 
         fetch(`http://localhost:3000/admin/categoryUpdate/${id}`, opt)
->>>>>>> f81fcf3944b3d9aa639b8b10b87130179cde4683
             .then(res => res.json())
             .then(data => {
                 console.log("Kết quả =", data);

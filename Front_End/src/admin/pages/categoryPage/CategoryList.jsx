@@ -1,18 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import '../../styles/pages/CategoryList.css';
-<<<<<<< HEAD
-function Loai_Ds() {
-    const [listSP, setListSP] = useState([]);
-    const navigate = useNavigate();
-    let opt= {
-        method:"get", 
-        headers:{ 'Content-Type':'application/json' ,'Authorization':'Bearer '}
-    }
-    const xoaSP = (id) => {
-        if (window.confirm('Bạn có muốn xóa loại không?') === false) return;
-=======
-
 function CategoryList() {
     const [categories, setCategories] = useState([]);
    
@@ -32,8 +20,6 @@ function CategoryList() {
     // Hàm để xóa danh mục
     const deleteCategory = (id) => {
         if (window.confirm('Bạn có muốn xóa loại không?') === false) return;
-
->>>>>>> f81fcf3944b3d9aa639b8b10b87130179cde4683
         fetch(`http://localhost:3000/admin/category/${id}`, {
             method: "delete",
             headers: { "Content-type": "application/json", 'Authorization': 'Bearer ' }
