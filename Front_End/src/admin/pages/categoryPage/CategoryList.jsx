@@ -1,60 +1,73 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 import '../../styles/pages/CategoryList.css';
-function Loai_Ds() {
+
+function CategoryList() {
+    const [categories, setCategories] = useState([]);
    
-    const [listSP, setListSP] = useState([]);
-    const navigate = useNavigate();
-    let opt= {
-        method:"get", 
-        headers:{ 'Content-Type':'application/json' ,'Authorization':'Bearer '}
-    }
-    const xoaSP = (id) => {
-        if (window.confirm('Bạn có muốn xóa loại không?') === false) return;
+
+    const fetchOptions = {
+        method: "get",
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' }
+    };
+
+    // Hàm để lấy danh sách danh mục
+    const fetchCategories = () => {
+        fetch("http://localhost:3000/admin/category", fetchOptions)
+            .then(res => res.json())
+            .then(data => setCategories(data));
+    };
+
+    // Hàm để xóa danh mục
+    const deleteCategory = (id) => {
+        if (window.confirm('Bạn có muốn xóa loại không?') === false) return;
+
         fetch(`http://localhost:3000/admin/category/${id}`, {
             method: "delete",
             headers: { "Content-type": "application/json", 'Authorization': 'Bearer ' }
         })
-            .then(res => res.json())
-            .then(() => navigate('/admin/category'));
+        .then(res => res.json())
+        .then(response => {
+            if (response.thongbao.includes("Không thể xóa danh mục")) {
+                alert("Không thể xóa danh mục vì có sản phẩm trong danh mục này!"); // Thông báo khi không thể xóa
+            } 
+            fetchCategories(); // Tải lại danh sách danh mục
+        });
     };
+
+    // Sử dụng useEffect để lấy danh sách danh mục khi component được mount
     useEffect(() => {
-        fetch("http://localhost:3000/admin/category", opt)
-            .then(res => res.json())
-            .then(data => setListSP(data));
+        fetchCategories();
     }, []);
 
     return (
-        <div className="box-categorylist">
-            <div className="headertop-admin-cate">
-                <div className="header_admin-cate">
-                    <h2>Danh sách sản phẩm</h2>
-                    <button className="button_admin-cate">
-                        <Link to="/admin/categoryAdd">Thêm danh mục</Link>
-                    </button>
-                </div>
+        <div className="category-list-container">
+         
+            <div className="category-list-header">
+                <h2>Danh sách sản phẩm</h2>
+                <button className="category-add-button">
+                    <Link to="/admin/categoryAdd">Thêm danh mục</Link>
+                </button>
             </div>
-            <div className="grid-container-cate">
-                <div className="grid-header-cate">STT</div>
-                <div className="grid-header-cate">Tên sản phẩm</div>
-                <div className="grid-header-cate">Ẩn_Hiện</div>
-                <div className="grid-header-cate">Thao tác</div>
-                {listSP.map((category, index) => (
-            <React.Fragment key={index}>
-                <div className="grid-item-cate">{index + 1}</div>
-                <div className="grid-item-cate">{category.Category_Name}</div>
-                <div className="grid-item-cate">{category.Show_Hidden === 1 ? "Hiện" : "Ẩn"}</div>
-                <div className="grid-item-cate grid-item-cate-button">
-                    <Link to={`/admin/categoryUpdate/${category.Category_ID}`} className="edit-btn" >✏️</Link>
-                    <button className="delete-btn-cate" onClick={() => xoaSP(category.Category_ID)}>🗑️</button>
-                </div>
-            </React.Fragment>
-        ))}
-
+            <div className="category-grid">
+                <div className="category-grid-title">STT</div>
+                <div className="category-grid-title">Tên sản phẩm</div>
+                <div className="category-grid-title">Ẩn/Hiện</div>
+                <div className="category-grid-title">Thao tác</div>
+                {categories.map((category, index) => (
+                    <React.Fragment key={index}>
+                        <div className="category-grid-item">{index + 1}</div>
+                        <div className="category-grid-item">{category.Category_Name}</div>
+                        <div className="category-grid-item">{category.Show_Hidden === 1 ? "Hiện" : "Ẩn"}</div>
+                        <div className="category-grid-item category-actions">
+                            <Link to={`/admin/categoryUpdate/${category.Category_ID}`} className="category-edit-btn">✏️</Link>
+                            <button className="category-delete-btn" onClick={() => deleteCategory(category.Category_ID)}>🗑️</button>
+                        </div>
+                    </React.Fragment>
+                ))}
             </div>
         </div>
     );
 }
 
-export default Loai_Ds;
+export default CategoryList;

@@ -3,8 +3,8 @@ const router = express.Router();
 const ComponentController = require('../../contrllers/userControllers/commentController');
 
 
-router.get('/reviews/:id', ComponentController.getreviews);
-router.post('/reviews', ComponentController.postreviews);
+router.get('/reviews', ComponentController.getreviews);
+router.post('/reviews/:id', ComponentController.postreviews);
 
 
 module.exports = router;

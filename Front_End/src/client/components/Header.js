@@ -31,9 +31,7 @@ function Header() {
             </a>
           </li>
         </ul>
-        <ul className="phai1">
-          <li><Link to="/register_login">Đăng kí</Link></li>|
-        </ul>
+
       </div>
       <hr className="hr" />
       <div className="middle">
@@ -41,22 +39,28 @@ function Header() {
           <img src="assets/img/logo3.png" alt="Logo" />
         </div>
         <div>
-        <form className="timkiem" onSubmit={handleSearch}>
-          <input
-            type="text"
-            placeholder="Sản phẩm muốn tìm..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </form>
+          <form className="timkiem" onSubmit={handleSearch}>
+            <input
+              type="text"
+              placeholder="Sản phẩm muốn tìm..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </form>
+        </div>
+        <div className="icon_user">
+          <Link to="/register_login">
+            <i className="fa-solid fa-user fa-2x"></i>
+          </Link>
         </div>
         <div className='giohang'>
-        <Link to="/cart">
-          <i className="fa-solid fa-cart-shopping">{totalQuantity > 0 ? totalQuantity : ''}</i>
-        </Link>
+          <Link to="/cart">
+            <i className="fa-solid fa-cart-shopping">{totalQuantity > 0 ? totalQuantity : ''}</i>
+          </Link>
+        </div>
+        <Link to="/order"><i className="bi bi-clock">Trạng thái đơn hàng</i></Link>
       </div>
-      </div>
-      <Nav />  
+      <Nav />
     </header>
   );
 }
