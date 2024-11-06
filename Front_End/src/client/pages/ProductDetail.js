@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux'; // Thêm useSelector
+import { useDispatch, useSelector } from 'react-redux';
 import '../styles/components/ProductDetail.css';
 import SPLienQuan from './RelatedProducts';
 import Comments from './Comments';
@@ -8,16 +8,17 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { addToCart } from './cartSlice';
 
-const ProductDetail = ({ product }) => {
+const ProductDetail = () => {
     const [mainImage, setMainImage] = useState('');
     const [sp, setProduct] = useState(null);
+    const [images, setImages] = useState([]); // Thêm state cho danh sách ảnh
     const [error, setError] = useState('');
     let { id } = useParams();
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
     // Lấy dữ liệu giỏ hàng từ Redux Store
-    const cartItems = useSelector((state) => state.cart.items); // Đặt ở đây
+    const cartItems = useSelector((state) => state.cart.items);
 
     // Lấy dữ liệu từ localStorage khi component được mount
     useEffect(() => {
@@ -25,12 +26,17 @@ const ProductDetail = ({ product }) => {
         savedCart.forEach(item => {
             dispatch(addToCart(item));
         });
-    }, [dispatch]); // Đặt useEffect ở đây
+    }, [dispatch]);
 
     const handleThumbnailClick = (src) => {
         setMainImage(src);
     };
-
+    const formatCurrency = (value) => {
+        return new Intl.NumberFormat('vi-VN', {
+            style: 'currency',
+            currency: 'VND',
+        }).format(value);
+    };
     // Hàm thêm vào giỏ hàng
     const handleAddToCart = () => {
         const cartItem = {
@@ -57,7 +63,8 @@ const ProductDetail = ({ product }) => {
                     setError(data.message);
                 } else {
                     setProduct(data);
-                    setMainImage(data.Image);
+                    setMainImage(data.Image); // Đặt hình ảnh chính mặc định
+                    setImages(data.images);   // Lấy danh sách ảnh từ API
                     setError('');
                 }
             } catch (err) {
@@ -92,16 +99,20 @@ const ProductDetail = ({ product }) => {
                         <div className="product-detail">
                             <div className="product-images">
                                 <div className="main-image">
-                                    <img id="mainImage" src={mainImage} alt="Sản phẩm" width="400px" />
+                                    <img id="mainImage" src={mainImage} alt="Sản phẩm" height="380px" />
                                 </div>
                                 <div className="thumbnail-images">
-                                    <img
-                                        className="thumbnail"
-                                        src={sp.Image}
-                                        alt="Thumbnail 1"
-                                        width="100px"
-                                        onClick={() => handleThumbnailClick(sp.Image)}
-                                    />
+                                    {/* Duyệt qua danh sách ảnh và hiển thị dưới dạng thumbnail */}
+                                    {images.map((imageSrc, index) => (
+                                        <img
+                                            key={index}
+                                            className="thumbnail"
+                                            src={imageSrc}
+                                            alt={`Thumbnail ${index + 1}`}
+                                            width="100px"
+                                            onClick={() => handleThumbnailClick(imageSrc)}
+                                        />
+                                    ))}
                                 </div>
                             </div>
                             <div className="product-info">
@@ -109,8 +120,14 @@ const ProductDetail = ({ product }) => {
                                 <hr />
                                 <p className="product-description">{sp.Description}</p>
                                 <div className="product-price">
-                                    <p className="old-price">3.560.000đ</p>
-                                    <p>Giá: {Number(sp.Price).toLocaleString('vi')} VNĐ</p>
+                                    {sp.Promotion > 0 ? (
+                                        <>
+                                            <p className="old-price">{formatCurrency(sp.Price)}</p>
+                                            <p className="new-price">{formatCurrency(sp.Price - (sp.Promotion * sp.Price) / 100)}</p>
+                                        </>
+                                    ) : (
+                                        <p className="new-price">{formatCurrency(sp.Price)}</p>
+                                    )}
                                 </div>
                                 <button onClick={handleAddToCart} className="btn-add-to-cart">Thêm vào giỏ</button>
                                 <button className="btn-buy-now">Mua ngay</button>
@@ -126,16 +143,16 @@ const ProductDetail = ({ product }) => {
                                     </tr>
                                     <tr>
                                         <td>Hãng</td>
-                                        <td>{sp.Shop_Hidden}</td>
+                                        <td>{sp.Brand_Name}</td>
                                     </tr>
                                     <tr>
                                         <td>Model</td>
-                                        <td>{sp.Product_ID}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Thông số</td>
                                         <td>{sp.Description}</td>
                                     </tr>
+                                    {/* <tr>
+                                        <td>Thông số</td>
+                                        <td>{sp.Description}</td>
+                                    </tr> */}
                                 </tbody>
                             </table>
                         </div>

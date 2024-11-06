@@ -51,20 +51,17 @@
 .product-price > .old-price {
   text-decoration: line-through;
   color: #575353;
-  font-size: 34px;
+  font-size: 28px;
 }
 
-.product-price > .sale-price {
-  color: #E41717;
-  font-size: 34px;
-  font-weight: 800;
-  margin-bottom: 20px;
-}
 
 .product-price > button {
   background-color: #56A4FF;
 }
-
+.product-price > .new-price { color: #E41717;
+  font-size: 26px;
+  font-weight: 800;
+  margin-bottom: 20px;}
 
 .btn-buy-now {
   padding: 10px 20px;

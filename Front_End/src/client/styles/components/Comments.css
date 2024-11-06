@@ -33,7 +33,7 @@
 }
 
 .comments-section button {
-    background-color: #4CAF50;
+    background-color: #56A4FF;
     color: white;
     padding: 10px;
     border: none;
@@ -42,5 +42,5 @@
 }
 
 .comments-section button:hover {
-    background-color: #45a049;
+    background-color: hsl(220, 81%, 41%);
 }

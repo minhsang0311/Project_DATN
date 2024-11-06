@@ -43,6 +43,7 @@ exports.getAllProducts = (req, res) => {
         res.json(data);
     });
 };
+
 //Route lấy danh sách sản phẩm
 exports.getAllProducts = (req, res) => {
     let sql = `SELECT Product_ID, Category_ID, Product_Name, Image, Price, Description, Views, Show_Hidden FROM Products`;
@@ -64,25 +65,49 @@ exports.getProductsNew = (req, res) => {
         }
     });
 };
-exports.getAllproductDetail =  function (req, res) {
+exports.getAllproductDetail = function (req, res) {
     let id = parseInt(req.params.id || 0);
     if (isNaN(id) || id <= 0) {
         res.json({ "message": "Không tìm được sản phẩm", "id": id });
         return;
     }
-    let sql = `SELECT Product_ID, Category_ID, Product_Name, Image, Price, Description, Views, Show_Hidden 
-               FROM products WHERE Product_ID = ?`;
 
-    db.query(sql, id, (err, data) => {
+    // Query to get the main product details with the brand name
+    let productSql = `
+        SELECT p.Product_ID, p.Category_ID, p.Product_Name, p.Image, p.Price, p.Description, p.Promotion,  p.Views, b.Brand_Name
+        FROM products p
+        JOIN brand b ON p.Brand_ID = b.Brand_ID
+        WHERE p.Product_ID = ?
+    `;
+
+    // Query to get the product images
+    let imagesSql = `SELECT Image_URL FROM product_images WHERE Product_ID = ?`;
+
+    db.query(productSql, id, (err, productData) => {
         if (err) {
             res.json({ "message": "Lỗi lấy chi tiết một sản phẩm", err });
-        } else if (data.length === 0) {
+        } else if (productData.length === 0) {
             res.json({ "message": "Sản phẩm không tồn tại", "id": id });
         } else {
-            res.json(data[0]);  // Trả về thông tin sản phẩm
+            // Fetch product images
+            db.query(imagesSql, id, (err, imagesData) => {
+                if (err) {
+                    res.json({ "message": "Lỗi lấy ảnh sản phẩm", err });
+                } else {
+                    // Format the response
+                    const productDetail = {
+                        ...productData[0],
+                        images: imagesData.map(image => image.Image_URL)  // Array of image paths
+                    };
+                    res.json(productDetail);
+                }
+            });
         }
     });
 };
+
+
+
 exports.getAllsan_pham_lien_quan = function (req, res) {
     let id = Number(req.params.id);
     let limit = Number(req.params.limit);
