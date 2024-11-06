@@ -1,28 +1,102 @@
-
+/* src/styles/components/CartPage.css */
 .cart-page {
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    max-width: 70%; /* Mở rộng chiều rộng tối đa */
-    margin: auto;
-    margin-top: 200px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 1000px;
+  margin: 0  auto ;
+  margin-top: 150px;
+}
+
+.cart-page h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+  text-align: center;
+}
+
+.cart-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.cart-table th, .cart-table td {
+  padding: 12px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+.cart-table th {
+  background-color: #4fc3f7; /* Màu nền cho tiêu đề bảng */
+  color: white;
+  font-weight: bold;
+}
+
+.cart-table tr:nth-child(even) {
+  background-color: #f2f2f2; /* Màu nền cho hàng chẵn */
+}
+
+.cart-table img {
+  width: 50px; /* Kích thước hình ảnh trong bảng */
+  height: auto;
+  border-radius: 4px;
+}
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quantity-controls button {
+  background-color: #4fc3f7; 
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  margin: 0 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.quantity-controls button:hover {
+  background-color: #1976D2; /* Màu nút khi hover */
+}
+
+.btn-clear-cart, .btn-payment {
+  background-color: #2196F3; /* Màu nền cho nút */
+  color: white;
+  border: none;
+  border-radius: 4px; 
+  padding: 12px 20px;
+  cursor: pointer;
+  margin: 10px 5px;
+  display: inline-block;
+  transition: background-color 0.3s;
+  text-align: center;
+  text-decoration: none;
+}
+
+.btn-clear-cart:hover, .btn-payment:hover {
+  background-color: #1976D2; /* Màu nút khi hover */
+}
+
+/* Thêm responsive cho màn hình nhỏ */
+@media (max-width: 768px) {
+  .cart-page {
+      padding: 10px;
   }
-  
-  .cart-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-  }
-  
   .cart-table th, .cart-table td {
-    border: 1px solid #ddd;
-    padding: 10px;
-    text-align: center;
+      font-size: 14px;
+      padding: 10px;
   }
-  
-  .cart-table th {
-    background-color: #f2f2f2;
+  .btn-clear-cart, .btn-payment {
+      width: 100%;
+      margin: 5px 0;
   }
+
   
   .cart-item-image {
     width: 50px; /* Kích thước hình ảnh sản phẩm */
@@ -45,4 +119,5 @@
   .btn-clear-cart:hover {
     background-color: #c9302c;
   }
-  
+
+}

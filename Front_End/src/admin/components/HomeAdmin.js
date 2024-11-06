@@ -11,15 +11,22 @@ import ProductAdd from '../pages/productPage/ProductAdd';
 import ProductUpdate from '../pages/productPage/ProductUpdate';
 import Statistics from '../pages/Statistics/Statistics';
 import Comments from '../pages/commentPage/commentList';
+import AdminOrder from '../pages/orderPage/AdminOrder';
 
 const HomeAdmin = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
         const token = localStorage.getItem('token');
+        const tokenRole = JSON.parse(localStorage.getItem("user"));
         if (!token) {
             alert('Bạn cần đăng nhập để truy cập trang này.');
             navigate('/register_login');
+        } else {
+            if (tokenRole.role !== 1) {
+                alert('Tài khoản chưa đủ quyền để vào')
+                navigate('/register_login');
+            }
         }
     }, [navigate]);
 
@@ -27,7 +34,6 @@ const HomeAdmin = () => {
         localStorage.removeItem('token');
         navigate('/register_login');
     };
-
     return (
         <div className="home_admin">
             <div className="sidebar">
@@ -60,7 +66,7 @@ const HomeAdmin = () => {
                         </Link>
                     </li>
                     <li>
-                        <Link to="/orders">
+                        <Link to="/admin/order">
                             <i className="bi bi-receipt"></i>
                             <span>Đơn hàng</span>
                         </Link>
@@ -85,8 +91,8 @@ const HomeAdmin = () => {
                     </li>
                     <li className="logout" onClick={handleLogout}>
                         <Link>
-                        <i className="bi bi-box-arrow-right"></i>
-                        <span>Thoát</span>
+                            <i className="bi bi-box-arrow-right"></i>
+                            <span>Thoát</span>
                         </Link>
                     </li>
                 </ul>
@@ -123,6 +129,7 @@ const HomeAdmin = () => {
                         <Route path="categoryAdd" element={<CategoryAdd />} />
                         <Route path="categoryUpdate/:id" element={<CategoryUpdate />} />
                         <Route path="comments" element={<Comments />} />
+                        <Route path="order" element={<AdminOrder />} />
                     </Routes>
                 </div>
             </div>

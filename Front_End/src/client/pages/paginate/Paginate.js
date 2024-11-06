@@ -17,14 +17,17 @@ function Paginate({ listSP, pageSize }) {
     return (
         <div>
             <Product spTrongTrang={spTrong1Trang} />
-            <ReactPaginate
-                nextLabel=">"
-                previousLabel="<"
-                pageCount={tongSoTrang}
-                onPageChange={handlePageClick}
-                containerClassName="pagination"
-                activeClassName="active"
-            />
+            {/* Chỉ hiển thị ReactPaginate nếu tổng số trang lớn hơn 1 */}
+            {tongSoTrang > 1 && (
+                <ReactPaginate
+                    nextLabel=">"
+                    previousLabel="<"
+                    pageCount={tongSoTrang}
+                    onPageChange={handlePageClick}
+                    containerClassName="pagination"
+                    activeClassName="active"
+                />
+            )}
         </div>
     );
 }

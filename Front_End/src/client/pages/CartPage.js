@@ -9,9 +9,9 @@ import Footer from '../components/Footer';
 const formatCurrency = (value) => {
     return Number(value).toLocaleString('vi') + ' VNĐ';
 };
-
 const CartPage = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate(); // Khai báo useNavigate
     const items = useSelector(state => state.cart.items);
     const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
@@ -53,7 +53,7 @@ const CartPage = () => {
                                     </td>
                                     <td>{formatCurrency(item.price * item.quantity)}</td>
                                     <td>
-                                        <button onClick={() => dispatch(removeFromCart(item.id))}>Xóa</button>
+                                        <button onClick={() => dispatch(removeFromCart(item.id))}>🗑️</button>
                                     </td>
                                 </tr>
                             ))}
@@ -66,6 +66,15 @@ const CartPage = () => {
                         dispatch(clearCart());
                     }
                 }} className="btn-clear-cart">Xóa tất cả</button>
+                 {items.length > 0 && (
+                    <button 
+                        onClick={navigate('./payment')} 
+                        className="btn-payment"
+                        style={{ marginTop: '10px' }}
+                    >
+                        Thanh Toán
+                    </button>
+                )}
             </div>
             <Footer />
         </Fragment>

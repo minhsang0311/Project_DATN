@@ -23,16 +23,25 @@ const ProductList = () => {
     }, [token]); // Đảm bảo useEffect chạy lại khi token thay đổi
 
     const deleteProduct = (id) => {
-        if (window.confirm('Bạn có muốn xóa sản phẩm không?') === false) return;
-        
+        if (window.confirm('Bạn có muốn xóa sản phẩm không?') === false) return;
+    
         fetch(`${url}/productDelete/${id}`, {
             method: 'DELETE',
-            headers: { "Content-type": "application/json", 'Authorization': 'Bearer ' + token }
+            headers: {
+                "Content-type": "application/json",
+                'Authorization': 'Bearer ' + token
+            }
         })
-            .then(res => res.json())
-            .then(() => window.location.href = '/admin/products')
-            .catch(error => console.error('Error deleting product:', error));
+            .then(res => {
+                if (!res.ok) {
+                    return res.json().then(err => { alert(err.message); });
+                } else {
+                    alert("Đã xóa sản phẩm")
+                    window.location.href = '/admin/products';
+                }
+            })
     };
+    
 
     return (
         <div className="box-productlist">

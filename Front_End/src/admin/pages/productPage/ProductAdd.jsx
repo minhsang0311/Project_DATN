@@ -1,11 +1,27 @@
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 // import { useSelector } from 'react-redux';
 import '../../styles/pages/CategoryAdd.css'
 const ProductAdd = () => {
-    const [product, setProduct] = useState({})
-    const [image, setImage] = useState(null)
-    // const token = useSelector(state => state.auth.token);
+    const token = localStorage.getItem('token')
+    const [product, setProduct] = useState({});
+    const [image, setImage] = useState(null);
+    const [categories, setCategories] = useState([]);
+    const [brands, setBrands] = useState([]);
+    useEffect(() => {
+        fetch(`http://localhost:3000/admin/category`, {
+            method:"get", 
+            headers:{ 'Content-Type':'application/json' ,'Authorization':'Bearer '+token}
+        })
+            .then(res => res.json())
+            .then(data => setCategories(data))
+        fetch(`http://localhost:3000/admin/brand`, {
+            method:"get", 
+            headers:{ 'Content-Type':'application/json' ,'Authorization':'Bearer '+token},
+        })
+            .then(res => res.json())
+            .then(data => setBrands(data))
+    }, [])
     const uploadFile = (event) => {
         setImage(event.target.files[0]);
     };
@@ -25,7 +41,7 @@ const ProductAdd = () => {
             method: "post",
             body: formData,
             // headers: { 'Authorization': 'Bearer ' + token }
-            headers: { 'Authorization': 'Bearer ' }
+            headers: { 'Authorization': 'Bearer '+token}
         };
         fetch(url, opt)
             .then(res => res.json())
@@ -72,26 +88,38 @@ const ProductAdd = () => {
                             />
                         </div>
                         <div className="form-group">
-                            <label htmlForfor="product-category">Chọn danh mục</label>
-                            <input
-                                type="number"
+                            <label htmlFor="product-category">Chọn danh mục</label>
+                            <select
                                 id="product-category"
-                                placeholder="Chọn danh mục sản phẩm ..."
                                 value={product.Category_ID || ''}
                                 onChange={e =>
                                     setProduct({ ...product, Category_ID: e.target.value })
-                                } />
+                                }
+                            >
+                                <option value="">Chọn danh mục sản phẩm ...</option>
+                                {categories.map(category => (
+                                    <option key={category.Category_ID} value={category.Category_ID}>
+                                        {category.Category_Name}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
                         <div className="form-group">
-                            <label htmlForfor="product-category">Chọn hãng</label>
-                            <input
-                                type="number"
+                            <label htmlFor="product-brand">Chọn hãng</label>
+                            <select
                                 id="product-brand"
-                                placeholder="Chọn hãng sản phẩm ..."
                                 value={product.Brand_ID || ''}
                                 onChange={e =>
                                     setProduct({ ...product, Brand_ID: e.target.value })
-                                } />
+                                }
+                            >
+                                <option value="">Chọn hãng sản phẩm ...</option>
+                                {brands.map(brand => (
+                                    <option key={brand.Brand_ID} value={brand.Brand_ID}>
+                                        {brand.Brand_Name}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
                     </div>
                     <div className="form-group-right">
@@ -134,8 +162,8 @@ const ProductAdd = () => {
                                         type="radio"
                                         name="visibility"
                                         value={false}
-                                        onChange={e => 
-                                            setProduct({...product, Show_Hidden: e.target.value})
+                                        onChange={e =>
+                                            setProduct({ ...product, Show_Hidden: e.target.value })
                                         }
                                     /> Ẩn
                                 </label>
@@ -144,8 +172,8 @@ const ProductAdd = () => {
                                         type="radio"
                                         name="visibility"
                                         value={true}
-                                        onChange={e => 
-                                            setProduct({...product, Show_Hidden: e.target.value})
+                                        onChange={e =>
+                                            setProduct({ ...product, Show_Hidden: e.target.value })
                                         }
                                     /> Hiện
                                 </label>

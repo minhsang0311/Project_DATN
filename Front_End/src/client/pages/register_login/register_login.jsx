@@ -1,21 +1,30 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { registerUser } from '../../services/authService';
+import { Link } from 'react-router-dom';
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { dalogin } from "../../reducers/authSlice";
 import './register.css';
 
 const RegisterLogin = () => {
+    // Register
     const [formData, setFormData] = useState({
         User_Name: '',
         Email: '',
         Password: '',
         Phone: ''
     });
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [message, setMessage] = useState('');
     const [isRightPanelActive, setIsRightPanelActive] = useState(false);
+    const [shouldSubmit, setShouldSubmit] = useState(false);
+    
+    // Login
+    const [loginMessage, setLoginMessage] = useState(''); // Thêm trạng thái cho thông báo lỗi đăng nhập
+    const userNameRef = useRef();
+    const pwRef = useRef();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
-    // Cập nhật giá trị form khi người dùng nhập liệu
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -23,64 +32,57 @@ const RegisterLogin = () => {
             [name]: value
         });
     };
-    const handleSubmit = async (e) => {
+
+    const handleConfirmPasswordChange = (e) => {
+        setConfirmPassword(e.target.value);
+    };
+
+    const handleSubmit = (e) => {
         e.preventDefault();
-        try {
-            const response = await registerUser(formData);
-            setMessage(response.data.message); // Hiển thị thông báo từ server
-            setFormData({ User_Name: '', Email: '', Password: '', Phone: '' }); // Reset form sau khi đăng ký thành công
-            setIsRightPanelActive(false); // Chuyển về panel đăng nhập sau khi đăng ký
-        } catch (error) {
-            if (error.response) {
-                setMessage(error.response.data.message); // Hiển thị lỗi từ server
-            } else {
-                setMessage('Có lỗi xảy ra, vui lòng thử lại.');
-            }
+        if (formData.Password !== confirmPassword) {
+            setMessage('Mật khẩu và xác nhận mật khẩu không khớp!');
+            return;
         }
+        setShouldSubmit(true);
     };
-
-    // Xử lý chuyển đổi giữa các panel
-    const handleSignUpClick = () => {
-        setIsRightPanelActive(true);
-        setMessage('');
-    };
-
-    const handleSignInClick = () => {
-        setIsRightPanelActive(false);
-        setMessage('');
-    };
-    const userNameRef = useRef();
-    const pwRef = useRef();
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
 
     useEffect(() => {
-        // Kiểm tra token từ localStorage khi tải lại trang
-        const token = localStorage.getItem('token');
-        if (token) {
-            const checkTokenUrl = "http://localhost:3000/auth/check-token";
-            fetch(checkTokenUrl, {
-                headers: { 'Authorization': `Bearer ${token}` }
-            })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.valid) {
-                        dispatch(dalogin({ token })); // Lưu token vào Redux state
-                        navigate('/register_login'); // Điều hướng đến trang admin
-                    } else {
-                        localStorage.removeItem('token'); // Xóa token nếu không hợp lệ
-                    }
-                })
-                .catch(error => console.error("Đã xảy ra lỗi:", error));
+        const registerUser = async () => {
+            const url = "http://localhost:3000/auth/register";
+            const opt = {
+                method: "POST",
+                body: JSON.stringify(formData),
+                headers: { 'Content-Type': 'application/json' }
+            };
+
+            try {
+                const response = await fetch(url, opt);
+                const data = await response.json();
+                setMessage(data.message);
+                if (response.ok) {
+                    setFormData({ User_Name: '', Email: '', Password: '', Phone: '' });
+                    setConfirmPassword('');
+                    alert('Vui lòng nhập đủ thông tin!');
+                    setIsRightPanelActive(false);
+                }
+            } catch (error) {
+                setMessage('Có lỗi xảy ra, vui lòng thử lại.');
+            } finally {
+                setShouldSubmit(false);
+            }
+        };
+
+        if (shouldSubmit) {
+            registerUser();
         }
-    }, [dispatch, navigate]);
+    }, [shouldSubmit, formData]);
 
     const submitDuLieu = (event) => {
         event.preventDefault();
-        if (userNameRef.current.value === "" || pwRef.current.value === "") {alert("Nhập đủ thông tin nhé bạn ơi!");
+        if (userNameRef.current.value === "" || pwRef.current.value === "") {
+            setLoginMessage("Vui lòng nhập đủ thông tin!");
             return;
         }
-
         const url = "http://localhost:3000/auth/login";
         const tt = { User_Name: userNameRef.current.value, Password: pwRef.current.value };
         const opt = {
@@ -88,27 +90,44 @@ const RegisterLogin = () => {
             body: JSON.stringify(tt),
             headers: { 'Content-Type': 'application/json' },
         };
-
         fetch(url, opt)
             .then(res => res.json())
             .then(data => {
                 if (data.token) {
-                    localStorage.setItem('token', data.token); // Lưu token vào localStorage
-                    dispatch(dalogin(data)); // Lưu token vào Redux state
-                    console.log("Login thành công, điều hướng tới admin");
-                    navigate('/admin'); // Điều hướng đến trang admin
-                } else {
-                    alert(data.message || "Đăng nhập thất bại, vui lòng thử lại!");
+                    localStorage.setItem('token', data.token);
+                    dispatch(dalogin(data));
+                    navigate('/admin');
+                } else if (data.tokenUser) {
+                    localStorage.setItem('tokenUser', data.tokenUser);
+                    dispatch(dalogin(data));
+                    navigate('/');
+                } {
+                    setLoginMessage(data.message || "Đăng nhập thất bại, vui lòng thử lại!");
                 }
             })
-            
-            .catch(error => console.error("Đã xảy ra lỗi:", error));
+            .catch(error => {
+                console.error("Đã xảy ra lỗi:", error);
+                setLoginMessage("Có lỗi xảy ra, vui lòng thử lại!");
+            });
+    };
+
+    // Xử lý chuyển đổi giữa các panel
+    const handleSignUpClick = () => {
+        setIsRightPanelActive(true);
+        setMessage('');
+        setLoginMessage(''); // Xóa thông báo lỗi đăng nhập khi chuyển panel
+    };
+    const handleSignInClick = () => {
+        setIsRightPanelActive(false);
+        setMessage('');
+        setLoginMessage(''); // Xóa thông báo lỗi đăng nhập khi chuyển panel
     };
 
     return (
         <div className={`container_register ${isRightPanelActive ? 'right-panel-active' : ''}`} id="container">
             <div className="form-container sign-up-container">
                 <form onSubmit={handleSubmit} className="form">
+                    {message && <p className="message">{message}</p>}
                     <h1>Tạo tài khoản</h1>
                     <input
                         type="text"
@@ -135,6 +154,13 @@ const RegisterLogin = () => {
                         required
                     />
                     <input
+                        type="password"
+                        placeholder="Confirm Password"
+                        value={confirmPassword}
+                        onChange={handleConfirmPasswordChange}
+                        required
+                    />
+                    <input
                         type="number"
                         name="Phone"
                         placeholder="Phone"
@@ -144,32 +170,32 @@ const RegisterLogin = () => {
                     />
                     <button className='button_register' type="submit">Sign Up</button>
                 </form>
-                {message && <p className="message">{message}</p>}
             </div>
             <div className="form-container sign-in-container">
-                <form action="#" onSubmit={submitDuLieu}>
+                <form action="#" onSubmit={submitDuLieu} className="form">
+                    {loginMessage && <p className="message">{loginMessage}</p>}
                     <h1>Đăng nhập</h1>
                     <input
-                    className="form-control shadow-none border-danger-subtle"type="text"
-                    ref={userNameRef}
-                    required
-                />
+                        type="text"
+                        placeholder="UserName"
+                        ref={userNameRef}
+                        required
+                    />
                     <input
-                    className="form-control shadow-none border-danger-subtle"
-                    type="password"
-                    ref={pwRef}
-                    required
-                />
-                    {/* <a href="/#">Forgot your password?</a> */}
+                        type="password"
+                        placeholder="Password"
+                        ref={pwRef}
+                        required
+                    />
+                    <Link to='/forgot-password'>Forgot your password?</Link>
                     <button className='button_register' type="submit">Sign In</button>
                 </form>
-                {message && <p className="message">{message}</p>}
             </div>
             <div className="overlay-container">
                 <div className="overlay">
                     <div className="overlay-panel overlay-left">
                         <h1>Chào bạn!</h1>
-                        <p>Vui lòng đăng nhập để mua hàng</p>
+                        <p>Vui lòng đăng ký tài khoản để mua hàng</p>
                         <button className="ghost button_register" onClick={handleSignInClick}>
                             Sign In
                         </button>

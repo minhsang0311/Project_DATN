@@ -4,12 +4,12 @@ import { useSelector } from "react-redux";
 import "../../styles/pages/productUpdate.css";
 
 const ProductUpdate = () => {
+    const token = localStorage.getItem('token')
     let { id } = useParams();
     let url = `http://localhost:3000/admin`
     const [productUpdate, setProductUpdate] = useState([])
     const [image, setImage] = useState(null)
     const [imageFile, setImageFile] = useState(null);//lưu hình ảnh cũ khi không thay đổi hình ảnh cũ
-    var token = useSelector(state => state.auth.token)
     useEffect(() => {
         fetch(`${url}/productList/${id}`, {
             method: 'GET',
@@ -27,7 +27,7 @@ const ProductUpdate = () => {
                 console.log("Đã có lỗi lấy chi tiết sản phẩm", error)
                 alert("Đã có lỗi lấy chi tiết sản phẩm", error)
             })
-    }, [id])
+    }, [id, token])
     const Submit = (evt) => {
         evt.preventDefault();
         const formData = new FormData();
@@ -64,7 +64,7 @@ const ProductUpdate = () => {
     return (
         <div className="form-container-productadd">
             <div className="form-header">
-                <h2>THÊM SẢN PHẨM</h2>
+                <h2>TRANG SỬA SẢN PHẨM</h2>
             </div>
             <form action="#" className="productadd-form">
                 <div className="input-productadd">

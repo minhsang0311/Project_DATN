@@ -9,8 +9,9 @@ import CategoryList from './admin/pages/categoryPage/CategoryList.jsx';
 import CategoryAdd from './admin/pages/categoryPage/CategoryAdd.jsx';
 import CategoryUpdate from './admin/pages/categoryPage/CategoryUpdate.jsx';
 import ProductUpdate from './admin/pages/productPage/ProductUpdate.jsx';
-import Comments from './admin/pages/commentPage/commentList.jsx';    
+import Comments from './admin/pages/commentPage/commentList.jsx';
 import Statistics from './admin/pages/Statistics/Statistics.jsx';
+import AdminOrder from './admin/pages/orderPage/AdminOrder.jsx';
 
 // Component Client
 import ProductDetail from './client/pages/ProductDetail';
@@ -21,10 +22,16 @@ import CategoryProducts from './client/pages/CategoryProducts.js';
 import Search from './client/pages/Search.js';
 import RegisterLogin from './client/pages/register_login/register_login.jsx';
 import CartPage from './client/pages/CartPage.js';
+import ForgotPassword from './client/pages/forgotPassword.js';
+import ResetPassword from './client/pages/resetPassword.js';
+import ChangePassword from './client/pages/changePassword.js';
+import PaymentPage from './client/pages/PaymentPage.js'
+import OrderStatusList from './client/pages/OrderStatusList.js'
 
 function App() {
   return (
     <BrowserRouter basename="/">
+<<<<<<< HEAD
         <Routes>
 
           {/* Admin Routes */}
@@ -69,6 +76,38 @@ function App() {
 
 
         </Routes>
+=======
+      <Routes>
+        {/* <Route element={<ProtectedRoute />}> */}
+        <Route path="/admin" element={<HomeAdmin />}>
+          <Route index element={<Statistics />} />
+          <Route path="products" element={<ProductList />} />
+          <Route path="product-add" element={<ProductAdd />} />
+          <Route path="productUpdate/:id" element={<ProductUpdate />} />
+          <Route path="category" element={<CategoryList />} />
+          <Route path="categoryAdd" element={<CategoryAdd />} />
+          <Route path="categoryUpdate/:id" element={<CategoryUpdate />} />
+          <Route path="comments" element={<Comments />} />
+          <Route path="order" element={<AdminOrder />} />
+        </Route>
+        <Route path="/" element={<Home />} />
+        <Route path="/register_login" element={<RegisterLogin />} />
+        <Route path="/search" element={<Search />} />
+        <Route path="/productDetail/:id" element={<ProductDetail />} />
+        <Route path="/search" element={<Search />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/category/:Category_ID" element={<CategoryProducts />} />
+        <Route path="/cart" element={<CartPage />} />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="comments" element={<Comments />} />
+        <Route path="/payment" element={<PaymentPage />} />
+        <Route path="/order" element={<OrderStatusList />} />
+        <Route path='/'>
+          <Route path="/change-password" element={<ChangePassword />} />
+        </Route>
+      </Routes>
+>>>>>>> 5117474e269c11090d5a30e5bb5cea54701fa436
     </BrowserRouter>
   );
 }
