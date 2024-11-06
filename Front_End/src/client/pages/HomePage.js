@@ -10,29 +10,11 @@ import Header from '../components/Header';
 
 
 function Home() {
-  // Sử dụng useEffect để thêm sự kiện cuộn và xử lý nút cuộn lên
-//   useEffect(() => {
-//     const scrollToTopBtn = document.getElementById("scrollToTop");
-//     const handleScroll = () => {
-//       if (window.scrollY > 200) {
-//         scrollToTopBtn.style.display = "flex"; // Hiển thị nút khi cuộn xuống hơn 200px
-//       } else {
-//         scrollToTopBtn.style.display = "none"; // Ẩn nút khi cuộn lên trên
-//       }
-//     };
-//     window.addEventListener("scroll", handleScroll); // Lắng nghe sự kiện cuộn
-//     // Cleanup sự kiện khi component bị hủy
-//     return () => window.removeEventListener("scroll", handleScroll);
-//   }, []);
-
-//   const scrollToTop = () => {
-//     window.scrollTo({ top: 0, behavior: "smooth" }); // Cuộn mượt lên đầu trang
-//   };
 
     return (
         <Fragment>
             <Header/>
-        <div className="home">
+            <div className="home">
             <Banner />
             <SpKhuyenMai />
             <DanhMuc_Home/>

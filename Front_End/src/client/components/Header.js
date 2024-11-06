@@ -24,7 +24,7 @@ function Header() {
       <div className="top">
         <ul className="trai">
           <Link to="/about">Giới thiệu</Link>|
-          <Link to="/tintuc">Tin tức</Link>|
+          <Link to="/lienhe">Liên hệ</Link>|
           <li>
             <a href="/#">
               Hotline: <span><b>077718379</b></span>
@@ -52,7 +52,7 @@ function Header() {
         </div>
         <div className='giohang'>
         <Link to="/cart">
-          <i className="fa-solid fa-cart-shopping">{totalQuantity > 0 ? totalQuantity : ''}</i>
+          <i className="fa-solid fa-cart-shopping"><h2>{totalQuantity > 0 ? totalQuantity : ''}</h2></i>
         </Link>
       </div>
       </div>

@@ -155,58 +155,32 @@
 .box_gt_home {
    display: grid;
    grid-template-columns: repeat(3, 1fr); 
-   gap: 20px; 
-   /* background-color: #1D396B;  */
-   background: linear-gradient(to bottom, #1D396B, #3D6FE1);
-   padding: 0 5%;
+   gap: 50px; 
+   padding: 0 5% 50px;
    position: relative;
-   margin:150px auto 50px;
+   margin:200px auto 0px;
  }
  
  .item {
-   padding: 100px 20px;
-   border-radius: 10px;
+   padding: 100px 20px 50px;
    text-align: center;
    position: relative; 
    display: flex;
    flex-direction: column;
    align-items: center;
    gap: 10px; 
- }
- .item img {
+   min-width: 400px;
+   background-color: #ffffff;
+   box-shadow: rgba(14, 63, 126, 0.04) 0px 0px 0px 1px, rgba(42, 51, 69, 0.04) 0px 1px 1px -0.5px, rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px, rgba(42, 51, 70, 0.04) 0px 6px 6px -3px, rgba(14, 63, 126, 0.04) 0px 12px 12px -6px, rgba(14, 63, 126, 0.04) 0px 24px 24px -12px;    }   .item img {
    position: absolute;
    top: -100px; 
    max-width: 200px;
    height: auto;
    border-radius: 1000px;
-   box-shadow: rgba(255, 255, 255, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset; }
- .item p.tieude {margin-top: 30px; color: #ffffff; font-size: 16px}
- .item p {margin-top: 40px; color: #ffffff; font-size: 14px;line-height: 1.7;}
- .scroll-to-top {
-   position: fixed;
-   bottom: 20px;
-   right: 20px;
-   background-color: #3d6fe1;
-   color: white;
-   border: 2px solid white;
-   border-radius: 10px;
-   width: 50px;
-   height: 50px;
-   font-size: 20px;
-   cursor: pointer;
-   display: none; /* Ẩn nút ban đầu */
-   justify-content: center;
-   align-items: center;
-   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-   transition: opacity 0.3s ease-in-out;
+   /* box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px; */
  }
- .scroll-to-top:hover {background-color: #1D396B;}
- .item p {
-   margin-top: 40px; 
-   color: #ffffff; 
-   font-size: 14px;
-   line-height: 1.7;
- }
+.item p.tieude {margin-top: 30px; color: #000000; font-size: 16px}
+ .item p {margin-top: 20px; color: #af7a7a; font-size: 14px;line-height: 1.7;}
  
 .gt_home img{
    width: 100%;

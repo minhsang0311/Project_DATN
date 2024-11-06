@@ -32,7 +32,7 @@ function CategoryProducts() {
                     </div>
                     <div className="right-products">
                         <div className="header1">
-                            <h1>Sản phẩm trong danh mục: {category_Name}</h1>
+                            <h1> {category_Name}</h1>
                         </div>
                         <Paginate listSP={listsp} pageSize={4} />
                     </div>

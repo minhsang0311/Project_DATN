@@ -16,6 +16,7 @@ import Statistics from './admin/pages/Statistics/Statistics.jsx';
 import ProductDetail from './client/pages/ProductDetail';
 import Home from './client/pages/HomePage.js';
 import About from './client/pages/About.js';
+import Cuahang from './client/pages/Cuahang.js';
 import CategoryProducts from './client/pages/CategoryProducts.js';
 import Search from './client/pages/Search.js';
 import RegisterLogin from './client/pages/register_login/register_login.jsx';
@@ -60,6 +61,7 @@ function App() {
           <Route path="/" element={<Home />}></Route>
 
           <Route path="/about" element={<About />} />
+          <Route path="/cuahang" element={<Cuahang />} />
           <Route path="/search" element={<Search />} />
           <Route path="/productDetail/:id" element={<ProductDetail />} />
           <Route path="/category/:Category_ID" element={<CategoryProducts />} />
