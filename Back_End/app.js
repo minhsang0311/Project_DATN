@@ -9,7 +9,7 @@ const corsOpt = {
 };
 const path = require('path');
 
-const { authMiddleware, adminMiddleware } = require('../Back_End/middlewares/authMiddlware')
+const { adminMiddleware } = require('../Back_End/middlewares/adminMiddlware')
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
@@ -19,12 +19,15 @@ const productRoutesAdmin = require('./routes/adminRoutes/productRoutes');
 const categoryRoutesAdmin = require('./routes/adminRoutes/categoryRoutes');
 const commentRoutesAdmin = require('./routes/adminRoutes/commentRoutes');
 const StatisticsRoutesAdmin = require('./routes/adminRoutes/Statistics')
-const orderRoutesAdmin = require('./routes/adminRoutes/orderRoutes')
+const brandRoutesAdmin = require('./routes/adminRoutes/brandRoutes')
 //User
 const productRoutesClient = require('./routes/userRoutes/productRoutes');
 const categoryRoutesClient = require('./routes/userRoutes/categoryRoutes');
-
+const forgotPassword = require('./routes/userRoutes/forgotPassword')
+const changePassword = require('./routes/userRoutes/changePassword')
 const componentRoutesClient = require('./routes/userRoutes/commentRoutes');
+const orderRoutesAdmin = require('./routes/adminRoutes/orderRoutes')
+//User
 const orderRoutesClient = require('./routes/userRoutes/orderRoutes')
 
 
@@ -38,6 +41,7 @@ app.use('/admin', [
     productRoutesAdmin,
     commentRoutesAdmin,
     StatisticsRoutesAdmin,
+    brandRoutesAdmin,
     orderRoutesAdmin
 ]);
 
@@ -45,6 +49,8 @@ app.use('/user',[
     productRoutesClient, 
     categoryRoutesClient,
     componentRoutesClient,
+    forgotPassword,
+    changePassword,
     orderRoutesClient
 ]);
 

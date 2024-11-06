@@ -6,7 +6,6 @@ function CategoryUpdate() {
     const [category, setCategory] = useState({});
     const { id } = useParams();
     const navigate = useNavigate();
-
     useEffect(() => {
         const opt = {
             method: "get",
@@ -15,7 +14,6 @@ function CategoryUpdate() {
                 'Authorization': 'Bearer '
             }
         };
-
         fetch(`http://localhost:3000/admin/categoryDetail/${id}`, opt)
             .then(res => res.json())
             .then(data => setCategory(data))
@@ -32,8 +30,12 @@ function CategoryUpdate() {
                 'Authorization': 'Bearer '
             }
         };
+<<<<<<< HEAD
+        fetch(`http://localhost:3000/admin/category/${id}`, opt)
+=======
 
         fetch(`http://localhost:3000/admin/categoryUpdate/${id}`, opt)
+>>>>>>> f81fcf3944b3d9aa639b8b10b87130179cde4683
             .then(res => res.json())
             .then(data => {
                 console.log("Kết quả =", data);
@@ -41,7 +43,6 @@ function CategoryUpdate() {
             })
             .catch(error => console.error("Lỗi khi cập nhật:", error));
     };
-
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setCategory(prevCategory => ({
@@ -49,7 +50,6 @@ function CategoryUpdate() {
             [name]: value
         }));
     };
-
     return (
         <form className="category-update-form col-md-11 border border-danger border-2 m-auto mt-2" onSubmit={submitData}>
             <div className="input-group">

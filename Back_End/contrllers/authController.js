@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const db = require('../config/db'); // Đảm bảo đây là `mysql2/promise`
+const db = require('../config/db');
 const saltRounds = 10;
 const fs = require('fs');
 const PRIVATE_KEY = fs.readFileSync('private-key.txt');
@@ -35,22 +35,47 @@ y/xS/zHy35xFnliUvUP2Hb0=`;
 // Hàm đăng ký người dùng
 exports.register = async (req, res) => {
     const { User_Name, Email, Password, Phone } = req.body;
+
+    // Kiểm tra dữ liệu đầu vào
     if (!User_Name || !Password || !Email || !Phone) {
         return res.status(400).json({ message: 'Vui lòng cung cấp đầy đủ thông tin.' });
     }
+
+    // Kiểm tra User_Name có chứa cả chữ và số
+    const usernameRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]+$/;
+    if (!usernameRegex.test(User_Name)) {
+        return res.status(400).json({ message: 'Tên người dùng chỉ được chứa chữ cái và số.' });
+    }
+
+    // Kiểm tra Password: ít nhất 8 ký tự, có chữ hoa, chữ thường, số và ký tự đặc biệt
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!passwordRegex.test(Password)) {
+        return res.status(400).json({
+            message: 'Mật khẩu phải chứa ít nhất 8 ký tự, bao gồm chữ hoa ở đầu, chữ thường, số và ký tự đặc biệt.'
+        });
+    }
+    // Kiểm tra Phone: bắt đầu bằng số 0 và có từ 10 đến 11 chữ số
+    const phoneRegex = /^0\d{9,10}$/;
+    if (!phoneRegex.test(Phone)) {
+        return res.status(400).json({
+            message: 'Số điện thoại phải bắt đầu bằng số 0 và có từ 10 đến 11 chữ số.'
+        });
+    }
     try {
-        // Gọi db.query và kiểm tra giá trị trả về
-        const results = await db.query("SELECT * FROM user WHERE User_Name = ?", [User_Name]);
-        console.log("results, ", results)
-        // Nếu results là một đối tượng, có thể bạn cần truy cập một thuộc tính nào đó để lấy dữ liệu
-        // Ví dụ, nếu kết quả có dạng { results: [...] }, bạn có thể sử dụng results.results
-        if (results.length > 0) {
-            return res.status(400).json({ message: 'Username đã tồn tại.' });
+        // Kiểm tra trùng lặp User_Name hoặc Email
+        const results = await db.query("SELECT User_Name, Email FROM user WHERE User_Name = ? OR Email = ?", [User_Name, Email]);
+        if (results && results.length > 0) {
+            if (results.some(user => user.User_Name === User_Name)) {
+                return res.status(400).json({ message: 'Tên người dùng đã tồn tại.' });
+            }
+            if (results.some(user => user.Email === Email)) {
+                return res.status(400).json({ message: 'Email đã tồn tại.' });
+            }
         }
 
+        // Mã hóa mật khẩu và lưu vào cơ sở dữ liệu
         const hashedPassword = await bcrypt.hash(Password, saltRounds);
-        const insertResult = await db.query("INSERT INTO user (User_Name, Email, Password, Phone) VALUES (?, ?, ?, ?)", 
-                                             [User_Name, Email, hashedPassword, Phone]);
+        await db.query("INSERT INTO user (User_Name, Email, Password, Phone) VALUES (?, ?, ?, ?)", [User_Name, Email, hashedPassword, Phone]);
         return res.status(201).json({ message: 'Tạo tài khoản thành công.' });
     } catch (error) {
         console.error('Lỗi khi tạo tài khoản:', error);
@@ -59,61 +84,70 @@ exports.register = async (req, res) => {
 };
 
 
+
 exports.login = (req, res) => {
     const { User_Name, Password } = req.body;
     if (!User_Name || !Password) {
         return res.status(400).json({ message: 'Vui lòng cung cấp username và password.' });
     }
-
-    // Truy vấn để lấy thông tin người dùng theo User_Name
     let findUserSql = `SELECT * FROM User WHERE User_Name = ?`;
     db.query(findUserSql, [User_Name], async (err, results) => {
         if (err) {
             return res.status(500).json({ message: 'Có lỗi xảy ra khi truy vấn cơ sở dữ liệu.' });
         }
-
         if (!results || results.length === 0) {
             return res.status(400).json({ message: 'Username hoặc password không đúng.' });
         }
-
         const user = results[0];
-        const match = await bcrypt.compare(Password, user.Password); // So sánh mật khẩu
+        console.log('user', user.Role)
+        const match = await bcrypt.compare(Password, user.Password);
         if (!match) {
             return res.status(400).json({ message: 'Username hoặc password không đúng.' });
         }
-
-        if (user.Role === 1 ) {
-            const token = jwt.sign(
-                { 
-                    userId: user.User_ID, 
-                    username: user.User_Name, 
-                    role: user.Role 
+        if (user.Role === 1) {
+            var token = jwt.sign(
+                {
+                    userId: user.User_ID,
+                    username: user.User_Name,
+                    role: user.Role
                 },
-                // PRIVATE_KEY,
                 secret,
-                { 
-                    expiresIn: '3h' 
+                {
+                    expiresIn: '1h'
                 }
             );
-
             return res.status(200).json({
                 message: 'Đăng nhập thành công với quyền admin.',
-                token: token, // Trả về token nếu là admin
-                expiresIn: "3 giờ",
-                userInfo: { 
-                    id: user.User_ID, 
+                token: token,
+                expiresIn: "1h",
+                userInfo: {
+                    id: user.User_ID,
                     username: user.User_Name,
-                    role: user.Role 
+                    role: user.Role
                 }
             });
-        } else {
-            // Nếu là người dùng bình thường, không tạo token
+        } 
+        if (user.Role === 0) {
+            var tokenUser = jwt.sign(
+                {
+                    userId: user.User_ID,
+                    username: user.User_Name,
+                    roleUser: user.Role
+                },
+                secret,
+                {
+                    expiresIn: '1h'
+                }
+            );
+            console.log('tokenUser', tokenUser)
             return res.status(200).json({
-                message: 'Đăng nhập thành công.',
-                userInfo: { 
-                    id: user.User_ID, 
-                    username: user.User_Name, 
-                    role: user.Role 
+                message: 'Đăng nhập thành công với quyền user.',
+                tokenUser: tokenUser,
+                expiresIn: "1h",
+                userInfo: {
+                    id: user.User_ID,
+                    username: user.User_Name,
+                    role: user.Role
                 }
             });
         }

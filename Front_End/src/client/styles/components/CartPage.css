@@ -96,4 +96,28 @@
       width: 100%;
       margin: 5px 0;
   }
+
+  
+  .cart-item-image {
+    width: 50px; /* Kích thước hình ảnh sản phẩm */
+    height: auto; /* Giữ tỷ lệ hình ảnh */
+  }
+  
+  h2 {
+    color: #333;
+  }
+  
+  .btn-clear-cart {
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .btn-clear-cart:hover {
+    background-color: #c9302c;
+  }
+
 }

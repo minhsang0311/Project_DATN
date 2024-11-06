@@ -3,8 +3,6 @@ import '../../styles/pages/commentList.css';
 const Comments = () => {
     const [comments, setComments] = useState([]);
     const [error, setError] = useState('');
-
-    // Lấy tất cả bình luận khi component được mount
     useEffect(() => {
         const fetchComments = async () => {
             try {
@@ -15,11 +13,8 @@ const Comments = () => {
                 setError('Lỗi khi lấy dữ liệu bình luận');
             }
         };
-
         fetchComments();
     }, []);
-
-    // Cập nhật trạng thái hiển thị của bình luận
     const handleVisibilityToggle = async (id, currentStatus) => {
         const newStatus = currentStatus === 1 ? 0 : 1;
         try {
