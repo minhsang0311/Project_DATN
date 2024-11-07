@@ -5,6 +5,7 @@ import { removeFromCart, clearCart, incrementQuantity, decrementQuantity } from 
 import '../styles/components/CartPage.css';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { useNavigate } from 'react-router-dom';
 
 const formatCurrency = (value) => {
     return Number(value).toLocaleString('vi') + ' VNĐ';

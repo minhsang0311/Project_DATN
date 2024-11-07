@@ -41,7 +41,7 @@ function Header() {
       <div className="top">
         <ul className="trai">
           <Link to="/about">Giới thiệu</Link>|
-          <Link to="/tintuc">Tin tức</Link>|
+          <Link to="/lienhe">Liên hệ</Link>|
           <li>
             <a href="/#">
               Hotline: <span><b>077718379</b></span>
