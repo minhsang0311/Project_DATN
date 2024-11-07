@@ -3,21 +3,25 @@ import { Link } from 'react-router-dom';
 import '../styles/components/Cuahang.css';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import Paginate from './paginate/Paginate';// Import component phân trang
 
 function Cuahang() {
     const [listsp, setListSP] = useState([]);
-    const [filteredSP, setFilteredSP] = useState([]); // Khởi tạo là mảng rỗng
+    const [filteredSP, setFilteredSP] = useState([]);
     const [brands, setBrands] = useState([]);
     const [brand, setBrand] = useState("");
     const [minPrice, setMinPrice] = useState("");
     const [maxPrice, setMaxPrice] = useState("");
     const [sortOrder, setSortOrder] = useState("");
 
+    // Page size for pagination
+    const pageSize = 6; // Số sản phẩm mỗi trang
+
     useEffect(() => {
         fetch("http://localhost:3000/user/productList")
             .then(res => res.json())
             .then(data => {
-                setListSP(Array.isArray(data) ? data : []); // Đảm bảo data là mảng
+                setListSP(Array.isArray(data) ? data : []);
                 setFilteredSP(Array.isArray(data) ? data : []);
             });
     }, []);
@@ -48,16 +52,16 @@ function Cuahang() {
             .then(res => res.json())
             .then(data => setFilteredSP(Array.isArray(data) ? data : []))
             .catch(error => console.error('Error fetching filtered products:', error));
-            console.log(url)
+        console.log(url);
     };
+
     const handleClearFilters = () => {
         setBrand("");
         setMinPrice("");
         setMaxPrice("");
         setSortOrder("");
-        setFilteredSP(listsp); // Reset to the full product list
+        setFilteredSP(listsp); // Reset về danh sách đầy đủ
     };
-    
 
     return (
         <Fragment>
@@ -68,10 +72,10 @@ function Cuahang() {
                     <Link to="/cuahang"><h3>Cửa hàng</h3></Link>
                 </div>
                 <div className='noidung'>
-                    <div div className="left_box">
+                    <div className="left_box">
                         <h4>Lọc giá</h4>
-                        <button onClick={() => setSortOrder('highToLow')}className={sortOrder === 'highToLow' ? 'active' : ''}>Giá giảm dần</button>
-                        <button onClick={() => setSortOrder('lowToHigh')}className={sortOrder === 'lowToHigh' ? 'active' : ''}>Giá tăng dần</button>
+                        <button onClick={() => setSortOrder('highToLow')} className={sortOrder === 'highToLow' ? 'active' : ''}>Giá giảm dần</button>
+                        <button onClick={() => setSortOrder('lowToHigh')} className={sortOrder === 'lowToHigh' ? 'active' : ''}>Giá tăng dần</button>
                         
                         <div className="price-range">
                             <input
@@ -100,43 +104,10 @@ function Cuahang() {
                             <button onClick={handleFilter}>Lọc</button>
                             <button onClick={handleClearFilters} className="clear-filters">Bỏ lọc</button>
                         </div>
-                </div>
+                    </div>
 
                     <div className="right-products">
-                        <div className="box-sp">
-                            {filteredSP.length > 0 ? (
-                                filteredSP.map((sp, i) => (
-                                    <div className="product" key={i}>
-                                        {sp.Promotion > 0 && (
-                                            <div className="discount-label">
-                                                -{sp.Promotion}%
-                                            </div>
-                                        )}
-                                        <div className="img-wrapper">
-                                            <img src={sp.Image} alt={sp.Product_Name} />
-                                        </div>
-                                        <Link to={"/productDetail/" + sp.Product_ID}>
-                                            <p>{sp.Product_Name}</p>
-                                        </Link>
-                                        <div className="price_giohang">
-                                            <div className="price">
-                                                {sp.Promotion > 0 ? (
-                                                    <>
-                                                        <p className="old-price">{formatCurrency(sp.Price)}</p>
-                                                        <p className="new-price">{formatCurrency(sp.Price - (sp.Promotion * sp.Price) / 100)}</p>
-                                                    </>
-                                                ) : (
-                                                    <p className="new-price">{formatCurrency(sp.Price)}</p>
-                                                )}
-                                            </div>
-                                            <button className="add-to-cart">Giỏ hàng</button>
-                                        </div>
-                                    </div>
-                                ))
-                            ) : (
-                                <p>Không có sản phẩm nào phù hợp.</p>
-                            )}
-                        </div>
+                        <Paginate listSP={filteredSP} pageSize={pageSize} />
                     </div>
                 </div>
             </div>

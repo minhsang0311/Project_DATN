@@ -20,14 +20,14 @@ const categoryRoutesAdmin = require('./routes/adminRoutes/categoryRoutes');
 const commentRoutesAdmin = require('./routes/adminRoutes/commentRoutes');
 const StatisticsRoutesAdmin = require('./routes/adminRoutes/Statistics')
 const brandRoutesAdmin = require('./routes/adminRoutes/brandRoutes')
+const orderRoutesAdmin = require('./routes/adminRoutes/orderRoutes')
 //User
 const productRoutesClient = require('./routes/userRoutes/productRoutes');
 const categoryRoutesClient = require('./routes/userRoutes/categoryRoutes');
 const forgotPassword = require('./routes/userRoutes/forgotPassword')
 const changePassword = require('./routes/userRoutes/changePassword')
 const componentRoutesClient = require('./routes/userRoutes/commentRoutes');
-const orderRoutesAdmin = require('./routes/adminRoutes/orderRoutes')
-//User
+const paymentRoutesClient = require('./routes/userRoutes/paymentRoutes');
 const orderRoutesClient = require('./routes/userRoutes/orderRoutes')
 
 
@@ -51,7 +51,8 @@ app.use('/user',[
     componentRoutesClient,
     forgotPassword,
     changePassword,
-    orderRoutesClient
+    orderRoutesClient,
+    paymentRoutesClient
 ]);
 
 app.listen(3000, () => console.log('Server running on port 3000'));

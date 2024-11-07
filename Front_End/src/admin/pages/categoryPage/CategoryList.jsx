@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import '../../styles/pages/CategoryList.css';
-
-
 function CategoryList() {
     const [categories, setCategories] = useState([]);
    

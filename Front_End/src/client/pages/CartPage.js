@@ -1,5 +1,4 @@
-// src/pages/CartPage.js
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { removeFromCart, clearCart, incrementQuantity, decrementQuantity } from '../pages/cartSlice';
 import '../styles/components/CartPage.css';
@@ -10,11 +9,15 @@ import { useNavigate } from 'react-router-dom';
 const formatCurrency = (value) => {
     return Number(value).toLocaleString('vi') + ' VNĐ';
 };
+
 const CartPage = () => {
     const dispatch = useDispatch();
-    const navigate = useNavigate(); // Khai báo useNavigate
+    const navigate = useNavigate();
     const items = useSelector(state => state.cart.items);
     const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    useEffect(() => {
+        localStorage.setItem('cart', JSON.stringify(items));
+    }, [items]);
 
     return (
         <Fragment>
@@ -67,9 +70,9 @@ const CartPage = () => {
                         dispatch(clearCart());
                     }
                 }} className="btn-clear-cart">Xóa tất cả</button>
-                 {items.length > 0 && (
+                {items.length > 0 && (
                     <button 
-                        onClick={navigate('./payment')} 
+                        onClick={() => navigate('/payment')} 
                         className="btn-payment"
                         style={{ marginTop: '10px' }}
                     >
