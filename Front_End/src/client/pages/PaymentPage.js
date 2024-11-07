@@ -10,15 +10,26 @@ const PaymentPage = () => {
     const [email, setEmail] = useState('');
     const [paymentMethod, setPaymentMethod] = useState('');
     const [voucherCode, setVoucherCode] = useState('');
+    const [userId, setUserId] = useState(null);
 
     useEffect(() => {
+        // Lấy giỏ hàng và User ID từ localStorage
         const storedCartItems = JSON.parse(localStorage.getItem('cart')) || [];
+        const storedUserId = JSON.parse(localStorage.getItem('user'));
+        const userID = storedUserId.id
         setCartItems(storedCartItems);
+        setUserId(userID);
     }, []);
 
     const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
     const handlePayment = () => {
+        // Kiểm tra thông tin thanh toán
+        if (!name || !address || !phone || !email || !paymentMethod || !userId) {
+            return alert("Vui lòng nhập đầy đủ thông tin trước khi thanh toán.");
+        }
+
+        // Chuẩn bị dữ liệu đơn hàng
         const orderData = {
             Product_Name: cartItems.map(item => item.name).join(', '),
             Address: address,
@@ -26,11 +37,16 @@ const PaymentPage = () => {
             Email: email,
             payment_method: paymentMethod,
             total_amount: total,
-            items: cartItems,
-            User_ID: 3,  // Replace with the actual user ID
-            Voucher_ID: voucherCode,  // Mã Voucher từ người dùng
+            items: cartItems.map(item => ({
+                Product_ID: item.id,
+                Quantity: item.quantity,
+                Price: item.price
+            })),
+            User_ID: userId,  // ID người dùng từ localStorage
+            Voucher_ID: 1,  // Mã Voucher từ người dùng
         };
 
+        // Gửi yêu cầu thanh toán
         fetch('http://localhost:3000/user/payment', {
             method: 'POST',
             headers: {
@@ -38,20 +54,18 @@ const PaymentPage = () => {
             },
             body: JSON.stringify(orderData),
         })
-        .then(response => {
-            response.json()
-            console.log(response)
-        })
+        .then(response => response.json())
         .then(data => {
             if (data.success) {
                 alert('Mua hàng thành công');
+                localStorage.removeItem('cart'); // Xoá giỏ hàng sau khi thanh toán thành công
             } else {
                 alert('Có lỗi xảy ra, vui lòng thử lại');
             }
         })
         .catch(error => {
-            console.error('Error:', error);
-            alert('Có lỗi xảy ra, vui lòng thử lại');
+            console.log('Error:', error);
+            alert('Có lỗi xảy ra, vui lòng thử lại', error);
         });
     };
 

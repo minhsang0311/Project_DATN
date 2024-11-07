@@ -17,6 +17,7 @@ import AdminOrder from './admin/pages/orderPage/AdminOrder.jsx';
 import ProductDetail from './client/pages/ProductDetail';
 import Home from './client/pages/HomePage.js';
 import About from './client/pages/About.js';
+import Cuahang from './client/pages/Cuahang.js';
 import CategoryProducts from './client/pages/CategoryProducts.js';
 import Search from './client/pages/Search.js';
 import RegisterLogin from './client/pages/register_login/register_login.jsx';
@@ -44,6 +45,7 @@ function App() {
           <Route path="order" element={<AdminOrder />} />
         </Route>
         <Route path="/" element={<Home />} />
+        <Route path="/cuahang" element={<Cuahang />} />
         <Route path="/register_login" element={<RegisterLogin />} />
         <Route path="/search" element={<Search />} />
         <Route path="/productDetail/:id" element={<ProductDetail />} />

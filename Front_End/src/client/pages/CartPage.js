@@ -15,7 +15,9 @@ const CartPage = () => {
     const navigate = useNavigate();
     const items = useSelector(state => state.cart.items);
     const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-
+    useEffect(() => {
+        localStorage.setItem('cart', JSON.stringify(items));
+    }, [items]);
 
     return (
         <Fragment>
