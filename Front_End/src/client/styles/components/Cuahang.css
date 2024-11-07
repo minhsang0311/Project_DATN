@@ -19,7 +19,8 @@
    color: rgb(49, 43, 207);
    font-weight: 600;
 }
-
+/* .cuahang .noidung .left_box {width: 20%;} */
+.cuahang .noidung .left_box img {width: 100%;height: 425px;border-radius: 10px;}
 .cuahang .noidung .left_box button,
 .cuahang .noidung .left_box select,
 .cuahang .noidung .left_box .price-range input {
@@ -100,7 +101,36 @@
    cursor: pointer;
    margin-right: 10px;
  }
+ .pagination {
+   display: flex;
+   justify-content: center;
+   padding: 20px 0;
+   list-style: none;
+}
 
+.pagination li {
+   margin: 0 5px;
+   cursor: pointer;
+   font-size: 1rem;
+}
+
+.pagination .active a {
+   font-weight: bold;
+   color: #007bff;
+}
+
+.pagination a {
+   padding: 8px 12px;
+   color: #333;
+   text-decoration: none;
+   border: 1px solid #ddd;
+   border-radius: 4px;
+}
+
+.pagination a:hover {
+   background-color: #f0f0f0;
+   color: #007bff;
+}
 /* 
 @media (max-width: 800px) {
    .cuahang { grid-template-columns: 1fr;}
