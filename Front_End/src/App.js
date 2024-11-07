@@ -53,7 +53,7 @@ function App() {
         <Route path="/cart" element={<CartPage />} />
         <Route path="/reset-password/:token" element={<ResetPassword />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="comments" element={<Comments />} />
+        <Route path="/comments" element={<Comments />} />
         <Route path="/payment" element={<PaymentPage />} />
         <Route path="/order" element={<OrderStatusList />} />
         <Route path='/'>
