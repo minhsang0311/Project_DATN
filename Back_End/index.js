@@ -324,7 +324,6 @@ app.get('/productsbycategory/:id', (req, res) => {
         }
     });
 });
-// giỏ hàng 
 
 
 app.listen(3000, () => console.log(`Ứng dụng đang chạy với port 3000`));
