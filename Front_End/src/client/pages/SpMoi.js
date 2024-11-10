@@ -1,10 +1,16 @@
+<<<<<<< HEAD
 import { Link } from "react-router-dom";
+=======
+// import { listsp } from "./data";
+import { Link, useNavigate } from "react-router-dom";
+>>>>>>> 1ef04affa5c864bb4a84f076b87408334cf1ce9a
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { addToCart } from "./cartSlice";
 import '../styles/components/Home.css';
 
 function SpMoi() {
+<<<<<<< HEAD
     const [listsp, ganListSP] = useState([]);
     const dispatch = useDispatch();
 
@@ -13,6 +19,19 @@ function SpMoi() {
             .then(res => res.json())
             .then(data => ganListSP(data));
     }, []);
+=======
+    const [listsp, ganListSP] = useState( [] );
+    const navigate = useNavigate(); 
+
+    useEffect ( () => {
+       fetch("http://localhost:3000/user/productNew")
+       .then(res=>res.json()).then(data => {
+        ganListSP(data)
+        console.log("data", data);
+        
+    }
+    );
+>>>>>>> 1ef04affa5c864bb4a84f076b87408334cf1ce9a
 
     const formatCurrency = (value) => {
         return new Intl.NumberFormat('vi-VN', {
@@ -22,6 +41,7 @@ function SpMoi() {
     };
 
     const handleAddToCart = (product) => {
+<<<<<<< HEAD
         const cartItem = {
             id: product.Product_ID,
             image: product.Image,
@@ -30,6 +50,18 @@ function SpMoi() {
             quantity: 1
         };
         dispatch(addToCart(cartItem));
+=======
+        const savedCart = JSON.parse(localStorage.getItem('cart')) || [];
+        const existingProduct = savedCart.find(item => item.Product_ID === product.Product_ID);
+
+        if (existingProduct) {
+            existingProduct.quantity = (existingProduct.quantity || 1) + 1;
+        } else {
+            savedCart.push({ ...product, quantity: 1 });
+        }
+        localStorage.setItem('cart', JSON.stringify(savedCart));
+        navigate('/cart'); 
+>>>>>>> 1ef04affa5c864bb4a84f076b87408334cf1ce9a
     };
 
     return (
@@ -68,7 +100,13 @@ function SpMoi() {
                                         <p className="new-price">{formatCurrency(sp.Price)}</p>
                                     )}
                                 </div>
+<<<<<<< HEAD
                                 <button className="add-to-cart" onClick={() => handleAddToCart(sp)}>Giỏ hàng</button>
+=======
+                                <button className="add-to-cart" onClick={() => handleAddToCart(sp)}>
+                                            Thêm vào giỏ hàng
+                                        </button>
+>>>>>>> 1ef04affa5c864bb4a84f076b87408334cf1ce9a
                             </div>
                         </div>
                     )}
@@ -76,6 +114,11 @@ function SpMoi() {
             </div>
         </div>
     );
+<<<<<<< HEAD
 }
 
 export default SpMoi;
+=======
+})}
+export default SpMoi;
+>>>>>>> 1ef04affa5c864bb4a84f076b87408334cf1ce9a

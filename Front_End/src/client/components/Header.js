@@ -36,6 +36,7 @@ function Header() {
 
   // Tính tổng số lượng sản phẩm trong giỏ hàng
   const totalQuantity = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+
   return (
     <header>
       <div className="top">

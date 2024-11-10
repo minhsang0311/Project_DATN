@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 /* src/styles/components/CartPage.css */
+=======
+<<<<<<< HEAD
+
+>>>>>>> 1ef04affa5c864bb4a84f076b87408334cf1ce9a
 .cart-page {
   padding: 20px;
   background-color: #f9f9f9;
@@ -119,5 +124,90 @@
   .btn-clear-cart:hover {
     background-color: #c9302c;
   }
+<<<<<<< HEAD
 
 }
+=======
+  
+=======
+/* CartPage.css */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa; 
+    margin: 0;
+    padding: 70px;
+}
+
+h1 {
+    color: #343a40; 
+    text-align: center;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0; 
+}
+
+thead {
+    background-color: #007bff; 
+    color: white;
+}
+
+th, td {
+    padding: 12px; 
+    text-align: left;
+    border-bottom: 1px solid #dee2e6; 
+}
+
+tr:hover {
+    background-color: #e9ecef; 
+}
+
+input[type="number"] {
+    width: 60px; 
+    padding: 5px;
+    border: 1px solid #ced4da; 
+    border-radius: 4px; 
+}
+
+.buttonXoa {
+    background-color: #dc3545; 
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px; 
+    cursor: pointer;
+}
+
+.buttonXoa:hover {
+    background-color: #c82333; 
+}
+
+.thanhtoantien{
+    text-align: center; 
+    
+}
+
+.thanhtoantien .tongtien {
+    color: #343a40;
+    margin-top: 20px; 
+    text-align: center; 
+}
+
+.thanhtoantien button {
+    background-color: green; 
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px; 
+    cursor: pointer;
+    font-size: 1rem;
+}
+ .imgcart{
+    width: 40%;
+    height: 80px;
+ }
+>>>>>>> 9eb36fbdb9e443b4bcadf3ffc5f9859efd67ee37
+>>>>>>> 1ef04affa5c864bb4a84f076b87408334cf1ce9a
