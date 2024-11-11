@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../../styles/pages/commentList.css';
 const Comments = () => {
     const [comments, setComments] = useState([]);
+    const token = localStorage.getItem('token')
     const [error, setError] = useState('');
     useEffect(() => {
         const fetchComments = async () => {
@@ -20,7 +21,10 @@ const Comments = () => {
         try {
             const response = await fetch(`http://localhost:3000/admin/reviews/${id}`, {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    "Content-Type": "application/json",
+                    'Authorization': 'Bearer ' + token
+                },
                 body: JSON.stringify({ Show_Hidden: newStatus })
             });
             const data = await response.json();
@@ -46,7 +50,7 @@ const Comments = () => {
                         <th>Người dùng</th>
                         <th>Bình luận</th>
                         <th>Trạng thái</th>
-                       
+
                     </tr>
                 </thead>
                 <tbody>
@@ -59,7 +63,7 @@ const Comments = () => {
                                 <button onClick={() => handleVisibilityToggle(comment.Review_ID, comment.Show_Hidden)}>
                                     {comment.Show_Hidden === 1 ? 'Ẩn' : 'Hiển thị'}
                                 </button>
-                               
+
                             </td>
                         </tr>
                     ))}

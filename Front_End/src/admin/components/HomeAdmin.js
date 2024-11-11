@@ -1,7 +1,7 @@
-
-import { Route, Routes } from 'react-router-dom';
-import React, { useEffect } from 'react';
+import { Route, Routes, useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import axios from 'axios';
 import '../styles/components/HomeAdmin.css';
 import ProductList from '../pages/productPage/ProductList';
 import CategoryList from '../pages/categoryPage/CategoryList';
@@ -15,6 +15,10 @@ import AdminOrder from '../pages/orderPage/AdminOrder';
 
 const HomeAdmin = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const [searchTerm, setSearchTerm] = useState('');
+    const [searchResults, setSearchResults] = useState([]);
+    const [entityType, setEntityType] = useState('products'); // Loại đối tượng mặc định là sản phẩm
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -24,7 +28,7 @@ const HomeAdmin = () => {
             navigate('/register_login');
         } else {
             if (tokenRole.role !== 1) {
-                alert('Tài khoản chưa đủ quyền để vào')
+                alert('Tài khoản chưa đủ quyền để vào');
                 navigate('/register_login');
             }
         }
@@ -34,6 +38,29 @@ const HomeAdmin = () => {
         localStorage.removeItem('token');
         navigate('/register_login');
     };
+
+    const handleSearch = async () => {
+        const token = localStorage.getItem('token');
+        try {
+            const response = await axios.get('http://localhost:3000/admin/search', {
+                headers: { "Authorization": 'Bearer ' + token },
+                params: { searchTerm, entityType }
+            });
+            setSearchResults(response.data);
+
+            // Điều hướng đến trang tương ứng với entityType
+            if (entityType === 'products') {
+                navigate('/admin/products');
+            } else if (entityType === 'categories') {
+                navigate('/admin/category');
+            } else if (entityType === 'users') {
+                navigate('/customers');
+            }
+        } catch (error) {
+            console.error('Lỗi tìm kiếm:', error);
+        }
+    };
+
     return (
         <div className="home_admin">
             <div className="sidebar">
@@ -104,32 +131,34 @@ const HomeAdmin = () => {
                         <h1>Admin</h1>
                     </div>
                     <div className="header--search">
-                        <i className="bi bi-search"></i>
-                        <input type="text" placeholder="Nhập tìm kiếm..." />
-                    </div>
-                    <div className="user--info">
-                        <div className="box-english">
-                            <img src="img/english.svg" alt="" />
-                            <select>
-                                <option value="english">English</option>
-                                <option value="vietnamese">Tiếng Việt</option>
-                            </select>
-                        </div>
-                        <img src="img/logo.png" alt="" />
+                        <input
+                            type="text"
+                            placeholder="Nhập tìm kiếm..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                        <button onClick={handleSearch}> <i className="bi bi-search"></i>Tìm kiếm</button>
+                        <select value={entityType} onChange={(e) => setEntityType(e.target.value)}>
+                            <option value="products">Sản phẩm</option>
+                            <option value="category">Danh mục</option>
+                            <option value="users">Người dùng</option>
+                        </select>
+                        
                     </div>
                 </div>
 
                 <div className="main--wrapper">
                     <Routes>
                         <Route path="/" element={<Statistics />} />
-                        <Route path="products" element={<ProductList />} />
+                        <Route path="products" element={<ProductList searchResults={searchResults} />} />
                         <Route path="product-add" element={<ProductAdd />} />
                         <Route path="productUpdate/:id" element={<ProductUpdate />} />
                         <Route path="category" element={<CategoryList />} />
                         <Route path="categoryAdd" element={<CategoryAdd />} />
                         <Route path="categoryUpdate/:id" element={<CategoryUpdate />} />
                         <Route path="comments" element={<Comments />} />
-                        <Route path="order" element={<AdminOrder />} />
+                        <Route path="order" element={<AdminOrder searchResults={searchResults} />} />
+                        {/* Thêm các route khác nếu cần */}
                     </Routes>
                 </div>
             </div>

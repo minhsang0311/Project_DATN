@@ -4,10 +4,12 @@
     padding: 15px;
     background-color: white;
 }
+.statistics-chillrend-header{
+    margin-bottom: 100px;
+}
 .statistics {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    display: grid;
+    grid-template-columns: auto auto auto;
 
 }
 .statistics-chillrend {
@@ -59,7 +61,13 @@
     display: inline-block; /* Fit to the content */
     background-color: #ffffff;
 }
-.left div canvas {
-    width: 300px;
+.right div{
     height: 300px;
+    width: 300px;
+}
+.center div {
+    text-align: center;
+    align-items: center;
+    height: 300px;
+    width: 350px;
 }

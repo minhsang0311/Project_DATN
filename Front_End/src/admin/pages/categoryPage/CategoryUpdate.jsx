@@ -4,6 +4,7 @@ import '../../styles/pages/CategoryUpdate.css';
 
 function CategoryUpdate() {
     const [category, setCategory] = useState({});
+    const token = localStorage.getItem('token')
     const { id } = useParams();
     const navigate = useNavigate();
     useEffect(() => {
@@ -11,7 +12,7 @@ function CategoryUpdate() {
             method: "get",
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer '
+                'Authorization': 'Bearer ' + token
             }
         };
         fetch(`http://localhost:3000/admin/categoryDetail/${id}`, opt)
@@ -27,7 +28,7 @@ function CategoryUpdate() {
             body: JSON.stringify(category),
             headers: {
                 "Content-Type": "application/json",
-                'Authorization': 'Bearer '
+                'Authorization': 'Bearer ' + token
             }
         };
 
