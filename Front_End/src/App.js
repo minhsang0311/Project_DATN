@@ -11,7 +11,11 @@ import CategoryUpdate from './admin/pages/categoryPage/CategoryUpdate.jsx';
 import ProductUpdate from './admin/pages/productPage/ProductUpdate.jsx';
 import Comments from './admin/pages/commentPage/commentList.jsx';
 import Statistics from './admin/pages/Statistics/Statistics.jsx';
+<<<<<<< HEAD
 import AdminOrder from './admin/pages/orderPage/AdminOrder.jsx';
+=======
+import Customer from './admin/pages/customerPage/customerList.jsx';
+>>>>>>> 1ef04affa5c864bb4a84f076b87408334cf1ce9a
 
 // Component Client
 import ProductDetail from './client/pages/ProductDetail';
@@ -24,9 +28,15 @@ import RegisterLogin from './client/pages/register_login/register_login.jsx';
 import CartPage from './client/pages/CartPage.js';
 import ForgotPassword from './client/pages/forgotPassword.js';
 import ResetPassword from './client/pages/resetPassword.js';
+<<<<<<< HEAD
 import ChangePassword from './client/pages/changePassword.js';
 import PaymentPage from './client/pages/PaymentPage.js'
 import OrderStatusList from './client/pages/OrderStatusList.js'
+=======
+import Contact from './client/pages/Contact.js'
+
+
+>>>>>>> 1ef04affa5c864bb4a84f076b87408334cf1ce9a
 
 function App() {
   return (
@@ -42,7 +52,11 @@ function App() {
           <Route path="categoryAdd" element={<CategoryAdd />} />
           <Route path="categoryUpdate/:id" element={<CategoryUpdate />} />
           <Route path="comments" element={<Comments />} />
+<<<<<<< HEAD
           <Route path="order" element={<AdminOrder />} />
+=======
+          <Route path="customers" element={<Customer/>} />
+>>>>>>> 1ef04affa5c864bb4a84f076b87408334cf1ce9a
         </Route>
         <Route path="/" element={<Home />} />
         <Route path="/cuahang" element={<Cuahang />} />
@@ -54,6 +68,7 @@ function App() {
         <Route path="/category/:Category_ID" element={<CategoryProducts />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/reset-password/:token" element={<ResetPassword />} />
+<<<<<<< HEAD
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/comments" element={<Comments />} />
         <Route path="/payment" element={<PaymentPage />} />
@@ -62,6 +77,11 @@ function App() {
           <Route path="/change-password" element={<ChangePassword />} />
         </Route>
       </Routes>
+=======
+        <Route path="/contact" element={<Contact />} />
+      </Routes>
+
+>>>>>>> 1ef04affa5c864bb4a84f076b87408334cf1ce9a
     </BrowserRouter>
   );
 }
