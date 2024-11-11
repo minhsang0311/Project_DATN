@@ -32,7 +32,6 @@ function CategoryUpdate() {
         };
 
         fetch(`http://localhost:3000/admin/categoryUpdate/${id}`, opt)
-
             .then(res => res.json())
             .then(data => {
                 console.log("Kết quả =", data);

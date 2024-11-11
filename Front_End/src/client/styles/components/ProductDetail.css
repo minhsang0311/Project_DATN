@@ -91,10 +91,10 @@
   background-color: #a71212;
 }
 
-.home > .spchitiet > .product-specifications {
+ .product-specifications {
   margin-top: 20px;
  
-  max-width: 50%;
+  max-width: 70%;
 }
 
 table {
@@ -292,4 +292,13 @@ table, td {
   background-color: #4fc3f7;
   color: white;
 }
+.product-description ul {
+  list-style-type: none; /* Loại bỏ ký hiệu đầu dòng */
+  padding-left: 0;       /* Loại bỏ khoảng cách bên trái */
+}
+.product-description li {
+  padding-left: 1em;     /* Thêm khoảng cách để văn bản dễ đọc hơn */
+  position: relative;
+}
+
 

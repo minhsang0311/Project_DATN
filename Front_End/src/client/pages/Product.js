@@ -1,37 +1,51 @@
 import React from 'react';
-import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { addToCart } from "../pages/cartSlice"; // Đảm bảo đường dẫn đúng với file cartSlice
+import { Link } from 'react-router-dom';
+import { addToCart } from './cartSlice';
+import { useDispatch } from 'react-redux';
 
-function Product({ spTrongTrang }) {
-    const dispatch = useDispatch();
-
-    const handleAddToCart = (sp) => {
-        const cartItem = {
-            id: sp.Product_ID,
-            image: sp.Image,
-            name: sp.Product_Name,
-            price: sp.Price,
-        };
-        dispatch(addToCart(cartItem));
+function Product({ product }) {
+    const dispatch = useDispatch(); 
+    const formatCurrency = (value) => {
+        return new Intl.NumberFormat('vi-VN', {
+            style: 'currency',
+            currency: 'VND',
+        }).format(value);
     };
-
+    
+    const handleAddToCart = (product) => {
+        const cartItem = {
+          id: product.Product_ID,
+          image: product.Image,
+          name: product.Product_Name,
+          price: product.Promotion > 0 ? product.Price - (product.Promotion * product.Price) / 100 : product.Price,
+          quantity: 1 // Mặc định là 1
+        };
+        dispatch(addToCart(cartItem)); // Gửi hành động thêm vào giỏ hàng
+      };
     return (
-        <div className="products-grid">
-            {spTrongTrang.map((sp, i) => (
-                <div className="product" key={i}>
-                    <div className="discount-label">-20%</div>
-                    <div className="img-wrapper">
-                        <img src={sp.Image} alt="" />
-                    </div>
-                    <Link to={"/productDetail/" + sp.Product_ID}><h1>{sp.Product_Name}</h1></Link>
-                    <div className="price">
-                        <p className="old-price">{sp.Price}</p>
-                        <p className="new-price">765,000đ</p>
-                    </div>
-                    <button className="add-to-cart" onClick={() => handleAddToCart(sp)}>Thêm vào giỏ hàng</button>
+        <div className="product">
+            {product.Promotion > 0 && (
+                <div className="discount-label">-{product.Promotion}%</div>
+            )}
+            <div className="img-wrapper">
+                <img src={product.Image} alt={product.Product_Name} />
+            </div>
+            <Link to={`/productDetail/${product.Product_ID}`}>
+                <p>{product.Product_Name}</p>
+            </Link>
+            <div className="price_giohang">
+                <div className="price">
+                    {product.Promotion > 0 ? (
+                        <>
+                            <p className="old-price">{formatCurrency(product.Price)}</p>
+                            <p className="new-price">{formatCurrency(product.Price - (product.Promotion * product.Price) / 100)}</p>
+                        </>
+                    ) : (
+                        <p className="new-price">{formatCurrency(product.Price)}</p>
+                    )}
                 </div>
-            ))}
+                <button onClick={handleAddToCart} className="add-to-cart">Giỏ hàng</button>
+            </div>
         </div>
     );
 }

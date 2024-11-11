@@ -30,6 +30,9 @@ header .middle input {
   margin-top: 15px; /* Khoảng cách từ input đến biểu tượng người dùng */
 }
 
+/* header .middle .giohang{margin-top: 20px;margin: 20px;position: relative;} */
+header .middle .giohang h2{font-size:16px;position: absolute;top:-5px;right: -17px;}
+/* header .middle i.fa-magnifying-glass {position: absolute;left: 900px;top: 25px;color: #888} */
 .icon_user i {
   font-size: 32px;
   color: #333; 
@@ -37,8 +40,29 @@ header .middle input {
 header .middle .giohang{margin-top: 15px;margin: 20px;}
 header .middle i.fa-magnifying-glass {position: absolute;left: 900px;top: 25px;color: #888}
 header .middle i.fa-cart-shopping {font-size: 24px;cursor: pointer;color: #574141}
+/* Thêm vào styles/components/Header.css */
 
+/* Thêm vào styles/components/Header.css */
 
+.trangthai {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 15px;
+}
+
+.trangthai a {
+  color: #333; /* Màu biểu tượng */
+  font-size: 26px; /* Tăng kích thước để đậm hơn */
+  font-weight: bold; /* Làm đậm biểu tượng */
+  transition: color 0.3s;
+}
+
+.trangthai a:hover {
+  color: #ff5733; /* Màu nổi bật khi di chuột */
+}
+
+  
 /* styles/components/Header.css */
 .dropdown {
   /* position: absolute; */

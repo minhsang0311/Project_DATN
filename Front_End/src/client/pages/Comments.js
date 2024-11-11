@@ -5,7 +5,7 @@ const Comments = ({ productId }) => {
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState('');
     const [username, setUsername] = useState('');
-    const [rating, setRating] = useState(5);
+    const [ratting, setRating] = useState(5);
     const [message, setMessage] = useState('');
     const [userId, setUserId] = useState(null);
 
@@ -41,14 +41,14 @@ const Comments = ({ productId }) => {
         e.preventDefault();
 
         if (!userId) {
-            setMessage('Vui lòng đăng nhập để bình luận!');
+            alert('Vui lòng đăng nhập để bình luận!');
             return;
         }
 
         const newCommentData = {
             User_ID: userId,
             Product_ID: productId,
-            Rating: rating,
+            Ratting: ratting,
             Comment: newComment,
             User_Name: username,
             Show_Hidden: 1
@@ -115,7 +115,7 @@ const Comments = ({ productId }) => {
 
                                 {/* Hiển thị sao */}
                                 <div className="rating">
-                                    {renderStars(comment.Rating)}
+                                    {renderStars(comment.Ratting)}
                                 </div>
 
                                 {/* Nội dung bình luận */}
@@ -139,7 +139,7 @@ const Comments = ({ productId }) => {
                 />
                 <label>
                     Đánh giá:
-                    <select value={rating} onChange={(e) => setRating(e.target.value)}>
+                    <select value={ratting} onChange={(e) => setRating(e.target.value)}>
                         <option value={5}>5</option>
                         <option value={4}>4</option>
                         <option value={3}>3</option>

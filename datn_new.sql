@@ -87,16 +87,16 @@ INSERT INTO `categories` (`Category_ID`, `Category_Name`, `Category_Image`, `Sho
 -- Cấu trúc bảng cho bảng `order`
 --
 
-CREATE TABLE `order` (
-  `Order_ID` int(11) NOT NULL,
-  `User_ID` int(11) NOT NULL,
-  `Voucher_ID` int(11) NOT NULL,
-  `Status` varchar(255) DEFAULT NULL,
-  `Email` varchar(255) DEFAULT NULL,
-  `Phone` int(11) DEFAULT NULL,
-  `User_Name` varchar(255) DEFAULT NULL,
-  `Address` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  CREATE TABLE `order` (
+    `Order_ID` int(11) NOT NULL,
+    `User_ID` int(11) NOT NULL,
+    `Voucher_ID` int(11) NOT NULL,
+    `Status` varchar(255) DEFAULT NULL,
+    `Email` varchar(255) DEFAULT NULL,
+    `Phone` int(11) DEFAULT NULL,
+    `User_Name` varchar(255) DEFAULT NULL,
+    `Address` varchar(255) DEFAULT NULL
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `order`

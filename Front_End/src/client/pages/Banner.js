@@ -42,7 +42,7 @@ const Banner = () => {
 
         <ul
           id="danh-muc-list"
-          style={{ display: isDanhMucVisible ? 'block' : 'none' }}
+          style={{ display: isDanhMucVisible ? 'none' : 'block' }}
         >
           {list.map((loai, index) => (
             <li key={index}>

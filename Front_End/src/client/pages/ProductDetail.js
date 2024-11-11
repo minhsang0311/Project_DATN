@@ -118,7 +118,9 @@ const ProductDetail = () => {
                             <div className="product-info">
                                 <h1 className="product-title">{sp.Product_Name}</h1>
                                 <hr />
-                                <p className="product-description">{sp.Description}</p>
+                                <p className="product-description">{sp.Description.split('\n').map((desc, index) => (
+                                    <li key={index}>{desc.replace('-', '')}</li>
+                                ))}</p>
                                 <div className="product-price">
                                     {sp.Promotion > 0 ? (
                                         <>
@@ -147,7 +149,9 @@ const ProductDetail = () => {
                                     </tr>
                                     <tr>
                                         <td>Model</td>
-                                        <td>{sp.Description}</td>
+                                        <td> {sp.Description.split('\n').map((desc, index) => (
+                                            <li key={index}>{desc.replace('-', '')}</li>
+                                        ))}</td>
                                     </tr>
                                     {/* <tr>
                                         <td>Thông số</td>

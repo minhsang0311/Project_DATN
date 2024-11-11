@@ -75,7 +75,7 @@
     margin-top: 0;
     font-size: 14px; /* Thay đổi font-size của bình luận */
 }
-.comments-section > .comment-item > .comment-content > .rating > .filled {
+.filled {
     color: gold; /* Màu sao đầy */
 }
 

@@ -2,9 +2,7 @@ const db = require('../../config/db');
 
 
 exports.productNew = (req, res) => {
-    let sql = `SELECT Product_ID, Category_ID, Product_Name, Image, Price, Description, Views, Show_Hidden 
-               FROM Products 
-               ORDER BY Product_ID DESC`;  // Sắp xếp theo ID giảm dần
+    let sql = `SELECT * FROM Products ORDER BY Product_ID DESC`;  
     db.query(sql, (err, data) => {
         if (err) {
             res.json({ "message": "Lỗi lấy danh sách sản phẩm", err });
@@ -14,9 +12,7 @@ exports.productNew = (req, res) => {
     });
 }
 exports.productMostView =  (req, res) => {
-    let sql = `SELECT Product_ID, Category_ID, Product_Name, Image, Price, Description, Views, Show_Hidden 
-               FROM Products 
-               ORDER BY Views DESC`;  // Sắp xếp theo ID giảm dần
+    let sql = `SELECT * FROM Products ORDER BY Views DESC`;  // Sắp xếp theo ID giảm dần
     db.query(sql, (err, data) => {
         if (err) {
             res.json({ "message": "Lỗi lấy danh sách sản phẩm", err });
@@ -44,9 +40,12 @@ exports.getAllProducts = (req, res) => {
     });
 };
 
+
+
+
 //Route lấy danh sách sản phẩm
-exports.getAllProducts = (req, res) => {
-    let sql = `SELECT Product_ID, Category_ID, Product_Name, Image, Price, Description, Views, Show_Hidden FROM Products`;
+exports.getAllProducts_Cuahang = (req, res) => {
+    let sql = `SELECT * FROM Products`;
     db.query(sql, (err, data) => {
         if (err) {
             res.json({ "message": "Lỗi lấy danh sách sản phẩm", err });
@@ -55,6 +54,52 @@ exports.getAllProducts = (req, res) => {
         }
     });
 };
+// productController.js
+exports.getFilteredProducts = (req, res) => {
+    const { minPrice, maxPrice, sortOrder, brand } = req.query;
+
+    let sql = `SELECT Product_ID, Category_ID, Brand_ID ,Product_Name, Image, Price, Description, Views, Show_Hidden FROM Products WHERE Show_Hidden = 1`;
+
+    // Thêm điều kiện lọc giá nếu có minPrice và maxPrice
+    if (minPrice) {
+        sql += ` AND Price >= ${minPrice}`;
+    }
+    if (maxPrice) {
+        sql += ` AND Price <= ${maxPrice}`;
+    }
+
+    // Thêm điều kiện lọc theo hãng (brand) nếu có
+    if (brand) {
+        sql += ` AND Brand_ID = '${brand}'`;
+    }
+
+    // Sắp xếp theo giá cao nhất hoặc thấp nhất
+    if (sortOrder === 'highToLow') {
+        sql += ` ORDER BY Price DESC`;
+    } else if (sortOrder === 'lowToHigh') {
+        sql += ` ORDER BY Price ASC`;
+    }
+
+    db.query(sql, (err, data) => {
+        if (err) {
+            res.status(500).json({ message: "Lỗi khi lấy danh sách sản phẩm", err });
+        } else {
+            res.json(data);
+        }
+    });
+};
+// productController.js
+exports.getAllBrands = (req, res) => {
+    const sql = `SELECT Brand_ID, Brand_Name, Brand_Image FROM brand`;
+    db.query(sql, (err, data) => {
+        if (err) {
+            res.status(500).json({ message: "Lỗi khi lấy danh sách thương hiệu", err });
+        } else {
+            res.json(data);
+        }
+    });
+};
+
 exports.getProductsNew = (req, res) => {
     let sql = `SELECT * FROM products ORDER BY Product_ID DESC`;  
     db.query(sql, (err, data) => {

@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import '../styles/components/CategoryProducts.css';
+import '../styles/components/Cuahang.css';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Paginate from './paginate/Paginate';
@@ -25,16 +25,16 @@ function CategoryProducts() {
     return (
         <Fragment>
             <Header />
-            <div className="home">
-                <div className="sptrongloai">
-                    <div className="left-image">
+            <div className="cuahang">
+                <div className="noidung">
+                    <div className="left_box">
                         <img src="/assets/img/banner4.jpg" alt=""/>
                     </div>
                     <div className="right-products">
                         <div className="header1">
-                            <h1>Sản phẩm trong danh mục: {category_Name}</h1>
+                            <h1> {category_Name}</h1>
                         </div>
-                        <Paginate listSP={listsp} pageSize={4} />
+                        <Paginate listSP={listsp} pageSize={6} />
                     </div>
                 </div>
             </div>
