@@ -13,7 +13,7 @@ exports.changePassword = async (req, res) => {
 
     try {
         // Tìm user theo ID từ token
-        const results = await db.query("SELECT * FROM user WHERE User_ID = ?", [userId]);
+        const results = await db.query("SELECT * FROM users WHERE User_ID = ?", [userId]);
         if (!results || results.length === 0) {
             return res.status(400).json({ message: "Tài khoản không tồn tại." });
         }
@@ -27,7 +27,7 @@ exports.changePassword = async (req, res) => {
 
         // Hash mật khẩu mới và cập nhật
         const hashedNewPassword = await bcrypt.hash(newPassword, saltRounds);
-        await db.query("UPDATE user SET Password = ? WHERE User_ID = ?", [hashedNewPassword, userId]);
+        await db.query("UPDATE users SET Password = ? WHERE User_ID = ?", [hashedNewPassword, userId]);
 
         return res.status(200).json({ message: "Đổi mật khẩu thành công." });
     } catch (error) {

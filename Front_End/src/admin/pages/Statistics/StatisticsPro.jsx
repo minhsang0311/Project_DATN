@@ -15,8 +15,7 @@ ChartJS.register(
 );
 
 const StatisticsPro = () => {
-    var token = useSelector(state => state.auth.token);
-    console.log("token", token)
+    const token = localStorage.getItem('token');
     const [categoryData, setCategoryData] = useState([]);
     const [branData, setBrandData] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -91,7 +90,7 @@ const StatisticsPro = () => {
         <div className='statistics-chillrend-header'>
             <h2>Bảng thống kê sản phẩm</h2>
             <div className='statistics'>
-                <div className='right'>
+                <div className='left'>
                     <table className="vertical-table">
                         <tbody>
                             <tr>
@@ -109,13 +108,13 @@ const StatisticsPro = () => {
                         </tbody>
                     </table>
                 </div>
-                <div className='left'>
+                <div className='center'>
                     <div>
                         <h2>Sản phẩm theo danh mục</h2>
                         {pieData ? <Pie data={pieData} /> : <p>Không có dữ liệu danh mục</p>}
                     </div>
                 </div>
-                <div className='left'>
+                <div className='right'>
                     <div>
                         <h2>Sản phẩm theo hãng</h2>
                         {pieProBrand ? <Pie data={pieProBrand} /> : <p>Không có dữ liệu hãng</p>}

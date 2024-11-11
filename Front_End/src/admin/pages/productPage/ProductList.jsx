@@ -2,29 +2,27 @@ import { Link } from "react-router-dom";
 import { Fragment, useEffect, useState } from "react";
 import "../../styles/pages/productList.css";
 
-const ProductList = () => {
-    // Lấy token từ localStorage
-    const token = localStorage.getItem('token'); // Lấy token từ localStorage
-    console.log("token", token);
-    
-    let url = `http://localhost:3000/admin`;
+const ProductList = ({ searchResults }) => {
+    const token = localStorage.getItem('token'); 
+    const url = `http://localhost:3000/admin`;
     const [productList, setProductList] = useState([]);
 
     useEffect(() => {
-        let opt = {
-            method: 'GET',
-            headers: { "Content-type": "application/json", 'Authorization': 'Bearer ' + token }
-        };
-        
-        fetch(`${url}/productList`, opt)
+        if (!searchResults || searchResults.length === 0) { 
+            // Fetch toàn bộ danh sách sản phẩm khi không có kết quả tìm kiếm
+            fetch(`${url}/productList`, {
+                method: 'GET',
+                headers: { "Content-type": "application/json", 'Authorization': 'Bearer ' + token }
+            })
             .then(res => res.json())
             .then(data => setProductList(data))
             .catch(error => console.error('Error fetching product list:', error));
-    }, [token]); // Đảm bảo useEffect chạy lại khi token thay đổi
+        }
+    }, [token, searchResults]);
 
     const deleteProduct = (id) => {
-        if (window.confirm('Bạn có muốn xóa sản phẩm không?') === false) return;
-    
+        if (!window.confirm('Bạn có muốn xóa sản phẩm không?')) return;
+
         fetch(`${url}/productDelete/${id}`, {
             method: 'DELETE',
             headers: {
@@ -32,16 +30,18 @@ const ProductList = () => {
                 'Authorization': 'Bearer ' + token
             }
         })
-            .then(res => {
-                if (!res.ok) {
-                    return res.json().then(err => { alert(err.message); });
-                } else {
-                    alert("Đã xóa sản phẩm")
-                    window.location.href = '/admin/products';
-                }
-            })
+        .then(res => {
+            if (!res.ok) {
+                return res.json().then(err => { alert(err.message); });
+            } else {
+                alert("Đã xóa sản phẩm");
+                setProductList(prev => prev.filter(product => product.Product_ID !== id));
+            }
+        });
     };
-    
+
+    // Hiển thị searchResults nếu có, nếu không sẽ hiển thị toàn bộ productList
+    const displayProducts = searchResults && searchResults.length > 0 ? searchResults : productList;
 
     return (
         <div className="box-productlist">
@@ -62,9 +62,9 @@ const ProductList = () => {
                 <div className="grid-header">Lượt xem</div>
                 <div className="grid-header">Ẩn_Hiện</div>
                 <div className="grid-header">Thao tác</div>
-                {productList.map((product, index) => (
-                    <Fragment key={index}>
-                        <div className="grid-item">{product.Product_ID}</div>
+                {displayProducts.map((product, index) => (
+                    <Fragment key={product.Product_ID}>
+                        <div className="grid-item">{index + 1}</div>
                         <div className="grid-item">{product.Product_Name}</div>
                         <div className="grid-item">
                             <img src={product.Image} alt={product.Product_Name} className="product-img" />
@@ -75,7 +75,7 @@ const ProductList = () => {
                         <div className="grid-item">{product.Show_Hidden === 1 ? "Hiện" : "Ẩn"}</div>
                         <div className="grid-item grid-item-button">
                             <Link to={`/admin/productUpdate/${product.Product_ID}`} className="edit-btn">✏️</Link>
-                            <Link className="delete-btn" onClick={() => deleteProduct(product.Product_ID)}>🗑️</Link>
+                            <button className="delete-btn" onClick={() => deleteProduct(product.Product_ID)}>🗑️</button>
                         </div>
                     </Fragment>
                 ))}

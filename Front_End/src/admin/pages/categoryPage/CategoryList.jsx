@@ -3,11 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import '../../styles/pages/CategoryList.css';
 function CategoryList() {
     const [categories, setCategories] = useState([]);
-   
+    const token = localStorage.getItem('token')
 
     const fetchOptions = {
         method: "get",
-        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' }
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }
     };
 
     // Hàm để lấy danh sách danh mục
@@ -22,7 +22,7 @@ function CategoryList() {
         if (window.confirm('Bạn có muốn xóa loại không?') === false) return;
         fetch(`http://localhost:3000/admin/category/${id}`, {
             method: "delete",
-            headers: { "Content-type": "application/json", 'Authorization': 'Bearer ' }
+            headers: { "Content-type": "application/json", 'Authorization': 'Bearer ' + token}
         })
         .then(res => res.json())
         .then(response => {

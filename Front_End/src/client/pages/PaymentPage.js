@@ -25,8 +25,11 @@ const PaymentPage = () => {
 
     const handlePayment = () => {
         // Kiểm tra thông tin thanh toán
-        if (!name || !address || !phone || !email || !paymentMethod || !userId) {
+        if (!name || !address || !phone || !email || !userId) {
             return alert("Vui lòng nhập đầy đủ thông tin trước khi thanh toán.");
+        }
+        if(!paymentMethod) {
+            return alert('Vui lòng chọn phương thức thanh toán.');
         }
 
         // Chuẩn bị dữ liệu đơn hàng
@@ -43,7 +46,7 @@ const PaymentPage = () => {
                 Price: item.price
             })),
             User_ID: userId,  // ID người dùng từ localStorage
-            Voucher_ID: 1,  // Mã Voucher từ người dùng
+            Voucher_ID: voucherCode ? 1 : null,  // Mã Voucher từ người dùng (Ví dụ Voucher_ID=1)
         };
 
         // Gửi yêu cầu thanh toán
@@ -56,6 +59,7 @@ const PaymentPage = () => {
         })
         .then(response => response.json())
         .then(data => {
+            console.log(data)
             if (data.success) {
                 alert('Mua hàng thành công');
                 localStorage.removeItem('cart'); // Xoá giỏ hàng sau khi thanh toán thành công
@@ -65,7 +69,7 @@ const PaymentPage = () => {
         })
         .catch(error => {
             console.log('Error:', error);
-            alert('Có lỗi xảy ra, vui lòng thử lại', error);
+            alert('Có lỗi xảy ra, vui lòng thử lại');
         });
     };
 
