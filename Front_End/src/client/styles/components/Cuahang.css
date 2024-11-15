@@ -132,7 +132,11 @@
    background-color: #f0f0f0;
    color: #007bff;
 }
+<<<<<<< HEAD
  
+=======
+
+>>>>>>> efb196e8958326bcab0d39305e77de6a2642a86f
 @media (max-width: 800px) {
    .cuahang .noidung{ grid-template-columns: 1fr;}
    .cuahang .right-products .box-sp {grid-template-columns: repeat(2, 1fr);}

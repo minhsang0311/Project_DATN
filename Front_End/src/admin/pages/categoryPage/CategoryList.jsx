@@ -21,6 +21,7 @@ function CategoryList({ searchResults }) {
     // Hàm để xóa danh mục
     const deleteCategory = (id) => {
         if (window.confirm('Bạn có muốn xóa loại không?') === false) return;
+
         fetch(`http://localhost:3000/admin/category/${id}`, {
             method: "delete",
             headers: { "Content-type": "application/json", 'Authorization': 'Bearer ' + token }

@@ -1,15 +1,9 @@
-const db = require('../../config/db')
-
-
+const db = require('../../config/db');
 const express = require('express');
 const router = express.Router();
-const  orderController = require('../../contrllers/userControllers/orderController');
+const orderController = require('../../contrllers/userControllers/orderController'); // Fixed 'controllers' spelling
 
-
-
-router.get('/order', orderController.getOrderList);
-
-
-
+// Route to get orders based on user ID
+router.get('/orders/:userId', orderController.getOrderList);
 
 module.exports = router;

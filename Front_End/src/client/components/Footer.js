@@ -8,10 +8,9 @@ function Footer() {
                 <div className="footer-column">
                     <h3>Địa chỉ</h3>
                     <p>ĐT: 0981.599.399</p>
-                    <p>17/20, ngõ Tân Lạc, Đại La, Hai Bà Trưng, Hà Nội</p>
-                    <p>54 Đông An, Tân Đông Hiệp, Dĩ An, Bình Dương</p>
-                    <p>Bình Dương</p>
-                    <p>Email: thegioigiadungonline.vn@gmail.com</p>
+                    <p>CN1: Phần mềm Quang Trung, Phường Tân Chánh Hiệp, Quận 12, Thành phố Hồ Chí Minh</p>
+                    <p>CN2: 54 Đông An, Tân Đông Hiệp, Dĩ An, Bình Dương</p>
+                    <p>Email: HomeNest@gmail.com</p>
                 </div>
                 <div className="footer-column">
                     <h3>Đại lý – Hỗ trợ</h3>
