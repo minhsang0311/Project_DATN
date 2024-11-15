@@ -1,7 +1,7 @@
 const db = require('../../config/db');
 
 exports.getAllBrands = (req, res) => {
-    let sql = 'SELECT * FROM Brand';
+    let sql = 'SELECT * FROM brands';
     
     db.query(sql, (err, data) => {
         if (err) {

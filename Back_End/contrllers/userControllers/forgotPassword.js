@@ -6,11 +6,11 @@ exports.forgotPassword = (req, res) => {
     const { email } = req.body;
     const token = crypto.randomBytes(20).toString('hex');
     const expiry = Date.now() + 3600000; 
-    const checkEmailQuery = 'SELECT * FROM user WHERE Email = ?';
-    db.query(checkEmailQuery, [email], (err, results) => {
+    const checkEmailQuery = 'SELECT * FROM users WHERE Email = ?';
+    db.query(checkEmailQuery, [email], (err, results) => {          
         if (err) return res.status(500).json({ message: 'Lỗi cơ sở dữ liệu' });
         if (results.length === 0) return res.status(404).json({ message: 'Email không tồn tại' });
-        const updateQuery = 'UPDATE user SET resetToken = ?, resetTokenExpiry = ? WHERE Email = ?';
+        const updateQuery = 'UPDATE users SET resetToken = ?, resetTokenExpiry = ? WHERE Email = ?';
         db.query(updateQuery, [token, expiry, email], (err, result) => {
             if (err) return res.status(500).json({ message: 'Lỗi cơ sở dữ liệu' });
             const transporter = nodemailer.createTransport({
@@ -37,14 +37,18 @@ exports.forgotPassword = (req, res) => {
 exports.resetPassword = (req, res) => {
     const { token } = req.params;
     const { newPassword } = req.body;
-    const query = 'SELECT * FROM user WHERE resetToken = ? AND resetTokenExpiry > ?';
+    const query = 'SELECT * FROM users WHERE resetToken = ? AND resetTokenExpiry > ?';
     db.query(query, [token, Date.now()], async (err, results) => {
+        console.log(results)
         if (err) return res.status(500).json({ message: 'Lỗi cơ sở dữ liệu khi tìm user.', error: err });
         if (results.length === 0) return res.status(400).json({ message: 'Token không hợp lệ hoặc đã hết hạn' });
         try {
             const hashedPassword = await bcrypt.hash(newPassword, 10);
-            const updateQuery = 'UPDATE user SET password = ?, resetToken = NULL, resetTokenExpiry = NULL WHERE User_ID = ?';
+            const updateQuery = 'UPDATE users SET Password = ?, resetToken = NULL, resetTokenExpiry = NULL WHERE User_ID = ?';
             db.query(updateQuery, [hashedPassword, results[0].User_ID], (error, result) => {
+                console.log(error)
+                console.log(results[0].User_ID)
+                console.log("result", result)
                 if (error) return res.status(500).json({ message: 'Lỗi cơ sở dữ liệu khi cập nhật mật khẩu.', error: error });
                 res.json({ message: 'Mật khẩu đã được đặt lại thành công' });
             });

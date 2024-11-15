@@ -42,10 +42,10 @@ exports.register = async (req, res) => {
     }
 
     // Kiểm tra User_Name có chứa cả chữ và số
-    const usernameRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]+$/;
-    if (!usernameRegex.test(User_Name)) {
-        return res.status(400).json({ message: 'Tên người dùng chỉ được chứa chữ cái và số.' });
-    }
+        const usernameRegex = /^[a-zA-Z]+$/;
+        if (!usernameRegex.test(User_Name)) {
+            return res.status(400).json({ message: 'Tên người dùng chỉ được chứa chữ cái và số.' });
+        }
 
     // Kiểm tra Password: ít nhất 8 ký tự, có chữ hoa, chữ thường, số và ký tự đặc biệt
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
@@ -63,7 +63,7 @@ exports.register = async (req, res) => {
     }
     try {
         // Kiểm tra trùng lặp User_Name hoặc Email
-        const results = await db.query("SELECT User_Name, Email FROM user WHERE User_Name = ? OR Email = ?", [User_Name, Email]);
+        const results = await db.query("SELECT User_Name, Email FROM users WHERE User_Name = ? OR Email = ?", [User_Name, Email]);
         if (results && results.length > 0) {
             if (results.some(user => user.User_Name === User_Name)) {
                 return res.status(400).json({ message: 'Tên người dùng đã tồn tại.' });
@@ -75,7 +75,7 @@ exports.register = async (req, res) => {
 
         // Mã hóa mật khẩu và lưu vào cơ sở dữ liệu
         const hashedPassword = await bcrypt.hash(Password, saltRounds);
-        await db.query("INSERT INTO user (User_Name, Email, Password, Phone) VALUES (?, ?, ?, ?)", [User_Name, Email, hashedPassword, Phone]);
+        await db.query("INSERT INTO users (User_Name, Email, Password, Phone) VALUES (?, ?, ?, ?)", [User_Name, Email, hashedPassword, Phone]);
         return res.status(201).json({ message: 'Tạo tài khoản thành công.' });
     } catch (error) {
         console.error('Lỗi khi tạo tài khoản:', error);
@@ -90,7 +90,7 @@ exports.login = (req, res) => {
     if (!User_Name || !Password) {
         return res.status(400).json({ message: 'Vui lòng cung cấp username và password.' });
     }
-    let findUserSql = `SELECT * FROM User WHERE User_Name = ?`;
+    let findUserSql = `SELECT * FROM Users WHERE User_Name = ?`;
     db.query(findUserSql, [User_Name], async (err, results) => {
         if (err) {
             return res.status(500).json({ message: 'Có lỗi xảy ra khi truy vấn cơ sở dữ liệu.' });
@@ -113,13 +113,13 @@ exports.login = (req, res) => {
                 },
                 secret,
                 {
-                    expiresIn: '1h'
+                    expiresIn: '3h'
                 }
             );
             return res.status(200).json({
                 message: 'Đăng nhập thành công với quyền admin.',
                 token: token,
-                expiresIn: "1h",
+                expiresIn: '3h',
                 userInfo: {
                     id: user.User_ID,
                     username: user.User_Name,
@@ -136,14 +136,14 @@ exports.login = (req, res) => {
                 },
                 secret,
                 {
-                    expiresIn: '1h'
+                    expiresIn: '3h'
                 }
             );
             console.log('tokenUser', tokenUser)
             return res.status(200).json({
                 message: 'Đăng nhập thành công với quyền user.',
                 tokenUser: tokenUser,
-                expiresIn: "1h",
+                expiresIn: '3h',
                 userInfo: {
                     id: user.User_ID,
                     username: user.User_Name,

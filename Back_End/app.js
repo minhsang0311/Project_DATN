@@ -11,6 +11,8 @@ const path = require('path');
 
 const { adminMiddleware } = require('../Back_End/middlewares/adminMiddlware')
 
+const { searchProducts } = require('./contrllers/adminControllers/productController');
+
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const authRoutes = require('./routes/authRoutes');
@@ -20,15 +22,18 @@ const categoryRoutesAdmin = require('./routes/adminRoutes/categoryRoutes');
 const commentRoutesAdmin = require('./routes/adminRoutes/commentRoutes');
 const StatisticsRoutesAdmin = require('./routes/adminRoutes/Statistics')
 const brandRoutesAdmin = require('./routes/adminRoutes/brandRoutes')
+const orderRoutesAdmin = require('./routes/adminRoutes/orderRoutes')
+const searchRoutesAdmin = require('./routes/adminRoutes/searchRoutes')
+const customerRoutesAdmin = require('./routes/adminRoutes/customerRoutes');
 //User
-const productRoutesClient = require('./routes/userRoutes/productRoutes');
 const categoryRoutesClient = require('./routes/userRoutes/categoryRoutes');
 const forgotPassword = require('./routes/userRoutes/forgotPassword')
 const changePassword = require('./routes/userRoutes/changePassword')
 const componentRoutesClient = require('./routes/userRoutes/commentRoutes');
-const orderRoutesAdmin = require('./routes/adminRoutes/orderRoutes')
-//User
+const paymentRoutesClient = require('./routes/userRoutes/paymentRoutes');
 const orderRoutesClient = require('./routes/userRoutes/orderRoutes')
+const productRoutesClient = require('./routes/userRoutes/productRoutes');
+const contactRouterClient = require('./routes/userRoutes/contactRoutes')
 
 
 app.use(cors(corsOpt));
@@ -42,7 +47,10 @@ app.use('/admin', [
     commentRoutesAdmin,
     StatisticsRoutesAdmin,
     brandRoutesAdmin,
-    orderRoutesAdmin
+    orderRoutesAdmin,
+    searchRoutesAdmin,
+    orderRoutesAdmin,
+    customerRoutesAdmin
 ]);
 
 app.use('/user',[
@@ -51,7 +59,12 @@ app.use('/user',[
     componentRoutesClient,
     forgotPassword,
     changePassword,
-    orderRoutesClient
+    orderRoutesClient,
+    paymentRoutesClient,
+    contactRouterClient
 ]);
 
+app.get('/search', searchProducts);
+
 app.listen(3000, () => console.log('Server running on port 3000'));
+

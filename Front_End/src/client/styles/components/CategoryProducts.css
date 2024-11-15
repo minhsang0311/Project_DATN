@@ -2,7 +2,7 @@
 .home .sptrongloai {display: flex;margin-top: 150px; padding:50px 50px;}
 .home .sptrongloai .left-image {width: 20%;}
 .home .sptrongloai .left-image img {width: 100%;height: 425px;border-radius: 10px;}
-.home .sptrongloai .right-products {width: 80%; padding-left: 20px; }
+.home .sptrongloai .right-products {width: 80%; padding-left: 20px;display: flex;}
 .home .sptrongloai .right-products .header1 {display: flex;justify-content: space-between;align-items: center;}
 .home .sptrongloai .right-products .header1 h1 {font-weight: 100;font-size: 35px;color: #784040}
 .home .sptrongloai .right-products .header1 .xem_them{border: 1px solid #855454; border-radius: 100px;padding: 10px 20px;font-size: 15px;cursor: pointer;display: inline-flex; align-items: center;gap: 10px; transition: all 0.3s ease; color: #9e6868;}
@@ -53,3 +53,6 @@
     background-color: #f0f0f0;
     color: #007bff;
 }
+
+
+

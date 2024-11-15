@@ -1,4 +1,5 @@
 const db = require('../../config/db');
+// const removeDiacritics = require('diacritics').remove;
 
 //Routes lấy danh sách sản phẩm
 exports.getAllProducts = (req, res) => {
@@ -81,5 +82,26 @@ exports.deleteProduct = (req, res) => {
                 res.json({ message: "Đã xóa sản phẩm ", "id": id });
             }
         });
+    });
+};
+// Route tìm kiếm theo sản phẩm
+exports.searchProducts = (req, res) => {
+    const keyword = req.query.q;
+    if (!keyword) {
+        return res.status(400).json({ message: "Vui lòng cung cấp từ khóa tìm kiếm." });
+    }
+
+    const sql = `SELECT * FROM Products WHERE Product_Name LIKE ?`;
+    db.query(sql, [`%${keyword}%`], (err, data) => {
+        if (err) {
+            console.error("Database error:", err);
+            return res.status(500).json({ message: "Lỗi khi tìm kiếm sản phẩm", err });
+        }
+
+        if (data.length === 0) {
+            return res.status(404).json({ message: "Không tìm thấy sản phẩm nào." });
+        }
+
+        res.json({ results: data });
     });
 };
