@@ -1,4 +1,6 @@
 const bcrypt = require('bcrypt');
+const crypto = require("crypto");
+const nodemailer = require("nodemailer");
 const jwt = require('jsonwebtoken');
 const db = require('../config/db');
 const saltRounds = 10;
@@ -32,37 +34,52 @@ bz3UR6ztD6EweJb4u7Cyx6G3uSQyN43stuBxdzrFLL3+efQggsq34jQHBLfZEg8v
 WilJio5ddYii3EMBNv7eszmEaBrICeaZJtK9cGMbUsra6yAa3bjBCz8FjcFm+ZsS
 y/xS/zHy35xFnliUvUP2Hb0=`;
 
-// Hàm đăng ký người dùng
+// Hàm gửi email voucher
+async function sendVoucherEmail(email, voucherCode, discount, expirationDate) {
+    const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: 'minhsangg0311@gmail.com',
+            pass: 'txpm bdcg qbuj evhi',
+        },
+    });
+
+    const mailOptions = {
+        from: '"HomeNest" <minhsangg0311@gmail.com>',
+        to: email,
+        subject: "Mã Khuyến Mãi Dành Cho Bạn!",
+        text: `Chào mừng bạn đăng ký thành công tài khoản!
+        \nMã: ${voucherCode}
+        \nGiảm giá: ${discount}%
+        \nHạn sử dụng: ${expirationDate}`,
+    };
+
+    await transporter.sendMail(mailOptions);
+}
+
+// Hàm đăng ký người dùng và gửi voucher
 exports.register = async (req, res) => {
     const { User_Name, Email, Password, Phone } = req.body;
 
-    // Kiểm tra dữ liệu đầu vào
     if (!User_Name || !Password || !Email || !Phone) {
         return res.status(400).json({ message: 'Vui lòng cung cấp đầy đủ thông tin.' });
     }
 
-    // Kiểm tra User_Name có chứa cả chữ và số
-        const usernameRegex = /^[a-zA-Z]+$/;
-        if (!usernameRegex.test(User_Name)) {
-            return res.status(400).json({ message: 'Tên người dùng chỉ được chứa chữ cái và số.' });
-        }
-
-    // Kiểm tra Password: ít nhất 8 ký tự, có chữ hoa, chữ thường, số và ký tự đặc biệt
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     if (!passwordRegex.test(Password)) {
         return res.status(400).json({
-            message: 'Mật khẩu phải chứa ít nhất 8 ký tự, bao gồm chữ hoa ở đầu, chữ thường, số và ký tự đặc biệt.'
+            message: 'Mật khẩu phải chứa ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt.'
         });
     }
-    // Kiểm tra Phone: bắt đầu bằng số 0 và có từ 10 đến 11 chữ số
+
     const phoneRegex = /^0\d{9,10}$/;
     if (!phoneRegex.test(Phone)) {
         return res.status(400).json({
             message: 'Số điện thoại phải bắt đầu bằng số 0 và có từ 10 đến 11 chữ số.'
         });
     }
+
     try {
-        // Kiểm tra trùng lặp User_Name hoặc Email
         const results = await db.query("SELECT User_Name, Email FROM users WHERE User_Name = ? OR Email = ?", [User_Name, Email]);
         if (results && results.length > 0) {
             if (results.some(user => user.User_Name === User_Name)) {
@@ -73,17 +90,24 @@ exports.register = async (req, res) => {
             }
         }
 
-        // Mã hóa mật khẩu và lưu vào cơ sở dữ liệu
         const hashedPassword = await bcrypt.hash(Password, saltRounds);
-        await db.query("INSERT INTO users (User_Name, Email, Password, Phone) VALUES (?, ?, ?, ?)", [User_Name, Email, hashedPassword, Phone]);
-        return res.status(201).json({ message: 'Tạo tài khoản thành công.' });
+        const newUser = await db.query("INSERT INTO users (User_Name, Email, Password, Phone) VALUES (?, ?, ?, ?)", [User_Name, Email, hashedPassword, Phone]);
+
+        const voucherCode = crypto.randomBytes(4).toString("hex").toUpperCase();
+        const discount = 15;
+        const expirationDate = new Date();
+        expirationDate.setDate(expirationDate.getDate() + 30);
+
+        await db.query("INSERT INTO vouchers (Code, Discount, Expiration_Date) VALUES (?, ?, ?)", [voucherCode, discount, expirationDate]);
+
+        await sendVoucherEmail(Email, voucherCode, discount, expirationDate.toISOString().split('T')[0]);
+
+        return res.status(201).json({ message: 'Đăng ký thành công! Mã khuyến mãi đã được gửi qua email.' });
     } catch (error) {
         console.error('Lỗi khi tạo tài khoản:', error);
         return res.status(500).json({ message: 'Lỗi máy chủ.', error });
     }
 };
-
-
 
 exports.login = (req, res) => {
     const { User_Name, Password } = req.body;
@@ -126,7 +150,7 @@ exports.login = (req, res) => {
                     role: user.Role
                 }
             });
-        } 
+        }
         if (user.Role === 0) {
             var tokenUser = jwt.sign(
                 {

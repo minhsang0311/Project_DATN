@@ -464,15 +464,15 @@ CREATE TABLE `shipments` (
 --
 
 CREATE TABLE `users` (
-  `User_ID` int(11) NOT NULL,
-  `User_Name` varchar(100) DEFAULT NULL,
-  `Email` varchar(100) DEFAULT NULL,
-  `Password` varchar(255) DEFAULT NULL,
-  `resetToken` varchar(255) NOT NULL,
-  `resetTokenExpiry` bigint(255) DEFAULT NULL,
-  `Phone` varchar(20) DEFAULT NULL,
-  `Role` int(11) DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+    `User_ID` int(11) NOT NULL,
+    `User_Name` varchar(100) DEFAULT NULL,
+    `Email` varchar(100) DEFAULT NULL,
+    `Password` varchar(255) DEFAULT NULL,
+    `resetToken` varchar(255) NOT NULL,
+    `resetTokenExpiry` bigint(255) DEFAULT NULL,
+    `Phone` varchar(20) DEFAULT NULL,
+    `Role` int(11) DEFAULT 0
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `users`
