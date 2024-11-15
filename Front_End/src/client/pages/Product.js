@@ -1,12 +1,27 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { addToCart } from './cartSlice';
+import { useDispatch } from 'react-redux';
 
 function Product({ product }) {
+    const dispatch = useDispatch(); 
+
     const formatCurrency = (value) => {
         return new Intl.NumberFormat('vi-VN', {
             style: 'currency',
             currency: 'VND',
         }).format(value);
+    };
+    
+    const handleAddToCart = (product) => {
+        const cartItem = {
+          id: product.Product_ID,
+          image: product.Image,
+          name: product.Product_Name,
+          price: product.Promotion > 0 ? product.Price - (product.Promotion * product.Price) / 100 : product.Price,
+          quantity: 1 // Mặc định là 1
+        };
+        dispatch(addToCart(cartItem)); // Gửi hành động thêm vào giỏ hàng
     };
 
     return (
@@ -31,7 +46,8 @@ function Product({ product }) {
                         <p className="new-price">{formatCurrency(product.Price)}</p>
                     )}
                 </div>
-                <button className="add-to-cart">Giỏ hàng</button>
+                {/* Chỉnh sửa nút để gọi handleAddToCart với product */}
+                <button onClick={() => handleAddToCart(product)} className="add-to-cart">Giỏ hàng</button>
             </div>
         </div>
     );

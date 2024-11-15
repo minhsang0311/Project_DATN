@@ -1,10 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import '../styles/components/Comments.css'
-const Comments = ({ productId }) => {
+import '../styles/components/Comments.css';
+
+const Comments = ({ productId, orderSuccess }) => {
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState('');
     const [username, setUsername] = useState('');
     const [rating, setRating] = useState(5);
+    const [message, setMessage] = useState('');
+    const [userId, setUserId] = useState(null);
+
+    // Lấy thông tin người dùng từ localStorage khi component load
+    useEffect(() => {
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+            const user = JSON.parse(storedUser);
+            if (user.role === 0) {
+                setUsername(user.username);
+                setUserId(user.id); // Lấy User_ID từ localStorage
+            }
+        }
+    }, []);
 
     // Lấy danh sách bình luận từ API khi component được load
     useEffect(() => {
@@ -21,12 +36,25 @@ const Comments = ({ productId }) => {
         fetchComments();
     }, [productId]);
 
+    // Lắng nghe sự thay đổi của orderSuccess để thêm bình luận mới
+    useEffect(() => {
+        if (orderSuccess) {
+            setNewComment(''); // Làm mới form bình luận
+            setMessage('Bạn có thể thêm bình luận cho sản phẩm này.');
+        }
+    }, [orderSuccess]);
+
     // Xử lý thêm bình luận mới
     const handleAddComment = async (e) => {
         e.preventDefault();
 
+        if (!userId) {
+            alert('Vui lòng đăng nhập để bình luận!');
+            return;
+        }
+
         const newCommentData = {
-            User_ID: 1, // Bạn có thể thay thế bằng ID người dùng thật
+            User_ID: userId,
             Product_ID: productId,
             Ratting: rating,
             Comment: newComment,
@@ -35,25 +63,44 @@ const Comments = ({ productId }) => {
         };
 
         try {
-            const response = await fetch(`http://localhost:3000/user/reviews`, {
+            const response = await fetch(`http://localhost:3000/user/reviews/${productId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(newCommentData),
-                
             });
 
-            const data = await response.json();console.log("API response:", data);
+            const data = await response.json();
             if (data.message === 'Thêm bình luận thành công') {
                 // Cập nhật lại danh sách bình luận sau khi thêm mới
-                setComments([...comments, newCommentData]);
-                setNewComment(''); // Xóa nội dung bình luận sau khi gửi
-                setUsername('');
+                const fetchUpdatedComments = async () => {
+                    const response = await fetch(`http://localhost:3000/user/reviews/${productId}`);
+                    const updatedData = await response.json();
+                    setComments(updatedData);
+                };
+                fetchUpdatedComments();
+
+                setNewComment('');
+                alert('Bình luận của bạn đã được gửi thành công!');
             }
         } catch (err) {
             console.error('Lỗi khi thêm bình luận:', err);
+            setMessage('Lỗi khi gửi bình luận. Vui lòng thử lại sau.');
         }
+    };
+
+    // Hàm để hiển thị sao
+    const renderStars = (rating) => {
+        const stars = [];
+        for (let i = 0; i < 5; i++) {
+            stars.push(
+                <span key={i} className={i < rating ? 'filled' : 'empty'}>
+                    ★
+                </span>
+            );
+        }
+        return stars;
     };
 
     return (
@@ -62,8 +109,26 @@ const Comments = ({ productId }) => {
             <ul>
                 {comments.length > 0 ? (
                     comments.map((comment) => (
-                        <li key={comment.Review_ID}>
-                            <strong>{comment.User_Name}:</strong> {comment.Comment} - {comment.Ratting}★
+                        <li key={comment.Review_ID} className="comment-item">
+                            {/* Hiển thị ảnh người dùng */}
+                            <img
+                                src="https://i.pinimg.com/736x/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg"
+                                alt={comment.User_Name}
+                                className="user-avatar"
+                            />
+
+                            <div className="comment-content">
+                                {/* Tên người dùng */}
+                                <strong>{comment.User_Name}</strong>
+
+                                {/* Hiển thị sao */}
+                                <div className="rating">
+                                    {renderStars(comment.Ratting)}
+                                </div>
+
+                                {/* Nội dung bình luận */}
+                                <p>{comment.Comment}</p>
+                            </div>
                         </li>
                     ))
                 ) : (
@@ -71,33 +136,33 @@ const Comments = ({ productId }) => {
                 )}
             </ul>
 
-            <h4>Thêm bình luận mới</h4>
-            <form onSubmit={handleAddComment}>
-                <input
-                    type="text"
-                    placeholder="Tên của bạn"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    required
-                />
-                <textarea
-                    placeholder="Nội dung bình luận"
-                    value={newComment}
-                    onChange={(e) => setNewComment(e.target.value)}
-                    required
-                />
-                <label>
-                    Đánh giá:
-                    <select value={rating} onChange={(e) => setRating(e.target.value)}>
-                        <option value={5}>5</option>
-                        <option value={4}>4</option>
-                        <option value={3}>3</option>
-                        <option value={2}>2</option>
-                        <option value={1}>1</option>
-                    </select>
-                </label>
-                <button type="submit">Gửi bình luận</button>
-            </form>
+            {orderSuccess && (
+                <>
+                    <h4>Thêm bình luận mới</h4>
+                    <form onSubmit={handleAddComment}>
+                        <textarea
+                            placeholder="Nội dung bình luận"
+                            value={newComment}
+                            onChange={(e) => setNewComment(e.target.value)}
+                            required
+                        />
+                        <label>
+                            Đánh giá:
+                            <select value={rating} onChange={(e) => setRating(e.target.value)}>
+                                <option value={5}>5</option>
+                                <option value={4}>4</option>
+                                <option value={3}>3</option>
+                                <option value={2}>2</option>
+                                <option value={1}>1</option>
+                            </select>
+                        </label>
+                        <button type="submit">Gửi bình luận</button>
+                    </form>
+                </>
+            )}
+
+            {/* Thông báo thành công hoặc lỗi */}
+            {message && <p>{message}</p>}
         </div>
     );
 };

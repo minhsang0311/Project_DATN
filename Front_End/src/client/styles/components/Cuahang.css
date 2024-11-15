@@ -131,8 +131,7 @@
    background-color: #f0f0f0;
    color: #007bff;
 }
-/* 
->>>>>>> 96af3902a4beb3ed0826dfe583f6bded2e9b36b8
+
 @media (max-width: 800px) {
    .cuahang .noidung{ grid-template-columns: 1fr;}
    .cuahang .right-products .box-sp {grid-template-columns: repeat(2, 1fr);}

@@ -51,20 +51,17 @@
 .product-price > .old-price {
   text-decoration: line-through;
   color: #575353;
-  font-size: 34px;
+  font-size: 28px;
 }
 
-.product-price > .sale-price {
-  color: #E41717;
-  font-size: 34px;
-  font-weight: 800;
-  margin-bottom: 20px;
-}
 
 .product-price > button {
   background-color: #56A4FF;
 }
-
+.product-price > .new-price { color: #E41717;
+  font-size: 26px;
+  font-weight: 800;
+  margin-bottom: 20px;}
 
 .btn-buy-now {
   padding: 10px 20px;
@@ -94,10 +91,10 @@
   background-color: #a71212;
 }
 
-.product-specifications {
+ .product-specifications {
   margin-top: 20px;
-  margin-left: 20%;
-  max-width: 60%;
+ 
+  max-width: 70%;
 }
 
 table {
@@ -295,4 +292,17 @@ table, td {
   background-color: #4fc3f7;
   color: white;
 }
+.product-description ul {
+   /* Loại bỏ ký hiệu đầu dòng */
+  padding-left: 0;       /* Loại bỏ khoảng cách bên trái */
+}
+.product-description li {
+  padding-left: 1em;     /* Thêm khoảng cách để văn bản dễ đọc hơn */
+  position: relative;
+  list-style-type: none;
+}
+.product-specifications li {
+  list-style-type: none ;
+}
+
 
