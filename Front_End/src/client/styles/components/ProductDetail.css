@@ -293,12 +293,16 @@ table, td {
   color: white;
 }
 .product-description ul {
-  list-style-type: none; /* Loại bỏ ký hiệu đầu dòng */
+   /* Loại bỏ ký hiệu đầu dòng */
   padding-left: 0;       /* Loại bỏ khoảng cách bên trái */
 }
 .product-description li {
   padding-left: 1em;     /* Thêm khoảng cách để văn bản dễ đọc hơn */
   position: relative;
+  list-style-type: none;
+}
+.product-specifications li {
+  list-style-type: none ;
 }
 
 

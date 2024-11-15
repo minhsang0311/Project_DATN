@@ -90,7 +90,7 @@ exports.login = (req, res) => {
     if (!User_Name || !Password) {
         return res.status(400).json({ message: 'Vui lòng cung cấp username và password.' });
     }
-    let findUserSql = `SELECT * FROM User WHERE User_Name = ?`;
+    let findUserSql = `SELECT * FROM Users WHERE User_Name = ?`;
     db.query(findUserSql, [User_Name], async (err, results) => {
         if (err) {
             return res.status(500).json({ message: 'Có lỗi xảy ra khi truy vấn cơ sở dữ liệu.' });

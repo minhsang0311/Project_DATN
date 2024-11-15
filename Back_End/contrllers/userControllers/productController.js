@@ -121,7 +121,7 @@ exports.getAllproductDetail = function (req, res) {
     let productSql = `
         SELECT p.Product_ID, p.Category_ID, p.Product_Name, p.Image, p.Price, p.Description, p.Promotion,  p.Views, b.Brand_Name
         FROM products p
-        JOIN brand b ON p.Brand_ID = b.Brand_ID
+        JOIN brands b ON p.Brand_ID = b.Brand_ID
         WHERE p.Product_ID = ?
     `;
 

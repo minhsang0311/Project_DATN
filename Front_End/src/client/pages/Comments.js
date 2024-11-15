@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/components/Comments.css';
 
-const Comments = ({ productId }) => {
+const Comments = ({ productId, orderSuccess }) => {
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState('');
     const [username, setUsername] = useState('');
-    const [ratting, setRating] = useState(5);
+    const [rating, setRating] = useState(5);
     const [message, setMessage] = useState('');
     const [userId, setUserId] = useState(null);
 
@@ -36,6 +36,14 @@ const Comments = ({ productId }) => {
         fetchComments();
     }, [productId]);
 
+    // Lắng nghe sự thay đổi của orderSuccess để thêm bình luận mới
+    useEffect(() => {
+        if (orderSuccess) {
+            setNewComment(''); // Làm mới form bình luận
+            setMessage('Bạn có thể thêm bình luận cho sản phẩm này.');
+        }
+    }, [orderSuccess]);
+
     // Xử lý thêm bình luận mới
     const handleAddComment = async (e) => {
         e.preventDefault();
@@ -48,7 +56,7 @@ const Comments = ({ productId }) => {
         const newCommentData = {
             User_ID: userId,
             Product_ID: productId,
-            Ratting: ratting,
+            Ratting: rating,
             Comment: newComment,
             User_Name: username,
             Show_Hidden: 1
@@ -128,27 +136,30 @@ const Comments = ({ productId }) => {
                 )}
             </ul>
 
-
-            <h4>Thêm bình luận mới</h4>
-            <form onSubmit={handleAddComment}>
-                <textarea
-                    placeholder="Nội dung bình luận"
-                    value={newComment}
-                    onChange={(e) => setNewComment(e.target.value)}
-                    required
-                />
-                <label>
-                    Đánh giá:
-                    <select value={ratting} onChange={(e) => setRating(e.target.value)}>
-                        <option value={5}>5</option>
-                        <option value={4}>4</option>
-                        <option value={3}>3</option>
-                        <option value={2}>2</option>
-                        <option value={1}>1</option>
-                    </select>
-                </label>
-                <button type="submit">Gửi bình luận</button>
-            </form>
+            {orderSuccess && (
+                <>
+                    <h4>Thêm bình luận mới</h4>
+                    <form onSubmit={handleAddComment}>
+                        <textarea
+                            placeholder="Nội dung bình luận"
+                            value={newComment}
+                            onChange={(e) => setNewComment(e.target.value)}
+                            required
+                        />
+                        <label>
+                            Đánh giá:
+                            <select value={rating} onChange={(e) => setRating(e.target.value)}>
+                                <option value={5}>5</option>
+                                <option value={4}>4</option>
+                                <option value={3}>3</option>
+                                <option value={2}>2</option>
+                                <option value={1}>1</option>
+                            </select>
+                        </label>
+                        <button type="submit">Gửi bình luận</button>
+                    </form>
+                </>
+            )}
 
             {/* Thông báo thành công hoặc lỗi */}
             {message && <p>{message}</p>}

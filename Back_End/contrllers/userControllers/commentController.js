@@ -1,7 +1,7 @@
 const db = require('../../config/db');
 exports.getreviews = (req, res) => {
     let productId = parseInt(req.params.productId);
-    console.log("Received productId:", productId); // In log để kiểm tra giá trị productId
+  
     if (isNaN(productId) || productId <= 0) {
         return res.status(400).json({ "message": "Không tìm được sản phẩm", "id": productId });
     }

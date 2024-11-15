@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 
 function Product({ product }) {
     const dispatch = useDispatch(); 
+
     const formatCurrency = (value) => {
         return new Intl.NumberFormat('vi-VN', {
             style: 'currency',
@@ -21,7 +22,8 @@ function Product({ product }) {
           quantity: 1 // Mặc định là 1
         };
         dispatch(addToCart(cartItem)); // Gửi hành động thêm vào giỏ hàng
-      };
+    };
+
     return (
         <div className="product">
             {product.Promotion > 0 && (
@@ -44,7 +46,8 @@ function Product({ product }) {
                         <p className="new-price">{formatCurrency(product.Price)}</p>
                     )}
                 </div>
-                <button onClick={handleAddToCart} className="add-to-cart">Giỏ hàng</button>
+                {/* Chỉnh sửa nút để gọi handleAddToCart với product */}
+                <button onClick={() => handleAddToCart(product)} className="add-to-cart">Giỏ hàng</button>
             </div>
         </div>
     );
