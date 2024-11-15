@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 * {
    margin: 0;
    padding: 0;
@@ -149,7 +149,6 @@
        grid-template-columns: repeat(3, 1fr);
    }
 }
-=======
 /* Container and General Styles */
 .container {
     padding: 20px;
@@ -304,5 +303,3 @@ h3 {
     color: #28a745; 
    
 }
-
->>>>>>> 9eb36fbdb9e443b4bcadf3ffc5f9859efd67ee37

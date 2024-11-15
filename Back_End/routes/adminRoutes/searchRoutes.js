@@ -7,7 +7,7 @@ const searchController = require('../../contrllers/adminControllers/searchContro
 const { adminMiddleware } = require('../../middlewares/adminMiddlware');
 
 
-router.get('/search', searchController.generalSearch);
+router.get('/searchAdmin',  searchController.generalSearch);
 
 
 

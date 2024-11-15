@@ -70,7 +70,6 @@ exports.deleteProduct = (req, res) => {
         if (err) {
             return res.json({ "message": "Lỗi kiểm tra đơn hàng chi tiết", err });
         }
-<<<<<<< HEAD
         // Nếu sản phẩm đã tồn tại trong orderDetail, thông báo không thể xóa
         if (result[0].count > 0) {
             return res.status(400).json({ message: "Không thể xóa sản phẩm vì đã tồn tại trong đơn hàng chi tiết." });
@@ -85,10 +84,6 @@ exports.deleteProduct = (req, res) => {
         });
     });
 };
-=======
-    })
-}
-
 // Route tìm kiếm theo sản phẩm
 exports.searchProducts = (req, res) => {
     const keyword = req.query.q;
@@ -99,7 +94,7 @@ exports.searchProducts = (req, res) => {
     const sql = `SELECT * FROM Products WHERE Product_Name LIKE ?`;
     db.query(sql, [`%${keyword}%`], (err, data) => {
         if (err) {
-            console.error("Database error:", err); 
+            console.error("Database error:", err);
             return res.status(500).json({ message: "Lỗi khi tìm kiếm sản phẩm", err });
         }
 
@@ -110,4 +105,3 @@ exports.searchProducts = (req, res) => {
         res.json({ results: data });
     });
 };
->>>>>>> 1ef04affa5c864bb4a84f076b87408334cf1ce9a

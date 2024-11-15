@@ -6,7 +6,7 @@ const db = require('../../config/db');
 exports.getOrderList = (req, res) => {
         let sql = `
                 SELECT * 
-                FROM \`order\` o 
+                FROM \`orders\` o 
                 JOIN \`order_status\` os ON o.Status = os.Status_ID
         `;
         db.query(sql, (err, data) => {
@@ -23,7 +23,7 @@ exports.putOrder =(req, res) => {
     const { Status } = req.body; // Nhận trạng thái từ body
   
     // Cập nhật trong cơ sở dữ liệu
-    const sql = 'UPDATE `order` SET Status = ? WHERE Order_ID = ?';
+    const sql = 'UPDATE `orders` SET Status = ? WHERE Order_ID = ?';
     db.query(sql, [Status, orderId], (err, result) => {
       if (err) {
         return res.status(500).json({ message: 'Lỗi cập nhật trạng thái đơn hàng', err });

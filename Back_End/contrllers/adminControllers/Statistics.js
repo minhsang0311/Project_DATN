@@ -30,6 +30,24 @@ exports.StatisticsProBrand = (req, res) => {
     res.json(results);
   })
 }
+// Thống kê doanh thu theo ngày
+exports.DailyRevenue = (req, res) => {
+  const dailyRevenueQuery = `
+    SELECT DATE(created_at) AS sale_date, SUM(total_amount) AS total_revenue
+    FROM orders
+    WHERE Status = 5
+    GROUP BY sale_date
+    ORDER BY sale_date ASC;
+  `;
+
+  db.query(dailyRevenueQuery, (err, results) => {
+    if (err) {
+      return res.json({ "message": "Lỗi tính doanh thu theo ngày", err });
+    }
+    res.json(results);
+  });
+};
+
 //Thống kê doanh thu theo tuần
 exports.WeekRevenue = (req, res) => {
   const weeklyRevenue = `
@@ -103,6 +121,24 @@ exports.YearRevenue = (req, res) => {
     res.json(results);
   });
 };
+// Thống kê số lượng sản phẩm bán được theo ngày
+exports.DailySalePro = (req, res) => {
+  const dailySaleProQuery = `
+    SELECT DATE(created_at) AS sale_date, SUM(total_quantity) AS total_sale_quantity
+    FROM orders
+    WHERE Status = 5
+    GROUP BY sale_date
+    ORDER BY sale_date ASC;
+  `;
+
+  db.query(dailySaleProQuery, (err, results) => {
+    if (err) {
+      return res.json({ "message": "Lỗi tính tổng số sản phẩm bán được theo ngày", err });
+    }
+    res.json(results);
+  });
+};
+
 //Thống kê tổng sản phẩm bán được theo tuần
 exports.WeekSalePro = (req, res) => {
   const weeklySalePro = `
@@ -179,11 +215,13 @@ exports.YearSalePro = (req, res) => {
 exports.OrderStatusStats = (req, res) => {
   const orderStatusQuery = `
     SELECT 
-      Status,
-      COUNT(Order_ID) AS order_count
-    FROM orders
-    GROUP BY Status
-    ORDER BY Status;
+      o.Status,
+      os.Status_Name,
+      COUNT(o.Order_ID) AS order_count
+    FROM orders o
+    JOIN order_status os ON o.Status = os.Status_ID
+    GROUP BY o.Status, os.Status_Name
+    ORDER BY o.Status;
   `;
   
   db.query(orderStatusQuery, (err, results) => {
@@ -193,4 +231,5 @@ exports.OrderStatusStats = (req, res) => {
     res.json(results);
   });
 };
+
 

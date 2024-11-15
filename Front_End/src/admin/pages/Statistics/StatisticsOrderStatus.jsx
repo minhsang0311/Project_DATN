@@ -37,7 +37,7 @@ const StatisticsOrderStatus = () => {
       .catch(error => console.error('Lỗi lấy dữ liệu thống kê trạng thái đơn hàng:', error));
   }, []);
 
-  const statusLabels = statusData.map(item => `Trạng thái ${item.Status}`);
+  const statusLabels = statusData.map(item => `Trạng thái ${item.Status_Name}`);
   const orderCounts = statusData.map(item => item.order_count);
 
   const pieChartData = {
@@ -79,20 +79,22 @@ const StatisticsOrderStatus = () => {
   };
 
   return (
-    <Fragment>
+    <div className='statistics-chillrend-header'>
       <h2>Thống kê trạng thái đơn hàng</h2>
       <div style={{ display: 'flex', gap: '20px', justifyContent: 'center' }}>
         <div style={{ width: '45%', minHeight: '300px' }}>
           <h3>Biểu đồ tròn - Trạng thái đơn hàng</h3>
-          <Pie data={pieChartData} options={{ responsive: true, plugins: { legend: { position: 'top' } } }} />
+          <div className='pie_order'>
+            <Pie data={pieChartData} options={{ responsive: true, plugins: { legend: { position: 'top' } } }} style={{ width: '300px', height: 'auto' }} />
+          </div>
         </div>
-        
+
         <div style={{ width: '45%', minHeight: '300px' }}>
           <h3>Biểu đồ cột - Trạng thái đơn hàng</h3>
           <Bar data={barChartData} options={{ responsive: true, plugins: { legend: { position: 'top' } }, scales: { y: { beginAtZero: true } } }} />
         </div>
       </div>
-    </Fragment>
+    </div>
   );
 };
 

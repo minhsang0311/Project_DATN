@@ -113,13 +113,13 @@ exports.login = (req, res) => {
                 },
                 secret,
                 {
-                    expiresIn: '1h'
+                    expiresIn: '3h'
                 }
             );
             return res.status(200).json({
                 message: 'Đăng nhập thành công với quyền admin.',
                 token: token,
-                expiresIn: "1h",
+                expiresIn: '3h',
                 userInfo: {
                     id: user.User_ID,
                     username: user.User_Name,
@@ -136,14 +136,14 @@ exports.login = (req, res) => {
                 },
                 secret,
                 {
-                    expiresIn: '1h'
+                    expiresIn: '3h'
                 }
             );
             console.log('tokenUser', tokenUser)
             return res.status(200).json({
                 message: 'Đăng nhập thành công với quyền user.',
                 tokenUser: tokenUser,
-                expiresIn: "1h",
+                expiresIn: '3h',
                 userInfo: {
                     id: user.User_ID,
                     username: user.User_Name,
