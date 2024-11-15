@@ -81,9 +81,6 @@ function SpMoi() {
                                     )}
                                 </div>
                                 <button className="add-to-cart" onClick={() => handleAddToCart(sp)}>Giỏ hàng</button>
-                                <button className="add-to-cart" onClick={() => handleAddToCart(sp)}>
-                                            Thêm vào giỏ hàng
-                                        </button>
                             </div>
                         </div>
                     )}
