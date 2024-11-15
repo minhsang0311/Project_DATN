@@ -131,8 +131,8 @@
 
 } 
 .home .spkhuyenmai .box-sp .product .price_giohang{align-items: center;display: flex;justify-content:space-between;margin-top: 10px;}
-.home .spkhuyenmai .box-sp .product .price {gap: 20px; text-align: center;justify-content: center; } 
-.home .spkhuyenmai .box-sp .product .price .old-price {text-decoration: line-through;color: #AE9595;font-size: 14px;}
+.home .spkhuyenmai .box-sp .product .price {gap: 20px;justify-content: center; } 
+.home .spkhuyenmai .box-sp .product .price .old-price {text-decoration: line-through;color: #AE9595;font-size: 14px;margin: 5px;}
 .home .spkhuyenmai .box-sp .product .price .new-price {font-weight: 600;color: #ee7c2a;font-size: 16px;margin: 5px}
 .home .spkhuyenmai .box-sp .product .add-to-cart {
    font-size: 15px;background-color: #ffffff;padding:5px 10px;color: #4fc3f7;

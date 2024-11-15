@@ -101,6 +101,7 @@
    cursor: pointer;
    margin-right: 10px;
  }
+ .cuahang .box-sp .product .add-to-cart:hover{background-color: #4fc3f7;color: white;}
  .pagination {
    display: flex;
    justify-content: center;
@@ -131,7 +132,6 @@
    background-color: #f0f0f0;
    color: #007bff;
 }
-
 @media (max-width: 800px) {
    .cuahang .noidung{ grid-template-columns: 1fr;}
    .cuahang .right-products .box-sp {grid-template-columns: repeat(2, 1fr);}

@@ -90,7 +90,7 @@ exports.getFilteredProducts = (req, res) => {
 };
 // productController.js
 exports.getAllBrands = (req, res) => {
-    const sql = `SELECT Brand_ID, Brand_Name, Brand_Image FROM brand`;
+    const sql = `SELECT Brand_ID, Brand_Name, Brand_Image FROM brands`;
     db.query(sql, (err, data) => {
         if (err) {
             res.status(500).json({ message: "Lỗi khi lấy danh sách thương hiệu", err });
