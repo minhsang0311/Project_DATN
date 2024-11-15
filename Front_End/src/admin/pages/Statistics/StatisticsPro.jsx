@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Pie } from 'react-chartjs-2';
 import {
     Chart as ChartJS,
@@ -87,18 +86,18 @@ const StatisticsPro = () => {
     if (error) return <p>{error}</p>;
 
     return (
-        <div className='statistics-chillrend-header'>
+        <div className='statistics-chillrend-header_product'>
             <h2>Bảng thống kê sản phẩm</h2>
             <div className='statistics'>
                 <div className='left'>
                     <table className="vertical-table">
                         <tbody>
                             <tr>
-                                <th>Tổng số sản phẩm</th>
+                                <th>Tổng sản phẩm</th>
                                 <td>{totalProducts}</td>
                             </tr>
                             <tr>
-                                <th>Tổng số danh mục</th>
+                                <th>Tổng danh mục</th>
                                 <td>{totalCategories}</td>
                             </tr>
                             <tr>

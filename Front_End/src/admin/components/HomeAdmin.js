@@ -43,7 +43,7 @@ const HomeAdmin = () => {
     const handleSearch = async () => {
         const token = localStorage.getItem('token');
         try {
-            const response = await axios.get('http://localhost:3000/admin/search', {
+            const response = await axios.get('http://localhost:3000/admin/searchAdmin', {
                 headers: { "Authorization": 'Bearer ' + token },
                 params: { searchTerm, entityType }
             });
@@ -138,13 +138,14 @@ const HomeAdmin = () => {
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
-                        <button onClick={handleSearch}> <i className="bi bi-search"></i>Tìm kiếm</button>
-                        <select value={entityType} onChange={(e) => setEntityType(e.target.value)}>
+                        {/* <select value={entityType} onChange={(e) => setEntityType(e.target.value)}>
                             <option value="products">Sản phẩm</option>
-                            <option value="category">Danh mục</option>
+                            <option value="categories">Danh mục</option> 
                             <option value="users">Người dùng</option>
-                        </select>
-                        
+                        </select> */}
+                        {/* <button onClick={handleSearch}> <i className="bi bi-search"></i>Tìm kiếm</button> */}
+
+
                     </div>
                 </div>
 
@@ -159,7 +160,7 @@ const HomeAdmin = () => {
                         <Route path="categoryUpdate/:id" element={<CategoryUpdate />} />
                         <Route path="comments" element={<Comments />} />
                         <Route path="order" element={<AdminOrder searchResults={searchResults} />} />
-                        <Route path="customers" element={<Customer/>} />
+                        <Route path="customers" element={<Customer />} />
                     </Routes>
                 </div>
             </div>

@@ -1,16 +1,10 @@
-<<<<<<< HEAD
-/* src/styles/components/CartPage.css */
-=======
-<<<<<<< HEAD
-
->>>>>>> 1ef04affa5c864bb4a84f076b87408334cf1ce9a
 .cart-page {
   padding: 20px;
   background-color: #f9f9f9;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   max-width: 1000px;
-  margin: 0  auto ;
+  margin: 0 auto;
   margin-top: 150px;
 }
 
@@ -27,24 +21,28 @@
   margin-bottom: 20px;
 }
 
-.cart-table th, .cart-table td {
+.cart-table th,
+.cart-table td {
   padding: 12px;
   text-align: center;
   border: 1px solid #ddd;
 }
 
 .cart-table th {
-  background-color: #4fc3f7; /* Màu nền cho tiêu đề bảng */
+  background-color: #4fc3f7;
+  /* Màu nền cho tiêu đề bảng */
   color: white;
   font-weight: bold;
 }
 
 .cart-table tr:nth-child(even) {
-  background-color: #f2f2f2; /* Màu nền cho hàng chẵn */
+  background-color: #f2f2f2;
+  /* Màu nền cho hàng chẵn */
 }
 
 .cart-table img {
-  width: 50px; /* Kích thước hình ảnh trong bảng */
+  width: 50px;
+  /* Kích thước hình ảnh trong bảng */
   height: auto;
   border-radius: 4px;
 }
@@ -56,7 +54,7 @@
 }
 
 .quantity-controls button {
-  background-color: #4fc3f7; 
+  background-color: #4fc3f7;
   color: white;
   border: none;
   border-radius: 4px;
@@ -67,14 +65,17 @@
 }
 
 .quantity-controls button:hover {
-  background-color: #1976D2; /* Màu nút khi hover */
+  background-color: #1976D2;
+  /* Màu nút khi hover */
 }
 
-.btn-clear-cart, .btn-payment {
-  background-color: #2196F3; /* Màu nền cho nút */
+.btn-clear-cart,
+.btn-payment {
+  background-color: #2196F3;
+  /* Màu nền cho nút */
   color: white;
   border: none;
-  border-radius: 4px; 
+  border-radius: 4px;
   padding: 12px 20px;
   cursor: pointer;
   margin: 10px 5px;
@@ -84,34 +85,42 @@
   text-decoration: none;
 }
 
-.btn-clear-cart:hover, .btn-payment:hover {
-  background-color: #1976D2; /* Màu nút khi hover */
+.btn-clear-cart:hover,
+.btn-payment:hover {
+  background-color: #1976D2;
+  /* Màu nút khi hover */
 }
 
 /* Thêm responsive cho màn hình nhỏ */
 @media (max-width: 768px) {
   .cart-page {
-      padding: 10px;
-  }
-  .cart-table th, .cart-table td {
-      font-size: 14px;
-      padding: 10px;
-  }
-  .btn-clear-cart, .btn-payment {
-      width: 100%;
-      margin: 5px 0;
+    padding: 10px;
   }
 
-  
-  .cart-item-image {
-    width: 50px; /* Kích thước hình ảnh sản phẩm */
-    height: auto; /* Giữ tỷ lệ hình ảnh */
+  .cart-table th,
+  .cart-table td {
+    font-size: 14px;
+    padding: 10px;
   }
-  
+
+  .btn-clear-cart,
+  .btn-payment {
+    width: 100%;
+    margin: 5px 0;
+  }
+
+
+  .cart-item-image {
+    width: 50px;
+    /* Kích thước hình ảnh sản phẩm */
+    height: auto;
+    /* Giữ tỷ lệ hình ảnh */
+  }
+
   h2 {
     color: #333;
   }
-  
+
   .btn-clear-cart {
     background-color: #d9534f;
     color: white;
@@ -120,94 +129,88 @@
     border-radius: 4px;
     cursor: pointer;
   }
-  
+
   .btn-clear-cart:hover {
     background-color: #c9302c;
   }
-<<<<<<< HEAD
 
-}
-=======
-  
-=======
-/* CartPage.css */
-
-body {
+  body {
     font-family: Arial, sans-serif;
-    background-color: #f8f9fa; 
+    background-color: #f8f9fa;
     margin: 0;
     padding: 70px;
-}
+  }
 
-h1 {
-    color: #343a40; 
+  h1 {
+    color: #343a40;
     text-align: center;
-}
+  }
 
-table {
+  table {
     width: 100%;
     border-collapse: collapse;
-    margin: 20px 0; 
-}
+    margin: 20px 0;
+  }
 
-thead {
-    background-color: #007bff; 
+  thead {
+    background-color: #007bff;
     color: white;
-}
+  }
 
-th, td {
-    padding: 12px; 
+  th,
+  td {
+    padding: 12px;
     text-align: left;
-    border-bottom: 1px solid #dee2e6; 
-}
+    border-bottom: 1px solid #dee2e6;
+  }
 
-tr:hover {
-    background-color: #e9ecef; 
-}
+  tr:hover {
+    background-color: #e9ecef;
+  }
 
-input[type="number"] {
-    width: 60px; 
+  input[type="number"] {
+    width: 60px;
     padding: 5px;
-    border: 1px solid #ced4da; 
-    border-radius: 4px; 
-}
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+  }
 
-.buttonXoa {
-    background-color: #dc3545; 
+  .buttonXoa {
+    background-color: #dc3545;
     color: white;
     border: none;
     padding: 10px 15px;
-    border-radius: 4px; 
+    border-radius: 4px;
     cursor: pointer;
-}
+  }
 
-.buttonXoa:hover {
-    background-color: #c82333; 
-}
+  .buttonXoa:hover {
+    background-color: #c82333;
+  }
 
-.thanhtoantien{
-    text-align: center; 
-    
-}
+  .thanhtoantien {
+    text-align: center;
 
-.thanhtoantien .tongtien {
+  }
+
+  .thanhtoantien .tongtien {
     color: #343a40;
-    margin-top: 20px; 
-    text-align: center; 
-}
+    margin-top: 20px;
+    text-align: center;
+  }
 
-.thanhtoantien button {
-    background-color: green; 
+  .thanhtoantien button {
+    background-color: green;
     color: white;
     border: none;
     padding: 10px 15px;
-    border-radius: 4px; 
+    border-radius: 4px;
     cursor: pointer;
     font-size: 1rem;
-}
- .imgcart{
+  }
+
+  .imgcart {
     width: 40%;
     height: 80px;
- }
->>>>>>> 9eb36fbdb9e443b4bcadf3ffc5f9859efd67ee37
->>>>>>> 1ef04affa5c864bb4a84f076b87408334cf1ce9a
+  }
+}

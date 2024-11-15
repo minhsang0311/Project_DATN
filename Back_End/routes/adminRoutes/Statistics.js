@@ -6,10 +6,12 @@ const { adminMiddleware } = require('../../middlewares/adminMiddlware');
 
 router.get('/stats-procate', adminMiddleware, StatisticsController.StatisticsProCate);
 router.get('/stats-probrand', adminMiddleware, StatisticsController.StatisticsProBrand);
+router.get('/stats-dayRevenue', adminMiddleware, StatisticsController.DailyRevenue);
 router.get('/stats-weekRevenue', adminMiddleware, StatisticsController.WeekRevenue);
 router.get('/stats-monthRevenue', adminMiddleware, StatisticsController.MonthRevenue);
 router.get('/stats-quarterRevenue', adminMiddleware, StatisticsController.QuarterRevenue);
 router.get('/stats-yearRevenue', adminMiddleware, StatisticsController.YearRevenue);
+router.get('/stats-daySalePro', adminMiddleware, StatisticsController.DailySalePro);
 router.get('/stats-weekSalePro', adminMiddleware, StatisticsController.WeekSalePro);
 router.get('/stats-monthSalePro', adminMiddleware, StatisticsController.MonthSalePro);
 router.get('/stats-quarterSalePro', adminMiddleware, StatisticsController.QuarterSalePro);
