@@ -101,22 +101,16 @@
    margin-right: 10px;
  }
 
-/* 
+
 @media (max-width: 800px) {
-   .cuahang { grid-template-columns: 1fr;}
-   .cuahang .left_box img{display: none; }
+   .cuahang .noidung{ grid-template-columns: 1fr;}
    .cuahang .right-products .box-sp {grid-template-columns: repeat(2, 1fr);}
-   .spkhuyenmai .box-sp { grid-template-columns:repeat(2 ,1fr)}
-   .listdanhmuc_home .box { grid-template-columns:repeat(3 ,1fr)}
-   .box_gt_home{grid-template-columns: 1fr;}
 }
 @media (min-width: 769px) and (max-width: 1024px) {
    .cuahang {grid-template-columns: 1fr;}
-   .cuahang .left_box img{display: none; }
-   .cuahang .right-products .box-sp {grid-template-columns: repeat(3, 1fr);}
-   .spkhuyenmai .box-sp { grid-template-columns: repeat(3,1fr)}
+   .cuahang .right-products .box-sp {grid-template-columns: repeat(2, 1fr);}
 
-} */
+}
 
 
 
