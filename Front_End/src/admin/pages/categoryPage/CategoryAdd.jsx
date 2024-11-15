@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom'
 const CategoryAdd = () => {
     const navigate = useNavigate()
+    const token = localStorage.getItem('token')
     const [category, setCategory] = useState({ Category_Name: '', Show_Hidden: false });
     const Submit = (evt) => {
         evt.preventDefault();
@@ -14,7 +15,7 @@ const CategoryAdd = () => {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' 
+                'Authorization': 'Bearer ' + token
             },
             body: JSON.stringify(data) 
         };

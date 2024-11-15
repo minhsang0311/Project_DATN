@@ -62,6 +62,7 @@
     align-items: center;
     background: white;
     border-radius: 10px;
+    height: 100px;
     padding: 10px 2rem;
 }
 
@@ -69,29 +70,60 @@
     color: rgba(68, 68, 68, 0.986);
 }
 
+/* Phần bao bọc tìm kiếm */
 .header--search {
     display: flex;
     align-items: center;
-    border: 1px solid #ccc;
-    padding: 8px;
-    border-radius: 5px;
-    background-color: #f5f5f5;
-    width: 300px;
+    gap: 10px;
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.header--search i {
-    font-size: 18px;
-    margin-right: 10px;
-    color: #888;
+/* Ô tìm kiếm */
+.header--search input[type="text"] {
+    padding: 8px 12px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    flex-grow: 1;
 }
 
-.header--search input {
+/* Dropdown lựa chọn loại tìm kiếm */
+.header--search select {
+    padding: 8px 12px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+}
+
+/* Nút tìm kiếm */
+.header--search button {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #007bff;
     border: none;
-    outline: none;
-    width: 100%;
-    font-size: 16px;
-    background-color: transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
+
+.header--search button:hover {
+    background-color: #0056b3;
+}
+
+/* Biểu tượng tìm kiếm */
+.header--search i.bi-search {
+    font-size: 16px;
+}
+
 
 .user--info {
     display: flex;

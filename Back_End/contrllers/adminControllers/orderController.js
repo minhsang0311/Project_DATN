@@ -3,6 +3,7 @@ const db = require('../../config/db');
 
 
 exports.getOrderList = (req, res) => {
+
   const sql = `
       SELECT o.Order_ID, o.User_ID, o.Email, o.Phone, o.User_Name, o.Address, 
              o.payment_method, o.total_amount, o.created_at, o.Product_Name, 
@@ -10,7 +11,22 @@ exports.getOrderList = (req, res) => {
       FROM orders o
       JOIN order_status os ON o.Status = os.Status_ID
   `;
-  db.query(sql, (err, data) => {
+        db.query(sql, (err, data) => {
+            if (err) {
+                res.json({ "thongbao": "Lỗi lấy trạng thái đơn hàng", err });
+            } else {
+                res.json(data);
+            }
+        });
+    };
+    
+exports.putOrder =(req, res) => {
+    const orderId = req.params.id;
+    const { Status } = req.body; // Nhận trạng thái từ body
+  
+    // Cập nhật trong cơ sở dữ liệu
+    const sql = 'UPDATE `orders` SET Status = ? WHERE Order_ID = ?';
+    db.query(sql, [Status, orderId], (err, result) => {
       if (err) {
           return res.status(500).json({ message: "Lỗi lấy trạng thái đơn hàng", err });
       }

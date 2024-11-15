@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import '../styles/components/resetPassword.css';
+import '../styles/components/resetPassword.css';  // Cập nhật đường dẫn đến file CSS của bạn nếu cần
 
 const ResetPassword = () => {
+    const { token } = useParams();  // Lấy token từ URL
+    const navigate = useNavigate();  // Để điều hướng người dùng sau khi reset mật khẩu
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [message, setMessage] = useState('');
-    const { token } = useParams();
-    const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (newPassword !== confirmPassword) {
@@ -18,18 +19,23 @@ const ResetPassword = () => {
             return;
         }
 
-        axios.post(`http://localhost:3000/user/reset-password/${token}`, { newPassword })
-            .then(response => {
-                setMessage(response.data.message);
-                navigate('/register_login');
-            })
-            .catch(error => {
-                setMessage(error.response ? error.response.data.message : 'Có lỗi xảy ra.');
-            });
+        setLoading(true); // Bắt đầu quá trình gửi yêu cầu
+        try {
+            const response = await axios.post(
+                `http://localhost:3000/user/reset-password/${token}`, 
+                { newPassword }
+            );
+            setMessage(response.data.message); // Hiển thị thông báo thành công
+            navigate('/register_login'); // Chuyển hướng người dùng đến trang đăng nhập
+        } catch (error) {
+            setMessage(error.response ? error.response.data.message : 'Có lỗi xảy ra.');
+        } finally {
+            setLoading(false); // Kết thúc quá trình gửi yêu cầu
+        }
     };
 
     return (
-        <div className='reset_password'>
+        <div className="reset_password">
             <h2>Đặt lại mật khẩu</h2>
             {message && <p>{message}</p>}
             <form onSubmit={handleSubmit}>
@@ -47,7 +53,9 @@ const ResetPassword = () => {
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     required
                 />
-                <button type="submit">Đặt lại mật khẩu</button>
+                <button type="submit" disabled={loading}>
+                    {loading ? 'Đang xử lý...' : 'Đặt lại mật khẩu'}
+                </button>
             </form>
         </div>
     );

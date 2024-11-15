@@ -37,7 +37,7 @@ exports.adminMiddleware = (req, res, next) => {
   token = token.split(' ')[1];
   jwt.verify(token, PRIVATE_KEY, (err, decodedData) => {
       if (err) return res.status(401).json({ message: "Lỗi xác thực token: " + err });
-      console.log("decodedData", decodedData)
+      console.log("err", err)
       if (decodedData.role !== roleAdmin) {
           return res.status(403).json({ message: "Bạn không đủ quyền để vào" });
       }

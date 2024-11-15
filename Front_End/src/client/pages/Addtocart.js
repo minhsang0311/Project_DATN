@@ -87,3 +87,4 @@
 
 // export default Addtocart;
 
+// export default CartPage;

@@ -11,8 +11,13 @@ const OrderManagement = () => {
 
   useEffect(() => {
     const fetchOrders = async () => {
+      const token = localStorage.getItem('token');
       try {
-        const response = await fetch(`http://localhost:3000/admin/order`);
+        const response = await fetch(`http://localhost:3000/admin/order`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
         const data = await response.json();
         setOrders(data);
         setLoading(false);
@@ -25,8 +30,16 @@ const OrderManagement = () => {
   }, []);
 
   const handleStatusChange = async (orderId) => {
+    const token = localStorage.getItem('token');
     try {
-      await axios.put(`http://localhost:3000/admin/order/${orderId}`, { Status: newStatus });
+      await axios.put(`http://localhost:3000/admin/order/${orderId}`, 
+        { Status: newStatus },
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        }
+      );
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
           order.Order_ID === orderId ? { ...order, Status: newStatus } : order
@@ -78,7 +91,7 @@ const OrderManagement = () => {
                     <option value={6}>Đã hủy</option>
                   </select>
                 ) : (
-                  <span className="status-display">{order.Status}</span> // Hiển thị trạng thái hiện tại
+                  <span className="status-display">{order.Status}</span>
                 )}
               </td>
               <td className="row-item">{order.Email}</td>

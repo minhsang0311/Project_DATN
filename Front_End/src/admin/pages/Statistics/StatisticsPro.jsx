@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Pie } from 'react-chartjs-2';
 import {
     Chart as ChartJS,
@@ -15,8 +14,7 @@ ChartJS.register(
 );
 
 const StatisticsPro = () => {
-    var token = useSelector(state => state.auth.token);
-    console.log("token", token)
+    const token = localStorage.getItem('token');
     const [categoryData, setCategoryData] = useState([]);
     const [branData, setBrandData] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -88,18 +86,18 @@ const StatisticsPro = () => {
     if (error) return <p>{error}</p>;
 
     return (
-        <div className='statistics-chillrend-header'>
+        <div className='statistics-chillrend-header_product'>
             <h2>Bảng thống kê sản phẩm</h2>
             <div className='statistics'>
-                <div className='right'>
+                <div className='left'>
                     <table className="vertical-table">
                         <tbody>
                             <tr>
-                                <th>Tổng số sản phẩm</th>
+                                <th>Tổng sản phẩm</th>
                                 <td>{totalProducts}</td>
                             </tr>
                             <tr>
-                                <th>Tổng số danh mục</th>
+                                <th>Tổng danh mục</th>
                                 <td>{totalCategories}</td>
                             </tr>
                             <tr>
@@ -109,13 +107,13 @@ const StatisticsPro = () => {
                         </tbody>
                     </table>
                 </div>
-                <div className='left'>
+                <div className='center'>
                     <div>
                         <h2>Sản phẩm theo danh mục</h2>
                         {pieData ? <Pie data={pieData} /> : <p>Không có dữ liệu danh mục</p>}
                     </div>
                 </div>
-                <div className='left'>
+                <div className='right'>
                     <div>
                         <h2>Sản phẩm theo hãng</h2>
                         {pieProBrand ? <Pie data={pieProBrand} /> : <p>Không có dữ liệu hãng</p>}
