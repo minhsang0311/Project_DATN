@@ -17,7 +17,7 @@ const RegisterLogin = () => {
     const [message, setMessage] = useState('');
     const [isRightPanelActive, setIsRightPanelActive] = useState(false);
     const [shouldSubmit, setShouldSubmit] = useState(false);
-    
+
     // Login
     const [loginMessage, setLoginMessage] = useState(''); // Thêm trạng thái cho thông báo lỗi đăng nhập
     const userNameRef = useRef();
@@ -62,7 +62,7 @@ const RegisterLogin = () => {
                 if (response.ok) {
                     setFormData({ User_Name: '', Email: '', Password: '', Phone: '' });
                     setConfirmPassword('');
-                    alert('Vui lòng nhập đủ thông tin!');
+                    alert('Đăng ký thành công! Vui lòng kiểm tra email để nhận mã khuyến mãi.');
                     setIsRightPanelActive(false);
                 }
             } catch (error) {
