@@ -66,6 +66,7 @@ const ProductUpdate = () => {
         const formData = new FormData();
         formData.append('Product_Name', productUpdate.Product_Name);
         formData.append('Price', productUpdate.Price);
+        formData.append('Promotion', productUpdate.Promotion);
         formData.append('Category_ID', productUpdate.Category_ID);
         formData.append('Brand_ID', productUpdate.Brand_ID);
         formData.append('Image', imageFile ? imageFile : image);
@@ -126,6 +127,18 @@ const ProductUpdate = () => {
                                 value={productUpdate.Price || ''}
                                 onChange={e =>
                                     setProductUpdate({ ...productUpdate, Price: e.target.value })
+                                }
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="product-price">% giảm giá sản phẩm</label>
+                            <input
+                                type="number"
+                                id="product-pricesale"
+                                placeholder="Nhập giá sản phẩm ..."
+                                value={productUpdate.Promotion || ''}
+                                onChange={e =>
+                                    setProductUpdate({ ...productUpdate, Promotion: e.target.value })
                                 }
                             />
                         </div>

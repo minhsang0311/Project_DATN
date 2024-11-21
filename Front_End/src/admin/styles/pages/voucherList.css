@@ -1,12 +1,12 @@
-.box-categorylist{
+.box-voucherList{
     background-color: white;
     border-radius: 10px;
 }
-.headertop-admin-category {
+.headertop-admin-voucher {
     margin-top: 20px;
     padding-top: 15px;
 }
-.header_admin_category {
+.header_admin_voucher {
     display: flex;
     justify-content: space-between;
     background-color: #56A4FF;
@@ -18,12 +18,12 @@
     padding: 30px;
 }
 
-.header_admin_category>h2 {
+.header_admin_voucher > h2 {
     font-size: 24px;
     color: white;
 }
 
-.header_admin_category .button_admin_category {
+.header_admin_voucher .button_admin_voucher {
     background-color: white; 
     padding: 10px 20px;
     border: none;
@@ -33,21 +33,21 @@
     cursor: pointer; 
 }
 
-.header_admin_category .button_admin_category a {
+.header_admin_voucher .button_admin_voucher a {
     text-decoration: none;
     color: #56A4FF; 
     font-size: 16px; 
 }
-.grid-container-category {
+.grid-container-voucher {
     display: grid;
-    grid-template-columns: 100px 400px 320px 250px ;
+    grid-template-columns: 80px 250px 140px 340px 270px;
     margin-top: 20px;
     border-radius: 10px;
     padding: 15px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.grid-header-category {
+.grid-header-voucher {
     font-weight: bold;
     padding: 10px;
     border: 1px solid #e0e0e0;
@@ -55,7 +55,7 @@
     text-align: center;
 }
 
-.grid-item-category {
+.grid-item-voucher {
     padding: 10px;  
     border: 1px solid #e0e0e0;
     display: flex;
@@ -63,11 +63,11 @@
     align-items: center;
 }
 
-.product-img-category {
+.product-img {
     max-width: 60px;
     border-radius: 5px;
 }
-.grid-item-button-category {
+.grid-item-button {
     display: flex;
     justify-content: space-around; 
 }
@@ -86,3 +86,6 @@
 .delete-btn {
     color: #dc3545;
 }
+
+
+
