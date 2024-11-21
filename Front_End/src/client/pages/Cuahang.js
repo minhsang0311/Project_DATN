@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom';
 import '../styles/components/Cuahang.css';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import Paginate from './paginate/Paginate';// Import component phân trang
-
+import Product from './Product';
+import ReactPaginate from 'react-paginate';
+import usePagination from "./paginate/Paginate";
 function Cuahang() {
     const [listsp, setListSP] = useState([]);
     const [filteredSP, setFilteredSP] = useState([]);
@@ -14,53 +15,47 @@ function Cuahang() {
     const [maxPrice, setMaxPrice] = useState("");
     const [sortOrder, setSortOrder] = useState("");
 
-    // Page size for pagination
     const pageSize = 6; // Số sản phẩm mỗi trang
+    const { spTrong1Trang, tongSoTrang, currentPage, handlePageChange } = usePagination(filteredSP, pageSize);
 
     useEffect(() => {
         fetch("http://localhost:3000/user/productList")
             .then(res => res.json())
             .then(data => {
-                setListSP(Array.isArray(data) ? data : []);
-                setFilteredSP(Array.isArray(data) ? data : []);
+                setListSP(data);
+                setFilteredSP(data);
             });
     }, []);
 
     useEffect(() => {
         fetch("http://localhost:3000/user/brands")
             .then(res => res.json())
-            .then(data => setBrands(Array.isArray(data) ? data : []))
-            .catch(error => console.error('Error fetching brands:', error));
+            .then(data => setBrands(data));
     }, []);
-
-    const formatCurrency = (value) => {
-        return new Intl.NumberFormat('vi-VN', {
-            style: 'currency',
-            currency: 'VND',
-        }).format(value);
-    };
 
     const handleFilter = () => {
         let url = `http://localhost:3000/user/filteredProducts?`;
-
+    
         if (minPrice) url += `minPrice=${minPrice}&`;
         if (maxPrice) url += `maxPrice=${maxPrice}&`;
         if (sortOrder) url += `sortOrder=${sortOrder}&`;
         if (brand) url += `brand=${brand}&`;
-
+    
         fetch(url)
             .then(res => res.json())
-            .then(data => setFilteredSP(Array.isArray(data) ? data : []))
-            .catch(error => console.error('Error fetching filtered products:', error));
-        console.log(url);
+            .then(data => {
+                setFilteredSP(data); // Cập nhật danh sách sản phẩm đã lọc
+                // usePagination tự động reset currentPage về 0 nhờ `useEffect`
+            });
     };
+    
 
     const handleClearFilters = () => {
         setBrand("");
         setMinPrice("");
         setMaxPrice("");
         setSortOrder("");
-        setFilteredSP(listsp); // Reset về danh sách đầy đủ
+        setFilteredSP(listsp); // Reset danh sách
     };
 
     return (
@@ -105,9 +100,21 @@ function Cuahang() {
                             <button onClick={handleClearFilters} className="clear-filters">Bỏ lọc</button>
                         </div>
                     </div>
-
                     <div className="right-products">
-                        <Paginate listSP={filteredSP} pageSize={pageSize} />
+                        <div className="box-sp">
+                            {spTrong1Trang.map((sp, index) => (
+                                <Product key={index} product={sp} />
+                            ))}
+                        </div>
+                        {tongSoTrang > 1 && (
+                            <ReactPaginate
+                                pageCount={tongSoTrang}
+                                forcePage={currentPage}
+                                onPageChange={(event) => handlePageChange(event.selected)}
+                                containerClassName="pagination"
+                                activeClassName="active"
+                            />
+                        )}
                     </div>
                 </div>
             </div>
