@@ -13,6 +13,8 @@ import Comments from './admin/pages/commentPage/commentList.jsx';
 import Statistics from './admin/pages/Statistics/Statistics.jsx';
 import AdminOrder from './admin/pages/orderPage/AdminOrder.jsx';
 import Customer from './admin/pages/customerPage/customerList.jsx';
+import VouchersList from './admin/pages/voucherPage/VoucherList.jsx';
+import VoucherAdd from './admin/pages/voucherPage/voucherAdd.jsx';
 
 // Component Client
 import ProductDetail from './client/pages/ProductDetail';
@@ -46,6 +48,8 @@ function App() {
           <Route path="comments" element={<Comments />} />
           <Route path="order" element={<AdminOrder />} />
           <Route path="customers" element={<Customer />} />
+          <Route path="vouchers" element={<VouchersList />} />
+          <Route path="voucherAdd" element={<VoucherAdd />} />
         </Route>
         <Route path="/" element={<Home />} />
         <Route path="/cuahang" element={<Cuahang />} />

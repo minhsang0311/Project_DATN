@@ -40,7 +40,7 @@
 }
 .grid-container {
     display: grid;
-    grid-template-columns: 80px 200px 140px 140px 290px 100px 90px 150px ;
+    grid-template-columns: 80px 180px 120px 140px 270px 100px 90px 100px ;
     margin-top: 20px;
     border-radius: 10px;
     padding: 15px;
@@ -86,6 +86,32 @@
 .delete-btn {
     color: #dc3545;
 }
+.image-preview-item {
+    position: relative; /* This allows us to position the "X" icon relative to the image */
+    display: inline-block;
+    margin: 5px;
+  }
+  
+  .image-preview-item img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover; /* Ensures image scaling */
+  }
+  
+  .image-preview-item button {
+    position: absolute; /* Absolute positioning to place the button on top of the image */
+    top: -17px; /* Align it at the top of the container */
+    right: -17px; /* Align it to the right of the container */
+    background-color: transparent; /* Make background transparent */
+    border: none; /* Remove default button border */
+    color: #fff; /* White icon color */
+    font-size: 18px; /* Adjust size of the icon */
+    cursor: pointer; /* Change cursor to pointer to indicate it's clickable */
+    padding: 5px;
+  }
+  .image-preview-item button i {
+    color: black;
+  }
 
 
 

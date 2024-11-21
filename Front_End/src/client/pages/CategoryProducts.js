@@ -28,7 +28,9 @@ function CategoryProducts() {
             <div className="cuahang">
                 <div className="noidung">
                     <div className="left_box">
+
                       <img src="../assets/img/banner20.jpg" alt="Logo" />
+
                     </div>
                     <div className="right-products">
                         <div className="header1">

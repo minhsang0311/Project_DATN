@@ -64,7 +64,7 @@ function Header() {
         )}
       </li>
     ) : (
-      <li><Link to="/register_login">Đăng kí</Link></li>
+      <li><Link to="">Xin chào!</Link></li>
     )}
   </ul>
       </div >

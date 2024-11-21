@@ -1,201 +1,120 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { Bar } from 'react-chartjs-2';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from 'chart.js';
+import React, { useState } from "react";
+import { Bar } from "react-chartjs-2";
+import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from "chart.js";
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+// Đăng ký các thành phần của Chart.js
+ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 const StatisticsSalePro = () => {
-  const [daylyData, setDaylyData] = useState([]);
-  const [weeklyData, setWeeklyData] = useState([]);
-  const [monthlyData, setMonthlyData] = useState([]);
-  const [quarterlyData, setQuarterlyData] = useState([]);
-  const [yearlyData, setYearlyData] = useState([]);
-  const token = localStorage.getItem('token');
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [chartData, setChartData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const token = localStorage.getItem("token");
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const opt = {
-          method: 'GET',
-          headers: { "Content-type": "application/json", 'Authorization': `Bearer ${token}` }
-        };
+  // Hàm gọi API để lấy tổng doanh thu
+  const handleFetchData = () => {
+    if (!startDate || !endDate) {
+      alert("Vui lòng nhập ngày bắt đầu và ngày kết thúc!");
+      return;
+    }
 
-        // Lấy dữ liệu sản phẩm bán theo ngày
-        const daylyRes = await axios.get('http://localhost:3000/admin/stats-daySalePro', opt);
-        setDaylyData(daylyRes.data);
+    setLoading(true);
+    setError(""); // Reset lỗi trước khi gọi API
 
-        // Các API khác cho tuần, tháng, quý, năm
-        const weeklyRes = await axios.get('http://localhost:3000/admin/stats-weekSalePro', opt);
-        setWeeklyData(weeklyRes.data);
-
-        const monthlyRes = await axios.get('http://localhost:3000/admin/stats-monthSalePro', opt);
-        setMonthlyData(monthlyRes.data);
-
-        const quarterlyRes = await axios.get('http://localhost:3000/admin/stats-quarterSalePro', opt);
-        setQuarterlyData(quarterlyRes.data);
-
-        const yearlyRes = await axios.get('http://localhost:3000/admin/stats-yearSalePro', opt);
-        setYearlyData(yearlyRes.data);
-
-      } catch (error) {
-        console.error('Lỗi khi lấy dữ liệu:', error);
-      }
-    };
-
-    fetchData();
-  }, [token]);
-
-  const createChartData = (labels, data, label, color) => ({
-    labels,
-    datasets: [
-      {
-        label,
-        data,
-        backgroundColor: color,
-        borderColor: color.replace('0.6', '1'),
-        borderWidth: 1,
+    fetch(`http://localhost:3000/admin/stats-statisticsSalePro?startDate=${startDate}&endDate=${endDate}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
       },
-    ],
-  });
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (!data || typeof data.TotalSalePro === "undefined") {
+          setError("Dữ liệu trả về không hợp lệ.");
+          return;
+        }
+
+        const totalRevenue = parseFloat(data.TotalSalePro); // Giả sử API trả về tổng doanh thu dưới trường "TotalSalePro"
+        console.log(totalRevenue)
+        // Xác định label: nếu ngày giống nhau thì chỉ hiển thị tổng trong ngày
+        const label =
+          startDate === endDate
+            ? `Tổng sản phẩm bán được trong ngày ${startDate}`
+            : `Tổng sản phẩm bán đưcọ từ (${startDate} đến ${endDate})`;
+
+        // Cập nhật dữ liệu cho biểu đồ
+        setChartData({
+          labels: [label],
+          datasets: [
+            {
+              label: "Tổng sản phẩm bán được (VNĐ)",
+              data: [totalRevenue],
+              backgroundColor: "rgba(75, 192, 192, 0.5)",
+              borderColor: "rgba(75, 192, 192, 1)",
+              borderWidth: 1,
+            },
+          ],
+        });
+      })
+      .finally(() => setLoading(false));
+  };
 
   return (
-    <div className='statistics-chillrend-header'>
-      <h2>Thống kê tổng sản phẩm bán được</h2>
-      {/* Sản phẩm bán theo ngày */}
-      <div style={{ width: '100%', minHeight: '300px' }}>
-        <h3>Sản phẩm bán theo ngày</h3>
-        {daylyData.length > 0 ? (
-          <div>
-            {/* Table to display daily sales */}
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-              <thead>
-                <tr>
-                  <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'center' }}>Ngày</th>
-                  <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'center' }}>Số lượng sản phẩm bán</th>
-                </tr>
-              </thead>
-              <tbody>
-                {daylyData.map((day, index) => (
-                  <tr key={index}>
-                    <td style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'center' }}>
-                      {day.sale_date}
-                    </td>
-                    <td style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'center' }}>
-                      {day.total_sale_quantity}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        ) : (
-          <p>Đang tải dữ liệu...</p>
-        )}
+    <div className="revenue-statistics">
+      <h2>Thống Kê Tổng Sản Phẩm Đã Bán</h2>
+      <div className="filter-section">
+        <label>
+          Ngày bắt đầu:
+          <input
+            type="date"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+          />
+        </label>
+        <label>
+          Ngày kết thúc:
+          <input
+            type="date"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+          />
+        </label>
+        <button onClick={handleFetchData} disabled={loading}>
+          {loading ? "Đang tải..." : "Thống kê"}
+        </button>
       </div>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px', justifyContent: 'center' }}>
-        {/* Sản phẩm bán theo tuần */}
-        <div style={{ width: '45%', minHeight: '300px' }}>
-          <h3>Sản phẩm bán theo tuần</h3>
-          {weeklyData.length > 0 ? (
-            <Bar
-              data={createChartData(
-                weeklyData.map(week => week.week_label),
-                weeklyData.map(week => week.weekly_salepro),
-                'Tổng sản phẩm bán theo tuần',
-                'rgba(75, 192, 192, 0.6)'
-              )}
-              options={{
-                responsive: true,
-                plugins: { legend: { position: 'top' } },
-                scales: { y: { beginAtZero: true } },
-              }}
-            />
-          ) : (
-            <p>Đang tải dữ liệu...</p>
-          )}
-        </div>
-
-        {/* Sản phẩm bán theo tháng */}
-        <div style={{ width: '45%', minHeight: '300px' }}>
-          <h3>Sản phẩm bán theo tháng</h3>
-          {monthlyData.length > 0 ? (
-            <Bar
-              data={createChartData(
-                monthlyData.map(month => month.month),
-                monthlyData.map(month => month.monthly_salepro),
-                'Tổng sản phẩm bán theo tháng',
-                'rgba(153, 102, 255, 0.6)'
-              )}
-              options={{
-                responsive: true,
-                plugins: { legend: { position: 'top' } },
-                scales: { y: { beginAtZero: true } },
-              }}
-            />
-          ) : (
-            <p>Đang tải dữ liệu...</p>
-          )}
-        </div>
-
-        {/* Sản phẩm bán theo quý */}
-        <div style={{ width: '45%', minHeight: '300px' }}>
-          <h3>Sản phẩm bán theo quý</h3>
-          {quarterlyData.length > 0 ? (
-            <Bar
-              data={createChartData(
-                quarterlyData.map(quarter => quarter.quarter_label),
-                quarterlyData.map(quarter => quarter.quarterly_salepro),
-                'Tổng sản phẩm bán theo quý',
-                'rgba(255, 159, 64, 0.6)'
-              )}
-              options={{
-                responsive: true,
-                plugins: { legend: { position: 'top' } },
-                scales: { y: { beginAtZero: true } },
-              }}
-            />
-          ) : (
-            <p>Đang tải dữ liệu...</p>
-          )}
-        </div>
-
-        {/* Sản phẩm bán theo năm */}
-        <div style={{ width: '45%', minHeight: '300px' }}>
-          <h3>Sản phẩm bán theo năm</h3>
-          {yearlyData.length > 0 ? (
-            <Bar
-              data={createChartData(
-                yearlyData.map(year => year.year),
-                yearlyData.map(year => year.yearly_salepro),
-                'Tổng sản phẩm bán theo năm',
-                'rgba(255, 99, 132, 0.6)'
-              )}
-              options={{
-                responsive: true,
-                plugins: { legend: { position: 'top' } },
-                scales: { y: { beginAtZero: true } },
-              }}
-            />
-          ) : (
-            <p>Đang tải dữ liệu...</p>
-          )}
-        </div>
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      <div className="chart-section">
+        {chartData ? (
+          <Bar
+            data={chartData}
+            options={{
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: { position: "top" },
+                tooltip: {
+                  callbacks: {
+                    label: (context) => `${context.raw.toLocaleString()} sản phẩm`,
+                  },
+                },
+              },
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  ticks: {
+                    callback: (value) => `${value.toLocaleString()} sp`,
+                  },
+                },
+              },
+            }}
+          />
+        ) : (
+          <p>Chọn ngày để hiển thị biểu đồ.</p>
+        )}
       </div>
     </div>
   );
