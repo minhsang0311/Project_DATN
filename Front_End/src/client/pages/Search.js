@@ -56,7 +56,7 @@ function Search() {
                             <div className="img-wrapper">
                                 <img src={sp.Image} alt={sp.Product_Name} />
                             </div>
-                            <Link to={`/product/${sp.Product_ID}`}>{sp.Product_Name}</Link>
+                            <Link to={`/productDetail/${sp.Product_ID}`}>{sp.Product_Name}</Link>
                             <div className="price_giohang">
                                 <div className="price">
                                     {sp.Promotion > 0 ? (

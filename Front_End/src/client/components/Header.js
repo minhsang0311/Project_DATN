@@ -71,7 +71,7 @@ function Header() {
       <hr className="hr" />
       <div className="middle">
         <div className="logo_trangchu">
-          <img src="assets/img/logo3.png" alt="Logo" />
+          <img src="../assets/img/logo3.png" alt="Logo" />
         </div>
         <div>
           <form className="timkiem" onSubmit={handleSearch}>

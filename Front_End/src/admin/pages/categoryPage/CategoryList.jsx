@@ -55,7 +55,7 @@ function CategoryList({ searchResults }) {
             </div>
             <div className="category-grid">
                 <div className="category-grid-title">STT</div>
-                <div className="category-grid-title">Tên sản phẩm</div>
+                <div className="category-grid-title">Tên danh mục</div>
                 <div className="category-grid-title">Ẩn/Hiện</div>
                 <div className="category-grid-title">Thao tác</div>
                 {displayCategories.map((category, index) => (
