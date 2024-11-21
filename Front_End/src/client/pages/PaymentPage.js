@@ -10,7 +10,11 @@ const PaymentPage = () => {
     const [email, setEmail] = useState('');
     const [paymentMethod, setPaymentMethod] = useState('');
     const [voucherCode, setVoucherCode] = useState('');
+    const [note, setNote] = useState('');
     const [userId, setUserId] = useState(null);
+    const [discount, setDiscount] = useState(0);
+    const [voucherMessage, setVoucherMessage] = useState('');
+
 
     useEffect(() => {
         // Lấy giỏ hàng và User ID từ localStorage
@@ -19,37 +23,105 @@ const PaymentPage = () => {
         const userID = storedUserId.id
         setCartItems(storedCartItems);
         setUserId(userID);
+
     }, []);
+    useEffect(() => {
+        const debounceTimeout = setTimeout(() => {
+            if (voucherCode) {
+                fetch(`http://localhost:3000/user/voucher`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ code: voucherCode }),
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            setDiscount(data.discount);
+                            setVoucherMessage(`Voucher áp dụng thành công! Giảm ${data.discount}%`);
+                        } else {
+                            setDiscount(0);
+                            setVoucherMessage(data.message || 'Voucher không hợp lệ');
+                        }
+                    })
+                    .catch(() => {
+                        setDiscount(0);
+                        setVoucherMessage('Có lỗi xảy ra khi kiểm tra voucher.');
+                    });
+            } else {
+                setDiscount(0);
+                setVoucherMessage('');
+            }
+        }, 1000); // 1 giây debounce
+
+        // Dọn dẹp timeout khi voucherCode thay đổi trước khi timeout kết thúc
+        return () => clearTimeout(debounceTimeout);
+    }, [voucherCode]);
+    const handleVoucherChange = (e) => {
+        setVoucherCode(e.target.value);
+    };
 
     const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const finalAmount = total - (total * (discount / 100));
+    const applyVoucher = () => {
+        if (voucherCode) {
+            fetch(`http://localhost:3000/user/voucher`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ code: voucherCode }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        setDiscount(data.discount);
+                        setVoucherMessage(`Voucher áp dụng thành công! Giảm ${data.discount}%`);
+                    } else {
+                        setDiscount(0);
+                        setVoucherMessage(data.message || 'Voucher không hợp lệ');
+                    }
+                })
+                .catch(() => {
+                    setDiscount(0);
+                    setVoucherMessage('Có lỗi xảy ra khi kiểm tra voucher.');
+                });
+        } else {
+            setVoucherMessage('Vui lòng nhập mã voucher.');
+        }
+    };
+
+
+    const totalQuantity = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
     const handlePayment = () => {
-        // Kiểm tra thông tin thanh toán
         if (!name || !address || !phone || !email || !userId) {
             return alert("Vui lòng nhập đầy đủ thông tin trước khi thanh toán.");
         }
-        if(!paymentMethod) {
-            return alert('Vui lòng chọn phương thức thanh toán.');
+        if (!paymentMethod) {
+            return alert('Vui lòng chọn phương thức thanh toán.');
         }
 
-        // Chuẩn bị dữ liệu đơn hàng
         const orderData = {
             Product_Name: cartItems.map(item => item.name).join(', '),
+            User_Name: name,
             Address: address,
             Phone: phone,
             Email: email,
             payment_method: paymentMethod,
-            total_amount: total,
+            total_amount: finalAmount,
+            total_quantity: totalQuantity, // Thêm tổng số lượng
             items: cartItems.map(item => ({
                 Product_ID: item.id,
                 Quantity: item.quantity,
                 Price: item.price
             })),
-            User_ID: userId,  // ID người dùng từ localStorage
-            Voucher_ID: voucherCode ? 1 : null,  // Mã Voucher từ người dùng (Ví dụ Voucher_ID=1)
+            User_ID: userId,
+            Voucher_ID: voucherCode || null,
+            Note: note || null
         };
 
-        // Gửi yêu cầu thanh toán
         fetch('http://localhost:3000/user/payment', {
             method: 'POST',
             headers: {
@@ -57,21 +129,23 @@ const PaymentPage = () => {
             },
             body: JSON.stringify(orderData),
         })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data)
-            if (data.success) {
-                alert('Mua hàng thành công');
-                localStorage.removeItem('cart'); // Xoá giỏ hàng sau khi thanh toán thành công
-            } else {
-                alert('Có lỗi xảy ra, vui lòng thử lại');
-            }
-        })
-        .catch(error => {
-            console.log('Error:', error);
-            alert('Có lỗi xảy ra, vui lòng thử lại');
-        });
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                if (data.success) {
+                    alert('Mua hàng thành công!');
+                    localStorage.removeItem('cart');
+                } else {
+                    alert('Có lỗi xảy ra, vui lòng thử lại.');
+                }
+            })
+            .catch(error => {
+                console.log('Error:', error);
+                alert('Có lỗi xảy ra, vui lòng thử lại.');
+            });
     };
+
+
 
     return (
         <Fragment>
@@ -155,6 +229,8 @@ const PaymentPage = () => {
                         <textarea
                             name="ghi-chu"
                             id="ghi-chu"
+                            value={note}
+                            onChange={(e) => setNote(e.target.value)}
                             placeholder="Ghi chú về đơn hàng, ví dụ: thời gian hoặc chỉ dẫn địa điểm giao hàng chi tiết hơn."
                         ></textarea>
                     </div>
@@ -177,12 +253,14 @@ const PaymentPage = () => {
                                 <input
                                     type='text'
                                     value={voucherCode}
-                                    onChange={(e) => setVoucherCode(e.target.value)}
+                                    onChange={handleVoucherChange}
                                 />
                             </label>
-                            <button>Áp Dụng</button>
+                            <button onClick={applyVoucher}>Áp Dụng</button>
+                            {voucherMessage && <p className="voucher-message">{voucherMessage}</p>}
                         </div>
                         <p>Tổng tiền: {total.toLocaleString('vi')}₫</p>
+                        <p>Tổng tiền sau giảm giá: {finalAmount.toLocaleString('vi')}₫</p>
                         <button onClick={handlePayment}>Thanh toán</button>
                     </div>
                 </div>

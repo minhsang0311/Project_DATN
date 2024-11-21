@@ -108,8 +108,10 @@
   .indicators .dot.active {
     background-color: red;
   }
-  @media (max-width: 800px) {
-    .banner { grid-template-columns: 1fr;}
+  @media (max-width: 480px) {
+    .banner { 
+      display: none;
+    }
     .banner .menu-doc{display: none;}
  }
  @media (min-width: 769px) and (max-width: 1024px) {

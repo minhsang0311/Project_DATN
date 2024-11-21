@@ -25,6 +25,7 @@ const brandRoutesAdmin = require('./routes/adminRoutes/brandRoutes')
 const orderRoutesAdmin = require('./routes/adminRoutes/orderRoutes')
 const searchRoutesAdmin = require('./routes/adminRoutes/searchRoutes')
 const customerRoutesAdmin = require('./routes/adminRoutes/customerRoutes');
+const voucherRoutesAdmin = require('./routes/adminRoutes/voucherRoutes');
 //User
 const categoryRoutesClient = require('./routes/userRoutes/categoryRoutes');
 const forgotPassword = require('./routes/userRoutes/forgotPassword')
@@ -34,6 +35,7 @@ const paymentRoutesClient = require('./routes/userRoutes/paymentRoutes');
 const orderRoutesClient = require('./routes/userRoutes/orderRoutes')
 const productRoutesClient = require('./routes/userRoutes/productRoutes');
 const contactRouterClient = require('./routes/userRoutes/contactRoutes')
+const voucherRouterClient = require('./routes/userRoutes/voucherRoutes')
 
 
 app.use(cors(corsOpt));
@@ -50,7 +52,8 @@ app.use('/admin', [
     orderRoutesAdmin,
     searchRoutesAdmin,
     orderRoutesAdmin,
-    customerRoutesAdmin
+    customerRoutesAdmin,
+    voucherRoutesAdmin
 ]);
 
 app.use('/user',[
@@ -61,7 +64,8 @@ app.use('/user',[
     changePassword,
     orderRoutesClient,
     paymentRoutesClient,
-    contactRouterClient
+    contactRouterClient,
+    voucherRouterClient
 ]);
 
 app.get('/search', searchProducts);

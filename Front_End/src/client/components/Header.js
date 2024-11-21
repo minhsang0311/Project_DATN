@@ -64,14 +64,14 @@ function Header() {
         )}
       </li>
     ) : (
-      <li><Link to="/register_login">Đăng kí</Link></li>
+      <li><Link to="">Xin chào!</Link></li>
     )}
   </ul>
       </div >
       <hr className="hr" />
       <div className="middle">
         <div className="logo_trangchu">
-          <img src="assets/img/logo3.png" alt="Logo" />
+          <img src="../assets/img/logo3.png" alt="Logo" />
         </div>
         <div>
           <form className="timkiem" onSubmit={handleSearch}>
