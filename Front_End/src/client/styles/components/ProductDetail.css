@@ -1,5 +1,5 @@
 
-.home .spchitiet {display: flex;margin-top: 150px; padding:0 50px;}
+.home .spchitiet {display: flex;margin-top: 30px; padding:0 50px;}
 .home .spchitiet .left-image {width: 20%;}
 .home .spchitiet .left-image img {width: 100%;height: 425px;border-radius: 10px;}
 .home .spchitiet .right-products {width: 80%; padding-left: 20px; }
@@ -30,7 +30,7 @@
 }
 
 .product-info h1 {
-  font-size: 2em;
+  font-size: 20px;
   margin-bottom: 10px;
 }
 
@@ -304,5 +304,6 @@ table, td {
 .product-specifications li {
   list-style-type: none ;
 }
-
-
+ .thanh-dieu-huong{margin-top: 130px; color: white;display: flex;gap:7px;height: 40px;line-height: 40px;padding-left: 6%;background-color: rgb(77, 202, 255);box-shadow: 0 1px 2px 0 rgba(60,64,67,0.1),0 2px 6px 2px rgba(60,64,67,0.15);}
+ .thanh-dieu-huong a{margin: 0;font-size: 14px;color: rgb(255, 255, 255);}
+ .thanh-dieu-huong h3{font-weight: 100;}

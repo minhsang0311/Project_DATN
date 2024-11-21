@@ -1,184 +1,114 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { Bar } from 'react-chartjs-2';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from 'chart.js';
+import React, { useState } from "react";
+import { Bar } from "react-chartjs-2";
+import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from "chart.js";
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
-const RevenueStatistics = () => {
-  const [daylyData, setDaylyData] = useState([]);
-  const [weeklyData, setWeeklyData] = useState([]);
-  const [monthlyData, setMonthlyData] = useState([]);
-  const [quarterlyData, setQuarterlyData] = useState([]);
-  const [yearlyData, setYearlyData] = useState([]);
-  const token = localStorage.getItem('token');
+const StatisticsRevenue = () => {
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [chartData, setChartData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const token = localStorage.getItem("token");
 
-  useEffect(() => {
-    const opt = {
-      method: 'GET',
-      headers: { "Content-type": "application/json", 'Authorization': `Bearer ${token}` }
-    };
+  const handleFetchData = () => {
+    if (!startDate || !endDate) {
+      alert("Vui lòng nhập ngày bắt đầu và ngày kết thúc!");
+      return;
+    }
 
-    // Fetch daily revenue data
-    axios.get('http://localhost:3000/admin/stats-dayRevenue', opt)
-      .then(response => setDaylyData(response.data))
-      .catch(error => console.error('Lỗi lấy dữ liệu doanh thu hàng ngày:', error));
-
-    // Fetch other data (weekly, monthly, quarterly, yearly) as before
-    axios.get('http://localhost:3000/admin/stats-weekRevenue', opt)
-      .then(response => setWeeklyData(response.data))
-      .catch(error => console.error('Lỗi lấy dữ liệu doanh thu hàng tuần:', error));
-
-    axios.get('http://localhost:3000/admin/stats-monthRevenue', opt)
-      .then(response => setMonthlyData(response.data))
-      .catch(error => console.error('Lỗi lấy dữ liệu doanh thu hàng tháng:', error));
-
-    axios.get('http://localhost:3000/admin/stats-quarterRevenue', opt)
-      .then(response => setQuarterlyData(response.data))
-      .catch(error => console.error('Lỗi lấy dữ liệu doanh thu theo quý:', error));
-
-    axios.get('http://localhost:3000/admin/stats-yearRevenue', opt)
-      .then(response => setYearlyData(response.data))
-      .catch(error => console.error('Lỗi lấy dữ liệu doanh thu theo năm:', error));
-
-  }, [token]);
-
-  const createChartData = (labels, data, label, color) => ({
-    labels,
-    datasets: [
-      {
-        label,
-        data,
-        backgroundColor: color,
-        borderColor: color.replace('0.6', '1'),
-        borderWidth: 1,
+    setLoading(true);
+    fetch(`http://localhost:3000/admin/stats-statisticsRevenue?startDate=${startDate}&endDate=${endDate}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
       },
-    ],
-  });
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (!data || typeof data.TotalRevenue === "undefined") {
+          alert("Dữ liệu trả về không hợp lệ.");
+          return;
+        }
+
+        const totalRevenue = parseFloat(data.TotalRevenue);
+
+        // Xác định label: nếu ngày giống nhau thì chỉ hiển thị tổng trong ngày
+        const label =
+          startDate === endDate
+            ? `Tổng doanh thu ngày ${startDate}`
+            : `Tổng doanh thu (${startDate} đến ${endDate})`;
+
+        setChartData({
+          labels: [label],
+          datasets: [
+            {
+              label: "Tổng Doanh thu (VNĐ)",
+              data: [totalRevenue],
+              backgroundColor: "rgba(75, 192, 192, 0.5)",
+              borderColor: "rgba(75, 192, 192, 1)",
+              borderWidth: 1,
+            },
+          ],
+        });
+      })
+      .catch((error) => {
+        console.error("Error fetching total revenue data:", error);
+        alert("Lỗi khi lấy dữ liệu tổng doanh thu.");
+      })
+      .finally(() => setLoading(false));
+  };
 
   return (
-    <div className='statistics-chillrend-header'>
-      <h2>Thống kê doanh thu</h2>
-
-      {/* Table for daily revenue */}
-      <div style={{ width: '100%', minHeight: '300px' }}>
-        <h3>Doanh thu theo ngày</h3>
-        {daylyData.length > 0 ? (
-          <div>
-            {/* Table to display daily revenue */}
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-              <thead>
-                <tr>
-                  <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'center' }}>Ngày</th>
-                  <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'center' }}>Doanh thu (VNĐ)</th>
-                </tr>
-              </thead>
-              <tbody>
-                {daylyData.map((day, index) => (
-                  <tr key={index}>
-                    <td style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'center' }}>
-                      {day.sale_date}
-                    </td>
-                    <td style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'center' }}>
-                      {Number(day.total_revenue).toLocaleString('vi')} VNĐ
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        ) : (
-          <p>Đang tải dữ liệu...</p>
-        )}
+    <div className="revenue-statistics">
+      <h2>Thống Kê Tổng Doanh Thu</h2>
+      <div className="filter-section">
+        <label>
+          Ngày bắt đầu:
+          <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+        </label>
+        <label>
+          Ngày kết thúc:
+          <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+        </label>
+        <button onClick={handleFetchData} disabled={loading}>
+          {loading ? "Đang tải..." : "Thống kê"}
+        </button>
       </div>
-
-      {/* Bar charts for weekly, monthly, quarterly, and yearly revenue */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px', justifyContent: 'center' }}>
-        <div style={{ width: '45%', minHeight: '300px' }}>
-          <h3>Doanh thu theo tuần</h3>
+      <div className="chart-section">
+        {chartData ? (
           <Bar
-            data={createChartData(
-              weeklyData.map(week => week.week_label),
-              weeklyData.map(week => week.weekly_revenue),
-              'Doanh thu theo tuần (VNĐ)',
-              'rgba(75, 192, 192, 0.6)'
-            )}
+            data={chartData}
             options={{
               responsive: true,
-              plugins: { legend: { position: 'top' } },
-              scales: { y: { beginAtZero: true } },
+              maintainAspectRatio: false,
+              plugins: {
+                legend: { position: "top" },
+                tooltip: {
+                  callbacks: {
+                    label: (context) => `${context.raw.toLocaleString()} VNĐ`,
+                  },
+                },
+              },
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  ticks: {
+                    callback: (value) => `${value.toLocaleString()} VNĐ`,
+                  },
+                },
+              },
             }}
           />
-        </div>
-
-        <div style={{ width: '45%', minHeight: '300px' }}>
-          <h3>Doanh thu theo tháng</h3>
-          <Bar
-            data={createChartData(
-              monthlyData.map(month => month.month),
-              monthlyData.map(month => month.monthly_revenue),
-              'Doanh thu theo tháng (VNĐ)',
-              'rgba(153, 102, 255, 0.6)'
-            )}
-            options={{
-              responsive: true,
-              plugins: { legend: { position: 'top' } },
-              scales: { y: { beginAtZero: true } },
-            }}
-          />
-        </div>
-
-        <div style={{ width: '45%', minHeight: '300px' }}>
-          <h3>Doanh thu theo quý</h3>
-          <Bar
-            data={createChartData(
-              quarterlyData.map(quarter => quarter.quarter_label),
-              quarterlyData.map(quarter => quarter.quarterly_revenue),
-              'Doanh thu theo quý (VNĐ)',
-              'rgba(255, 159, 64, 0.6)'
-            )}
-            options={{
-              responsive: true,
-              plugins: { legend: { position: 'top' } },
-              scales: { y: { beginAtZero: true } },
-            }}
-          />
-        </div>
-
-        <div style={{ width: '45%', minHeight: '300px' }}>
-          <h3>Doanh thu theo năm</h3>
-          <Bar
-            data={createChartData(
-              yearlyData.map(year => year.year),
-              yearlyData.map(year => year.yearly_revenue),
-              'Doanh thu theo năm (VNĐ)',
-              'rgba(255, 99, 132, 0.6)'
-            )}
-            options={{
-              responsive: true,
-              plugins: { legend: { position: 'top' } },
-              scales: { y: { beginAtZero: true } },
-            }}
-          />
-        </div>
+        ) : (
+          <p>
+            {/* Chọn ngày để hiển thị biểu đồ. */}
+          </p>
+        )}
       </div>
     </div>
   );
 };
 
-export default RevenueStatistics;
+export default StatisticsRevenue;

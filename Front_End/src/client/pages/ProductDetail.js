@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import '../styles/components/ProductDetail.css';
 import SPLienQuan from './RelatedProducts';
@@ -18,8 +18,7 @@ const ProductDetail = () => {
     const dispatch = useDispatch();
 
     // Lấy dữ liệu giỏ hàng từ Redux Store
-    const cartItems = useSelector((state) => state.cart.items);
-
+  
     // Lấy dữ liệu từ localStorage khi component được mount
     useEffect(() => {
         const savedCart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -90,10 +89,16 @@ const ProductDetail = () => {
     return (
         <Fragment>
             <Header />
+            
             <div className="home">
+                <div className='thanh-dieu-huong'>
+                        <Link to="/"><h3>Trang chủ</h3></Link> /
+                        <Link to="/cuahang"><h3>{sp.Product_Name}</h3></Link>
+                    </div>
                 <div className="spchitiet">
+                    
                     <div className="left-image">
-                        <img src="/assets/img/banner4.jpg" alt="" />
+                        <img src="../assets/img/banner4.jpg" alt="" />
                     </div>
                     <div className="right-products">
                         <div className="product-detail">

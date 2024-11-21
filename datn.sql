@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 08, 2024 lúc 05:30 PM
--- Phiên bản máy phục vụ: 10.4.28-MariaDB
--- Phiên bản PHP: 8.2.4
+-- Thời gian đã tạo: Th10 15, 2024 lúc 05:32 AM
+-- Phiên bản máy phục vụ: 10.4.32-MariaDB
+-- Phiên bản PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Cơ sở dữ liệu: `datn1`
+-- Cơ sở dữ liệu: `datn2`
 --
 
 -- --------------------------------------------------------
@@ -99,15 +99,17 @@ CREATE TABLE `orders` (
   `payment_method` enum('COD','Online') DEFAULT NULL,
   `total_amount` decimal(10,2) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `Product_Name` varchar(255) DEFAULT NULL
+  `Product_Name` varchar(255) DEFAULT NULL,
+  `total_quantity` int(11) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `orders`
 --
 
-INSERT INTO `orders` (`Order_ID`, `User_ID`, `Voucher_ID`, `Status`, `Email`, `Phone`, `User_Name`, `Address`, `payment_method`, `total_amount`, `created_at`, `Product_Name`) VALUES
-(1, 2, 1, 3, 'sangnmps34186@fpt.edu.vn', '123', 'MinhSang123', '123-Phần mềm Quang Trung\r\n', NULL, NULL, '2024-11-08 15:36:02', NULL);
+INSERT INTO `orders` (`Order_ID`, `User_ID`, `Voucher_ID`, `Status`, `Email`, `Phone`, `User_Name`, `Address`, `payment_method`, `total_amount`, `created_at`, `Product_Name`, `total_quantity`) VALUES
+(1, 3, 1, 1, 'sangnmps34186@fpt.edu.vn', '123', 'MinhSang123', '123-Phần mềm Quang Trung\r\n', NULL, 100000.00, '2024-11-08 15:36:02', NULL, 0),
+(2, 29, 1, 1, 'nguyenhiep12062004@gmail.com', '123', 'Hiep12345', '123-Phần mềm Quang Trung\r\n', NULL, 100000.00, '2024-11-15 15:36:02', NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -192,7 +194,7 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`Product_ID`, `Category_ID`, `Brand_ID`, `Product_Name`, `Description`, `Promotion`, `Price`, `Image`, `Views`, `Show_Hidden`) VALUES
-(1, 2, 1, 'Máy xay sữa hạt RANBEM RB-769S đa tính năng update', '– Mã sp: RB-769S 12 tính năng\r\n– Vật liệu Cối: Thủy tinh chịu lực, chịu nhiệt cao\r\n– Dung tích Cối: 1,75 lít\r\n– Tổng công suất: 1500W; công suất nấu 800W; công suất xay 700W\r\n– Điện áp 220V-50Hz\r\n– Tốc độ vòng quay: 48.000 vòng/phút\r\n– Kích thước: 232x200', 0, 1500000, 'http://thegioigiadungonline.com.vn/wp-content/uploads/2018/10/M%C3%A1y-xay-n%E1%BA%A5u-s%E1%BB%AFa-h%E1%BA%A1t-Ranbem-769S-790x790.jpg', 12, 1),
+(1, 2, 1, 'Máy làm sữa hạt RANBEM RB-769S đa tính năng update', '– Mã sp: RB-769S 12 tính năng\r\n– Vật liệu Cối: Thủy tinh chịu lực, chịu nhiệt cao\r\n– Dung tích Cối: 1,75 lít\r\n– Tổng công suất: 1500W; công suất nấu 800W; công suất xay 700W\r\n– Điện áp 220V-50Hz\r\n– Tốc độ vòng quay: 48.000 vòng/phút\r\n– Kích thước: 232x200', 0, 1500000, 'http://thegioigiadungonline.com.vn/wp-content/uploads/2018/10/M%C3%A1y-xay-n%E1%BA%A5u-s%E1%BB%AFa-h%E1%BA%A1t-Ranbem-769S-790x790.jpg', 12, 1),
 (3, 2, 1, 'MÁY XAY CÔNG NGHIỆP GERTECH GT-2268', '– Tên sp: Máy Xay Công Nghiệp Gertech\r\n– Mã sp: GT-2268\r\n– Công dụng: Xay hạt khô, cà phê, các loại đậu; xay thịt, cá, xương; xay hoa quả, sinh tố, sữa lắc…\r\n– Vật liệu Cối: Nhựa cứng chịu lực, chịu nhiệt cao\r\n– Dung tích Cối: 2,2 lít\r\n– Bộ dao: 4 lưỡi\r\n–', 0, 3250000, 'http://thegioigiadungonline.com.vn/wp-content/uploads/2018/10/M%C3%A1y-xay-c%C3%B4ng-nghi%E1%BB%87p-gertech-gt-2268-1.jpg', 56, 1),
 (4, 2, 1, 'Máy Xay Nấu Cách Âm Chống Ồn Đa Năng GERTECH GT-686 Chính Hãng', '– Tên SP: Máy Xay Nấu Cách Âm Chống Ồn Đa Năng GERTECH\r\n– Mã SP: GT-686\r\n– Trọng lượng: 3,5 kg\r\n– Thể tích: 1,75 lít\r\n– Công suất: 800W (Xay) – 800W (Làm nóng)\r\n– 09 tốc độ xay; 08 chương trình chế biến thực phẩm; Cùng chức năng tùy chỉnh tốc độ, thời gia', 0, 4950000, 'http://thegioigiadungonline.com.vn/wp-content/uploads/2022/07/M%C3%A1y-xay-n%E1%BA%A5u-%C4%91%E1%BB%99-%E1%BB%93n-th%E1%BA%A5p-GT-008.png', 23, 1),
 (5, 2, 4, 'Máy xay nấu sữa hạt RANBEM RB-775\r\n', '– Mã sp: RB-775\r\n– Vật liệu Cối: Thủy tinh chịu lực, chịu nhiệt cao\r\n– Dung tích Cối: 1,2 lít\r\n– Tổng công suất: 1600W; công suất nấu 800W; công suất xay 800W\r\n– Điện áp 220V-50Hz\r\n– Tốc độ vòng quay: 58.000 vòng/phút\r\n– Kích thước: 180x180x465mm\r\n– Công ', 0, 1300000, 'http://thegioigiadungonline.com.vn/wp-content/uploads/2018/10/M%C3%A1y-xay-n%E1%BA%A5u-s%E1%BB%AFa-h%E1%BA%A1t-Ranbem-775-v%C3%A0ng-n%C3%A2u-790x790.jpg', 15, 1),
@@ -259,7 +261,14 @@ INSERT INTO `products` (`Product_ID`, `Category_ID`, `Brand_ID`, `Product_Name`,
 (67, 3, 6, 'Bộ nồi từ Fissler 1845 (5 chiếc)', '– Mã sản phẩm: Bộ nồi từ Fissler 1845 (5 chiếc)\r\n– Hãng: FISSLER\r\n– Chất liệu nồi: Inox', NULL, 12000000, 'http://thegioigiadungonline.com.vn/wp-content/uploads/2018/10/sp144.jpg', 9, 1),
 (68, 3, 5, 'Nồi quánh cán dài chống dính Tefal Expertise có nắp 16 cm', '– Hãng sản xuất: Tefal\r\n– Xuất xứ: Pháp', NULL, 1490000, 'http://thegioigiadungonline.com.vn/wp-content/uploads/2018/10/sp134.jpg', 9, 1),
 (69, 3, 3, 'NỒI ÁP SUẤT ĐA NĂNG KYUSHU MODEL LJ 336', '– Kích thước (D x R x C): 325 x 325 x 410 mm.\r\n– Khối lượng hàng: 4.6 Kg.\r\n– Dung tích: 6 L.\r\n– Công suất: 1000W.\r\n– Điện áp: 220V – 50Hz.\r\n– Phụ kiện đi kèm: Sách hướng dẫn sử dụng, cốc đong, dây điện, muỗng, thìa, giá hấp đồ.\r\n– Bảo hành 24 tháng, 1 đổi', NULL, 2500000, 'http://thegioigiadungonline.com.vn/wp-content/uploads/2018/11/noi-ap-suat-da-nang-kyushu-anh-2-768x680.jpg', 9, 1),
-(70, 3, 1, 'Bộ nồi từ Berndes Roma 059021', '– Hãng sản xuất: Berndes Roma\r\n– Xuất xứ: Trung Quốc\r\n– Loại sản phẩm: Dùng cho bếp gas, bếp điện, bếp từ, bếp hồng ngoại, mặt kính gốm', NULL, 3900000, 'http://thegioigiadungonline.com.vn/wp-content/uploads/2018/10/sp146.jpg', 9, 1);
+(70, 3, 1, 'Bộ nồi từ Berndes Roma 059021', '– Hãng sản xuất: Berndes Roma\r\n– Xuất xứ: Trung Quốc\r\n– Loại sản phẩm: Dùng cho bếp gas, bếp điện, bếp từ, bếp hồng ngoại, mặt kính gốm', NULL, 3900000, 'http://thegioigiadungonline.com.vn/wp-content/uploads/2018/10/sp146.jpg', 9, 1),
+(71, 5, 1, 'Lò vi sóng Bosch TGB.BFL634GB1B - Serie 8', '-Nhập khẩu từ Anh Quốc\r\n-Mức công suất 5\r\n-Loại điều khiển điện tử\r\n-Thiết kế tinh tế và sang trọng\r\n-7 Công thức nấu ăn tự động\r\n-Màn hình hiển thị TFT\r\n-Hệ thống bảng điều khiển cảm ứng', 13, 12990000, 'https://kinghome.vn/data/products/lo-vi-song-bosch-tgbbfl634gb1b-serie-8-31679363758.jpg', 500, 1),
+(72, 5, 2, 'Lò vi sóng kết hợp nướng Teka MS 620 BIS 40584010', '	\r\n-Lò vi sóng kết hợp nướng.\r\n-Bảng điều khiển cảm ứng hiển thị trên màn hình TFT trắng.\r\n-05 mức công suất, 700W\r\n-03 công thức cài đặt sẵn.\r\n-03 chức năng nấu.\r\n-Chức năng khởi động nhanh 30’’.\r\n-Chức năng hẹn giờ từ 0-90 phút.\r\n-Chức năng tự động rã đ', 35, 11700000, 'https://kinghome.vn/data/products/1687310364lo-vi-song-ket-hop-nuong-teka-MS-620-BIS-40584010-king-home.jpg', 29, 1),
+(73, 5, 3, 'Lò vi sóng kết hợp nướng Electrolux EMSB30XCF', '	\r\n-Rã đông tiện lợi\r\n-Dễ dàng vệ sinh\r\n-Chiên không dầu\r\n-Nướng với quạt đối lưu\r\n-Kết hợp nướng và vi sóng thành 1 chương trình', 25, 9750500, 'https://kinghome.vn/data/products/lo-vi-song-ket-hop-nuong-electrolux-emsb30xcf-king-home.jpg1666201975', 112, 1),
+(74, 5, 4, 'Lò vi sóng Malloca MW-927I', '-5 mức công suất tùy chỉnh\r\n-Màn hình LCD\r\n-Chức năng vi sóng\r\n-Chức năng rã đông bằng trọng lượng\r\n-Chức năng rã đông bằng thời gian\r\n-Chức năng hẹn giờ\r\n-Đèn halogen bên trong lò\r\n-Khóa an toàn trẻ em', 20, 9100000, 'https://kinghome.vn/data/products/lo-vi-song-malloca-mw-927i-21652410992.jpg', 132, 1),
+(75, 5, 5, 'Lò vi sóng Bluestone TGB.BFL523MS0B - Serie 4', '-5 mức công suất tùy chỉnh\r\n-Màn hình LCD\r\n-Chức năng vi sóng\r\n-Chức năng rã đông bằng trọng lượng\r\n-Chức năng rã đông bằng thời gian\r\n-Chức năng hẹn giờ\r\n-Đèn halogen bên trong lò\r\n-Khóa an toàn trẻ em', 15, 9000000, 'https://kinghome.vn/data/products/lo-vi-song-bosch-bfl523ms0b.jpg', 42, 1),
+(76, 5, 6, 'Lò vi sóng Goldsuni R-207VN-SL 20 lít', '-5 mức công suất tùy chỉnh\r\n-Màn hình LCD\r\n-Chức năng vi sóng\r\n-Chức năng rã đông bằng trọng lượng\r\n-Chức năng rã đông bằng thời gian\r\n-Chức năng hẹn giờ\r\n-Đèn halogen bên trong lò\r\n-Khóa an toàn trẻ em', 29, 1200000, 'https://kinghome.vn/data/products/1695260690lo-vi-song-sharp-R-207VN-SL-king-home.jpg', 87, 1),
+(77, 5, 1, 'Lò vi sóng độc lập Sunhouse EMM23D22B', '-Chức năng rã đông\r\n-Tính năng khoá trẻ em\r\n-Chức năng hẹn giờ\r\n-Chương trình yêu thích', 25, 1200000, 'https://kinghome.vn/data/products/1695260690lo-vi-song-sharp-R-207VN-SL-king-home.jpg', 56, 1);
 
 -- --------------------------------------------------------
 
@@ -464,15 +473,15 @@ CREATE TABLE `shipments` (
 --
 
 CREATE TABLE `users` (
-    `User_ID` int(11) NOT NULL,
-    `User_Name` varchar(100) DEFAULT NULL,
-    `Email` varchar(100) DEFAULT NULL,
-    `Password` varchar(255) DEFAULT NULL,
-    `resetToken` varchar(255) NOT NULL,
-    `resetTokenExpiry` bigint(255) DEFAULT NULL,
-    `Phone` varchar(20) DEFAULT NULL,
-    `Role` int(11) DEFAULT 0
-  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `User_ID` int(11) NOT NULL,
+  `User_Name` varchar(100) DEFAULT NULL,
+  `Email` varchar(100) DEFAULT NULL,
+  `Password` varchar(255) DEFAULT NULL,
+  `resetToken` varchar(255) NOT NULL,
+  `resetTokenExpiry` bigint(255) DEFAULT NULL,
+  `Phone` varchar(20) DEFAULT NULL,
+  `Role` int(11) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `users`
@@ -628,7 +637,7 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT cho bảng `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `Order_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `Order_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT cho bảng `order_details`
@@ -652,7 +661,7 @@ ALTER TABLE `payments`
 -- AUTO_INCREMENT cho bảng `products`
 --
 ALTER TABLE `products`
-  MODIFY `Product_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
+  MODIFY `Product_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
 
 --
 -- AUTO_INCREMENT cho bảng `product_images`

@@ -28,8 +28,10 @@ function CategoryProducts() {
             <div className="cuahang">
                 <h1>{categoryName}</h1>
                 <div className="noidung">
-                <div className="left_box">
-                      <img src="../assets/img/logo3.png" alt="Logo" />
+
+                    <div className="left_box">
+
+                      <img src="../assets/img/banner20.jpg" alt="Logo" />
                     </div>
                 <div className="right-products">
                     <div className="box-sp">

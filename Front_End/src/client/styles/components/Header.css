@@ -91,3 +91,15 @@ header .middle i.fa-cart-shopping {font-size: 24px;cursor: pointer;color: #57414
 .dropdown button:hover {
   background-color: #f2f2f2;
 }
+/* Điện thoại đứng */
+@media screen and (min-width:240px) {
+
+}
+/* Điện thoại ngang và máy tính dọc */
+@media screen and (min-width:768px) {
+
+}
+/* Laptop và máy tính bảng ngang */
+@media screen and (min-width:1024px) {
+
+}

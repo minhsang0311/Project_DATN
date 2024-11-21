@@ -64,7 +64,7 @@ const ProductList = ({ searchResults }) => {
                 <div className="grid-header">Thao tác</div>
                 {displayProducts.map((product, index) => (
                     <Fragment key={product.Product_ID}>
-                        <div className="grid-item">{index + 1}</div>
+                        <div className="grid-item">{product.Product_ID}</div>
                         <div className="grid-item">{product.Product_Name}</div>
                         <div className="grid-item">
                             <img src={product.Image} alt={product.Product_Name} className="product-img" />

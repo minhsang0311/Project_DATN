@@ -6,18 +6,19 @@ const ProductAdd = () => {
     const token = localStorage.getItem('token')
     const [product, setProduct] = useState({});
     const [image, setImage] = useState(null);
+    const [additionalImages, setAdditionalImages] = useState([]); // State cho ảnh con
     const [categories, setCategories] = useState([]);
     const [brands, setBrands] = useState([]);
     useEffect(() => {
         fetch(`http://localhost:3000/admin/category`, {
-            method:"get", 
-            headers:{ 'Content-Type':'application/json' ,'Authorization':'Bearer '+token}
+            method: "get",
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }
         })
             .then(res => res.json())
             .then(data => setCategories(data))
         fetch(`http://localhost:3000/admin/brand`, {
-            method:"get", 
-            headers:{ 'Content-Type':'application/json' ,'Authorization':'Bearer '+token},
+            method: "get",
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
         })
             .then(res => res.json())
             .then(data => setBrands(data))
@@ -25,36 +26,59 @@ const ProductAdd = () => {
     const uploadFile = (event) => {
         setImage(event.target.files[0]);
     };
+    const uploadAdditionalImages = (event) => {
+        const files = Array.from(event.target.files); // Lấy danh sách file mới chọn
+        setAdditionalImages(prevImages => [
+            ...prevImages, // Giữ lại những ảnh đã có
+            ...files.map(file => ({
+                file,
+                preview: URL.createObjectURL(file) // Tạo URL blob cho preview
+            }))
+        ]);
+    };
+
+
     const Submit = (evt) => {
         evt.preventDefault();
+
         const formData = new FormData();
         formData.append('Product_Name', product.Product_Name);
         formData.append('Price', product.Price);
-        formData.append('Category_ID', product.Category_ID)
-        formData.append('Brand_ID', product.Brand_ID)
-        formData.append('Image', image);
+        formData.append('Promotion', product.Promotion);
+        formData.append('Category_ID', product.Category_ID);
+        formData.append('Brand_ID', product.Brand_ID);
+        formData.append('Image', image); // Ảnh chính
         formData.append('Views', product.Views);
         formData.append('Description', product.Description);
         formData.append('Show_Hidden', product.Show_Hidden);
-        let url = `http://localhost:3000/admin/productAdd`;
-        let opt = {
-            method: "post",
+
+        // Thêm danh sách ảnh nhỏ
+        additionalImages.forEach((imgObj, index) => {
+            console.log(`Thêm ảnh bổ sung ${index + 1}:`, imgObj.file.name);
+            formData.append('additionalImages', imgObj.file);
+        });
+
+        fetch(`http://localhost:3000/admin/productAdd`, {
+            method: 'POST',
             body: formData,
-            // headers: { 'Authorization': 'Bearer ' + token }
-            headers: { 'Authorization': 'Bearer '+token}
-        };
-        fetch(url, opt)
-            .then(res => res.json())
-            .then(data => {
-                setProduct({})
-                console.log("data", data)
-                window.location.href = '/admin/products'
+            headers: { Authorization: `Bearer ${token}` },
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data);
+                if (data.message) {
+                    alert(data.message);
+                }
+                setProduct({});
+                setAdditionalImages([]);
             })
-            .catch(error => {
-                console.log("Đã có lỗi thêm sản phẩm", error)
-                alert("Đã có lỗi thêm sản phẩm", error)
-            })
-    }
+            .catch((error) => {
+                console.error("Lỗi thêm sản phẩm:", error);
+                alert("Có lỗi xảy ra, vui lòng thử lại.");
+            });
+    };
+
+
     return (
         <div className="form-container-productadd">
             <div className="form-header">
@@ -84,6 +108,18 @@ const ProductAdd = () => {
                                 value={product.Price || ''}
                                 onChange={e =>
                                     setProduct({ ...product, Price: e.target.value })
+                                }
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label htmlForfor="product-price">Giảm giá %</label>
+                            <input
+                                type="number"
+                                id="product-price-sale"
+                                placeholder="Nhập % giảm giá sản phẩm ..."
+                                value={product.Promotion || ''}
+                                onChange={e =>
+                                    setProduct({ ...product, Promotion: e.target.value })
                                 }
                             />
                         </div>
@@ -132,6 +168,36 @@ const ProductAdd = () => {
                             />
                         </div>
                         <div className="form-group">
+                            <label htmlFor="additional-images">Ảnh bổ sung</label>
+                            <input
+                                type="file"
+                                id="additional-images"
+                                multiple
+                                onChange={uploadAdditionalImages}
+                            />
+                        </div>
+                        <div className="image-preview-container">
+                            {additionalImages.map((imageObj, index) => (
+                                <div key={index} className="image-preview-item">
+                                    <img
+                                        style={{ width: '50px', height: "50px" }}
+                                        src={imageObj.preview}
+                                        alt={`Preview ${index + 1}`}
+                                        className="preview-image"
+                                    />
+                                    <button
+                                        onClick={() => {
+                                            const updatedImages = additionalImages.filter((_, idx) => idx !== index);
+                                            setAdditionalImages(updatedImages);
+                                        }}
+                                    >
+                                        <i class="bi bi-x-circle"></i>
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="form-group">
                             <label htmlForfor="product-description">Mô tả sản phẩm</label>
                             <input
                                 type="text"
@@ -154,30 +220,27 @@ const ProductAdd = () => {
                                     setProduct({ ...product, Views: e.target.value })
                                 } />
                         </div>
-                        <div className="form-group">
-                            <label>Ẩn_hiện</label>
-                            <div className="radio-group">
-                                <label>
-                                    <input
-                                        type="radio"
-                                        name="visibility"
-                                        value={false}
-                                        onChange={e =>
-                                            setProduct({ ...product, Show_Hidden: e.target.value })
-                                        }
-                                    /> Ẩn
-                                </label>
-                                <label>
-                                    <input
-                                        type="radio"
-                                        name="visibility"
-                                        value={true}
-                                        onChange={e =>
-                                            setProduct({ ...product, Show_Hidden: e.target.value })
-                                        }
-                                    /> Hiện
-                                </label>
-                            </div>
+                        <div className="radio-group">
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="visibility"
+                                    value={1} // Dùng 1 thay vì "true"
+                                    onChange={e =>
+                                        setProduct({ ...product, Show_Hidden: parseInt(e.target.value) })
+                                    }
+                                /> Hiện
+                            </label>
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="visibility"
+                                    value={0} // Dùng 0 thay vì "false"
+                                    onChange={e =>
+                                        setProduct({ ...product, Show_Hidden: parseInt(e.target.value) })
+                                    }
+                                /> Ẩn
+                            </label>
                         </div>
                     </div>
                 </div>

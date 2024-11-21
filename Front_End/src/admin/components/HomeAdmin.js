@@ -13,6 +13,8 @@ import Statistics from '../pages/Statistics/Statistics';
 import Comments from '../pages/commentPage/commentList';
 import AdminOrder from '../pages/orderPage/AdminOrder';
 import Customer from '../pages/customerPage/customerList';
+import VouchersList from '../pages/voucherPage/VoucherList';
+import VoucherAdd from '../pages/voucherPage/voucherAdd';
 
 const HomeAdmin = () => {
     const navigate = useNavigate();
@@ -66,7 +68,7 @@ const HomeAdmin = () => {
         <div className="home_admin">
             <div className="sidebar">
                 <div className="logo">
-                    <img src="assets/img/logo.png" alt="" />
+                    <img src="../assets/img/logo3.png" alt="" />
                 </div>
                 <ul className="menu">
                     <li>
@@ -106,7 +108,7 @@ const HomeAdmin = () => {
                         </Link>
                     </li>
                     <li>
-                        <Link to="/promotions">
+                        <Link to="/admin/vouchers">
                             <i className="bi bi-bar-chart-line"></i>
                             <span>Khuyến mãi</span>
                         </Link>
@@ -161,6 +163,8 @@ const HomeAdmin = () => {
                         <Route path="comments" element={<Comments />} />
                         <Route path="order" element={<AdminOrder searchResults={searchResults} />} />
                         <Route path="customers" element={<Customer />} />
+                        <Route path="vouchers" element={<VouchersList />} />
+                        <Route path="voucherAdd" element={<VoucherAdd/>}/>
                     </Routes>
                 </div>
             </div>

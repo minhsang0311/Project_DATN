@@ -1,71 +1,90 @@
 const db = require('../../config/db');
-
 exports.paymentController = (req, res) => {
-    const { Product_Name, Address, Phone, Email, payment_method, total_amount, items, User_ID, Voucher_ID } = req.body;
+    const {
+        Product_Name,
+        Address,
+        User_Name,
+        Phone,
+        Email,
+        payment_method,
+        total_amount,
+        items,
+        User_ID,
+        Voucher_ID,
+        total_quantity, // Nhận total_quantity từ frontend
+        Note
+    } = req.body;
 
-    // Kiểm tra xem User_ID có được cung cấp không
     if (!User_ID) {
-        return res.status(400).json({ success: false, message: 'Người dùng không tồn tại' });
+        return res.status(400).json({ success: false, message: 'Người dùng không tồn tại' });
     }
 
-    // Kiểm tra xem giỏ hàng có chứa sản phẩm hợp lệ hay không
     const orderItems = items
         .filter(item => item.Product_ID && item.Quantity > 0 && item.Price >= 0)
         .map(item => [null, item.Product_ID, item.Quantity, item.Price]);
 
     if (orderItems.length === 0) {
-        return res.status(400).json({ success: false, message: 'Trang giỏ hàng không chứa sản phẩm' });
+        return res.status(400).json({ success: false, message: 'Trang giỏ hàng không chứa sản phẩm' });
     }
 
-    // Mặc định trạng thái đơn hàng là "Pending" (có thể thay đổi trạng thái theo yêu cầu)
-    const defaultStatus = 1;  // Giả sử 1 là ID trạng thái "Pending" trong bảng `order_status`
+    const defaultStatus = 1;
 
-    // Insert order vào bảng `orders`
-    const query = 'INSERT INTO `orders` (User_ID, Voucher_ID, Product_Name, Address, Phone, Email, payment_method, total_amount, Status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
-    db.query(query, [User_ID, Voucher_ID || null, Product_Name, Address, Phone, Email, payment_method, total_amount, defaultStatus], (err, result) => {
+    const checkVoucherQuery = 'SELECT Voucher_ID FROM Vouchers WHERE Code = ? AND Expiration_Date > NOW()';
+    db.query(checkVoucherQuery, [Voucher_ID], (err, voucherResults) => {
         if (err) {
-            return res.status(500).json({ success: false, message: 'Lỗi tạo đơn hàng', err });
+            return res.status(500).json({ success: false, message: 'Lỗi kiểm tra voucher', err });
         }
 
-        const orderId = result.insertId; // ID của đơn hàng vừa tạo
+        const voucherId = voucherResults.length > 0 ? voucherResults[0].Voucher_ID : null;
 
-        // Insert các sản phẩm hợp lệ vào bảng `order_details`
-        const detailsQuery = 'INSERT INTO order_details (Order_ID, Product_ID, Quantity, Price) VALUES ?';
-        const values = orderItems.map(item => [orderId, ...item.slice(1)]);
+        const query = `
+            INSERT INTO orders (
+                User_ID, Voucher_ID, Product_Name, Address, Phone, User_Name, Email, payment_method, total_amount, Status, total_quantity, Note
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
-        db.query(detailsQuery, [values], (err) => {
-            if (err) {
-                return res.status(500).json({ success: false, message: 'Lỗi lưu đơn hàng chi tiết', err });
-            }
-
-            // Tính tổng số lượng sản phẩm trong bảng `order_details`
-            const totalItemsQuery = 'SELECT SUM(Quantity) AS total_quantity FROM order_details WHERE Order_ID = ?';
-            db.query(totalItemsQuery, [orderId], (err, result) => {
+        db.query(
+            query,
+            [
+                User_ID,
+                voucherId,
+                Product_Name,
+                User_Name,
+                Address,
+                Phone,
+                Email,
+                payment_method,
+                total_amount,
+                defaultStatus,
+                total_quantity, // Gửi tổng số lượng
+                Note || null
+            ],
+            (err, result) => {
                 if (err) {
-                    return res.status(500).json({ success: false, message: 'Lỗi khi tính tổng số sản phẩm', err });
+                    return res.status(500).json({ success: false, message: 'Lỗi tạo đơn hàng', err });
                 }
 
-                const totalQuantity = result[0].total_quantity;
+                const orderId = result.insertId;
 
-                // Cập nhật tổng số lượng sản phẩm vào bảng `orders`
-                const updateOrderQuery = 'UPDATE orders SET total_quantity = ? WHERE Order_ID = ?';
-                db.query(updateOrderQuery, [totalQuantity, orderId], (err) => {
+                const detailsQuery = 'INSERT INTO order_details (Order_ID, Product_ID, Quantity, Price) VALUES ?';
+                const values = orderItems.map(item => [orderId, ...item.slice(1)]);
+
+                db.query(detailsQuery, [values], (err) => {
                     if (err) {
-                        return res.status(500).json({ success: false, message: 'Lỗi khi cập nhật tổng sản phẩm', err });
+                        return res.status(500).json({ success: false, message: 'Lỗi lưu chi tiết đơn hàng', err });
                     }
 
-                    // Trả về thông tin đơn hàng cùng với tổng số sản phẩm
                     res.status(200).json({
                         success: true,
-                        message: 'Đơn hàng đã được luu thành công!',
-                        total_quantity: totalQuantity, // Tổng số sản phẩm
-                        orderId: orderId // ID đơn hàng
+                        message: 'Đơn hàng đã được lưu thành công!',
+                        orderId: orderId
                     });
                 });
-            });
-        });
+            }
+        );
     });
 };
+
+
 // exports.paymentOnline = async function (req, res, next) {
 //     var ipAddr = req.headers['x-forwarded-for'] ||
 //         req.connection.remoteAddress ||

@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/components/Comments.css';
 
-const Comments = ({ productId, orderSuccess }) => {
+const Comments = ({ productId }) => {
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState('');
     const [username, setUsername] = useState('');
     const [rating, setRating] = useState(5);
     const [message, setMessage] = useState('');
     const [userId, setUserId] = useState(null);
+    const [hasPurchased, setHasPurchased] = useState(false);
 
     // Lấy thông tin người dùng từ localStorage khi component load
     useEffect(() => {
@@ -20,6 +21,41 @@ const Comments = ({ productId, orderSuccess }) => {
             }
         }
     }, []);
+
+    // Kiểm tra người dùng đã mua sản phẩm này chưa
+    useEffect(() => {
+    const fetchPurchaseHistory = async () => {
+        if (userId) {
+            try {
+                const response = await fetch(`http://localhost:3000/user/purchases/${userId}`);
+                
+                // Kiểm tra nếu API trả về danh sách các sản phẩm đã mua
+                if (response.ok) {
+                    const data = await response.json();
+                    const purchasedProductIds = data;  // Dữ liệu trả về là mảng chứa các Product_ID
+
+                    if (purchasedProductIds.includes(productId)) {
+                        setHasPurchased(true);  // Người dùng đã mua sản phẩm
+                    } else {
+                        setHasPurchased(false);  // Người dùng chưa mua sản phẩm
+                    }
+                } else {
+                    console.error('Không thể lấy lịch sử mua hàng');
+                    setHasPurchased(false);
+                }
+            } catch (err) {
+                console.error('Lỗi khi kiểm tra lịch sử mua hàng:', err);
+                setHasPurchased(false);
+            }
+        } else {
+            console.log('Người dùng chưa đăng nhập');
+            setHasPurchased(false);
+        }
+    };
+
+    fetchPurchaseHistory();
+}, [userId, productId]);  // Cập nhật khi productId hoặc userId thay đổi
+
 
     // Lấy danh sách bình luận từ API khi component được load
     useEffect(() => {
@@ -36,20 +72,17 @@ const Comments = ({ productId, orderSuccess }) => {
         fetchComments();
     }, [productId]);
 
-    // Lắng nghe sự thay đổi của orderSuccess để thêm bình luận mới
-    useEffect(() => {
-        if (orderSuccess) {
-            setNewComment(''); // Làm mới form bình luận
-            setMessage('Bạn có thể thêm bình luận cho sản phẩm này.');
-        }
-    }, [orderSuccess]);
-
     // Xử lý thêm bình luận mới
     const handleAddComment = async (e) => {
         e.preventDefault();
 
         if (!userId) {
             alert('Vui lòng đăng nhập để bình luận!');
+            return;
+        }
+
+        if (!hasPurchased) {
+            alert('Bạn chưa mua sản phẩm này, không thể bình luận!');
             return;
         }
 
@@ -63,7 +96,7 @@ const Comments = ({ productId, orderSuccess }) => {
         };
 
         try {
-            const response = await fetch(`http://localhost:3000/user/reviews/${productId}`, {
+            const response = await fetch(`http://localhost:3000/user/reviews`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -73,14 +106,12 @@ const Comments = ({ productId, orderSuccess }) => {
 
             const data = await response.json();
             if (data.message === 'Thêm bình luận thành công') {
-                // Cập nhật lại danh sách bình luận sau khi thêm mới
                 const fetchUpdatedComments = async () => {
                     const response = await fetch(`http://localhost:3000/user/reviews/${productId}`);
                     const updatedData = await response.json();
                     setComments(updatedData);
                 };
                 fetchUpdatedComments();
-
                 setNewComment('');
                 alert('Bình luận của bạn đã được gửi thành công!');
             }
@@ -110,23 +141,16 @@ const Comments = ({ productId, orderSuccess }) => {
                 {comments.length > 0 ? (
                     comments.map((comment) => (
                         <li key={comment.Review_ID} className="comment-item">
-                            {/* Hiển thị ảnh người dùng */}
                             <img
                                 src="https://i.pinimg.com/736x/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg"
                                 alt={comment.User_Name}
                                 className="user-avatar"
                             />
-
                             <div className="comment-content">
-                                {/* Tên người dùng */}
                                 <strong>{comment.User_Name}</strong>
-
-                                {/* Hiển thị sao */}
                                 <div className="rating">
                                     {renderStars(comment.Ratting)}
                                 </div>
-
-                                {/* Nội dung bình luận */}
                                 <p>{comment.Comment}</p>
                             </div>
                         </li>
@@ -136,32 +160,26 @@ const Comments = ({ productId, orderSuccess }) => {
                 )}
             </ul>
 
-            {orderSuccess && (
-                <>
-                    <h4>Thêm bình luận mới</h4>
-                    <form onSubmit={handleAddComment}>
-                        <textarea
-                            placeholder="Nội dung bình luận"
-                            value={newComment}
-                            onChange={(e) => setNewComment(e.target.value)}
-                            required
-                        />
-                        <label>
-                            Đánh giá:
-                            <select value={rating} onChange={(e) => setRating(e.target.value)}>
-                                <option value={5}>5</option>
-                                <option value={4}>4</option>
-                                <option value={3}>3</option>
-                                <option value={2}>2</option>
-                                <option value={1}>1</option>
-                            </select>
-                        </label>
-                        <button type="submit">Gửi bình luận</button>
-                    </form>
-                </>
-            )}
-
-            {/* Thông báo thành công hoặc lỗi */}
+            <h4>Thêm bình luận mới</h4>
+            <form onSubmit={handleAddComment}>
+                <textarea
+                    placeholder="Nội dung bình luận"
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                    required
+                />
+                <label>
+                    Đánh giá:
+                    <select value={rating} onChange={(e) => setRating(e.target.value)}>
+                        <option value={5}>5</option>
+                        <option value={4}>4</option>
+                        <option value={3}>3</option>
+                        <option value={2}>2</option>
+                        <option value={1}>1</option>
+                    </select>
+                </label>
+                <button type="submit">Gửi bình luận</button>
+            </form>
             {message && <p>{message}</p>}
         </div>
     );

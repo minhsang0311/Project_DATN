@@ -26,13 +26,13 @@ function CategoryList({ searchResults }) {
             method: "delete",
             headers: { "Content-type": "application/json", 'Authorization': 'Bearer ' + token }
         })
-        .then(res => res.json())
-        .then(response => {
-            if (response.thongbao.includes("Không thể xóa danh mục")) {
-                alert("Không thể xóa danh mục vì có sản phẩm trong danh mục này!");
-            }
-            fetchCategories(); // Tải lại danh sách danh mục sau khi xóa
-        });
+            .then(res => res.json())
+            .then(response => {
+                if (response.thongbao.includes("Không thể xóa danh mục")) {
+                    alert("Không thể xóa danh mục vì có sản phẩm trong danh mục này!");
+                }
+                fetchCategories(); // Tải lại danh sách danh mục sau khi xóa
+            });
     };
 
     // Sử dụng useEffect để lấy danh sách danh mục khi component được mount
@@ -46,24 +46,27 @@ function CategoryList({ searchResults }) {
     const displayCategories = searchResults && searchResults.length > 0 ? searchResults : categories;
 
     return (
-        <div className="category-list-container">
-            <div className="category-list-header">
-                <h2>Danh sách danh mục</h2>
-                <button className="category-add-button">
-                    <Link to="/admin/categoryAdd">Thêm danh mục</Link>
-                </button>
+        <div className="box-categorylist">
+            <div className="headertop-admin-category">
+                <div className="header_admin_category">
+                    <h2>Danh sách danh mục</h2>
+                    <button className="button_admin_category">
+                        <Link to="/admin/categoryAdd">Thêm danh mục</Link>
+                    </button>
+                </div>
             </div>
-            <div className="category-grid">
-                <div className="category-grid-title">STT</div>
-                <div className="category-grid-title">Tên sản phẩm</div>
-                <div className="category-grid-title">Ẩn/Hiện</div>
-                <div className="category-grid-title">Thao tác</div>
+
+            <div className="grid-container-category">
+                <div className="grid-header-category">STT</div>
+                <div className="grid-header-category">Tên sản phẩm</div>
+                <div className="grid-header-category">Ẩn/Hiện</div>
+                <div className="grid-header-category">Thao tác</div>
                 {displayCategories.map((category, index) => (
                     <React.Fragment key={category.Category_ID}>
-                        <div className="category-grid-item">{index + 1}</div>
-                        <div className="category-grid-item">{category.Category_Name}</div>
-                        <div className="category-grid-item">{category.Show_Hidden === 1 ? "Hiện" : "Ẩn"}</div>
-                        <div className="category-grid-item category-actions">
+                        <div className="grid-item-category">{index + 1}</div>
+                        <div className="grid-item-category">{category.Category_Name}</div>
+                        <div className="grid-item-category">{category.Show_Hidden === 1 ? "Hiện" : "Ẩn"}</div>
+                        <div className="grid-item grid-item-button-category">
                             <Link to={`/admin/categoryUpdate/${category.Category_ID}`} className="category-edit-btn">✏️</Link>
                             <button className="category-delete-btn" onClick={() => deleteCategory(category.Category_ID)}>🗑️</button>
                         </div>
