@@ -35,7 +35,7 @@ const Banner = () => {
   return (
     <div className="banner">
       {/* Menu danh mục */}
-      <div className="menu-doc">
+       <div className="menu-doc">
         <div className="danh-muc" onClick={toggleDanhMuc}>
           <i className="fa-solid fa-bars"></i> <p>Danh mục</p>
         </div>
@@ -50,7 +50,7 @@ const Banner = () => {
             </li>
           ))}
         </ul>
-      </div>
+      </div> 
 
       {/* Banner chính */}
       <div className="trai">
