@@ -32,34 +32,35 @@ const SPLienQuan = ({ id, sosp }) => {
   };
 
   return (
-    <div id="splienquan">
+    <div className="splienquan">
       <h2>Sản phẩm liên quan</h2>
       <div className="products-grid">
         {listsp.slice(0, 5).map((sp, i) =>
-          <div className="product" key={i}>
-            {sp.Promotion > 0 && (
+          <div className="relatedproduct" key={i}>
+          {sp.Promotion > 0 && (
               <div className="discount-label">
-                -{sp.Promotion}%
+                  -{sp.Promotion}%
               </div>
-            )}
-            <div className="img-wrapper">
+          )}
+          <div className="img-wrapper">
               <img src={sp.Image} alt="" />
-            </div>
-            <Link to={`/productDetail/${sp.Product_ID}`}>
-              <h1>{sp.Product_Name}</h1>
-            </Link>
-            <div className="price">
-              {sp.Promotion > 0 ? (
-                <>
-                  <p className="old-price">{formatCurrency(sp.Price)}</p>
-                  <p className="new-price">{formatCurrency(sp.Price - (sp.Promotion * sp.Price) / 100)}</p>
-                </>
-              ) : (
-                <p className="new-price">{formatCurrency(sp.Price)}</p>
-              )}
-            </div>
-            <button className="add-to-cart" onClick={() => handleAddToCart(sp)}>Thêm vào giỏ hàng</button>
           </div>
+          <Link to={"/productDetail/" + sp.Product_ID}><a>{sp.Product_Name}</a></Link>
+          <div className="price_giohang">
+              <div className="price">
+                  {sp.Promotion > 0 ? (
+                      <>
+                          <p className="old-price">{formatCurrency(sp.Price)}</p>
+                          <p className="new-price">{formatCurrency(sp.Price - (sp.Promotion * sp.Price) / 100)}</p>
+                      </>
+                  ) : (
+                      <p className="new-price">{formatCurrency(sp.Price)}</p>
+                  )}
+              </div>
+
+              <button className="add-to-cart" onClick={() => handleAddToCart(sp)}>Giỏ hàng</button>
+          </div>
+      </div>
         )}
       </div>
     </div>
