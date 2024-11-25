@@ -1,12 +1,33 @@
 const db = require('../../config/db');
 
-exports.getAllreviews = function(req, res){
-    let sql = `SELECT * FROM reviews`;
-    db.query(sql, (err, data)=>{
-      if(err) res.json({"thongbao": "Lỗi lấy bình luận", err})
-        else res.json(data);
-    });
-  };
+exports.getAllreviews = function (req, res) {
+  let sql = `
+      SELECT 
+          r.Review_ID, 
+          r.User_ID, 
+          r.Product_ID, 
+          r.Ratting, 
+          r.Comment, 
+          r.User_Name, 
+          r.Show_Hidden, 
+          p.Product_Name
+      FROM 
+          reviews r
+      INNER JOIN 
+          products p 
+      ON 
+          r.Product_ID = p.Product_ID
+  `;
+
+  db.query(sql, (err, data) => {
+      if (err) {
+          res.json({ "thongbao": "Lỗi lấy bình luận", err });
+      } else {
+          res.json(data);
+      }
+  });
+};
+
 // Cập nhật trạng thái hiển thị của bình luận
 exports.updateReview = (req, res) => {
     const { id } = req.params;

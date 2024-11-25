@@ -15,6 +15,7 @@ const ProductDetail = () => {
     const [error, setError] = useState('');
     let { id } = useParams();
     const navigate = useNavigate();
+    const [showToast, setShowToast] = useState(false);
     const dispatch = useDispatch();
 
     // Lấy dữ liệu giỏ hàng từ Redux Store
@@ -50,8 +51,12 @@ const ProductDetail = () => {
         const currentCart = JSON.parse(localStorage.getItem('cart')) || [];
         currentCart.push(cartItem);
         localStorage.setItem('cart', JSON.stringify(currentCart));
-    };
-
+    
+    setShowToast(true);
+    setTimeout(() => {
+        setShowToast(false);
+    }, 3000); // Hiện thông báo trong 3 giây
+};
     // Lấy dữ liệu chi tiết sản phẩm
     useEffect(() => {
         const fetchProductDetail = async () => {
@@ -94,7 +99,8 @@ const ProductDetail = () => {
                 <div className='thanh-dieu-huong'>
                         <Link to="/"><h3>Trang chủ</h3></Link> /
                         <Link to="/cuahang"><h3>{sp.Product_Name}</h3></Link>
-                    </div>
+                    </div> 
+                    {showToast && <div className="toast">Đã thêm vào giỏ hàng</div>}
                 <div className="spchitiet">
                     
                     <div className="left-image">
