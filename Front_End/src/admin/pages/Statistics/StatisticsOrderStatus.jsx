@@ -80,7 +80,7 @@ const StatisticsOrderStatus = () => {
 
   return (
     <div className='statistics-chillrend-header'>
-      <h2>Thống kê trạng thái đơn hàng</h2>
+      <h2>THỐNG KÊ TRẠNG THÁI ĐƠN HÀNG</h2>
       <div style={{ display: 'flex', gap: '20px', justifyContent: 'center' }}>
         <div style={{ width: '45%', minHeight: '300px' }}>
           <h3>Biểu đồ tròn - Trạng thái đơn hàng</h3>

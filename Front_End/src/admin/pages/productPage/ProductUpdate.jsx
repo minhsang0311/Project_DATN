@@ -12,6 +12,8 @@ const ProductUpdate = () => {
     const [imageFile, setImageFile] = useState(null); // lưu hình ảnh cũ khi không thay đổi hình ảnh cũ
     const [categories, setCategories] = useState([]); // Danh sách danh mục
     const [brands, setBrands] = useState([]); // Danh sách hãng
+    const [additionalImages, setAdditionalImages] = useState([]); //lưu ảnh bổ sung
+    const [newAdditionalImages, setNewAdditionalImages] = useState([]);
 
     useEffect(() => {
         // Lấy chi tiết sản phẩm
@@ -58,8 +60,51 @@ const ProductUpdate = () => {
                 console.log("Đã có lỗi lấy danh sách hãng", error);
                 alert("Đã có lỗi lấy danh sách hãng", error);
             });
-
+        fetch(`${url}/productImageDetail/${id}`, {
+            method: 'GET',
+            headers: { "Content-type": "application/json", 'Authorization': 'Bearer ' + token }
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (Array.isArray(data)) {
+                    setAdditionalImages(data); // Cập nhật danh sách ảnh bổ sung
+                }
+            })
+            .catch(error => {
+                console.log("Đã có lỗi lấy ảnh bổ sung", error);
+                alert("Đã có lỗi lấy ảnh bổ sung", error);
+            });
     }, [id, token]);
+    const handleDeleteAdditionalImage = (imageId) => {
+        const confirmed = window.confirm("Bạn có chắc chắn muốn xóa ảnh này?");
+        if (!confirmed) return;
+    
+        fetch(`${url}/productDeleteImg/${imageId}`, {
+            method: "DELETE",
+            headers: { "Authorization": `Bearer ${token}` },
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.message === "Xóa thành công") {
+                    alert("Xóa ảnh bổ sung thành công!");
+                    setAdditionalImages((prev) =>
+                        prev.filter((img) => img.Image_ID !== imageId)
+                    );
+                } else {
+                    alert("Xóa ảnh không thành công. Vui lòng thử lại.");
+                }
+            })
+            .catch((error) => {
+                console.error("Lỗi khi xóa ảnh bổ sung:", error);
+                alert("Đã có lỗi khi xóa ảnh bổ sung.");
+            });
+    };
+    
+    const handleDeleteNewImage = (index) => {
+        const updatedImages = [...newAdditionalImages];
+        updatedImages.splice(index, 1);
+        setNewAdditionalImages(updatedImages);
+    };
 
     const Submit = (evt) => {
         evt.preventDefault();
@@ -74,6 +119,11 @@ const ProductUpdate = () => {
         formData.append('Description', productUpdate.Description);
         formData.append('Show_Hidden', productUpdate.Show_Hidden);
 
+        // Thêm các hình ảnh bổ sung mới vào formData
+        newAdditionalImages.forEach((file) => {
+            formData.append("newAdditionalImages", file);
+        });
+        
         let url = `http://localhost:3000/admin/productUpdate/${id}`;
         let opt = {
             method: "PUT",
@@ -186,6 +236,51 @@ const ProductUpdate = () => {
                                 onChange={uploadFile}
                             />
                         </div>
+                        <div className="form-group">
+                            <label htmlFor="product-additional-images">Ảnh bổ sung</label>
+                            <input
+                                type="file"
+                                id="product-additional-images"
+                                multiple
+                                onChange={(e) => {
+                                    const files = Array.from(e.target.files);
+                                    setNewAdditionalImages([...newAdditionalImages, ...files]);
+                                }}
+                                
+                            />
+
+                            <div className="additional-images">
+                                {/* Hiển thị ảnh cũ */}
+                                {additionalImages.map((img, index) => (
+                                    <div key={index} className="additional-image-item">
+                                        <img src={img.Image_URL} alt={`Ảnh bổ sung ${index + 1}`} className="additional-image-preview" />
+                                        <button
+                                            className="delete-image-btn"
+                                            onClick={() => handleDeleteAdditionalImage(img.Image_ID)}
+                                        >
+                                            x
+                                        </button>
+                                    </div>
+                                ))}
+
+                                {/* Hiển thị ảnh mới */}
+                                {newAdditionalImages.map((src, index) => (
+                                    <div key={`new-${index}`} className="additional-image-item">
+                                        <img src={src} alt={`Ảnh mới ${index + 1}`} className="additional-image-preview" />
+                                        <button
+                                            className="delete-image-btn"
+                                            onClick={() => handleDeleteNewImage(index)}
+                                        >
+                                            x
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+
+
+                        </div>
+
+
                         <div className="form-group">
                             <label htmlFor="product-description">Mô tả sản phẩm</label>
                             <input

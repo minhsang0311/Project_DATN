@@ -25,7 +25,10 @@ const ResetPassword = () => {
                 `http://localhost:3000/user/reset-password/${token}`, 
                 { newPassword }
             );
-            setMessage(response.data.message); // Hiển thị thông báo thành công
+            console.log(response)
+            console.log(response.data.message)
+            alert(response.data.message);
+
             navigate('/register_login'); // Chuyển hướng người dùng đến trang đăng nhập
         } catch (error) {
             setMessage(error.response ? error.response.data.message : 'Có lỗi xảy ra.');

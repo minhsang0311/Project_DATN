@@ -58,7 +58,7 @@ function Header() {
         Xin chào, {userName}
         {showDropdown && (
           <div className="dropdown">
-            <Link to="/change-password">Đổi mật khẩu</Link>
+            <Link to="/change-password" className='change-pw'>Đổi mật khẩu</Link>
             <button onClick={handleLogout}>Thoát</button>
           </div>
         )}

@@ -26,6 +26,7 @@ const orderRoutesAdmin = require('./routes/adminRoutes/orderRoutes')
 const searchRoutesAdmin = require('./routes/adminRoutes/searchRoutes')
 const customerRoutesAdmin = require('./routes/adminRoutes/customerRoutes');
 const voucherRoutesAdmin = require('./routes/adminRoutes/voucherRoutes');
+const manufacturerRoutesAdmin = require('./routes/adminRoutes/manufacturerRouter')
 //User
 const categoryRoutesClient = require('./routes/userRoutes/categoryRoutes');
 const forgotPassword = require('./routes/userRoutes/forgotPassword')
@@ -53,11 +54,12 @@ app.use('/admin', [
     searchRoutesAdmin,
     orderRoutesAdmin,
     customerRoutesAdmin,
-    voucherRoutesAdmin
+    voucherRoutesAdmin,
+    manufacturerRoutesAdmin
 ]);
 
-app.use('/user',[
-    productRoutesClient, 
+app.use('/user', [
+    productRoutesClient,
     categoryRoutesClient,
     componentRoutesClient,
     forgotPassword,

@@ -65,31 +65,40 @@ header .middle i.fa-cart-shopping {font-size: 24px;cursor: pointer;color: #57414
   
 /* styles/components/Header.css */
 .dropdown {
-  /* position: absolute; */
+  position: absolute;
+  margin: 0 auto;
   background-color: white;
   border: 1px solid #ddd;
   box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-  /* right: 0; */
-  /* top: 100%; */
-  width: 150px;
+  right: 140px;
+  border-radius: 15px;
+  width: 120px;
   display: flex;
   flex-direction: column;
 }
 
 .dropdown a,
 .dropdown button {
-  /* padding: 10px; */
-  text-align: left;
+  text-align: center;
+  margin-top: 0px;
+  margin-bottom: 0px;
   background-color: transparent;
   border: none;
   color: #333;
+  height: 30px;
   cursor: pointer;
-  /* width: 100%; */
+  width: 100%;
+}
+.dropdown a {
+  padding-top: 8px;
 }
 
-.dropdown a:hover,
+.dropdown .change-pw:hover,
 .dropdown button:hover {
-  background-color: #f2f2f2;
+  border-radius: 15px;
+  color: white;
+  font-weight: bold;
+  background-color: #56A4FF;
 }
 /* Điện thoại đứng */
 @media screen and (min-width:240px) {

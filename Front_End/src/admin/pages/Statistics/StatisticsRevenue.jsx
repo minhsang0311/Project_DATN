@@ -62,7 +62,7 @@ const StatisticsRevenue = () => {
 
   return (
     <div className="revenue-statistics">
-      <h2>Thống Kê Tổng Doanh Thu</h2>
+      <h2>THỐNG KÊ DOANH THU</h2>
       <div className="filter-section">
         <label>
           Ngày bắt đầu:

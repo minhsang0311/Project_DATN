@@ -7,7 +7,6 @@ const Comments = () => {
     useEffect(() => {
         const fetchComments = async () => {
             try {
-
                 const response = await fetch('http://localhost:3000/admin/reviews', {
                     method: 'GET',
                     headers: {
@@ -60,7 +59,7 @@ const Comments = () => {
                         <th>Tên sản phẩm</th>
                         <th>Bình luận</th>
                         <th>Ẩn/ Hiện</th>
-                      
+
 
                     </tr>
                 </thead>
