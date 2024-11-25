@@ -87,7 +87,7 @@ const StatisticsPro = () => {
 
     return (
         <div className='statistics-chillrend-header_product'>
-            <h2>Bảng thống kê sản phẩm</h2>
+            <h2>THỐNG KÊ SẢN PHẨM</h2>
             <div className='statistics'>
                 <div className='left'>
                     <table className="vertical-table">

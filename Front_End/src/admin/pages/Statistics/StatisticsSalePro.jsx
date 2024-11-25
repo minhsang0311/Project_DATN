@@ -64,7 +64,7 @@ const StatisticsSalePro = () => {
 
   return (
     <div className="revenue-statistics">
-      <h2>Thống Kê Tổng Sản Phẩm Đã Bán</h2>
+      <h2>THỐNG KÊ SẢN PHẨM ĐÃ BÁN</h2>
       <div className="filter-section">
         <label>
           Ngày bắt đầu:
@@ -113,7 +113,9 @@ const StatisticsSalePro = () => {
             }}
           />
         ) : (
-          <p>Chọn ngày để hiển thị biểu đồ.</p>
+          <p>
+            {/* Chọn ngày để hiển thị biểu đồ. */}
+            </p>
         )}
       </div>
     </div>

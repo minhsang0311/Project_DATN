@@ -4,14 +4,16 @@
 
 .container-pay h1 {
     align-items: center;
-    justify-content: center;
+    padding-left: 30px;
     display: flex;
+    color: white;
+    border-radius: 10px;
     font-size: 25px;
     height: 40px;
     margin-left: 100px;
     margin-right: 100px;
     margin-bottom: 30px;
-    background-color: #2358ead4;
+    background-color: #56A4FF;
 }
 
 .container-payment {
@@ -21,6 +23,7 @@
     grid-template-columns: 30% 30% 30%;
     gap: 6%;
     margin: 0 auto;
+    margin-bottom: 40px;
     padding: 20px;
 }
 
@@ -49,9 +52,10 @@ textarea {
     border: 1px solid #ccc;
 }
 
-button {
+.payment_button {
     padding: 10px 20px;
-    background-color: #4CAF50;
+    background-color: #56A4FF;
+    border-radius: 10px;
     color: white;
     border: none;
     cursor: pointer;
@@ -68,4 +72,20 @@ button {
 }
 .product-info {
     margin-left: 20px;
+}
+.product-info span {
+    font-weight: bold;
+}
+.voucher label {
+    font-weight: bold
+}
+.voucher input{
+    height: 30px;
+    padding: 10px;
+}
+.money {
+    margin: 12px 0px;
+}
+.total_money span, .total_sale span{
+    font-weight: bold;
 }

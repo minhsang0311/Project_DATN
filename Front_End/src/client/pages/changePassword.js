@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import '../styles/components/ChangePassword.css'
 
 const ChangePassword = () => {
     const [oldPassword, setOldPassword] = useState("");
@@ -9,6 +10,22 @@ const ChangePassword = () => {
     const [message, setMessage] = useState("");
     const [error, setError] = useState("");
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const tokenUser = localStorage.getItem("tokenUser");
+        const tokenRole = JSON.parse(localStorage.getItem("user"));
+
+        if (!tokenUser) {
+            alert('Bạn cần phải đăng nhập để đổi mật khẩu');
+            navigate('/register_login');
+        } else {
+            if (tokenRole.role !== 0) {
+                alert('Tài khoản không thể đổi đổi mật khẩu');
+                navigate('/register_login');
+            }
+        }
+    }, [navigate]);
+
     const handleChangePassword = async (e) => {
         e.preventDefault();
         setMessage("");
@@ -20,30 +37,20 @@ const ChangePassword = () => {
         }
 
         try {
-            // Lấy token từ localStorage (giả định bạn lưu token ở đây sau khi đăng nhập)
+            // Lấy token từ localStorage
             const tokenUser = localStorage.getItem("tokenUser");
-            const tokenRole = JSON.parse(localStorage.getItem("user"));
-            if (!tokenUser) {
-                alert('Bạn cần đăng nhập để truy cập trang này.');
-                navigate('/register_login');
-            } else {
-                if (tokenRole.role !== 0) {
-                    alert('Bạn cần phải đăng nhập để đổi mật khẩu')
-                    navigate('/register_login');
-                }
-            }
+
             // Gửi yêu cầu tới API đổi mật khẩu
             const response = await axios.post(
                 "http://localhost:3000/user/change-password",
                 { oldPassword, newPassword },
                 { headers: { Authorization: `Bearer ${tokenUser}` } }
             );
-            console.log("response", response);
-            // setMessage(response.data.message);
+
             setOldPassword("");
             setNewPassword("");
             setConfirmPassword("");
-            alert("Bạn đã thay đổi mật khẩu thành công!")
+            alert("Bạn đã thay đổi mật khẩu thành công!");
             navigate('/register_login');
         } catch (err) {
             if (err.response && err.response.data) {
@@ -59,6 +66,7 @@ const ChangePassword = () => {
             <h2>Thay đổi mật khẩu</h2>
             {message && <p className="success-message">{message}</p>}
             {error && <p className="error-message">{error}</p>}
+
             <form onSubmit={handleChangePassword}>
                 <div className="form-group">
                     <label>Mật khẩu cũ:</label>
@@ -87,7 +95,7 @@ const ChangePassword = () => {
                         required
                     />
                 </div>
-                <button type="submit">Đổi mật khẩu</button>
+                <button type="submit" className="change_pw">Đổi mật khẩu</button>
             </form>
         </div>
     );

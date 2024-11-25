@@ -1,5 +1,6 @@
 
 import { useEffect, useState } from 'react';
+import { useNavigate } from "react-router";
 // import { useSelector } from 'react-redux';
 import '../../styles/pages/CategoryAdd.css'
 const ProductAdd = () => {
@@ -9,6 +10,7 @@ const ProductAdd = () => {
     const [additionalImages, setAdditionalImages] = useState([]); // State cho ảnh con
     const [categories, setCategories] = useState([]);
     const [brands, setBrands] = useState([]);
+    const navigate = useNavigate()
     useEffect(() => {
         fetch(`http://localhost:3000/admin/category`, {
             method: "get",
@@ -29,10 +31,10 @@ const ProductAdd = () => {
     const uploadAdditionalImages = (event) => {
         const files = Array.from(event.target.files); // Lấy danh sách file mới chọn
         setAdditionalImages(prevImages => [
-            ...prevImages, // Giữ lại những ảnh đã có
+            ...prevImages,
             ...files.map(file => ({
                 file,
-                preview: URL.createObjectURL(file) // Tạo URL blob cho preview
+                preview: URL.createObjectURL(file)
             }))
         ]);
     };
@@ -40,7 +42,41 @@ const ProductAdd = () => {
 
     const Submit = (evt) => {
         evt.preventDefault();
-
+        // Kiểm tra dữ liệu đầu vào
+        if (!product.Product_Name || product.Product_Name.trim() === "") {
+            alert("Tên sản phẩm không được để trống!");
+            return;
+        }
+        if (!product.Price || isNaN(product.Price) || product.Price <= 0) {
+            alert("Vui lòng nhập giá sản phẩm hợp lệ!");
+            return;
+        }
+        if (!product.Category_ID) {
+            alert("Vui lòng chọn danh mục sản phẩm!");
+            return;
+        }
+        if (!product.Brand_ID) {
+            alert("Vui lòng chọn hãng sản phẩm!");
+            return;
+        }
+        if (!image) {
+            alert("Vui lòng chọn hình ảnh chính cho sản phẩm!");
+            return;
+        }
+        if (!product.Views) {
+            alert("Vui lòng chọn số lượt xem cho sản phẩm!");
+            return;
+        }
+        
+        if (!product.Description) {
+            alert("Vui lòng nhập mô tả cho sản phẩm!");
+            return;
+        }
+        if (!product.Show_Hidden) {
+            alert("Vui lòng ẩn hiện cho sản phẩm!");
+            return;
+        }
+        
         const formData = new FormData();
         formData.append('Product_Name', product.Product_Name);
         formData.append('Price', product.Price);
@@ -68,13 +104,14 @@ const ProductAdd = () => {
                 console.log(data);
                 if (data.message) {
                     alert(data.message);
+                    navigate('/admin/products')
                 }
                 setProduct({});
                 setAdditionalImages([]);
             })
             .catch((error) => {
                 console.error("Lỗi thêm sản phẩm:", error);
-                alert("Có lỗi xảy ra, vui lòng thử lại.");
+                alert("Có lỗi xảy ra, vui lòng thử lại.", error);
             });
     };
 

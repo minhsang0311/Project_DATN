@@ -5,9 +5,10 @@ const nodemailer = require('nodemailer');
 exports.forgotPassword = (req, res) => {
     const { email } = req.body;
     const token = crypto.randomBytes(20).toString('hex');
-    const expiry = Date.now() + 3600000; 
+    const expiry = Date.now() + 3600000;
     const checkEmailQuery = 'SELECT * FROM users WHERE Email = ?';
-    db.query(checkEmailQuery, [email], (err, results) => {          
+    db.query(checkEmailQuery, [email], (err, results) => {
+        console.log("results", results)
         if (err) return res.status(500).json({ message: 'Lỗi cơ sở dữ liệu' });
         if (results.length === 0) return res.status(404).json({ message: 'Email không tồn tại' });
         const updateQuery = 'UPDATE users SET resetToken = ?, resetTokenExpiry = ? WHERE Email = ?';
@@ -27,8 +28,8 @@ exports.forgotPassword = (req, res) => {
                 text: `Click vào link để đặt lại mật khẩu của bạn: http://localhost:4200/reset-password/${token}`,
             };
             transporter.sendMail(mailOptions, (error, info) => {
-                if (error) return res.status(500).json({ message: 'Không thể gửi email' , error});
-                res.json({ message: 'Email đặt lại mật khẩu đã được gửi' });
+                if (error) return res.status(500).json({ message: 'Không thể gửi email', error });
+                res.json({ message_success: 'Email đặt lại mật khẩu đã được gửi' });
             });
         });
     });
@@ -38,7 +39,13 @@ exports.resetPassword = (req, res) => {
     const { token } = req.params;
     const { newPassword } = req.body;
     const query = 'SELECT * FROM users WHERE resetToken = ? AND resetTokenExpiry > ?';
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
     db.query(query, [token, Date.now()], async (err, results) => {
+        if (!passwordRegex.test(newPassword)) {
+            return res.status(400).json({
+                message: "Mật khẩu mới phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt."
+            });
+        }
         console.log(results)
         if (err) return res.status(500).json({ message: 'Lỗi cơ sở dữ liệu khi tìm user.', error: err });
         if (results.length === 0) return res.status(400).json({ message: 'Token không hợp lệ hoặc đã hết hạn' });

@@ -1,0 +1,111 @@
+/* Container styling */
+.form-container-customer-add {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    background-color: #007bff;
+}
+
+.form-h2 {
+    font-size: 1.8rem;
+    color: #333;
+    font-weight: bold;
+    margin: 0;
+}
+
+/* Error message styling */
+.error-message {
+    color: #e74c3c;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+/* Input fields and labels */
+.input-customer-add .form-group {
+    margin-bottom: 1.2rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: #555;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"] {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    color: #333;
+    background-color: #fff;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+    border-color: #007bff;
+}
+
+/* Radio buttons */
+.radio-group {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 0.5rem;
+}
+
+.radio-group label {
+    font-weight: normal;
+}
+
+.radio-group input[type="radio"] {
+    margin-right: 0.4rem;
+}
+
+/* Submit button styling */
+.submit-btn {
+    width: 100%;
+    padding: 0.9rem;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.submit-btn:disabled {
+    background-color: #95a5a6;
+    cursor: not-allowed;
+}
+
+.submit-btn:hover:not(:disabled) {
+    background-color: #007bff;
+}
+
+/* Responsive adjustments */
+@media (max-width: 500px) {
+    .form-container-customer-add {
+        padding: 1.5rem;
+    }
+    .form-h2 {
+        font-size: 1.5rem;
+    }
+    .radio-group {
+        flex-direction: column;
+    }
+}

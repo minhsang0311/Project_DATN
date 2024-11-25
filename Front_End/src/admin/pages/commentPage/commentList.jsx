@@ -7,21 +7,13 @@ const Comments = () => {
     useEffect(() => {
         const fetchComments = async () => {
             try {
-<<<<<<< HEAD
-                const response = await fetch('http://localhost:3000/admin/reviews',{
-=======
                 const response = await fetch('http://localhost:3000/admin/reviews', {
->>>>>>> d467fb6c636ac7cf75fedcfed41ec119f89480e8
                     method: 'GET',
                     headers: {
                         "Content-Type": "application/json",
                         'Authorization': 'Bearer ' + token
                     }
-<<<<<<< HEAD
-                });;
-=======
                 });
->>>>>>> d467fb6c636ac7cf75fedcfed41ec119f89480e8
                 const data = await response.json();
                 setComments(data);
             } catch (err) {
@@ -64,7 +56,7 @@ const Comments = () => {
                         <th>Người dùng</th>
                         <th>Bình luận</th>
                         <th>Ẩn/ Hiện</th>
-                      
+
 
                     </tr>
                 </thead>

@@ -15,6 +15,13 @@ import AdminOrder from '../pages/orderPage/AdminOrder';
 import Customer from '../pages/customerPage/customerList';
 import VouchersList from '../pages/voucherPage/VoucherList';
 import VoucherAdd from '../pages/voucherPage/voucherAdd';
+import VoucherUpdate from '../pages/voucherPage/voucherUpdate';
+import CustomerList from '../pages/customerPage/customerList';
+import CustomerAdd from '../pages/customerPage/customerAdd';
+import CustomerUpdate from '../pages/customerPage/customerUpdate';
+import ManufacturerList from '../pages/manufacturer/manufacturerList';
+import ManufacturerAdd from '../pages/manufacturer/manufacturerAdd';
+import ManufacturerUpdate from '../pages/manufacturer/manufacturerUpdate';
 
 const HomeAdmin = () => {
     const navigate = useNavigate();
@@ -90,9 +97,15 @@ const HomeAdmin = () => {
                         </Link>
                     </li>
                     <li>
-                        <Link to="/admin/customers">
+                        <Link to="/admin/customerList">
                             <i className="bi bi-people"></i>
                             <span>Khách hàng</span>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/admin/manufacturerList">
+                            <i className="bi bi-people"></i>
+                            <span>Nhà sản xuất</span>
                         </Link>
                     </li>
                     <li>
@@ -111,12 +124,6 @@ const HomeAdmin = () => {
                         <Link to="/admin/vouchers">
                             <i className="bi bi-bar-chart-line"></i>
                             <span>Khuyến mãi</span>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to="/statistics">
-                            <i className="bi bi-bar-chart-line"></i>
-                            <span>Thống kê</span>
                         </Link>
                     </li>
                     <li className="logout" onClick={handleLogout}>
@@ -162,9 +169,15 @@ const HomeAdmin = () => {
                         <Route path="categoryUpdate/:id" element={<CategoryUpdate />} />
                         <Route path="comments" element={<Comments />} />
                         <Route path="order" element={<AdminOrder searchResults={searchResults} />} />
-                        <Route path="customers" element={<Customer />} />
                         <Route path="vouchers" element={<VouchersList />} />
                         <Route path="voucherAdd" element={<VoucherAdd/>}/>
+                        <Route path="voucherUpdate/:id" element={<VoucherUpdate/>}/>
+                        <Route path="customerList" element={<CustomerList />} />
+                        <Route path="customerAdd" element={<CustomerAdd />} />
+                        <Route path="customerUpdate/:id" element={<CustomerUpdate />} />
+                        <Route path="manufacturerList" element={<ManufacturerList />} />
+                        <Route path="manufacturerAdd" element={<ManufacturerAdd />} />
+                        <Route path="manufacturerUpdate/:id" element={<ManufacturerUpdate />} />
                     </Routes>
                 </div>
             </div>
