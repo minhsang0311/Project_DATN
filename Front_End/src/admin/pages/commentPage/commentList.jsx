@@ -53,7 +53,10 @@ const Comments = () => {
                 <thead>
                     <tr>
                         <th>ID</th>
+
                         <th>Người dùng</th>
+                        
+                        <th>Tên sản phẩm</th>
                         <th>Bình luận</th>
                         <th>Ẩn/ Hiện</th>
 
@@ -63,8 +66,11 @@ const Comments = () => {
                 <tbody>
                     {comments.map(comment => (
                         <tr key={comment.Review_ID}>
+
                             <td>{comment.Review_ID}</td>
-                            <td>{comment.User_Name}</td>
+                             <td>{comment.User_Name}</td>
+                            <td>{comment.Product_Name}</td>
+                           
                             <td>{comment.Comment}</td>
                             <td>{comment.Show_Hidden === 1 ? 'Hiển thị' : 'Ẩn'}/
                                 <button onClick={() => handleVisibilityToggle(comment.Review_ID, comment.Show_Hidden)}>

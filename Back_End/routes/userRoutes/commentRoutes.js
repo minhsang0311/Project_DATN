@@ -5,6 +5,5 @@ const ComponentController = require('../../contrllers/userControllers/commentCon
 
 router.get('/reviews/:productId', ComponentController.getreviews); 
 router.post('/reviews', ComponentController.postreviews);
-router.get('/purchases/:userId', ComponentController.getPurchaseHistory);
 
 module.exports = router;
