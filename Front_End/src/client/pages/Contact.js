@@ -19,6 +19,7 @@ const Contact = () => {
                 email,
                 message
             });
+            alert('Đã gửi thành công ')
             setResponseMessage(response.data.message);
         } catch (error) {
             setResponseMessage(error.response ? error.response.data.message : 'Có lỗi xảy ra.');
@@ -42,7 +43,7 @@ const Contact = () => {
                         </p>
                         <p>
                             <i className="fa fa-envelope"></i>
-                            quocdat100322@gamil.com
+                            Homenext@gamil.com
                         </p>
                     </div>
                     <h2>Liên hệ với chúng tôi</h2>
