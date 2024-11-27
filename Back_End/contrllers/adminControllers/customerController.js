@@ -12,3 +12,4 @@ exports.getAllCustomers = (req, res) => {
     });
 };
 
+  
