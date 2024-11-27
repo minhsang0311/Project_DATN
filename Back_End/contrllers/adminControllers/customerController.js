@@ -12,9 +12,7 @@ exports.getAllCustomers = (req, res) => {
     });
 };
 
-<<<<<<< HEAD
   
-=======
 // Thêm người dùng mới
 exports.postCustomer = (req, res) => {
     let data = req.body;  
@@ -78,4 +76,3 @@ exports.deleteCustomer = (req, res) => {
 };
 
 
->>>>>>> cb57d5c7d3e2ab9f181f9b55be44fa7880046034

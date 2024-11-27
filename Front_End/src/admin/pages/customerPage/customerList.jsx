@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-<<<<<<< HEAD
-=======
 import '../../styles/pages/customerList.css'; 
 import { Link } from "react-router-dom";
 
->>>>>>> cb57d5c7d3e2ab9f181f9b55be44fa7880046034
 
 const CustomerList = () => {
   const [customers, setCustomers] = useState([]);
@@ -85,11 +82,4 @@ const CustomerList = () => {
   );
 };
 
-<<<<<<< HEAD
 export default CustomerList;
-=======
-export default CustomerList;
-
-
-
->>>>>>> cb57d5c7d3e2ab9f181f9b55be44fa7880046034

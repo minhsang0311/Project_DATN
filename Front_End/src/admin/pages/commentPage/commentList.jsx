@@ -7,21 +7,13 @@ const Comments = () => {
     useEffect(() => {
         const fetchComments = async () => {
             try {
-<<<<<<< HEAD
                 const response = await fetch('http://localhost:3000/admin/reviews',{
-=======
-                const response = await fetch('http://localhost:3000/admin/reviews', {
->>>>>>> cb57d5c7d3e2ab9f181f9b55be44fa7880046034
                     method: 'GET',
                     headers: {
                         "Content-Type": "application/json",
                         'Authorization': 'Bearer ' + token
                     }
-<<<<<<< HEAD
                 });;
-=======
-                });
->>>>>>> cb57d5c7d3e2ab9f181f9b55be44fa7880046034
                 const data = await response.json();
                 setComments(data);
             } catch (err) {
