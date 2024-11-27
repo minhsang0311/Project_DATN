@@ -7,42 +7,40 @@ function CategoryList({ searchResults }) {
     const token = localStorage.getItem('token');
 
     const fetchOptions = {
-        method: "get",
+        method: "GET",
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }
     };
 
-    // Hàm để lấy danh sách danh mục
     const fetchCategories = () => {
         fetch("http://localhost:3000/admin/category", fetchOptions)
             .then(res => res.json())
-            .then(data => setCategories(data));
+            .then(data => setCategories(data))
+            .catch(err => console.error("Lỗi khi tải danh mục:", err));
     };
 
-    // Hàm để xóa danh mục
     const deleteCategory = (id) => {
-        if (window.confirm('Bạn có muốn xóa loại không?') === false) return;
+        if (!window.confirm('Bạn có muốn xóa loại không?')) return;
 
         fetch(`http://localhost:3000/admin/category/${id}`, {
-            method: "delete",
-            headers: { "Content-type": "application/json", 'Authorization': 'Bearer ' + token }
+            method: "DELETE",
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }
         })
             .then(res => res.json())
             .then(response => {
                 if (response.thongbao.includes("Không thể xóa danh mục")) {
                     alert("Không thể xóa danh mục vì có sản phẩm trong danh mục này!");
                 }
-                fetchCategories(); // Tải lại danh sách danh mục sau khi xóa
-            });
+                fetchCategories();
+            })
+            .catch(err => console.error("Lỗi khi xóa danh mục:", err));
     };
 
-    // Sử dụng useEffect để lấy danh sách danh mục khi component được mount
     useEffect(() => {
         if (!searchResults || searchResults.length === 0) {
             fetchCategories();
         }
     }, [searchResults]);
 
-    // Sử dụng searchResults nếu có, nếu không sẽ hiển thị toàn bộ categories
     const displayCategories = searchResults && searchResults.length > 0 ? searchResults : categories;
 
     return (

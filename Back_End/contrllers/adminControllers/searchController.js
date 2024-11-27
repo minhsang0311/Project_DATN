@@ -50,9 +50,6 @@ exports.generalSearch = (req, res) => {
             params = [searchPattern, searchPattern, searchPattern, searchPattern, 
                     searchPattern, searchPattern, searchPattern, searchPattern, searchPattern];
             break;
-
-        case 'comments':
-            sql = ``
         default:
             return res.json({ "message": "Loại đối tượng không hợp lệ" });
     }
