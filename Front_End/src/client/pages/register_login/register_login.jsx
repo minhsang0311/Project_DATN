@@ -84,7 +84,7 @@ const RegisterLogin = () => {
             return;
         }
         const url = "http://localhost:3000/auth/login";
-        const tt = { User_Name: userNameRef.current.value, Password: pwRef.current.value };
+        const tt = { Email: userNameRef.current.value, Password: pwRef.current.value };
         const opt = {
             method: "POST",
             body: JSON.stringify(tt),
@@ -183,7 +183,7 @@ const RegisterLogin = () => {
                     <input
                         className='input_register'
                         type="text"
-                        placeholder="Nhập họ tên"
+                        placeholder="Nhập email"
                         ref={userNameRef}
                         required
                     />

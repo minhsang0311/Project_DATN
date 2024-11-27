@@ -1,8 +1,8 @@
+
 const db = require('../../config/db');
 
 exports.paymentController = (req, res) => {
     const {
-        Product_Name,
         Address,
         User_Name,
         Phone,
@@ -12,7 +12,7 @@ exports.paymentController = (req, res) => {
         items,
         User_ID,
         Voucher_ID,
-        total_quantity, // Nhận total_quantity từ frontend
+        total_quantity, // Nhận tổng số lượng từ frontend
         Note
     } = req.body;
 
@@ -30,59 +30,26 @@ exports.paymentController = (req, res) => {
 
     const defaultStatus = 1;
 
-    // Kiểm tra voucher hợp lệ và chưa sử dụng
-    const checkVoucherQuery = `
-        SELECT v.Voucher_ID, v.Expiration_Date, o.User_ID AS Used_By
-        FROM Vouchers v
-        LEFT JOIN orders o ON v.Voucher_ID = o.Voucher_ID
-        WHERE v.Code = ? AND v.Expiration_Date > NOW()
-    `;
-    db.query(checkVoucherQuery, [Voucher_ID], (err, voucherResults) => {
-        if (err) {
-            return res.status(500).json({ success: false, message: 'Lỗi kiểm tra voucher', err });
-        }
-
-        if (voucherResults.length === 0) {
-            return res.status(400).json({ success: false, message: 'Mã giảm giá không hợp lệ hoặc đã hết hạn' });
-        }
-
-        const voucher = voucherResults[0];
-
-        // Kiểm tra nếu voucher đã được sử dụng bởi người dùng hiện tại
-        if (voucher.Used_By) {
-            if (voucher.Used_By === User_ID) {
-                return res.status(400).json({ 
-                    success: false, 
-                    message: 'Mã giảm giá đã được sử dụng bởi tài khoản của bạn' 
-                });
-            } else {
-                return res.status(400).json({ 
-                    success: false, 
-                    message: 'Mã giảm giá đã được sử dụng bởi tài khoản khác' 
-                });
-            }
-        }
-
-        // Tiến hành tạo đơn hàng nếu voucher hợp lệ
+    // Hàm tạo đơn hàng
+    function createOrder(validVoucherID) {
         const query = `
             INSERT INTO orders (
-                User_ID, Voucher_ID, Product_Name, Address, Phone, User_Name, Email, payment_method, total_amount, Status, total_quantity, Note
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+                User_ID, Voucher_ID, Address, Phone, User_Name, Email, payment_method, total_amount, Status, total_quantity, Note
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
         db.query(
             query,
             [
                 User_ID,
-                voucher.Voucher_ID,
-                Product_Name,
-                User_Name,
+                validVoucherID,
                 Address,
                 Phone,
+                User_Name,
                 Email,
                 payment_method,
                 total_amount,
                 defaultStatus,
-                total_quantity, // Gửi tổng số lượng
+                total_quantity,
                 Note || null
             ],
             (err, result) => {
@@ -107,7 +74,49 @@ exports.paymentController = (req, res) => {
                 });
             }
         );
-    });
+    }
+
+    // Kiểm tra voucher nếu được cung cấp
+    if (Voucher_ID) {
+        const checkVoucherQuery = `
+            SELECT v.Voucher_ID, v.Expiration_Date, o.User_ID AS Used_By
+            FROM Vouchers v
+            LEFT JOIN orders o ON v.Voucher_ID = o.Voucher_ID
+            WHERE v.Code = ? AND v.Expiration_Date > NOW()
+        `;
+        db.query(checkVoucherQuery, [Voucher_ID], (err, voucherResults) => {
+            if (err) {
+                return res.status(500).json({ success: false, message: 'Lỗi kiểm tra voucher', err });
+            }
+
+            if (voucherResults.length === 0) {
+                return res.status(400).json({ success: false, message: 'Mã giảm giá không hợp lệ hoặc đã hết hạn' });
+            }
+
+            const voucher = voucherResults[0];
+
+            // Kiểm tra nếu voucher đã được sử dụng bởi người dùng hiện tại
+            if (voucher.Used_By) {
+                if (voucher.Used_By === User_ID) {
+                    return res.status(400).json({ 
+                        success: false, 
+                        message: 'Mã giảm giá đã được sử dụng bởi tài khoản của bạn' 
+                    });
+                } else {
+                    return res.status(400).json({ 
+                        success: false, 
+                        message: 'Mã giảm giá đã được sử dụng bởi tài khoản khác' 
+                    });
+                }
+            }
+
+            // Tiến hành tạo đơn hàng với voucher hợp lệ
+            createOrder(voucher.Voucher_ID);
+        });
+    } else {
+        // Nếu không có mã voucher, tiếp tục tạo đơn hàng
+        createOrder(null);
+    }
 };
 
 

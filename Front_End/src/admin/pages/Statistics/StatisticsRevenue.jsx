@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Bar } from "react-chartjs-2";
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from "chart.js";
 
@@ -10,6 +10,25 @@ const StatisticsRevenue = () => {
   const [chartData, setChartData] = useState(null);
   const [loading, setLoading] = useState(false);
   const token = localStorage.getItem("token");
+
+  // Tính ngày đầu và cuối của tháng trước
+  useEffect(() => {
+    const now = new Date();
+    const firstDayLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+    const lastDayLastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+
+    // Định dạng yyyy-mm-dd cho input date
+    const formatDate = (date) => date.toISOString().split("T")[0];
+
+    setStartDate(formatDate(firstDayLastMonth));
+    setEndDate(formatDate(lastDayLastMonth));
+  }, []);
+
+  useEffect(() => {
+    if (startDate && endDate) {
+      handleFetchData(); // Tự động lấy dữ liệu khi ngày thay đổi
+    }
+  }, [startDate, endDate]);
 
   const handleFetchData = () => {
     if (!startDate || !endDate) {
@@ -34,11 +53,7 @@ const StatisticsRevenue = () => {
 
         const totalRevenue = parseFloat(data.TotalRevenue);
 
-        // Xác định label: nếu ngày giống nhau thì chỉ hiển thị tổng trong ngày
-        const label =
-          startDate === endDate
-            ? `Tổng doanh thu ngày ${startDate}`
-            : `Tổng doanh thu (${startDate} đến ${endDate})`;
+        const label = `Tổng doanh thu (${startDate} đến ${endDate})`;
 
         setChartData({
           labels: [label],
@@ -62,7 +77,7 @@ const StatisticsRevenue = () => {
 
   return (
     <div className="revenue-statistics">
-      <h2>THỐNG KÊ DOANH THU</h2>
+      <h2>THỐNG KÊ DOANH THU</h2>
       <div className="filter-section">
         <label>
           Ngày bắt đầu:
@@ -102,9 +117,7 @@ const StatisticsRevenue = () => {
             }}
           />
         ) : (
-          <p>
-            {/* Chọn ngày để hiển thị biểu đồ. */}
-          </p>
+          <p>Chọn ngày để hiển thị biểu đồ.</p>
         )}
       </div>
     </div>

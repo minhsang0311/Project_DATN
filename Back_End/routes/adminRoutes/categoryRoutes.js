@@ -9,7 +9,7 @@ const { adminMiddleware } = require('../../middlewares/adminMiddlware');
 router.get('/category', adminMiddleware, categoryController.getAllcategory);
 router.get('/categoryDetail/:id', adminMiddleware, categoryController.getCategoryDetail);
 router.delete('/category/:id', adminMiddleware, categoryController.deletecategory);
-router.post('/categoryAdd', adminMiddleware, categoryController.postCategory);
+router.post('/categoryAdd', categoryController.postCategory);
 router.put('/categoryUpdate/:id', adminMiddleware, categoryController.putcategory);
 
 

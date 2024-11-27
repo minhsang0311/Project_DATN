@@ -127,23 +127,23 @@ exports.register = async (req, res) => {
 
 
 exports.login = (req, res) => {
-    const { User_Name, Password } = req.body;
-    if (!User_Name || !Password) {
-        return res.status(400).json({ message: 'Vui lòng cung cấp tên và mật khẩu.' });
+    const { Email, Password } = req.body;
+    if (!Email || !Password) {
+        return res.status(400).json({ message: 'Vui lòng cung cấp email và mật khẩu.' });
     }
-    let findUserSql = `SELECT * FROM Users WHERE User_Name = ?`;
-    db.query(findUserSql, [User_Name], async (err, results) => {
+    let findUserSql = `SELECT * FROM Users WHERE Email = ?`;
+    db.query(findUserSql, [Email], async (err, results) => {
         if (err) {
             return res.status(500).json({ message: 'Có lỗi xảy ra khi truy vấn cơ sở dữ liệu.' });
         }
         if (!results || results.length === 0) {
-            return res.status(400).json({ message: 'Tên đăng nhập và mật khẩu không đúng.' });
+            return res.status(400).json({ message: 'Email hoặc mật khẩu không đúng.' });
         }
         const user = results[0];
         console.log('user', user.Role)
         const match = await bcrypt.compare(Password, user.Password);
         if (!match) {
-            return res.status(400).json({ message: 'Tên đăng nhập và mật khẩu không đúng.' });
+            return res.status(400).json({ message: 'Email hoặc mật khẩu không đúng.' });
         }
         if (user.Role === 1) {
             var token = jwt.sign(
