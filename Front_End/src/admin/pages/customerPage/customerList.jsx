@@ -20,6 +20,7 @@ const CustomerList = ({ searchResults }) => {
           response = await axios.get('http://localhost:3000/admin/customers');
           setCustomers(response.data);
         }
+
       } catch (error) {
         console.error("Error fetching customers:", error);
         setError("Không thể tải danh sách khách hàng.");

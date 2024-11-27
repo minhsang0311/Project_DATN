@@ -12,6 +12,7 @@ exports.getAllCustomers = (req, res) => {
     });
 };
 
+  
 // Thêm người dùng mới
 exports.postCustomer = (req, res) => {
     let data = req.body;  
