@@ -40,7 +40,7 @@ exports.getProductImageDetail = (req, res) => {
     });
 };
 
-// //Route thêm sản phẩm
+//Route thêm sản phẩm
 exports.postProduct = (req, res) => {
     if (!req.files || !req.files.Image || req.files.Image.length === 0) {
         console.error("Không tìm thấy file chính");
@@ -67,6 +67,10 @@ exports.postProduct = (req, res) => {
 
         // Xử lý ảnh bổ sung
         const additionalImages = req.files.additionalImages || [];
+        if (additionalImages.length > 10) {
+            return res.status(400).json({ message: 'Bạn không thể thêm quá 10 ảnh bổ sung' });
+        }
+
         if (additionalImages.length > 0) {
             const imageRecords = additionalImages.map(file => ({
                 Product_ID: productId,
@@ -89,25 +93,52 @@ exports.postProduct = (req, res) => {
     });
 };
 
-
 // //Route cập nhật sản phẩm
 exports.putProduct = (req, res) => {
-    let data = req.body;
-    if (req.file) {
-        const baseUrl = `${req.protocol}://${req.get('host')}`;
-        const imagePath = `${baseUrl}/uploads/${req.file.filename}`;
+    const data = req.body;
+    const productId = req.params.id;
+    const baseUrl = `${req.protocol}://${req.get("host")}`;
+
+    // Xử lý ảnh chính (nếu có)
+    if (req.files && req.files.Image) {
+        const imagePath = `${baseUrl}/uploads/${req.files.Image[0].filename}`;
         data.Image = imagePath;
     }
-    let id = req.params.id;
-    let sql = `UPDATE Products SET ? WHERE Product_ID=?`;
-    db.query(sql, [data, id], (err, d) => {
+
+    // Cập nhật thông tin sản phẩm
+    const updateProductSql = "UPDATE Products SET ? WHERE Product_ID=?";
+    db.query(updateProductSql, [data, productId], (err) => {
         if (err) {
-            res.json({ "message": "Lỗi cập nhật sản phẩm", err })
-        } else {
-            res.json({ "message": "Đã cập nhật sản phẩm" })
+            console.error("Lỗi cập nhật sản phẩm:", err);
+            return res.status(500).json({ message: "Lỗi cập nhật sản phẩm", error: err });
         }
-    })
-}
+
+        // Cập nhật ảnh bổ sung mới (nếu có)
+        // Cập nhật ảnh bổ sung mới (nếu có)
+        if (req.files && req.files.additionalImages) {
+            const insertImageSql = "INSERT INTO product_images (Product_ID, Image_URL) VALUES ?";
+            const additionalImages = req.files.additionalImages.map((file) => [
+                productId,
+                `${baseUrl}/uploads/${file.filename}`,
+            ]);
+
+            db.query(insertImageSql, [additionalImages], (imgErr) => {
+                if (imgErr) {
+                    console.error("Lỗi thêm ảnh bổ sung:", imgErr);
+                    return res.status(500).json({
+                        message: "Cập nhật sản phẩm thành công nhưng lỗi thêm ảnh bổ sung",
+                        error: imgErr,
+                    });
+                }
+                res.json({ message: "Đã cập nhật sản phẩm và ảnh bổ sung thành công" });
+            });
+        } else {
+            res.json({ message: "Đã cập nhật sản phẩm thành công nhưng không có ảnh bổ sung mới" });
+        }
+
+    });
+};
+
 
 // Route xóa một sản phẩm
 exports.deleteProduct = (req, res) => {
@@ -132,17 +163,22 @@ exports.deleteProduct = (req, res) => {
     });
 };
 //Route xóa hình ảnh chi tiết của sản phẩm
-exports.deletePProImgDetail = (req, res) => {
-    let id = req.params.id;
-        let deleteSql = `DELETE FROM product_images WHERE Image_ID=?`;
-        db.query(deleteSql, id, (err, data) => {
-            if (err) {
-                res.json({ "message": "Lỗi xóa sản phẩm", err });
-            } else {
-                res.json({ message: "Đã xóa sản phẩm ", "id": id });
-            }
-        });
-}
+exports.deleteProductImageDetail = (req, res) => {
+    const id = parseInt(req.params.id);
+    if (isNaN(id) || id <= 0) {
+        return res.json({ message: "ID ảnh không hợp lệ", id });
+    }
+
+    const sql = `DELETE FROM product_images WHERE Image_ID = ?`;
+    db.query(sql, [id], (err, result) => {
+        if (err) {
+            return res.json({ message: "Lỗi xóa ảnh bổ sung", err });
+        } else {
+            res.json({ message: "Xóa thành công" });
+        }
+    });
+};
+
 // Route tìm kiếm theo sản phẩm
 exports.searchProducts = (req, res) => {
     const keyword = req.query.q;

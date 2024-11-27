@@ -79,7 +79,7 @@ button.ghost {
     border-color: #FFFFFF;
 }
 
-input {
+.input_register {
     background-color: #eee;
     border: none;
     padding: 12px 15px;

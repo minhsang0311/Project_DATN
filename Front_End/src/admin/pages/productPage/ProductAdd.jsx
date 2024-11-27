@@ -1,7 +1,8 @@
 
 import { useEffect, useState } from 'react';
+import { useNavigate } from "react-router";
 // import { useSelector } from 'react-redux';
-import '../../styles/pages/CategoryAdd.css'
+import '../../styles/pages/productAdd.css'
 const ProductAdd = () => {
     const token = localStorage.getItem('token')
     const [product, setProduct] = useState({});
@@ -9,6 +10,7 @@ const ProductAdd = () => {
     const [additionalImages, setAdditionalImages] = useState([]); // State cho ảnh con
     const [categories, setCategories] = useState([]);
     const [brands, setBrands] = useState([]);
+    const navigate = useNavigate()
     useEffect(() => {
         fetch(`http://localhost:3000/admin/category`, {
             method: "get",
@@ -27,19 +29,61 @@ const ProductAdd = () => {
         setImage(event.target.files[0]);
     };
     const uploadAdditionalImages = (event) => {
-        const files = Array.from(event.target.files); // Lấy danh sách file mới chọn
+        const files = Array.from(event.target.files);
+
+        // Kiểm tra số lượng ảnh hiện có và số lượng ảnh được thêm vào
+        if (additionalImages.length + files.length > 10) {
+            alert("Bạn không thể thêm quá 10 ảnh bổ sung");
+            return;
+        }
+
         setAdditionalImages(prevImages => [
-            ...prevImages, // Giữ lại những ảnh đã có
+            ...prevImages,
             ...files.map(file => ({
                 file,
-                preview: URL.createObjectURL(file) // Tạo URL blob cho preview
+                preview: URL.createObjectURL(file)
             }))
         ]);
     };
 
 
+
     const Submit = (evt) => {
         evt.preventDefault();
+        // Kiểm tra dữ liệu đầu vào
+        if (!product.Product_Name || product.Product_Name.trim() === "") {
+            alert("Tên sản phẩm không được để trống!");
+            return;
+        }
+        if (!product.Price || isNaN(product.Price) || product.Price <= 0) {
+            alert("Vui lòng nhập giá sản phẩm hợp lệ!");
+            return;
+        }
+        if (!product.Category_ID) {
+            alert("Vui lòng chọn danh mục sản phẩm!");
+            return;
+        }
+        if (!product.Brand_ID) {
+            alert("Vui lòng chọn hãng sản phẩm!");
+            return;
+        }
+        if (!image) {
+            alert("Vui lòng chọn hình ảnh chính cho sản phẩm!");
+            return;
+        }
+        if (!product.Views) {
+            alert("Vui lòng chọn số lượt xem cho sản phẩm!");
+            return;
+        }
+
+        if (!product.Description) {
+            alert("Vui lòng nhập mô tả cho sản phẩm!");
+            return;
+        }
+        if (!product.Show_Hidden) {
+            alert("Vui lòng ẩn hiện cho sản phẩm!");
+            return;
+        }
 
         const formData = new FormData();
         formData.append('Product_Name', product.Product_Name);
@@ -68,20 +112,21 @@ const ProductAdd = () => {
                 console.log(data);
                 if (data.message) {
                     alert(data.message);
+                    navigate('/admin/products')
                 }
                 setProduct({});
                 setAdditionalImages([]);
             })
             .catch((error) => {
                 console.error("Lỗi thêm sản phẩm:", error);
-                alert("Có lỗi xảy ra, vui lòng thử lại.");
+                alert("Có lỗi xảy ra, vui lòng thử lại.", error);
             });
     };
 
 
     return (
         <div className="form-container-productadd">
-            <div className="form-header">
+            <div className="form-header-addproduct">
                 <h2>THÊM SẢN PHẨM</h2>
             </div>
             <form action="#" className="productadd-form">

@@ -15,7 +15,7 @@ const upload = multer({
     storage: storage
 }).fields([
     { name: 'Image', maxCount: 1 }, // Ảnh chính
-    { name: 'additionalImages', maxCount: 10 } // Tối đa 10 ảnh bổ sung
+    { name: 'additionalImages', maxCount: 10 } // Tối đa 4 ảnh bổ sung
 ]);
 
 module.exports = upload;

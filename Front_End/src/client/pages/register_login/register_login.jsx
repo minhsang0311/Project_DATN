@@ -84,7 +84,7 @@ const RegisterLogin = () => {
             return;
         }
         const url = "http://localhost:3000/auth/login";
-        const tt = { User_Name: userNameRef.current.value, Password: pwRef.current.value };
+        const tt = { Email: userNameRef.current.value, Password: pwRef.current.value };
         const opt = {
             method: "POST",
             body: JSON.stringify(tt),
@@ -130,45 +130,50 @@ const RegisterLogin = () => {
                     {message && <p className="message">{message}</p>}
                     <h1>Tạo tài khoản</h1>
                     <input
+                        className='input_register'
                         type="text"
                         name="User_Name"
-                        placeholder='UserName'
+                        placeholder='Nhập họ tên'
                         value={formData.User_Name}
                         onChange={handleChange}
                         required
                     />
                     <input
+                        className='input_register'
                         type="email"
                         name="Email"
-                        placeholder="Email"
+                        placeholder="Nhập email"
                         value={formData.Email}
                         onChange={handleChange}
                         required
                     />
                     <input
+                        className='input_register'
                         type="password"
                         name="Password"
-                        placeholder="Password"
+                        placeholder="Nhập mật khẩu"
                         value={formData.Password}
                         onChange={handleChange}
                         required
                     />
                     <input
+                        className='input_register'
                         type="password"
-                        placeholder="Confirm Password"
+                        placeholder="Nhập lại mật khẩu"
                         value={confirmPassword}
                         onChange={handleConfirmPasswordChange}
                         required
                     />
                     <input
+                        className='input_register'
                         type="number"
                         name="Phone"
-                        placeholder="Phone"
+                        placeholder="Nhập số điện thoại"
                         value={formData.Phone}
                         onChange={handleChange}
                         required
                     />
-                    <button className='button_register' type="submit">Sign Up</button>
+                    <button className='button_register' type="submit">Đăng ký</button>
                 </form>
             </div>
             <div className="form-container sign-in-container">
@@ -176,19 +181,21 @@ const RegisterLogin = () => {
                     {loginMessage && <p className="message">{loginMessage}</p>}
                     <h1>Đăng nhập</h1>
                     <input
+                        className='input_register'
                         type="text"
-                        placeholder="UserName"
+                        placeholder="Nhập email"
                         ref={userNameRef}
                         required
                     />
                     <input
+                        className='input_register'
                         type="password"
-                        placeholder="Password"
+                        placeholder="Nhập mật khẩu"
                         ref={pwRef}
                         required
                     />
-                    <Link to='/forgot-password'>Forgot your password?</Link>
-                    <button className='button_register' type="submit">Sign In</button>
+                    <Link to='/forgot-password'>Quên mật khẩu?</Link>
+                    <button className='button_register' type="submit">Đăng nhập</button>
                 </form>
             </div>
             <div className="overlay-container">
@@ -197,14 +204,14 @@ const RegisterLogin = () => {
                         <h1>Chào bạn!</h1>
                         <p>Vui lòng đăng ký tài khoản để mua hàng</p>
                         <button className="ghost button_register" onClick={handleSignInClick}>
-                            Sign In
+                            Đăng nhập
                         </button>
                     </div>
                     <div className="overlay-panel overlay-right">
                         <h1>Chào bạn!</h1>
                         <p>Chào mừng bạn đã quay trở lại với chúng tôi</p>
                         <button className="ghost button_register" onClick={handleSignUpClick}>
-                            Sign Up
+                            Đăng ký
                         </button>
                     </div>
                 </div>

@@ -7,13 +7,21 @@ const Comments = () => {
     useEffect(() => {
         const fetchComments = async () => {
             try {
+<<<<<<< HEAD
                 const response = await fetch('http://localhost:3000/admin/reviews',{
+=======
+                const response = await fetch('http://localhost:3000/admin/reviews', {
+>>>>>>> cb57d5c7d3e2ab9f181f9b55be44fa7880046034
                     method: 'GET',
                     headers: {
                         "Content-Type": "application/json",
                         'Authorization': 'Bearer ' + token
                     }
+<<<<<<< HEAD
                 });;
+=======
+                });
+>>>>>>> cb57d5c7d3e2ab9f181f9b55be44fa7880046034
                 const data = await response.json();
                 setComments(data);
             } catch (err) {
@@ -53,18 +61,24 @@ const Comments = () => {
                 <thead>
                     <tr>
                         <th>ID</th>
+
                         <th>Người dùng</th>
+                        
+                        <th>Tên sản phẩm</th>
                         <th>Bình luận</th>
                         <th>Ẩn/ Hiện</th>
-                      
+
 
                     </tr>
                 </thead>
                 <tbody>
                     {comments.map(comment => (
                         <tr key={comment.Review_ID}>
+
                             <td>{comment.Review_ID}</td>
-                            <td>{comment.User_Name}</td>
+                             <td>{comment.User_Name}</td>
+                            <td>{comment.Product_Name}</td>
+                           
                             <td>{comment.Comment}</td>
                             <td>{comment.Show_Hidden === 1 ? 'Hiển thị' : 'Ẩn'}/
                                 <button onClick={() => handleVisibilityToggle(comment.Review_ID, comment.Show_Hidden)}>

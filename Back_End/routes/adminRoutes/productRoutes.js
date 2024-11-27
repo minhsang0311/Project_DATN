@@ -12,7 +12,7 @@ router.get('/productImageDetail/:id', adminMiddleware, productController.getProd
 router.post('/productAdd', adminMiddleware, upload, productController.postProduct);
 router.put('/productUpdate/:id', adminMiddleware, upload, productController.putProduct);
 router.delete('/productDelete/:id', adminMiddleware, productController.deleteProduct);
-router.delete('/productDeleteImg/:id', adminMiddleware, productController.deletePProImgDetail);
+router.delete('/productDeleteImg/:id', adminMiddleware, productController.deleteProductImageDetail);
 
 router.get('/search', productController.searchProducts);
 

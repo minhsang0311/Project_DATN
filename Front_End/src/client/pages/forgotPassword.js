@@ -4,6 +4,7 @@ import '../styles/components/forgotPassword.css'
 const ForgotPassword = () => {
     const [email, setEmail] = useState('');
     const [message, setMessage] = useState('');
+    const [message_success, setMessage_success] = useState('')
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -11,6 +12,7 @@ const ForgotPassword = () => {
             .then(response => {
                 console.log(response)
                 setMessage(response.data.message);
+                setMessage_success(response.data.message_success)
             })
             .catch(error => {
                 setMessage(error.response ? error.response.data.message : 'Có lỗi xảy ra.', error);
@@ -20,6 +22,7 @@ const ForgotPassword = () => {
     return (
         <div className='forgot_password'>
             {message && <p>{message}</p>}
+            {message_success&& <p className='message_success'> {message_success}</p>}
             <h2>Quên mật khẩu</h2>
             <form onSubmit={handleSubmit}>
                 <input

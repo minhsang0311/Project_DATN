@@ -4,87 +4,47 @@ import '../styles/components/Comments.css';
 const Comments = ({ productId }) => {
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState('');
-    const [username, setUsername] = useState('');
     const [rating, setRating] = useState(5);
-    const [message, setMessage] = useState('');
     const [userId, setUserId] = useState(null);
-    const [hasPurchased, setHasPurchased] = useState(false);
+    const [username, setUsername] = useState('');
+    const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
 
-    // Lấy thông tin người dùng từ localStorage khi component load
     useEffect(() => {
         const storedUser = localStorage.getItem('user');
         if (storedUser) {
             const user = JSON.parse(storedUser);
-            if (user.role === 0) {
-                setUsername(user.username);
-                setUserId(user.id); // Lấy User_ID từ localStorage
-            }
+            setUserId(user.id);
+            setUsername(user.username);
         }
     }, []);
 
-    // Kiểm tra người dùng đã mua sản phẩm này chưa
-    useEffect(() => {
-    const fetchPurchaseHistory = async () => {
-        if (userId) {
-            try {
-                const response = await fetch(`http://localhost:3000/user/purchases/${userId}`);
-                
-                // Kiểm tra nếu API trả về danh sách các sản phẩm đã mua
-                if (response.ok) {
-                    const data = await response.json();
-                    const purchasedProductIds = data;  // Dữ liệu trả về là mảng chứa các Product_ID
-
-                    if (purchasedProductIds.includes(productId)) {
-                        setHasPurchased(true);  // Người dùng đã mua sản phẩm
-                    } else {
-                        setHasPurchased(false);  // Người dùng chưa mua sản phẩm
-                    }
-                } else {
-                    console.error('Không thể lấy lịch sử mua hàng');
-                    setHasPurchased(false);
-                }
-            } catch (err) {
-                console.error('Lỗi khi kiểm tra lịch sử mua hàng:', err);
-                setHasPurchased(false);
-            }
-        } else {
-            console.log('Người dùng chưa đăng nhập');
-            setHasPurchased(false);
-        }
-    };
-
-    fetchPurchaseHistory();
-}, [userId, productId]);  // Cập nhật khi productId hoặc userId thay đổi
-
-
-    // Lấy danh sách bình luận từ API khi component được load
     useEffect(() => {
         const fetchComments = async () => {
             try {
-                const response = await fetch(`http://localhost:3000/user/reviews/${productId}`);
-                const data = await response.json();
-                setComments(data);
-            } catch (err) {
-                console.error('Lỗi khi lấy bình luận:', err);
+                const response = await fetch(
+                    `http://localhost:3000/user/reviews/${productId}`
+                );
+                if (response.ok) {
+                    const data = await response.json();
+                    setComments(data);
+                } else {
+                    const errorData = await response.json();
+                    setError(errorData.message || 'Không có bình luận cho sản phẩm này.');
+                }
+            } catch (error) {
+                console.error('Lỗi khi lấy bình luận:', error);
+                setError('Không thể tải bình luận.');
             }
         };
 
         fetchComments();
     }, [productId]);
 
-    // Xử lý thêm bình luận mới
     const handleAddComment = async (e) => {
         e.preventDefault();
-
-        if (!userId) {
-            alert('Vui lòng đăng nhập để bình luận!');
-            return;
-        }
-
-        if (!hasPurchased) {
-            alert('Bạn chưa mua sản phẩm này, không thể bình luận!');
-            return;
-        }
+        setError('');
+        setSuccess('');
 
         const newCommentData = {
             User_ID: userId,
@@ -92,7 +52,7 @@ const Comments = ({ productId }) => {
             Ratting: rating,
             Comment: newComment,
             User_Name: username,
-            Show_Hidden: 1
+            Show_Hidden: 1,
         };
 
         try {
@@ -105,28 +65,24 @@ const Comments = ({ productId }) => {
             });
 
             const data = await response.json();
-            if (data.message === 'Thêm bình luận thành công') {
-                const fetchUpdatedComments = async () => {
-                    const response = await fetch(`http://localhost:3000/user/reviews/${productId}`);
-                    const updatedData = await response.json();
-                    setComments(updatedData);
-                };
-                fetchUpdatedComments();
+            if (response.ok) {
                 setNewComment('');
-                alert('Bình luận của bạn đã được gửi thành công!');
+                setComments((prev) => [...prev, { ...newCommentData, Review_ID: data.reviewId }]);
+                setSuccess(data.message || 'Thêm bình luận thành công!');
+            } else {
+                setError(data.message || 'Không thể thêm bình luận.');
             }
-        } catch (err) {
-            console.error('Lỗi khi thêm bình luận:', err);
-            setMessage('Lỗi khi gửi bình luận. Vui lòng thử lại sau.');
+        } catch (error) {
+            console.error('Lỗi khi thêm bình luận:', error);
+            setError('Không thể gửi bình luận.');
         }
     };
 
-    // Hàm để hiển thị sao
-    const renderStars = (rating) => {
+    const renderStars = (ratting) => {
         const stars = [];
-        for (let i = 0; i < 5; i++) {
+        for (let i = 1; i <= 5; i++) {
             stars.push(
-                <span key={i} className={i < rating ? 'filled' : 'empty'}>
+                <span key={i} className={i <= ratting ? 'star filled' : 'star'}>
                     ★
                 </span>
             );
@@ -137,6 +93,8 @@ const Comments = ({ productId }) => {
     return (
         <div className="comments-section">
             <h3>Bình luận</h3>
+            {error && <p className="error">{error}</p>}
+            {success && <p className="success">{success}</p>}
             <ul>
                 {comments.length > 0 ? (
                     comments.map((comment) => (
@@ -148,9 +106,7 @@ const Comments = ({ productId }) => {
                             />
                             <div className="comment-content">
                                 <strong>{comment.User_Name}</strong>
-                                <div className="rating">
-                                    {renderStars(comment.Ratting)}
-                                </div>
+                                <div className="stars">{renderStars(comment.Ratting)}</div>
                                 <p>{comment.Comment}</p>
                             </div>
                         </li>
@@ -160,7 +116,6 @@ const Comments = ({ productId }) => {
                 )}
             </ul>
 
-            <h4>Thêm bình luận mới</h4>
             <form onSubmit={handleAddComment}>
                 <textarea
                     placeholder="Nội dung bình luận"
@@ -170,7 +125,10 @@ const Comments = ({ productId }) => {
                 />
                 <label>
                     Đánh giá:
-                    <select value={rating} onChange={(e) => setRating(e.target.value)}>
+                    <select
+                        value={rating}
+                        onChange={(e) => setRating(e.target.value)}
+                    >
                         <option value={5}>5</option>
                         <option value={4}>4</option>
                         <option value={3}>3</option>
@@ -180,7 +138,6 @@ const Comments = ({ productId }) => {
                 </label>
                 <button type="submit">Gửi bình luận</button>
             </form>
-            {message && <p>{message}</p>}
         </div>
     );
 };

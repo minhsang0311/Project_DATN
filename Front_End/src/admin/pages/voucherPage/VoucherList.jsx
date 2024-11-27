@@ -22,27 +22,44 @@ const VouchersList = () => {
     }, [token]);
 
     // Hàm xóa voucher
-    const deleteVoucher = (id) => {
-        if (!window.confirm('Bạn có chắc chắn muốn xóa voucher này không?')) return;
+    const lockVoucher = (id) => {
+        if (!window.confirm('Bạn có chắc chắn muốn khóa voucher này không?')) return;
 
-        fetch(`${url}/vouchers/${id}`, {
-            method: 'DELETE',
+        fetch(`${url}/vouchers/${id}/lock`, {
+            method: 'PATCH',
             headers: {
                 "Content-type": "application/json",
-                'Authorization': 'Bearer ' + token
-            }
+                'Authorization': 'Bearer ' + token,
+            },
         })
-            .then(res => res.json())
-            .then(data => {
-                if (data.message.includes("Không thể xóa")) {
-                    alert(data.message);
+            .then(res => {
+                const contentType = res.headers.get("content-type");
+                if (!res.ok) {
+                    return res.text().then(text => {
+                        throw new Error(`Lỗi: ${res.status} ${res.statusText}\n${text}`);
+                    });
+                }
+                if (contentType && contentType.includes("application/json")) {
+                    return res.json();
                 } else {
-                    alert("Đã xóa voucher thành công!");
-                    setVouchers(prev => prev.filter(voucher => voucher.Voucher_ID !== id));
+                    throw new Error("Phản hồi không phải là JSON hợp lệ.");
                 }
             })
-            .catch(error => console.error('Error deleting voucher:', error));
+            .then(data => {
+                if (data.message.includes("không tồn tại")) {
+                    alert(data.message);
+                } else {
+                    alert("Voucher đã được khóa thành công!");
+                    setVouchers(prev =>
+                        prev.map(voucher =>
+                            voucher.Voucher_ID === id ? { ...voucher, Locked: 1 } : voucher
+                        )
+                    );
+                }
+            })
+            .catch(error => console.error("Error locking voucher:", error));
     };
+
 
     return (
         <div className="box-voucherList">
@@ -59,19 +76,34 @@ const VouchersList = () => {
                 <div className="grid-header-voucher">Mã Voucher</div>
                 <div className="grid-header-voucher">% Giảm Giá</div>
                 <div className="grid-header-voucher">Thời Hạn</div>
-                <div className="grid-header-voucher">Thao tác</div>
+                <div className="grid-header-voucher">Trạng thái</div>
+                <div className="grid-header-voucher">Thao tác</div>
                 {vouchers.map((voucher, index) => (
                     <Fragment key={voucher.Voucher_ID}>
                         <div className="grid-item-voucher">{index + 1}</div>
                         <div className="grid-item-voucher">{voucher.Code}</div>
                         <div className="grid-item-voucher">{voucher.Discount}%</div>
                         <div className="grid-item-voucher">{voucher.Expiration_Date}</div>
+                        <div className="grid-item-voucher">{voucher.Locked ? "Đã khóa" : "Hoạt động"}</div>
                         <div className="grid-item-voucher grid-item-button">
-                            <Link to={`/admin/voucher-update/${voucher.Voucher_ID}`} className="edit-btn">✏️</Link>
-                            <button onClick={() => deleteVoucher(voucher.Voucher_ID)} className="delete-btn">🗑️</button>
+                            <Link
+                                to={`/admin/voucherUpdate/${voucher.Voucher_ID}`}
+                                // className={`edit-btn ${voucher.Locked ? "disabled" : ""}`}
+                                // style={{ pointerEvents: voucher.Locked ? "none" : "auto" }}
+                            >
+                                ✏️
+                            </Link>
+                            <button
+                                onClick={() => lockVoucher(voucher.Voucher_ID)}
+                                className={`delete-btn ${voucher.Locked ? "disabled" : ""}`}
+                                disabled={voucher.Locked}
+                            >
+                                🗑️
+                            </button>
                         </div>
                     </Fragment>
                 ))}
+
             </div>
         </div>
     );

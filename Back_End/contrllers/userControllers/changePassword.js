@@ -11,11 +11,19 @@ exports.changePassword = async (req, res) => {
         return res.status(400).json({ message: "Vui lòng cung cấp đầy đủ thông tin." });
     }
 
+    // Kiểm tra mật khẩu mới theo yêu cầu
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+    if (!passwordRegex.test(newPassword)) {
+        return res.status(400).json({ 
+            message: "Mật khẩu mới phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt." 
+        });
+    }
+
     try {
         // Tìm user theo ID từ token
         const results = await db.query("SELECT * FROM users WHERE User_ID = ?", [userId]);
         if (!results || results.length === 0) {
-            return res.status(400).json({ message: "Tài khoản không tồn tại." });
+            return res.status(400).json({ message: "Tài khoản không tồn tại." });
         }
 
         const user = results[0];
@@ -31,7 +39,7 @@ exports.changePassword = async (req, res) => {
 
         return res.status(200).json({ message: "Đổi mật khẩu thành công." });
     } catch (error) {
-        console.error("Bạn chưa đăng nhập tài khoản", error);
+        console.error("Lỗi khi đổi mật khẩu:", error);
         return res.status(500).json({ message: "Lỗi máy chủ.", error });
     }
 };

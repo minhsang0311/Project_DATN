@@ -6,6 +6,11 @@ const CategoryAdd = () => {
     const [category, setCategory] = useState({ Category_Name: '', Show_Hidden: false });
     const Submit = (evt) => {
         evt.preventDefault();
+        if (!category.Category_Name.trim()) {
+            alert("Vui lòng nhập tên danh mục!"); // Hiển thị thông báo
+            return; // Dừng xử lý nếu không hợp lệ
+        }
+    
         let data = {
             Category_Name: category.Category_Name,
             Show_Hidden: category.Show_Hidden
@@ -84,7 +89,7 @@ const CategoryAdd = () => {
                         </div>
                     </div>
                 </div>
-                <button type="submit" className="submit-btn">SUBMIT</button>
+                <button type="submit" className="submit-btn">THÊM DANH MỤC</button>
             </form>
         </div>
     );

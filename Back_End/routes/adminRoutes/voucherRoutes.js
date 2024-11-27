@@ -7,11 +7,11 @@ const voucherController = require('../../contrllers/adminControllers/voucherCont
 const { adminMiddleware } = require('../../middlewares/adminMiddlware');
 
 
-router.get('/vouchers',  voucherController.getAllVoucher);
-router.post('/postVoucher', voucherController.postVoucher);
-router.get('/getVoucherDetail/:id', voucherController.getVoucherDetail)
-router.put('putVoucher/:id', voucherController.putVoucher)
-router.delete('/deleteVoucher/:id', voucherController.deleteVoucher)
+router.get('/vouchers',adminMiddleware,  voucherController.getAllVoucher);
+router.post('/postVoucher',adminMiddleware, voucherController.postVoucher);
+router.get('/getVoucherDetail/:id',adminMiddleware, voucherController.getVoucherDetail)
+router.put('/putVoucher/:id', adminMiddleware, voucherController.putVoucher)
+router.patch('/vouchers/:id/lock', adminMiddleware, voucherController.lockVoucher)
 
 
 

@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 15, 2024 lúc 05:32 AM
--- Phiên bản máy phục vụ: 10.4.32-MariaDB
--- Phiên bản PHP: 8.2.12
+-- Máy chủ: localhost:3306
+-- Thời gian đã tạo: Th10 26, 2024 lúc 11:01 AM
+-- Phiên bản máy phục vụ: 8.0.30
+-- Phiên bản PHP: 7.4.14
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,19 +18,8 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Cơ sở dữ liệu: `datn2`
+-- Cơ sở dữ liệu: `datn`
 --
-
--- --------------------------------------------------------
-
---
--- Cấu trúc bảng cho bảng `addresses`
---
-
-CREATE TABLE `addresses` (
-  `Address_ID` int(11) NOT NULL,
-  `Street` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -39,22 +28,21 @@ CREATE TABLE `addresses` (
 --
 
 CREATE TABLE `brands` (
-  `Brand_ID` int(11) NOT NULL,
-  `Brand_Name` varchar(255) DEFAULT NULL,
-  `Brand_Image` varchar(50) NOT NULL
+  `Brand_ID` int NOT NULL,
+  `Brand_Name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `brands`
 --
 
-INSERT INTO `brands` (`Brand_ID`, `Brand_Name`, `Brand_Image`) VALUES
-(1, 'Sunhouse', ''),
-(2, 'Kangaroo', ''),
-(3, 'SATO', ''),
-(4, 'Philips', ''),
-(5, 'Bluestone', ''),
-(6, 'Goldsuni', '');
+INSERT INTO `brands` (`Brand_ID`, `Brand_Name`) VALUES
+(1, 'Sunhouse'),
+(2, 'Kangaroo'),
+(3, 'SATO'),
+(4, 'Philips'),
+(5, 'Bluestone'),
+(6, 'Goldsuni');
 
 -- --------------------------------------------------------
 
@@ -63,9 +51,9 @@ INSERT INTO `brands` (`Brand_ID`, `Brand_Name`, `Brand_Image`) VALUES
 --
 
 CREATE TABLE `categories` (
-  `Category_ID` int(11) NOT NULL,
-  `Category_Name` varchar(255) DEFAULT NULL,
-  `Category_Image` varchar(255) NOT NULL,
+  `Category_ID` int NOT NULL,
+  `Category_Name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `Category_Image` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `Show_Hidden` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -88,28 +76,42 @@ INSERT INTO `categories` (`Category_ID`, `Category_Name`, `Category_Image`, `Sho
 --
 
 CREATE TABLE `orders` (
-  `Order_ID` int(11) NOT NULL,
-  `User_ID` int(11) NOT NULL,
-  `Voucher_ID` int(11) DEFAULT NULL,
-  `Status` int(11) NOT NULL,
-  `Email` varchar(255) DEFAULT NULL,
-  `Phone` varchar(15) DEFAULT NULL,
-  `User_Name` varchar(255) DEFAULT NULL,
-  `Address` varchar(255) DEFAULT NULL,
-  `payment_method` enum('COD','Online') DEFAULT NULL,
-  `total_amount` decimal(10,2) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `Product_Name` varchar(255) DEFAULT NULL,
-  `total_quantity` int(11) DEFAULT 0
+  `Order_ID` int NOT NULL,
+  `User_ID` int NOT NULL,
+  `Voucher_ID` int DEFAULT NULL,
+  `Status` int NOT NULL,
+  `Email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `Phone` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `User_Name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `Address` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `payment_method` enum('COD','Online') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `total_amount` int DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `total_quantity` int DEFAULT '0',
+  `Note` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `orders`
 --
 
-INSERT INTO `orders` (`Order_ID`, `User_ID`, `Voucher_ID`, `Status`, `Email`, `Phone`, `User_Name`, `Address`, `payment_method`, `total_amount`, `created_at`, `Product_Name`, `total_quantity`) VALUES
-(1, 3, 1, 1, 'sangnmps34186@fpt.edu.vn', '123', 'MinhSang123', '123-Phần mềm Quang Trung\r\n', NULL, 100000.00, '2024-11-08 15:36:02', NULL, 0),
-(2, 29, 1, 1, 'nguyenhiep12062004@gmail.com', '123', 'Hiep12345', '123-Phần mềm Quang Trung\r\n', NULL, 100000.00, '2024-11-15 15:36:02', NULL, 0);
+INSERT INTO `orders` (`Order_ID`, `User_ID`, `Voucher_ID`, `Status`, `Email`, `Phone`, `User_Name`, `Address`, `payment_method`, `total_amount`, `created_at`, `total_quantity`, `Note`) VALUES
+(1, 3, 1, 5, 'sangnmps34186@fpt.edu.vn', '123', 'MinhSang123', '123-Phần mềm Quang Trung\r\n', NULL, 100000, '2024-11-08 15:36:02', 3, NULL),
+(2, 29, 1, 5, 'nguyenhiep12062004@gmail.com', '123', 'Hiep12345', '123-Phần mềm Quang Trung\r\n', NULL, 100000, '2024-11-14 15:36:02', 6, NULL),
+(3, 2, NULL, 5, 'sangnmps34186@fpt.edu.vn', '1323', NULL, '123abc', 'COD', 17567500, '2024-11-10 05:26:00', 10, NULL),
+(4, 2, NULL, 1, 'sangnmps34186@fpy.edu.vn', '1323', NULL, '123abc', 'COD', 17567500, '2024-11-15 05:30:11', 10, 'ádfdsfd'),
+(5, 2, NULL, 1, 'sangnmps34186@fpy.edu.vn', '1323', NULL, '123abc', 'COD', NULL, '2024-11-15 06:01:42', 5, NULL),
+(6, 2, NULL, 1, 'sangnmps34186@fpy.edu.vn', '1323', NULL, '123abc', 'COD', NULL, '2024-11-15 06:05:32', 5, 'sfdshdfuhgoierhgior'),
+(7, 2, NULL, 1, 'sangnmm1', '1323', NULL, '123abc', 'COD', 102920000, '2024-11-15 06:28:25', 5, 'sdjskdkjf'),
+(8, 2, NULL, 1, 'sangnmm1', '1323', NULL, '123abc', 'COD', 20588000, '2024-11-15 09:39:00', 0, NULL),
+(9, 2, 1, 1, 'sangnmm1', '1323', NULL, '123abc', 'COD', 20588000, '2024-11-15 09:41:30', 0, NULL),
+(10, 2, 1, 1, 'sangnmm1', '1323', NULL, '123abc', 'COD', 20588000, '2024-11-15 09:44:54', NULL, 'sdgdfgdfgdfgfd'),
+(11, 2, 1, 1, 'sangnmps34186@fpt.edu.vn', '0332122375', NULL, '123abc', 'COD', 32475000, '2024-11-15 09:52:11', 3, 'àghyrtyht'),
+(12, 2, 1, 1, 'sangnmps34186@fpt.edu.vnn', '123abc1', '132323423', 'Nguyễn MInh Sang', 'COD', 92450000, '2024-11-15 09:56:36', 10, 'ádasdasdasdas'),
+(13, 2, NULL, 1, 'sangnmps34186@fpt.edu.vnn', '123abc1', '132323423', 'Nguyễn MInh Sang', 'COD', 92450000, '2024-11-15 09:57:33', 10, NULL),
+(14, 2, 1, 1, 'sangnmps34186@fpy.edu.vn', '123abc', '1323', 'Nguyễn MInh Sang', 'COD', 6375000, '2024-11-15 10:17:06', 5, 'sdfgdfghdfg'),
+(15, 2, NULL, 1, 'sangnmps34186@fpy.edu.vn', '123abc', '1323', 'Nguyễn MInh Sang', 'COD', 12750000, '2024-11-15 10:17:26', 5, NULL),
+(20, 37, 10, 5, 'sangnmps34186@fpt.edu.vnn', '123abc1', '1111111111111111', 'Nguyễn MInh Sang', 'COD', 492150, '2024-11-24 04:50:25', 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -118,12 +120,12 @@ INSERT INTO `orders` (`Order_ID`, `User_ID`, `Voucher_ID`, `Status`, `Email`, `P
 --
 
 CREATE TABLE `order_details` (
-  `Order_Detail_ID` int(11) NOT NULL,
-  `Order_ID` int(11) NOT NULL,
-  `Product_ID` int(11) NOT NULL,
-  `Product_Name` varchar(100) DEFAULT NULL,
+  `Order_Detail_ID` int NOT NULL,
+  `Order_ID` int NOT NULL,
+  `Product_ID` int NOT NULL,
+  `Product_Name` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `Price` decimal(10,2) DEFAULT NULL,
-  `Quantity` int(11) DEFAULT NULL
+  `Quantity` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -131,7 +133,44 @@ CREATE TABLE `order_details` (
 --
 
 INSERT INTO `order_details` (`Order_Detail_ID`, `Order_ID`, `Product_ID`, `Product_Name`, `Price`, `Quantity`) VALUES
-(1, 1, 1, 'sang', 9999.00, 5);
+(1, 1, 1, 'sang', 9999.00, 5),
+(2, 3, 17, NULL, 3237000.00, 5),
+(3, 3, 47, NULL, 276500.00, 5),
+(4, 4, 17, NULL, 3237000.00, 5),
+(5, 4, 47, NULL, 276500.00, 5),
+(6, 5, 11, NULL, 37450000.00, 1),
+(7, 5, 12, NULL, 13750000.00, 1),
+(8, 5, 13, NULL, 17240000.00, 3),
+(9, 6, 11, NULL, 37450000.00, 1),
+(10, 6, 12, NULL, 13750000.00, 1),
+(11, 6, 13, NULL, 17240000.00, 3),
+(12, 7, 11, NULL, 37450000.00, 1),
+(13, 7, 12, NULL, 13750000.00, 1),
+(14, 7, 13, NULL, 17240000.00, 3),
+(15, 8, 76, NULL, 852000.00, 1),
+(16, 8, 11, NULL, 37450000.00, 1),
+(17, 8, 1, NULL, 1500000.00, 1),
+(18, 8, 49, NULL, 474000.00, 1),
+(19, 8, 77, NULL, 900000.00, 1),
+(20, 20, 76, NULL, 852000.00, 1),
+(21, 9, 11, NULL, 37450000.00, 1),
+(22, 9, 1, NULL, 1500000.00, 1),
+(23, 9, 49, NULL, 474000.00, 1),
+(24, 9, 77, NULL, 900000.00, 1),
+(27, 10, 1, NULL, 1500000.00, 1),
+(28, 10, 49, NULL, 474000.00, 1),
+(29, 10, 77, NULL, 900000.00, 1),
+(30, 11, 11, NULL, 37450000.00, 1),
+(31, 11, 12, NULL, 13750000.00, 2),
+(32, 12, 11, NULL, 37450000.00, 2),
+(33, 12, 12, NULL, 13750000.00, 8),
+(34, 13, 11, NULL, 37450000.00, 2),
+(35, 13, 12, NULL, 13750000.00, 8),
+(36, 14, 1, NULL, 1500000.00, 2),
+(37, 14, 3, NULL, 3250000.00, 3),
+(38, 15, 1, NULL, 1500000.00, 2),
+(39, 15, 3, NULL, 3250000.00, 3),
+(46, 20, 21, NULL, 579000.00, 1);
 
 -- --------------------------------------------------------
 
@@ -140,8 +179,8 @@ INSERT INTO `order_details` (`Order_Detail_ID`, `Order_ID`, `Product_ID`, `Produ
 --
 
 CREATE TABLE `order_status` (
-  `Status_ID` int(11) NOT NULL,
-  `Status_Name` varchar(50) NOT NULL
+  `Status_ID` int NOT NULL,
+  `Status_Name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -159,33 +198,19 @@ INSERT INTO `order_status` (`Status_ID`, `Status_Name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `payments`
---
-
-CREATE TABLE `payments` (
-  `Payments_ID` int(11) NOT NULL,
-  `Order_ID` int(11) NOT NULL,
-  `Payments_Method` varchar(50) DEFAULT NULL,
-  `Payments_Status` varchar(50) DEFAULT NULL,
-  `Amount` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
 -- Cấu trúc bảng cho bảng `products`
 --
 
 CREATE TABLE `products` (
-  `Product_ID` int(11) NOT NULL,
-  `Category_ID` int(11) NOT NULL,
-  `Brand_ID` int(11) NOT NULL,
-  `Product_Name` varchar(100) DEFAULT NULL,
-  `Description` varchar(255) DEFAULT NULL,
-  `Promotion` int(10) DEFAULT NULL,
-  `Price` int(11) DEFAULT NULL,
-  `Image` varchar(255) DEFAULT NULL,
-  `Views` int(11) DEFAULT NULL,
+  `Product_ID` int NOT NULL,
+  `Category_ID` int NOT NULL,
+  `Brand_ID` int NOT NULL,
+  `Product_Name` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `Description` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `Promotion` int DEFAULT NULL,
+  `Price` int DEFAULT NULL,
+  `Image` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `Views` int DEFAULT NULL,
   `Show_Hidden` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -268,7 +293,29 @@ INSERT INTO `products` (`Product_ID`, `Category_ID`, `Brand_ID`, `Product_Name`,
 (74, 5, 4, 'Lò vi sóng Malloca MW-927I', '-5 mức công suất tùy chỉnh\r\n-Màn hình LCD\r\n-Chức năng vi sóng\r\n-Chức năng rã đông bằng trọng lượng\r\n-Chức năng rã đông bằng thời gian\r\n-Chức năng hẹn giờ\r\n-Đèn halogen bên trong lò\r\n-Khóa an toàn trẻ em', 20, 9100000, 'https://kinghome.vn/data/products/lo-vi-song-malloca-mw-927i-21652410992.jpg', 132, 1),
 (75, 5, 5, 'Lò vi sóng Bluestone TGB.BFL523MS0B - Serie 4', '-5 mức công suất tùy chỉnh\r\n-Màn hình LCD\r\n-Chức năng vi sóng\r\n-Chức năng rã đông bằng trọng lượng\r\n-Chức năng rã đông bằng thời gian\r\n-Chức năng hẹn giờ\r\n-Đèn halogen bên trong lò\r\n-Khóa an toàn trẻ em', 15, 9000000, 'https://kinghome.vn/data/products/lo-vi-song-bosch-bfl523ms0b.jpg', 42, 1),
 (76, 5, 6, 'Lò vi sóng Goldsuni R-207VN-SL 20 lít', '-5 mức công suất tùy chỉnh\r\n-Màn hình LCD\r\n-Chức năng vi sóng\r\n-Chức năng rã đông bằng trọng lượng\r\n-Chức năng rã đông bằng thời gian\r\n-Chức năng hẹn giờ\r\n-Đèn halogen bên trong lò\r\n-Khóa an toàn trẻ em', 29, 1200000, 'https://kinghome.vn/data/products/1695260690lo-vi-song-sharp-R-207VN-SL-king-home.jpg', 87, 1),
-(77, 5, 1, 'Lò vi sóng độc lập Sunhouse EMM23D22B', '-Chức năng rã đông\r\n-Tính năng khoá trẻ em\r\n-Chức năng hẹn giờ\r\n-Chương trình yêu thích', 25, 1200000, 'https://kinghome.vn/data/products/1695260690lo-vi-song-sharp-R-207VN-SL-king-home.jpg', 56, 1);
+(77, 5, 1, 'Lò vi sóng độc lập Sunhouse EMM23D22B', '-Chức năng rã đông\r\n-Tính năng khoá trẻ em\r\n-Chức năng hẹn giờ\r\n-Chương trình yêu thích', 25, 1200000, 'https://kinghome.vn/data/products/1695260690lo-vi-song-sharp-R-207VN-SL-king-home.jpg', 56, 1),
+(79, 6, 6, 'sang', 'tủ lạnh vn', NULL, 23432450, 'http://localhost:3000/uploads/Image-1732090150096.png', 6, 1),
+(80, 1, 1, 'sang123', 'tủ lạnh vn chất lượng cao', NULL, 234234, 'http://localhost:3000/uploads/Image-1732092675280.jpg', 8, 1),
+(81, 1, 5, 'sang123', 'tủ lạnh vn chất lượng cao', NULL, 23423, 'http://localhost:3000/uploads/Image-1732092966583.jpg', 9, 0),
+(82, 4, 3, 'sang123', 'tủ lạnh vn chất lượng cao', NULL, 234234, 'http://localhost:3000/uploads/Image-1732093372713.jpg', 8, 1),
+(83, 4, 3, 'dao111', 'tủ lạnh vn chất lượng caoo', 15, 22222, 'http://localhost:3000/uploads/Image-1732094878324.png', 9, 1),
+(84, 1, 1, 'Minh Sang', 'Máy giặt việt nam chất lượng cao', 2, 123123, 'http://localhost:3000/uploads/Image-1732428241972.jpg', 2, 1),
+(85, 1, 1, 'Minh Sang', '– Mã sp: RB-769S 12 tính năng– Vật liệu Cối: Thủy tinh chịu lực, chịu nhiệt cao– Dung tích Cối: 1,75 lít– Tổng công suất: 1500W; công suất nấu 800W; công suất xay 700W– Điện áp 220V-50Hz– Tốc độ vòng quay: 48.000 vòng/phút– Kích thước: 232x200', 1, 142124, 'http://localhost:3000/uploads/Image-1732428536931.jpg', 5, 1),
+(86, 1, 1, 'Minh Sang', 'dsfds', 2, 124124, 'http://localhost:3000/uploads/Image-1732428648121.jpg', 3, 1),
+(87, 1, 1, 'Minh Sang', 'Máy giặt việt nam chất lượng cao', 1, 123123, 'http://localhost:3000/uploads/Image-1732430103559.webp', 6, 1),
+(88, 1, 1, 'Minh Sang', '– Mã sp: RB-769S 12 tính năng– Vật liệu Cối: Thủy tinh chịu lực, chịu nhiệt cao– Dung tích Cối: 1,75 lít– Tổng công suất: 1500W; công suất nấu 800W; công suất xay 700W– Điện áp 220V-50Hz– Tốc độ vòng quay: 48.000 vòng/phút– Kích thước: 232x200', 3, 1234123, 'http://localhost:3000/uploads/Image-1732430277604.jpg', 4, 1),
+(89, 1, 1, 'Minh Sang', '– Mã sp: RB-769S 12 tính năng– Vật liệu Cối: Thủy tinh chịu lực, chịu nhiệt cao– Dung tích Cối: 1,75 lít– Tổng công suất: 1500W; công suất nấu 800W; công suất xay 700W– Điện áp 220V-50Hz– Tốc độ vòng quay: 48.000 vòng/phút– Kích thước: 232x200', 2, 12412, 'http://localhost:3000/uploads/Image-1732430383915.webp', 7, 1),
+(90, 1, 1, 'Minh Sang', '– Mã sp: RB-769S 12 tính năng– Vật liệu Cối: Thủy tinh chịu lực, chịu nhiệt cao– Dung tích Cối: 1,75 lít– Tổng công suất: 1500W; công suất nấu 800W; công suất xay 700W– Điện áp 220V-50Hz– Tốc độ vòng quay: 48.000 vòng/phút– Kích thước: 232x200', 2, 12412, 'http://localhost:3000/uploads/Image-1732430440800.webp', 7, 1),
+(91, 1, 1, 'Minh Sang', '– Mã sp: RB-769S 12 tính năng– Vật liệu Cối: Thủy tinh chịu lực, chịu nhiệt cao– Dung tích Cối: 1,75 lít– Tổng công suất: 1500W; công suất nấu 800W; công suất xay 700W– Điện áp 220V-50Hz– Tốc độ vòng quay: 48.000 vòng/phút– Kích thước: 232x200', 2, 12412, 'http://localhost:3000/uploads/Image-1732430837894.webp', 7, 1),
+(92, 1, 1, 'Minh Sang', 'Máy giặt việt nam chất lượng cao', 3, 12412, 'http://localhost:3000/uploads/Image-1732436516681.jpg', 5, 0),
+(93, 1, 1, 'Minh Sang', 'Máy giặt việt nam chất lượng cao', 2, 2342, 'http://localhost:3000/uploads/Image-1732437106909.webp', 9, 1),
+(94, 1, 1, 'Minh Sang', 'Máy giặt việt nam chất lượng cao', 4, 235235, 'http://localhost:3000/uploads/Image-1732437332202.jpg', 9, 1),
+(95, 1, 1, 'Minh Sang', 'Máy giặt việt nam chất lượng cao', 3, 23423, 'http://localhost:3000/uploads/Image-1732437533438.webp', 4, 1),
+(96, 1, 1, 'Minh Sang', 'Máy giặt việt nam chất lượng cao', 2, 12423, 'http://localhost:3000/uploads/Image-1732438013638.webp', 6, 1),
+(97, 1, 1, 'Minh Sang', 'Máy giặt việt nam chất lượng cao', 3, 235432, 'http://localhost:3000/uploads/Image-1732438153560.webp', 9, 1),
+(98, 1, 1, 'Minh Sang', 'Máy giặt việt nam chất lượng cao', 3, 3423, 'http://localhost:3000/uploads/Image-1732438771760.jpg', 3, 1),
+(99, 3, 1, 'Minh Sang123yey', 'Máy giặt việt nam chất lượng cao', 2, 52, 'http://localhost:3000/uploads/Image-1732438802311.webp', 7, 1),
+(101, 1, 1, 'sang', 'Mã sản phẩm	Sunhouse SHB9105Hãng	SHB9105Loại sản phẩm	Bếp từSố bếp nấu	2 bếpMặt kính	Mặt kính chịu nhiệtBảng điều khiển	Cảm ứngChế độ hẹn giờ độc lập cho từng bếp, báo động bằng âm thanh	CóKhóa an toàn trẻ em Child lock	CóCông suất tổng	43', 2, 2423, 'http://localhost:3000/uploads/Image-1732536585400.jpg', 4, 1);
 
 -- --------------------------------------------------------
 
@@ -277,9 +324,9 @@ INSERT INTO `products` (`Product_ID`, `Category_ID`, `Brand_ID`, `Product_Name`,
 --
 
 CREATE TABLE `product_images` (
-  `Image_ID` int(11) NOT NULL,
-  `Product_ID` int(11) NOT NULL,
-  `Image_URL` varchar(255) NOT NULL
+  `Image_ID` int NOT NULL,
+  `Product_ID` int NOT NULL,
+  `Image_URL` varchar(255) COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -422,7 +469,48 @@ INSERT INTO `product_images` (`Image_ID`, `Product_ID`, `Image_URL`) VALUES
 (137, 70, 'http://thegioigiadungonline.com.vn/wp-content/uploads/2018/10/sp146-1.jpg'),
 (138, 70, 'http://thegioigiadungonline.com.vn/wp-content/uploads/2018/10/sp146-2.jpg'),
 (139, 70, 'http://thegioigiadungonline.com.vn/wp-content/uploads/2018/10/sp146-3.jpg'),
-(140, 70, 'http://thegioigiadungonline.com.vn/wp-content/uploads/2018/10/sp146.jpg');
+(140, 70, 'http://thegioigiadungonline.com.vn/wp-content/uploads/2018/10/sp146.jpg'),
+(141, 79, 'http://localhost:3000/uploads/additionalImages-1732090150097.jpg'),
+(142, 80, 'http://localhost:3000/uploads/additionalImages-1732092675281.jpg'),
+(143, 81, 'http://localhost:3000/uploads/additionalImages-1732092966583.jpg'),
+(144, 81, 'http://localhost:3000/uploads/additionalImages-1732092966585.jpg'),
+(145, 81, 'http://localhost:3000/uploads/additionalImages-1732092966588.webp'),
+(146, 81, 'http://localhost:3000/uploads/additionalImages-1732092966589.jpg'),
+(148, 82, 'http://localhost:3000/uploads/additionalImages-1732093372716.webp'),
+(152, 84, 'http://localhost:3000/uploads/additionalImages-1732428241976.jpg'),
+(153, 84, 'http://localhost:3000/uploads/additionalImages-1732428241981.jpg'),
+(154, 84, 'http://localhost:3000/uploads/additionalImages-1732428241984.jpg'),
+(155, 85, 'http://localhost:3000/uploads/additionalImages-1732428536933.jpg'),
+(156, 85, 'http://localhost:3000/uploads/additionalImages-1732428536935.jpg'),
+(157, 85, 'http://localhost:3000/uploads/additionalImages-1732428536938.webp'),
+(158, 85, 'http://localhost:3000/uploads/additionalImages-1732428536939.jpg'),
+(159, 85, 'http://localhost:3000/uploads/additionalImages-1732428536940.webp'),
+(160, 85, 'http://localhost:3000/uploads/additionalImages-1732428536941.jpg'),
+(161, 85, 'http://localhost:3000/uploads/additionalImages-1732428536942.jpg'),
+(162, 86, 'http://localhost:3000/uploads/additionalImages-1732428648122.jpg'),
+(163, 86, 'http://localhost:3000/uploads/additionalImages-1732428648124.jpg'),
+(164, 86, 'http://localhost:3000/uploads/additionalImages-1732428648126.webp'),
+(165, 86, 'http://localhost:3000/uploads/additionalImages-1732428648129.jpg'),
+(166, 86, 'http://localhost:3000/uploads/additionalImages-1732428648130.webp'),
+(167, 86, 'http://localhost:3000/uploads/additionalImages-1732428648130.jpg'),
+(168, 86, 'http://localhost:3000/uploads/additionalImages-1732428648130.jpg'),
+(169, 86, 'http://localhost:3000/uploads/additionalImages-1732428648131.jpg'),
+(170, 86, 'http://localhost:3000/uploads/additionalImages-1732428648131.webp'),
+(171, 91, 'http://localhost:3000/uploads/additionalImages-1732430837899.jpg'),
+(172, 91, 'http://localhost:3000/uploads/additionalImages-1732430837912.jpg'),
+(173, 91, 'http://localhost:3000/uploads/additionalImages-1732430837916.webp'),
+(174, 91, 'http://localhost:3000/uploads/additionalImages-1732430837918.jpg'),
+(175, 91, 'http://localhost:3000/uploads/additionalImages-1732430837920.webp'),
+(176, 97, 'http://localhost:3000/uploads/additionalImages-1732438153566.jpg'),
+(177, 97, 'http://localhost:3000/uploads/additionalImages-1732438153569.jpg'),
+(178, 97, 'http://localhost:3000/uploads/additionalImages-1732438153572.webp'),
+(179, 97, 'http://localhost:3000/uploads/additionalImages-1732438153573.jpg'),
+(180, 97, 'http://localhost:3000/uploads/additionalImages-1732438153576.webp'),
+(182, 99, 'http://localhost:3000/uploads/additionalImages-1732438802314.jpg'),
+(191, 101, 'http://localhost:3000/uploads/additionalImages-1732536585401.jpg'),
+(192, 101, 'http://localhost:3000/uploads/additionalImages-1732536585405.jpg'),
+(193, 101, 'http://localhost:3000/uploads/additionalImages-1732536585412.webp'),
+(194, 101, 'http://localhost:3000/uploads/additionalImages-1732536585415.jpg');
 
 -- --------------------------------------------------------
 
@@ -431,12 +519,12 @@ INSERT INTO `product_images` (`Image_ID`, `Product_ID`, `Image_URL`) VALUES
 --
 
 CREATE TABLE `reviews` (
-  `Review_ID` int(11) NOT NULL,
-  `User_ID` int(11) NOT NULL,
-  `Product_ID` int(11) NOT NULL,
-  `Ratting` int(11) DEFAULT NULL,
-  `Comment` varchar(255) DEFAULT NULL,
-  `User_Name` varchar(255) DEFAULT NULL,
+  `Review_ID` int NOT NULL,
+  `User_ID` int NOT NULL,
+  `Product_ID` int NOT NULL,
+  `Ratting` int DEFAULT NULL,
+  `Comment` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `User_Name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `Show_Hidden` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -445,26 +533,14 @@ CREATE TABLE `reviews` (
 --
 
 INSERT INTO `reviews` (`Review_ID`, `User_ID`, `Product_ID`, `Ratting`, `Comment`, `User_Name`, `Show_Hidden`) VALUES
-(14, 1, 40, 4, '1265', 'hhh', 1),
+(14, 1, 40, 4, '1265', 'hhh', 0),
 (15, 3, 35, NULL, 'haha', 'MinhSang12345', 1),
 (16, 3, 35, 5, 'haha', 'MinhSang12345', 1),
 (17, 3, 1, 4, 'sp tốt', 'MinhSang12345', 1),
 (18, 29, 1, 4, 'sp ok', 'Hiep12345', 1),
-(19, 29, 1, 1, 'aa', 'Hiep12345', 1);
-
--- --------------------------------------------------------
-
---
--- Cấu trúc bảng cho bảng `shipments`
---
-
-CREATE TABLE `shipments` (
-  `Shipment_ID` int(11) NOT NULL,
-  `Order_ID` int(11) NOT NULL,
-  `Shipment_Date` date DEFAULT NULL,
-  `Delivery_Date` date DEFAULT NULL,
-  `Shipment_Adress` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+(19, 29, 1, 1, 'aa', 'Hiep12345', 1),
+(20, 37, 76, 5, 'zzz', 'Nguyễn Minh Sang', 1),
+(21, 37, 76, 5, 'sp tot', 'Nguyễn Minh Sang', 1);
 
 -- --------------------------------------------------------
 
@@ -473,14 +549,14 @@ CREATE TABLE `shipments` (
 --
 
 CREATE TABLE `users` (
-  `User_ID` int(11) NOT NULL,
-  `User_Name` varchar(100) DEFAULT NULL,
-  `Email` varchar(100) DEFAULT NULL,
-  `Password` varchar(255) DEFAULT NULL,
-  `resetToken` varchar(255) NOT NULL,
-  `resetTokenExpiry` bigint(255) DEFAULT NULL,
-  `Phone` varchar(20) DEFAULT NULL,
-  `Role` int(11) DEFAULT 0
+  `User_ID` int NOT NULL,
+  `User_Name` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `Email` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `Password` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `resetToken` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `resetTokenExpiry` bigint DEFAULT NULL,
+  `Phone` varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `Role` int DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -489,13 +565,20 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`User_ID`, `User_Name`, `Email`, `Password`, `resetToken`, `resetTokenExpiry`, `Phone`, `Role`) VALUES
 (1, 'sang', NULL, '123', '', NULL, NULL, 1),
-(2, 'MinhSang123', 'sangnmps34186@fpt.edu.vn', '$2b$10$Vtn15cbFG/9QKOv51dLuFuIhyPnBjFs/9jL9okr98E7tek39eczsC', '', NULL, '123456789', 1),
-(3, 'MinhSang12345', 'minhsangg0311@gmail.com', '$2b$10$PmKIMYfWwVDMm6V7ohhzy.vP2Lj6zG1gIRp74ObRbCZkznKZCHxBy', '', NULL, '1234567890', 0),
+(2, 'MinhSang123', 'sangnmps34186@fpt.edu.vn', '$2b$10$Vtn15cbFG/9QKOv51dLuFuIhyPnBjFs/9jL9okr98E7tek39eczsC', 'NULL', NULL, '123456789', 1),
+(3, 'MinhSang12345', 'minhsangg0311@gmail.com1\r\n', '$2b$10$PmKIMYfWwVDMm6V7ohhzy.vP2Lj6zG1gIRp74ObRbCZkznKZCHxBy', 'NULL', NULL, '1234567890', 0),
 (26, 'MinhSang1234567', 'sangnmps34186@fpt.edu.vn34567', '$2b$10$5ujdRnGPzqPM2uygpf1SWuxCnMwpGtsWk8d1LMSY7dwgb3GMpxQli', '', NULL, '234245', 0),
 (27, 'fkshothw', 'sufhifis@gmail.com', '$2b$10$fcHejNLNlhGdTB/5nLRjROWPhrAWWy.DdxBNDb3Vyp8joeb.h67Uy', '', NULL, '345678', 0),
 (28, 'hiep', 'nguyenhiep12@123', '$2b$10$zVfbtam7t2q9pevPksJIteHjthmdY5uSECgdoVjvblen2gMt2tzIG', '', NULL, '1111', 0),
 (29, 'Hiep12345', 'nguyenhiep12062004@gmail.com', '$2b$10$vhZVqJ.WRUp40ISPw9wqbeT0xHbUvnjiuCl6q6uYfKH7ui7SGWCRK', '', NULL, '0376136846', 0),
-(30, 'dattran', 'quocdat100322@gmail.com', '$2b$10$wvnqXA4lWh.gk1guWtDsVuiFhOssgS9Z8G.Jx8t.P3MSocqRCmZlG', '', NULL, '0676455634535', 1);
+(30, 'dattran', 'quocdat100322@gmail.com', '$2b$10$wvnqXA4lWh.gk1guWtDsVuiFhOssgS9Z8G.Jx8t.P3MSocqRCmZlG', '', NULL, '0676455634535', 1),
+(31, 'MinhSang1234', 'sangnmps34186@fFpt.edu.vn', '$2b$10$KCBbtKQx8aQ0Hyp8ExB4qePdW0anw9/y/1wCl/DhyW/4j1NK7z5TG', '885e7aadbdaf45fa4164b7fc20f1c5f9f829454a', 1732265776779, '0123456789', 0),
+(33, 'Nguyễn Minh Sang123', 'sufhifis@gmail.xn--coms2343-f40d', '$2b$10$YYl2MkPieefUiI0wQYLulO/TDvkzvMIZi8mRjppirTY3HhEOLgEBC', NULL, NULL, '01223333333', 0),
+(34, 'Nguyễn Minh Sang1', 'minhsangg0311@gmail.comqưeqwe', '$2b$10$LmS5C1/a4GPqojbjKI3pCeuunay05NQXrnHgHfPSipAuoeDNjakw2', 'd9847be72561b8b3b5abdac6f013f1314cacfeda', 1732380088283, '0123456789', 0),
+(35, 'MinhSang12344444', 'sangnmps34186@fpt.edu.vn1111', '$2b$10$Zzl/X93m5Mcr880QlkKNg.yq5q7pXnSfa8HeczSGqBITnFUJ4OFXi', NULL, NULL, '0123456789', 0),
+(36, 'MinhSang123444445679698', 'sangnmps34186@fpt.edu.vn111134534534', '$2b$10$cg29kg2ZIql4WDutMqu4me.sv9zquFcoCla6D9XP3IpBqEWG7iwPu', NULL, NULL, '0123456789', 0),
+(37, 'Nguyễn Minh Sang', 'minhsangg0311@gmail.com', '$2b$10$o5Mfj9uq/1ETXtdREIDBQOTHesyIdzQvOz/E6/qZd1ovg6yTihmdy', NULL, NULL, '0123456789', 0),
+(38, 'MinhSang123457576567', 'sangnmps34186@fpt.edu.vn4364365465', '$2b$10$RNUEBKa7EWsgAnsdojsiFeB3iKFLJ1dMVusV1SsOu2K/Ai64/ZiqC', NULL, NULL, '0123456789', 0);
 
 -- --------------------------------------------------------
 
@@ -504,28 +587,37 @@ INSERT INTO `users` (`User_ID`, `User_Name`, `Email`, `Password`, `resetToken`, 
 --
 
 CREATE TABLE `vouchers` (
-  `Voucher_ID` int(11) NOT NULL,
-  `Code` varchar(50) DEFAULT NULL,
-  `Discount` int(11) DEFAULT NULL,
-  `Expiration_Date` date DEFAULT NULL
+  `Voucher_ID` int NOT NULL,
+  `Code` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `Discount` int DEFAULT NULL,
+  `Expiration_Date` date DEFAULT NULL,
+  `User_ID` int DEFAULT NULL,
+  `Locked` tinyint(1) DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `vouchers`
 --
 
-INSERT INTO `vouchers` (`Voucher_ID`, `Code`, `Discount`, `Expiration_Date`) VALUES
-(1, 'sang', 50, '2024-10-09');
+INSERT INTO `vouchers` (`Voucher_ID`, `Code`, `Discount`, `Expiration_Date`, `User_ID`, `Locked`) VALUES
+(1, 'sang', 50, '2024-12-09', 1, 0),
+(2, 'Updated Voucher Name', 20, '2024-11-03', 1, 0),
+(3, 'E8FE41CD', 15, '2024-12-22', 1, 0),
+(4, 'FED9AB48', 15, '2024-12-22', 1, 0),
+(5, 'E7D7504F', 15, '2024-12-22', 1, 0),
+(6, '897EC71A', 15, '2024-12-22', 1, 0),
+(7, '07E9F605', 15, '2024-12-22', 1, 0),
+(8, 'D53FD332', 15, '2024-12-22', 1, 0),
+(9, '57ECD3CA', 15, '2024-12-24', NULL, 0),
+(10, 'EB150B92', 15, '2024-12-24', 37, 0),
+(11, NULL, NULL, NULL, NULL, 0),
+(12, 'MinhSang', 11, '2024-11-28', NULL, 0),
+(13, 'MinhSang', 12, '2024-11-28', NULL, 0),
+(14, 'E41D0B82', 15, '2024-12-25', 38, 0);
 
 --
 -- Chỉ mục cho các bảng đã đổ
 --
-
---
--- Chỉ mục cho bảng `addresses`
---
-ALTER TABLE `addresses`
-  ADD PRIMARY KEY (`Address_ID`);
 
 --
 -- Chỉ mục cho bảng `brands`
@@ -563,13 +655,6 @@ ALTER TABLE `order_status`
   ADD PRIMARY KEY (`Status_ID`);
 
 --
--- Chỉ mục cho bảng `payments`
---
-ALTER TABLE `payments`
-  ADD PRIMARY KEY (`Payments_ID`),
-  ADD KEY `Order_ID` (`Order_ID`);
-
---
 -- Chỉ mục cho bảng `products`
 --
 ALTER TABLE `products`
@@ -593,13 +678,6 @@ ALTER TABLE `reviews`
   ADD KEY `reviews_ibfk_2` (`Product_ID`);
 
 --
--- Chỉ mục cho bảng `shipments`
---
-ALTER TABLE `shipments`
-  ADD PRIMARY KEY (`Shipment_ID`),
-  ADD KEY `Order_ID` (`Order_ID`);
-
---
 -- Chỉ mục cho bảng `users`
 --
 ALTER TABLE `users`
@@ -609,89 +687,72 @@ ALTER TABLE `users`
 -- Chỉ mục cho bảng `vouchers`
 --
 ALTER TABLE `vouchers`
-  ADD PRIMARY KEY (`Voucher_ID`);
+  ADD PRIMARY KEY (`Voucher_ID`),
+  ADD KEY `fk_users_vouchers` (`User_ID`);
 
 --
 -- AUTO_INCREMENT cho các bảng đã đổ
 --
 
 --
--- AUTO_INCREMENT cho bảng `addresses`
---
-ALTER TABLE `addresses`
-  MODIFY `Address_ID` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT cho bảng `brands`
 --
 ALTER TABLE `brands`
-  MODIFY `Brand_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `Brand_ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT cho bảng `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `Category_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `Category_ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT cho bảng `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `Order_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `Order_ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT cho bảng `order_details`
 --
 ALTER TABLE `order_details`
-  MODIFY `Order_Detail_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `Order_Detail_ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT cho bảng `order_status`
 --
 ALTER TABLE `order_status`
-  MODIFY `Status_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
---
--- AUTO_INCREMENT cho bảng `payments`
---
-ALTER TABLE `payments`
-  MODIFY `Payments_ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Status_ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT cho bảng `products`
 --
 ALTER TABLE `products`
-  MODIFY `Product_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
+  MODIFY `Product_ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
 
 --
 -- AUTO_INCREMENT cho bảng `product_images`
 --
 ALTER TABLE `product_images`
-  MODIFY `Image_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=141;
+  MODIFY `Image_ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=195;
 
 --
 -- AUTO_INCREMENT cho bảng `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `Review_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
-
---
--- AUTO_INCREMENT cho bảng `shipments`
---
-ALTER TABLE `shipments`
-  MODIFY `Shipment_ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Review_ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT cho bảng `users`
 --
 ALTER TABLE `users`
-  MODIFY `User_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `User_ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT cho bảng `vouchers`
 --
 ALTER TABLE `vouchers`
-  MODIFY `Voucher_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `Voucher_ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
@@ -711,12 +772,6 @@ ALTER TABLE `orders`
 ALTER TABLE `order_details`
   ADD CONSTRAINT `order_details_ibfk_1` FOREIGN KEY (`Order_ID`) REFERENCES `orders` (`Order_ID`),
   ADD CONSTRAINT `order_details_ibfk_2` FOREIGN KEY (`Product_ID`) REFERENCES `products` (`Product_ID`);
-
---
--- Các ràng buộc cho bảng `payments`
---
-ALTER TABLE `payments`
-  ADD CONSTRAINT `payments_ibfk_1` FOREIGN KEY (`Order_ID`) REFERENCES `orders` (`Order_ID`);
 
 --
 -- Các ràng buộc cho bảng `products`
@@ -739,10 +794,10 @@ ALTER TABLE `reviews`
   ADD CONSTRAINT `reviews_ibfk_2` FOREIGN KEY (`Product_ID`) REFERENCES `products` (`Product_ID`);
 
 --
--- Các ràng buộc cho bảng `shipments`
+-- Các ràng buộc cho bảng `vouchers`
 --
-ALTER TABLE `shipments`
-  ADD CONSTRAINT `shipments_ibfk_1` FOREIGN KEY (`Order_ID`) REFERENCES `orders` (`Order_ID`);
+ALTER TABLE `vouchers`
+  ADD CONSTRAINT `fk_users_vouchers` FOREIGN KEY (`User_ID`) REFERENCES `users` (`User_ID`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

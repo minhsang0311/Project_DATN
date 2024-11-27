@@ -15,6 +15,13 @@ import AdminOrder from './admin/pages/orderPage/AdminOrder.jsx';
 import Customer from './admin/pages/customerPage/customerList.jsx';
 import VouchersList from './admin/pages/voucherPage/VoucherList.jsx';
 import VoucherAdd from './admin/pages/voucherPage/voucherAdd.jsx';
+import VoucherUpdate from './admin/pages/voucherPage/voucherUpdate.jsx';
+import CustomerList from './admin/pages/customerPage/customerList.jsx';
+import CustomerAdd from './admin/pages/customerPage/customerAdd.jsx';
+import CustomerUpdate from './admin/pages/customerPage/customerUpdate.jsx';
+import ManufacturerList from './admin/pages/manufacturer/manufacturerList.jsx';
+import ManufacturerAdd from './admin/pages/manufacturer/manufacturerAdd.jsx';
+import ManufacturerUpdate from './admin/pages/manufacturer/manufacturerUpdate.jsx';
 
 // Component Client
 import ProductDetail from './client/pages/ProductDetail';
@@ -50,6 +57,13 @@ function App() {
           <Route path="customers" element={<Customer />} />
           <Route path="vouchers" element={<VouchersList />} />
           <Route path="voucherAdd" element={<VoucherAdd />} />
+          <Route path="voucherUpdate/:id" element={<VoucherUpdate />} />
+          <Route path="customerList" element={<CustomerList />} />
+          <Route path="customerAdd" element={<CustomerAdd />} />
+          <Route path="customerUpdate/:id" element={<CustomerUpdate />} />
+          <Route path="manufacturerList" element={<ManufacturerList />} />
+          <Route path="manufacturerAdd" element={<ManufacturerAdd />} />
+          <Route path="manufacturerUpdate/:id" element={<ManufacturerUpdate />} />
         </Route>
         <Route path="/" element={<Home />} />
         <Route path="/cuahang" element={<Cuahang />} />

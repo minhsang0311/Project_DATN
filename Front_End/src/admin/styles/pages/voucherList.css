@@ -40,7 +40,7 @@
 }
 .grid-container-voucher {
     display: grid;
-    grid-template-columns: 80px 250px 140px 340px 270px;
+    grid-template-columns: 80px 250px 140px 270px 200px 190px;
     margin-top: 20px;
     border-radius: 10px;
     padding: 15px;
@@ -84,8 +84,14 @@
 }
 
 .delete-btn {
+  
     color: #dc3545;
 }
+.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
 
 
 

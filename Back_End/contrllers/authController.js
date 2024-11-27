@@ -65,7 +65,22 @@ exports.register = async (req, res) => {
         return res.status(400).json({ message: 'Vui lòng cung cấp đầy đủ thông tin.' });
     }
 
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    // Kiểm tra tên người dùng hoặc email đã tồn tại
+    const results = await db.query(
+        "SELECT User_Name, Email FROM users WHERE User_Name = ? OR Email = ?",
+        [User_Name, Email]
+    );
+    if (results && results.length > 0) {
+        if (results.some(user => user.User_Name === User_Name)) {
+            return res.status(400).json({ message: 'Tên người dùng đã được đăng ký.' });
+        }
+        if (results.some(user => user.Email === Email)) {
+            return res.status(400).json({ message: 'Email đã được đăng ký.' });
+        }
+    }
+
+    // Kiểm tra mật khẩu và số điện thoại hợp lệ
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
     if (!passwordRegex.test(Password)) {
         return res.status(400).json({
             message: 'Mật khẩu phải chứa ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt.'
@@ -80,26 +95,27 @@ exports.register = async (req, res) => {
     }
 
     try {
-        const results = await db.query("SELECT User_Name, Email FROM users WHERE User_Name = ? OR Email = ?", [User_Name, Email]);
-        if (results && results.length > 0) {
-            if (results.some(user => user.User_Name === User_Name)) {
-                return res.status(400).json({ message: 'Tên người dùng đã tồn tại.' });
-            }
-            if (results.some(user => user.Email === Email)) {
-                return res.status(400).json({ message: 'Email đã tồn tại.' });
-            }
-        }
-
+        // Hash mật khẩu và thêm người dùng mới
         const hashedPassword = await bcrypt.hash(Password, saltRounds);
-        const newUser = await db.query("INSERT INTO users (User_Name, Email, Password, Phone) VALUES (?, ?, ?, ?)", [User_Name, Email, hashedPassword, Phone]);
+        const userResult = await db.query(
+            "INSERT INTO users (User_Name, Email, Password, Phone) VALUES (?, ?, ?, ?)",
+            [User_Name, Email, hashedPassword, Phone]
+        );
 
+        const newUserId = userResult.insertId; // Lấy ID của người dùng mới tạo
+
+        // Tạo mã khuyến mãi liên kết với người dùng mới
         const voucherCode = crypto.randomBytes(4).toString("hex").toUpperCase();
         const discount = 15;
         const expirationDate = new Date();
         expirationDate.setDate(expirationDate.getDate() + 30);
 
-        await db.query("INSERT INTO vouchers (Code, Discount, Expiration_Date) VALUES (?, ?, ?)", [voucherCode, discount, expirationDate]);
+        await db.query(
+            "INSERT INTO vouchers (Code, Discount, Expiration_Date, User_ID) VALUES (?, ?, ?, ?)",
+            [voucherCode, discount, expirationDate, newUserId]
+        );
 
+        // Gửi email mã khuyến mãi
         await sendVoucherEmail(Email, voucherCode, discount, expirationDate.toISOString().split('T')[0]);
 
         return res.status(201).json({ message: 'Đăng ký thành công! Mã khuyến mãi đã được gửi qua email.' });
@@ -109,24 +125,25 @@ exports.register = async (req, res) => {
     }
 };
 
+
 exports.login = (req, res) => {
-    const { User_Name, Password } = req.body;
-    if (!User_Name || !Password) {
-        return res.status(400).json({ message: 'Vui lòng cung cấp username và password.' });
+    const { Email, Password } = req.body;
+    if (!Email || !Password) {
+        return res.status(400).json({ message: 'Vui lòng cung cấp email và mật khẩu.' });
     }
-    let findUserSql = `SELECT * FROM Users WHERE User_Name = ?`;
-    db.query(findUserSql, [User_Name], async (err, results) => {
+    let findUserSql = `SELECT * FROM Users WHERE Email = ?`;
+    db.query(findUserSql, [Email], async (err, results) => {
         if (err) {
             return res.status(500).json({ message: 'Có lỗi xảy ra khi truy vấn cơ sở dữ liệu.' });
         }
         if (!results || results.length === 0) {
-            return res.status(400).json({ message: 'Username hoặc password không đúng.' });
+            return res.status(400).json({ message: 'Email hoặc mật khẩu không đúng.' });
         }
         const user = results[0];
         console.log('user', user.Role)
         const match = await bcrypt.compare(Password, user.Password);
         if (!match) {
-            return res.status(400).json({ message: 'Username hoặc password không đúng.' });
+            return res.status(400).json({ message: 'Email hoặc mật khẩu không đúng.' });
         }
         if (user.Role === 1) {
             var token = jwt.sign(

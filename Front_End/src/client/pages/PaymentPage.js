@@ -1,6 +1,7 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import '../styles/components/PaymentPage.css';
 import Header from '../components/Header';
+import { useNavigate } from 'react-router-dom';
 
 const PaymentPage = () => {
     const [cartItems, setCartItems] = useState([]);
@@ -14,40 +15,52 @@ const PaymentPage = () => {
     const [userId, setUserId] = useState(null);
     const [discount, setDiscount] = useState(0);
     const [voucherMessage, setVoucherMessage] = useState('');
-
+    const navigate = useNavigate();
 
     useEffect(() => {
         // Lấy giỏ hàng và User ID từ localStorage
-        const storedCartItems = JSON.parse(localStorage.getItem('cart')) || [];
         const storedUserId = JSON.parse(localStorage.getItem('user'));
+        const storedCartItems = JSON.parse(localStorage.getItem('cart')) || [];
         const userID = storedUserId.id
         setCartItems(storedCartItems);
         setUserId(userID);
+        if (!storedUserId) {
+            alert('Bạn cần phải đăng nhập để thanh toán');
+            navigate('/register_login');
+        } else {
+            if (storedUserId.role !== 0) {
+                alert('Tài khoản không thể mua hàng');
+                navigate('/register_login');
+            }
+        }
 
-    }, []);
+    }, [navigate]);
     useEffect(() => {
+        const tokenUser = localStorage.getItem("tokenUser");
         const debounceTimeout = setTimeout(() => {
             if (voucherCode) {
                 fetch(`http://localhost:3000/user/voucher`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${tokenUser}`
                     },
                     body: JSON.stringify({ code: voucherCode }),
                 })
                     .then(response => response.json())
                     .then(data => {
-                        if (data.success) {
+                        console.log(data)
+                        if (data.success === true) {
                             setDiscount(data.discount);
                             setVoucherMessage(`Voucher áp dụng thành công! Giảm ${data.discount}%`);
-                        } else {
+                        } else if (data.success === false) {
                             setDiscount(0);
-                            setVoucherMessage(data.message || 'Voucher không hợp lệ');
+                            setVoucherMessage(data.message);
                         }
                     })
                     .catch(() => {
                         setDiscount(0);
-                        setVoucherMessage('Có lỗi xảy ra khi kiểm tra voucher.');
+                        setVoucherMessage('Lỗi xảy ra vui lòng kiểm tra voucher.');
                     });
             } else {
                 setDiscount(0);
@@ -64,47 +77,17 @@ const PaymentPage = () => {
 
     const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
     const finalAmount = total - (total * (discount / 100));
-    const applyVoucher = () => {
-        if (voucherCode) {
-            fetch(`http://localhost:3000/user/voucher`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ code: voucherCode }),
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        setDiscount(data.discount);
-                        setVoucherMessage(`Voucher áp dụng thành công! Giảm ${data.discount}%`);
-                    } else {
-                        setDiscount(0);
-                        setVoucherMessage(data.message || 'Voucher không hợp lệ');
-                    }
-                })
-                .catch(() => {
-                    setDiscount(0);
-                    setVoucherMessage('Có lỗi xảy ra khi kiểm tra voucher.');
-                });
-        } else {
-            setVoucherMessage('Vui lòng nhập mã voucher.');
-        }
-    };
-
-
     const totalQuantity = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
     const handlePayment = () => {
         if (!name || !address || !phone || !email || !userId) {
-            return alert("Vui lòng nhập đầy đủ thông tin trước khi thanh toán.");
+            return alert("Vui lòng nhập đầy đủ thông tin mua hàng trước khi thanh toán.");
         }
         if (!paymentMethod) {
             return alert('Vui lòng chọn phương thức thanh toán.');
         }
 
         const orderData = {
-            Product_Name: cartItems.map(item => item.name).join(', '),
             User_Name: name,
             Address: address,
             Phone: phone,
@@ -132,16 +115,16 @@ const PaymentPage = () => {
             .then(response => response.json())
             .then(data => {
                 console.log(data)
-                if (data.success) {
+                if (data.success === true) {
                     alert('Mua hàng thành công!');
                     localStorage.removeItem('cart');
-                } else {
-                    alert('Có lỗi xảy ra, vui lòng thử lại.');
+                } else if (data.success === false) {
+                    alert(data.message);
                 }
             })
             .catch(error => {
                 console.log('Error:', error);
-                alert('Có lỗi xảy ra, vui lòng thử lại.');
+                alert('Lỗi khi mua hàng');
             });
     };
 
@@ -154,7 +137,7 @@ const PaymentPage = () => {
                 <h1>THANH TOÁN</h1>
                 <div className="container-payment">
                     <div className="section">
-                        <h2>THÔNG TIN MUA HÀNG</h2>
+                        <h2>Thông tin mua hàng</h2>
                         <form>
                             <div className="form-group">
                                 <label htmlFor="ho-ten">Họ và Tên*</label>
@@ -204,7 +187,7 @@ const PaymentPage = () => {
                     </div>
 
                     <div className="section">
-                        <h2>Chọn phương thức thanh toán</h2>
+                        <h2>Phương thức thanh toán</h2>
                         <div className='method-pay'>
                             <div className='section_radio'>
                                 <input
@@ -225,7 +208,7 @@ const PaymentPage = () => {
                                 <label>Thanh toán online</label>
                             </div>
                         </div>
-                        <h2>THÔNG TIN THÊM</h2>
+                        <h2>Ghi chú</h2>
                         <textarea
                             name="ghi-chu"
                             id="ghi-chu"
@@ -236,7 +219,7 @@ const PaymentPage = () => {
                     </div>
 
                     <div className="section">
-                        <h2>ĐƠN HÀNG ({cartItems.length} sản phẩm)</h2>
+                        <h2>Đơn hàng ({cartItems.length} sản phẩm)</h2>
                         {cartItems.map((item, index) => (
                             <div key={index} className="product-payment">
                                 <img src={item.image} alt={item.name} />
@@ -256,12 +239,14 @@ const PaymentPage = () => {
                                     onChange={handleVoucherChange}
                                 />
                             </label>
-                            <button onClick={applyVoucher}>Áp Dụng</button>
+                            {/* <button onClick={applyVoucher}>Áp Dụng</button> */}
                             {voucherMessage && <p className="voucher-message">{voucherMessage}</p>}
                         </div>
-                        <p>Tổng tiền: {total.toLocaleString('vi')}₫</p>
-                        <p>Tổng tiền sau giảm giá: {finalAmount.toLocaleString('vi')}₫</p>
-                        <button onClick={handlePayment}>Thanh toán</button>
+                        <div className='money'>
+                            <p className='total_money'><span>Tổng tiền: </span>{total.toLocaleString('vi')}₫</p>
+                            <p className='total_sale'><span>Tổng tiền sau giảm giá: </span>{finalAmount.toLocaleString('vi')}₫</p>
+                        </div>
+                        <button className='payment_button' onClick={handlePayment}>Thanh toán</button>
                     </div>
                 </div>
             </div>
