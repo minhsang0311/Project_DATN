@@ -1,0 +1,105 @@
+/* Container for the Add Manufacturer page */
+.form-container-manufacturerAdd {
+    padding: 40px;
+    background-color: #f9f9f9;
+    max-width: 600px;
+    margin: 0 auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Header section */
+  .form-header-manufacturerAdd {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .manufacturerAdd-h2 {
+    font-size: 28px;
+    color: #333;
+    margin: 0;
+  }
+  
+  /* Form section */
+  .manufacturerAdd-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;  /* Space between form elements */
+  }
+  
+  /* Form group styling */
+  .form-group-manufacturerAdd {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-group-manufacturerAdd label {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 8px;
+  }
+  
+  .form-group-manufacturerAdd input {
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-top: 6px;
+    transition: border-color 0.3s ease;
+  }
+  
+  .form-group-manufacturerAdd input:focus {
+    border-color: #4CAF50;
+    outline: none;
+  }
+  
+  /* Error message styling */
+  .error-message {
+    color: #e74c3c;
+    font-size: 14px;
+    margin-top: 10px;
+    text-align: center;
+  }
+  
+  /* Submit button styling */
+  .submit-btn-manufacturerAdd {
+    padding: 14px 20px;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+  }
+  
+  .submit-btn-manufacturerAdd:hover {
+    background-color: #45a049;
+  }
+  
+  .submit-btn-manufacturerAdd:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  /* Responsive design adjustments */
+  @media (max-width: 600px) {
+    .form-container-manufacturerAdd {
+      padding: 20px;
+    }
+  
+    .manufacturerAdd-h2 {
+      font-size: 24px;
+    }
+  
+    .form-group-manufacturerAdd input {
+      font-size: 14px;
+    }
+  
+    .submit-btn-manufacturerAdd {
+      font-size: 14px;
+    }
+  }
+  

@@ -12,7 +12,6 @@ import ProductUpdate from '../pages/productPage/ProductUpdate';
 import Statistics from '../pages/Statistics/Statistics';
 import Comments from '../pages/commentPage/commentList';
 import AdminOrder from '../pages/orderPage/AdminOrder';
-import Customer from '../pages/customerPage/customerList';
 import VouchersList from '../pages/voucherPage/VoucherList';
 import VoucherAdd from '../pages/voucherPage/voucherAdd';
 import VoucherUpdate from '../pages/voucherPage/voucherUpdate';
@@ -64,7 +63,15 @@ const HomeAdmin = () => {
             } else if (entityType === 'categories') {
                 navigate('/admin/category');
             } else if (entityType === 'users') {
-                navigate('/customers');
+                navigate('/admin/customerList');
+            } else if (entityType === 'manufacturer') {
+                navigate('/admin/manufacturerList');
+            } else if (entityType === 'orders') {
+                navigate('/admin/order');
+            } else if (entityType === 'comment') {
+                navigate('/admin/comments');
+            } else if (entityType === 'voucher') {
+                navigate('/admin/vouchers');
             }
         } catch (error) {
             console.error('Lỗi tìm kiếm:', error);
@@ -151,6 +158,10 @@ const HomeAdmin = () => {
                             <option value="products">Sản phẩm</option>
                             <option value="categories">Danh mục</option> 
                             <option value="users">Người dùng</option>
+                            <option value="manufacturer">Nhà sản xuất</option>
+                            <option value="order">Đơn hàng</option>
+                            <option value="comment">Bình luận</option>
+                            <option value="voucher">Khuyến mãi</option>
                         </select>
                         <button onClick={handleSearch}> <i className="bi bi-search"></i>Tìm kiếm</button>
                     </div>
@@ -162,18 +173,18 @@ const HomeAdmin = () => {
                         <Route path="products" element={<ProductList searchResults={searchResults} />} />
                         <Route path="product-add" element={<ProductAdd />} />
                         <Route path="productUpdate/:id" element={<ProductUpdate />} />
-                        <Route path="category" element={<CategoryList />} />
+                        <Route path="category" element={<CategoryList searchResults={searchResults}/>} />
                         <Route path="categoryAdd" element={<CategoryAdd />} />
                         <Route path="categoryUpdate/:id" element={<CategoryUpdate />} />
-                        <Route path="comments" element={<Comments />} />
+                        <Route path="comments" element={<Comments searchResults={searchResults}/>} />
                         <Route path="order" element={<AdminOrder searchResults={searchResults} />} />
-                        <Route path="vouchers" element={<VouchersList />} />
+                        <Route path="vouchers" element={<VouchersList searchResults={searchResults}/>} />
                         <Route path="voucherAdd" element={<VoucherAdd/>}/>
                         <Route path="voucherUpdate/:id" element={<VoucherUpdate/>}/>
-                        <Route path="customerList" element={<CustomerList />} />
+                        <Route path="customerList" element={<CustomerList searchResults={searchResults}/>} />
                         <Route path="customerAdd" element={<CustomerAdd />} />
                         <Route path="customerUpdate/:id" element={<CustomerUpdate />} />
-                        <Route path="manufacturerList" element={<ManufacturerList />} />
+                        <Route path="manufacturerList" element={<ManufacturerList searchResults={searchResults}/>} />
                         <Route path="manufacturerAdd" element={<ManufacturerAdd />} />
                         <Route path="manufacturerUpdate/:id" element={<ManufacturerUpdate />} />
                     </Routes>
