@@ -1,25 +1,15 @@
 import React, { useState } from 'react';
-
+import '../../styles/pages/ManufacturerAdd.css';
 const ManufacturerAdd = () => {
     const [manufacturer, setManufacturer] = useState({ Brand_Name: '' });
-    const [logo, setLogo] = useState(null);
     const [error, setError] = useState('');
-
-    const handleFileUpload = (event) => {
-        setLogo(event.target.files[0]);
-    };
 
     const handleSubmit = (evt) => {
         evt.preventDefault();
 
-        // FormData to send both Brand_Name and Brand_Image
+        // FormData to send only Brand_Name (no image)
         const formData = new FormData();
         formData.append('Brand_Name', manufacturer.Brand_Name);
-
-        // Only append the logo if it's available (not null)
-        if (logo) {
-            formData.append('Brand_Image', logo);
-        }
 
         const token = localStorage.getItem('authToken');
 
@@ -36,7 +26,6 @@ const ManufacturerAdd = () => {
             if (data.message === 'Brand added successfully') {
                 // Reset form after successful submission
                 setManufacturer({ Brand_Name: '' });
-                setLogo(null);
                 console.log("Manufacturer added:", data);
                 window.location.href = '/admin/manufacturerList';  // Redirect after successful addition
             } else {
@@ -50,12 +39,12 @@ const ManufacturerAdd = () => {
     };
 
     return (
-        <div className="form-container-manufactureradd">
-            <div className="form-header">
-                <h2>THÊM NHÀ SẢN XUẤT</h2>
+        <div className="form-container-manufacturerAdd">
+            <div className="form-header-manufacturerAdd">
+                <h2 className="manufacturerAdd-h2">THÊM NHÀ SẢN XUẤT</h2>
             </div>
-            <form className="manufactureradd-form" onSubmit={handleSubmit}>
-                <div className="form-group">
+            <form className="manufacturerAdd-form" onSubmit={handleSubmit}>
+                <div className="form-group-manufacturerAdd">
                     <label htmlFor="manufacturer-name">Tên Nhà Sản Xuất</label>
                     <input
                         type="text"
@@ -68,23 +57,13 @@ const ManufacturerAdd = () => {
                         required
                     />
                 </div>
-                <div className="form-group">
-                    <label htmlFor="manufacturer-logo">Hình ảnh</label>
-                    <input
-                        type="file"
-                        id="manufacturer-logo"
-                        onChange={handleFileUpload}
-                        accept="image/*"
-                    />
-                </div>
 
                 {error && <div className="error-message">{error}</div>}
 
-                <button type="submit" className="submit-btn">THÊM NHÀ SẢN XUẤT</button>
+                <button type="submit" className="submit-btn-manufacturerAdd">THÊM NHÀ SẢN XUẤT</button>
             </form>
         </div>
     );
 };
 
 export default ManufacturerAdd;
-

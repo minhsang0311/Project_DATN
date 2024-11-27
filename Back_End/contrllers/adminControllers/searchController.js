@@ -22,7 +22,7 @@ exports.generalSearch = (req, res) => {
             break;
 
         case 'categories':
-            sql = `SELECT * FROM categories WHERE Category_Name LIKE ?`;
+            sql = `SELECT * FROM Categories WHERE Category_Name LIKE ?`;
             params = [searchPattern];
             break;
 
@@ -31,7 +31,10 @@ exports.generalSearch = (req, res) => {
                    WHERE User_Name LIKE ? OR Email LIKE ? OR Phone LIKE ? OR Role LIKE ?`;
             params = [searchPattern, searchPattern, searchPattern, searchPattern];
             break;
-
+        case 'manufacturer':
+            sql = `SELECT * FROM brands WHERE Brand_Name LIKE ?`;
+            params = [searchPattern];
+            break;
         case 'orders':
             sql = `SELECT o.*, v.Code FROM orders o
                    LEFT JOIN Vouchers v 
@@ -47,8 +50,31 @@ exports.generalSearch = (req, res) => {
                    OR payment_method LIKE ?
                    OR created_at LIKE ?
                    `;
-            params = [searchPattern, searchPattern, searchPattern, searchPattern, 
-                    searchPattern, searchPattern, searchPattern, searchPattern, searchPattern];
+            params = [searchPattern, searchPattern, searchPattern, searchPattern,
+                searchPattern, searchPattern, searchPattern, searchPattern, searchPattern];
+            break;
+        case 'comment':
+            sql = `SELECT 
+                    r.Review_ID, 
+                    r.User_Name, 
+                    r.Comment, 
+                    p.Product_Name, 
+                    r.Ratting, 
+                    r.Show_Hidden
+                    FROM reviews r
+                    JOIN products p ON r.Product_ID = p.Product_ID
+                    JOIN users u ON r.User_ID = u.User_ID
+                    WHERE 
+                    r.User_Name LIKE ? 
+                    OR r.Comment LIKE ?
+                    OR p.Product_Name LIKE ?
+                
+                   `;
+            params = [searchPattern, searchPattern, searchPattern];
+            break;
+        case 'voucher':
+            sql = `SELECT * FROM Vouchers WHERE Code LIKE ? OR Discount LIKE ?`;
+            params = [searchPattern, searchPattern];
             break;
         default:
             return res.json({ "message": "Loại đối tượng không hợp lệ" });

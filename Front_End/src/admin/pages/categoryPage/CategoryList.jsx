@@ -4,6 +4,8 @@ import '../../styles/pages/CategoryList.css';
 
 function CategoryList({ searchResults }) {
     const [categories, setCategories] = useState([]);
+    const [displayCategories, setDisplayCategories] = useState([]); // Hiển thị danh sách
+
     const token = localStorage.getItem('token');
 
     const fetchOptions = {
@@ -11,7 +13,7 @@ function CategoryList({ searchResults }) {
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }
     };
 
-    // Hàm để lấy danh sách tất cả danh mục
+    // Hàm để lấy danh sách danh mục
     const fetchCategories = () => {
         fetch("http://localhost:3000/admin/category", fetchOptions)
             .then(res => res.json())
@@ -25,27 +27,31 @@ function CategoryList({ searchResults }) {
 
         fetch(`http://localhost:3000/admin/category/${id}`, {
             method: "DELETE",
-            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }
+            headers: { "Content-Type": "application/json", 'Authorization': 'Bearer ' + token }
         })
             .then(res => res.json())
             .then(response => {
                 if (response.thongbao.includes("Không thể xóa danh mục")) {
                     alert("Không thể xóa danh mục vì có sản phẩm trong danh mục này!");
                 }
-                fetchCategories();
+                fetchCategories(); // Tải lại danh sách danh mục sau khi xóa
             })
             .catch(err => console.error("Lỗi khi xóa danh mục:", err));
     };
 
-    // Chỉ tải tất cả danh mục khi không có kết quả tìm kiếm
     useEffect(() => {
-        if (!searchResults || searchResults.length === 0) {
+        if (searchResults && searchResults.length > 0) {
+            setDisplayCategories(searchResults); // Hiển thị kết quả tìm kiếm
+        } else {
             fetchCategories();
         }
     }, [searchResults]);
 
-    // Dùng kết quả tìm kiếm nếu có, ngược lại dùng danh mục từ API
-    const displayCategories = searchResults && searchResults.length > 0 ? searchResults : categories;
+    useEffect(() => {
+        if (!searchResults || searchResults.length === 0) {
+            setDisplayCategories(categories); // Hiển thị toàn bộ danh mục nếu không có kết quả tìm kiếm
+        }
+    }, [categories, searchResults]);
 
     return (
         <div className="box-categorylist">
