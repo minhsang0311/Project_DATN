@@ -11,6 +11,7 @@ function CategoryList({ searchResults }) {
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }
     };
 
+    // Hàm để lấy danh sách tất cả danh mục
     const fetchCategories = () => {
         fetch("http://localhost:3000/admin/category", fetchOptions)
             .then(res => res.json())
@@ -18,6 +19,7 @@ function CategoryList({ searchResults }) {
             .catch(err => console.error("Lỗi khi tải danh mục:", err));
     };
 
+    // Hàm để xóa danh mục
     const deleteCategory = (id) => {
         if (!window.confirm('Bạn có muốn xóa loại không?')) return;
 
@@ -35,12 +37,14 @@ function CategoryList({ searchResults }) {
             .catch(err => console.error("Lỗi khi xóa danh mục:", err));
     };
 
+    // Chỉ tải tất cả danh mục khi không có kết quả tìm kiếm
     useEffect(() => {
         if (!searchResults || searchResults.length === 0) {
             fetchCategories();
         }
     }, [searchResults]);
 
+    // Dùng kết quả tìm kiếm nếu có, ngược lại dùng danh mục từ API
     const displayCategories = searchResults && searchResults.length > 0 ? searchResults : categories;
 
     return (
