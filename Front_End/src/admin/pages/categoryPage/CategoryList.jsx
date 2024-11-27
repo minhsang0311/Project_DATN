@@ -66,7 +66,7 @@ function CategoryList({ searchResults }) {
                         <div className="grid-item-category">{index + 1}</div>
                         <div className="grid-item-category">{category.Category_Name}</div>
                         <div className="grid-item-category">{category.Show_Hidden === 1 ? "Hiện" : "Ẩn"}</div>
-                        <div className="grid-item grid-item-button-category">
+                        <div className="grid-item-category grid-item-button-category">
                             <Link to={`/admin/categoryUpdate/${category.Category_ID}`} className="category-edit-btn">✏️</Link>
                             <button className="category-delete-btn" onClick={() => deleteCategory(category.Category_ID)}>🗑️</button>
                         </div>

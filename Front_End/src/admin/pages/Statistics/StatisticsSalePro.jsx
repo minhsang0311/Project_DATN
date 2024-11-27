@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Bar } from "react-chartjs-2";
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from "chart.js";
 
@@ -13,7 +13,27 @@ const StatisticsSalePro = () => {
   const [error, setError] = useState("");
   const token = localStorage.getItem("token");
 
-  // Hàm gọi API để lấy tổng doanh thu
+  // Tính toán ngày đầu và cuối của tháng trước khi component được render
+  useEffect(() => {
+    const now = new Date();
+    const firstDayLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+    const lastDayLastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+
+    // Định dạng yyyy-mm-dd cho input date
+    const formatDate = (date) => date.toISOString().split("T")[0];
+
+    setStartDate(formatDate(firstDayLastMonth));
+    setEndDate(formatDate(lastDayLastMonth));
+  }, []);
+
+  // Tự động gọi API khi `startDate` và `endDate` được thiết lập
+  useEffect(() => {
+    if (startDate && endDate) {
+      handleFetchData();
+    }
+  }, [startDate, endDate]);
+
+  // Hàm gọi API để lấy tổng số sản phẩm bán được
   const handleFetchData = () => {
     if (!startDate || !endDate) {
       alert("Vui lòng nhập ngày bắt đầu và ngày kết thúc!");
@@ -21,7 +41,7 @@ const StatisticsSalePro = () => {
     }
 
     setLoading(true);
-    setError(""); // Reset lỗi trước khi gọi API
+    setError("");
 
     fetch(`http://localhost:3000/admin/stats-statisticsSalePro?startDate=${startDate}&endDate=${endDate}`, {
       method: "GET",
@@ -37,21 +57,16 @@ const StatisticsSalePro = () => {
           return;
         }
 
-        const totalRevenue = parseFloat(data.TotalSalePro); // Giả sử API trả về tổng doanh thu dưới trường "TotalSalePro"
-        console.log(totalRevenue)
-        // Xác định label: nếu ngày giống nhau thì chỉ hiển thị tổng trong ngày
-        const label =
-          startDate === endDate
-            ? `Tổng sản phẩm bán được trong ngày ${startDate}`
-            : `Tổng sản phẩm bán đưcọ từ (${startDate} đến ${endDate})`;
+        const totalSalePro = parseFloat(data.TotalSalePro); // Giả sử API trả về số sản phẩm bán được dưới trường "TotalSalePro"
 
-        // Cập nhật dữ liệu cho biểu đồ
+        const label = `Tổng sản phẩm bán được từ ${startDate} đến ${endDate}`;
+
         setChartData({
           labels: [label],
           datasets: [
             {
-              label: "Tổng sản phẩm bán được (VNĐ)",
-              data: [totalRevenue],
+              label: "Sản phẩm bán được",
+              data: [totalSalePro],
               backgroundColor: "rgba(75, 192, 192, 0.5)",
               borderColor: "rgba(75, 192, 192, 1)",
               borderWidth: 1,
@@ -59,12 +74,13 @@ const StatisticsSalePro = () => {
           ],
         });
       })
+      .catch(() => setError("Lỗi khi lấy dữ liệu thống kê."))
       .finally(() => setLoading(false));
   };
 
   return (
     <div className="revenue-statistics">
-      <h2>THỐNG KÊ SẢN PHẨM ĐÃ BÁN</h2>
+      <h2>THỐNG KÊ SẢN PHẨM ĐÃ BÁN</h2>
       <div className="filter-section">
         <label>
           Ngày bắt đầu:
@@ -98,7 +114,7 @@ const StatisticsSalePro = () => {
                 legend: { position: "top" },
                 tooltip: {
                   callbacks: {
-                    label: (context) => `${context.raw.toLocaleString()} sản phẩm`,
+                    label: (context) => `${context.raw.toLocaleString()} sản phẩm`,
                   },
                 },
               },
@@ -113,9 +129,7 @@ const StatisticsSalePro = () => {
             }}
           />
         ) : (
-          <p>
-            {/* Chọn ngày để hiển thị biểu đồ. */}
-            </p>
+          <p>Chọn ngày để hiển thị biểu đồ.</p>
         )}
       </div>
     </div>

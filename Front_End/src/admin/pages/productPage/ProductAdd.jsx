@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router";
 // import { useSelector } from 'react-redux';
-import '../../styles/pages/CategoryAdd.css'
+import '../../styles/pages/productAdd.css'
 const ProductAdd = () => {
     const token = localStorage.getItem('token')
     const [product, setProduct] = useState({});
@@ -29,7 +29,14 @@ const ProductAdd = () => {
         setImage(event.target.files[0]);
     };
     const uploadAdditionalImages = (event) => {
-        const files = Array.from(event.target.files); // Lấy danh sách file mới chọn
+        const files = Array.from(event.target.files);
+
+        // Kiểm tra số lượng ảnh hiện có và số lượng ảnh được thêm vào
+        if (additionalImages.length + files.length > 10) {
+            alert("Bạn không thể thêm quá 10 ảnh bổ sung");
+            return;
+        }
+
         setAdditionalImages(prevImages => [
             ...prevImages,
             ...files.map(file => ({
@@ -38,6 +45,7 @@ const ProductAdd = () => {
             }))
         ]);
     };
+
 
 
     const Submit = (evt) => {
@@ -67,7 +75,7 @@ const ProductAdd = () => {
             alert("Vui lòng chọn số lượt xem cho sản phẩm!");
             return;
         }
-        
+
         if (!product.Description) {
             alert("Vui lòng nhập mô tả cho sản phẩm!");
             return;
@@ -76,7 +84,7 @@ const ProductAdd = () => {
             alert("Vui lòng ẩn hiện cho sản phẩm!");
             return;
         }
-        
+
         const formData = new FormData();
         formData.append('Product_Name', product.Product_Name);
         formData.append('Price', product.Price);
@@ -118,7 +126,7 @@ const ProductAdd = () => {
 
     return (
         <div className="form-container-productadd">
-            <div className="form-header">
+            <div className="form-header-addproduct">
                 <h2>THÊM SẢN PHẨM</h2>
             </div>
             <form action="#" className="productadd-form">
