@@ -147,14 +147,12 @@ const HomeAdmin = () => {
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
-                        {/* <select value={entityType} onChange={(e) => setEntityType(e.target.value)}>
+                        <select value={entityType} onChange={(e) => setEntityType(e.target.value)}>
                             <option value="products">Sản phẩm</option>
                             <option value="categories">Danh mục</option> 
                             <option value="users">Người dùng</option>
-                        </select> */}
-                        {/* <button onClick={handleSearch}> <i className="bi bi-search"></i>Tìm kiếm</button> */}
-
-
+                        </select>
+                        <button onClick={handleSearch}> <i className="bi bi-search"></i>Tìm kiếm</button>
                     </div>
                 </div>
 
