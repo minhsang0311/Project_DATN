@@ -10,6 +10,7 @@ function SpMoi() {
     const [listsp, ganListSP] = useState([]);
     const dispatch = useDispatch();
     const navigate = useNavigate()
+    const [showToast, setShowToast] = useState(false);
     useEffect(() => {
         fetch("http://localhost:3000/user/productNew")
             .then(res => res.json())
@@ -41,12 +42,17 @@ function SpMoi() {
             savedCart.push({ ...product, quantity: 1 });
         }
         localStorage.setItem('cart', JSON.stringify(savedCart));
-        navigate('/cart'); 
+     
+        setShowToast(true);
+    setTimeout(() => {
+        setShowToast(false);
+    }, 3000); // Hiện thông báo trong 3 giây
     };
 
     return (
         <div className="spbanchay">
             <div className="left-image">
+            {showToast && <div className="toast">Đã thêm vào giỏ hàng</div>}
                 <img src="/assets/img/banner20.jpg" alt="img1"/>
                 <img src="/assets/img/banner20.jpg" alt="img2"/>
             </div>

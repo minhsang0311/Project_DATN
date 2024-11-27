@@ -7,6 +7,7 @@ import '../styles/components/sanphamlienquan.css';
 const SPLienQuan = ({ id, sosp }) => {
   const [listsp, setListSP] = useState([]);
   const dispatch = useDispatch(); // Khởi tạo useDispatch
+  const [showToast, setShowToast] = useState(false);
   useEffect(() => {
     fetch(`http://localhost:3000/user/san_pham_lien_quan/${id}/${sosp}`)
       .then((res) => res.json())
@@ -29,11 +30,16 @@ const SPLienQuan = ({ id, sosp }) => {
       quantity: 1 // Mặc định là 1
     };
     dispatch(addToCart(cartItem)); // Gửi hành động thêm vào giỏ hàng
+    setShowToast(true);
+    setTimeout(() => {
+        setShowToast(false);
+    }, 3000); // Hiện thông báo trong 3 giây
   };
 
   return (
     <div className="splienquan">
       <h2>Sản phẩm liên quan</h2>
+      {showToast && <div className="toast">Đã thêm vào giỏ hàng</div>}
       <div className="products-grid">
         {listsp.slice(0, 5).map((sp, i) =>
           <div className="relatedproduct" key={i}>
