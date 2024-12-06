@@ -88,7 +88,6 @@ const PaymentPage = () => {
         }
 
         const orderData = {
-            Product_Name: cartItems.map(item => item.name).join(', '),
             User_Name: name,
             Address: address,
             Phone: phone,

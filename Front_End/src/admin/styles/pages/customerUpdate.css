@@ -7,11 +7,7 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
   
-  h2 {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
+
   .form-group {
     margin-bottom: 15px;
   }
@@ -34,18 +30,13 @@
     text-align: center;
   }
   
-  button {
+  /* button {
     padding: 10px 20px;
-    background-color: #ffc107;
     border: none;
     border-radius: 4px;
     font-size: 16px;
     cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #e0a800;
-  }
+  } */
   
   .error-message {
     color: red;

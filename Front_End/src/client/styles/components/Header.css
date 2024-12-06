@@ -18,7 +18,9 @@ header .middle form.timkiem {
   height: 40px;
 }
 
-header .middle input {
+.timkiem input {
+  height: 40px;
+  border-radius: 5px;
   width: 500px; /* Chiều rộng của ô tìm kiếm */
   border: none;
   background-color: #fff; /* Màu nền trắng */

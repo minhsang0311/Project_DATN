@@ -40,7 +40,7 @@ exports.getProductImageDetail = (req, res) => {
     });
 };
 
-// //Route thêm sản phẩm
+//Route thêm sản phẩm
 exports.postProduct = (req, res) => {
     if (!req.files || !req.files.Image || req.files.Image.length === 0) {
         console.error("Không tìm thấy file chính");
@@ -67,6 +67,10 @@ exports.postProduct = (req, res) => {
 
         // Xử lý ảnh bổ sung
         const additionalImages = req.files.additionalImages || [];
+        if (additionalImages.length > 10) {
+            return res.status(400).json({ message: 'Bạn không thể thêm quá 10 ảnh bổ sung' });
+        }
+
         if (additionalImages.length > 0) {
             const imageRecords = additionalImages.map(file => ({
                 Product_ID: productId,
@@ -89,18 +93,15 @@ exports.postProduct = (req, res) => {
     });
 };
 
-
-
-
 // //Route cập nhật sản phẩm
 exports.putProduct = (req, res) => {
     const data = req.body;
     const productId = req.params.id;
     const baseUrl = `${req.protocol}://${req.get("host")}`;
 
-    // Cập nhật ảnh chính (nếu có)
-    if (req.file) {
-        const imagePath = `${baseUrl}/uploads/${req.file.filename}`;
+    // Xử lý ảnh chính (nếu có)
+    if (req.files && req.files.Image) {
+        const imagePath = `${baseUrl}/uploads/${req.files.Image[0].filename}`;
         data.Image = imagePath;
     }
 
@@ -108,19 +109,22 @@ exports.putProduct = (req, res) => {
     const updateProductSql = "UPDATE Products SET ? WHERE Product_ID=?";
     db.query(updateProductSql, [data, productId], (err) => {
         if (err) {
+            console.error("Lỗi cập nhật sản phẩm:", err);
             return res.status(500).json({ message: "Lỗi cập nhật sản phẩm", error: err });
         }
 
-        // Lưu ảnh bổ sung mới (nếu có)
-        if (req.files && req.files.newAdditionalImages) {
+        // Cập nhật ảnh bổ sung mới (nếu có)
+        // Cập nhật ảnh bổ sung mới (nếu có)
+        if (req.files && req.files.additionalImages) {
             const insertImageSql = "INSERT INTO product_images (Product_ID, Image_URL) VALUES ?";
-            const additionalImages = req.files.newAdditionalImages.map((file) => [
+            const additionalImages = req.files.additionalImages.map((file) => [
                 productId,
                 `${baseUrl}/uploads/${file.filename}`,
             ]);
 
             db.query(insertImageSql, [additionalImages], (imgErr) => {
                 if (imgErr) {
+                    console.error("Lỗi thêm ảnh bổ sung:", imgErr);
                     return res.status(500).json({
                         message: "Cập nhật sản phẩm thành công nhưng lỗi thêm ảnh bổ sung",
                         error: imgErr,
@@ -129,8 +133,9 @@ exports.putProduct = (req, res) => {
                 res.json({ message: "Đã cập nhật sản phẩm và ảnh bổ sung thành công" });
             });
         } else {
-            res.json({ message: "Đã cập nhật sản phẩm thành công" });
+            res.json({ message: "Đã cập nhật sản phẩm thành công nhưng không có ảnh bổ sung mới" });
         }
+
     });
 };
 
