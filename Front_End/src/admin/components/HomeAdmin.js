@@ -159,7 +159,7 @@ const HomeAdmin = () => {
                             <option value="categories">Danh mục</option> 
                             <option value="users">Người dùng</option>
                             <option value="manufacturer">Nhà sản xuất</option>
-                            <option value="order">Đơn hàng</option>
+                            <option value="orders">Đơn hàng</option>
                             <option value="comment">Bình luận</option>
                             <option value="voucher">Khuyến mãi</option>
                         </select>
