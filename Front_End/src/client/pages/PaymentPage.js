@@ -1,7 +1,9 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import '../styles/components/PaymentPage.css';
 import Header from '../components/Header';
+import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import toast from "react-hot-toast";
 
 const PaymentPage = () => {
     const [cartItems, setCartItems] = useState([]);
@@ -16,7 +18,17 @@ const PaymentPage = () => {
     const [discount, setDiscount] = useState(0);
     const [voucherMessage, setVoucherMessage] = useState('');
     const navigate = useNavigate();
+    const location = useLocation();
+    const { productDetails } = location.state || {}; // Access the passed product details
 
+    //mua ngay
+    useEffect(() => {
+        if (productDetails) {
+            const currentCart = JSON.parse(localStorage.getItem('cart')) || [];
+            currentCart.push(productDetails);
+            localStorage.setItem('cart', JSON.stringify(currentCart));
+        }
+    }, [productDetails]);
     useEffect(() => {
         // Lấy giỏ hàng và User ID từ localStorage
         const storedUserId = JSON.parse(localStorage.getItem('user'));
@@ -94,7 +106,7 @@ const PaymentPage = () => {
             Email: email,
             payment_method: paymentMethod,
             total_amount: finalAmount,
-            total_quantity: totalQuantity, // Thêm tổng số lượng
+            total_quantity: totalQuantity,
             items: cartItems.map(item => ({
                 Product_ID: item.id,
                 Quantity: item.quantity,
@@ -105,27 +117,59 @@ const PaymentPage = () => {
             Note: note || null
         };
 
-        fetch('http://localhost:3000/user/payment', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(orderData),
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data)
-                if (data.success === true) {
-                    alert('Mua hàng thành công!');
-                    localStorage.removeItem('cart');
-                } else if (data.success === false) {
-                    alert(data.message);
-                }
+        // Xử lý theo phương thức thanh toán
+        if (paymentMethod === 'COD') {
+            // Xử lý thanh toán COD
+            fetch('http://localhost:3000/user/payment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(orderData),
             })
-            .catch(error => {
-                console.log('Error:', error);
-                alert('Lỗi khi mua hàng');
-            });
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success === true) {
+                        alert('Thanh toán COD thành công!');
+                        console.log(localStorage.removeItem('cart'));
+                        navigate('/order'); 
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Lỗi khi xử lý thanh toán COD.');
+                });
+        } else if (paymentMethod === 'Online') {
+            // Xử lý thanh toán Online
+            fetch('http://localhost:3000/user/payment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(orderData),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success === true) {
+                        if (data.url) {
+                            window.location.href = data.url;
+                            localStorage.removeItem('cart');
+                        } else {
+                            alert('Không thể chuyển đến cổng thanh toán. Vui lòng thử lại.');
+                        }
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Lỗi khi xử lý thanh toán online.');
+                });
+        } else {
+            alert('Phương thức thanh toán không hợp lệ.');
+        }
     };
 
 

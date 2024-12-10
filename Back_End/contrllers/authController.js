@@ -54,8 +54,18 @@ async function sendVoucherEmail(email, voucherCode, discount, expirationDate) {
         \nHạn sử dụng: ${expirationDate}`,
     };
 
-    await transporter.sendMail(mailOptions);
+    try {
+        await transporter.sendMail(mailOptions);
+    } catch (error) {
+        // Nếu gặp lỗi liên quan đến email không hợp lệ
+        if (error.responseCode === 550) {  // Check if it's a known error for invalid email
+            throw new Error("Email không hợp lệ hoặc không tồn tại.");
+        } else {
+            throw new Error("Lỗi khi gửi email. Vui lòng kiểm tra lại thông tin.");
+        }
+    }
 }
+
 
 // Hàm đăng ký người dùng và gửi voucher
 exports.register = async (req, res) => {
