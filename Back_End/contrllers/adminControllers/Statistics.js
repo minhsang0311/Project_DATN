@@ -30,6 +30,26 @@ exports.StatisticsProBrand = (req, res) => {
     res.json(results);
   })
 }
+//API thống kê trạng thái đơn hàng
+exports.OrderStatusStats = (req, res) => {
+  const orderStatusQuery = `
+    SELECT 
+      o.Status,
+      os.Status_Name,
+      COUNT(o.Order_ID) AS order_count
+    FROM orders o
+    JOIN order_status os ON o.Status = os.Status_ID
+    GROUP BY o.Status, os.Status_Name
+    ORDER BY o.Status;
+  `;
+  
+  db.query(orderStatusQuery, (err, results) => {
+    if (err) {
+      return res.json({ "message": "Lỗi thống kê trạng thái đơn hàng", err });
+    }
+    res.json(results);
+  });
+};
 //Thống kê doanh thu
 exports.getRevenueStatistics = (req, res) => {
   const { startDate, endDate } = req.query;
@@ -44,7 +64,9 @@ exports.getRevenueStatistics = (req, res) => {
     FROM 
       orders
     WHERE 
-      created_at >= ? AND created_at <= ?
+      created_at >= ? 
+      AND created_at <= ?
+      AND Status = 5
   `;
 
   const startDateTime = `${startDate} 00:00:00`;
@@ -70,11 +92,18 @@ exports.DailySaleProByDateRange = (req, res) => {
 
   const sql = `
     SELECT 
-      SUM(total_quantity) AS TotalSalePro
+      Products.Product_Name AS productName, 
+      SUM(order_details.Quantity) AS totalQuantity
     FROM 
       orders
+    JOIN 
+      order_details ON orders.Order_ID = order_details.Order_ID
+    JOIN 
+      Products ON order_details.Product_ID = Products.Product_ID
     WHERE 
-      created_at >= ? AND created_at <= ?
+      orders.created_at >= ? AND orders.created_at <= ? AND orders.Status = 5
+    GROUP BY 
+      Products.Product_Name
   `;
 
   const startDateTime = `${startDate} 00:00:00`;
@@ -85,29 +114,10 @@ exports.DailySaleProByDateRange = (req, res) => {
       return res.status(500).json({ message: "Lỗi khi lấy dữ liệu tổng doanh thu", error: err });
     }
 
-    res.json(data[0]); // Trả về đối tượng chứa tổng doanh thu
+    res.json(data); // Trả về mảng sản phẩm với số lượng bán được
   });
 };
 
-//API thống kê trạng thái đơn hàng
-exports.OrderStatusStats = (req, res) => {
-  const orderStatusQuery = `
-    SELECT 
-      o.Status,
-      os.Status_Name,
-      COUNT(o.Order_ID) AS order_count
-    FROM orders o
-    JOIN order_status os ON o.Status = os.Status_ID
-    GROUP BY o.Status, os.Status_Name
-    ORDER BY o.Status;
-  `;
-  
-  db.query(orderStatusQuery, (err, results) => {
-    if (err) {
-      return res.json({ "message": "Lỗi thống kê trạng thái đơn hàng", err });
-    }
-    res.json(results);
-  });
-};
+
 
 

@@ -74,11 +74,11 @@ const ManufacturerList = () => {
             ))}
           </tbody>
         </table>
-        ) : (
-          <p className ='manufacturerList-p'>Không có nhà sản xuất nào để hiển thị.</p>
-        )}
-      </div>
-    );
-  };
-  
-  export default ManufacturerList;
+      ) : (
+        <p className ='manufacturerList-p'>Không có nhà sản xuất nào để hiển thị.</p>
+      )}
+    </div>
+  );
+};
+
+export default ManufacturerList;

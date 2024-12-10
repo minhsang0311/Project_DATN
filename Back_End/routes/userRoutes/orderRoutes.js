@@ -5,5 +5,4 @@ const orderController = require('../../contrllers/userControllers/orderControlle
 
 // Route to get orders based on user ID
 router.get('/orders/:userId', orderController.getOrderList);
-
 module.exports = router;

@@ -1,4 +1,5 @@
-import './App.css';
+
+import Toaster from  'react-hot-toast'
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 // Component Admin
@@ -38,51 +39,55 @@ import ChangePassword from './client/pages/changePassword.js';
 import PaymentPage from './client/pages/PaymentPage.js'
 import OrderStatusList from './client/pages/OrderStatusList.js'
 import Contact from './client/pages/Contact.js'
+import { Fragment } from 'react';
 
 function App() {
   return (
-    <BrowserRouter basename="/">
-      <Routes>
-        {/* <Route element={<ProtectedRoute />}> */}
-        <Route path="/admin" element={<HomeAdmin />}>
-          <Route index element={<Statistics />} />
-          <Route path="products" element={<ProductList />} />
-          <Route path="product-add" element={<ProductAdd />} />
-          <Route path="productUpdate/:id" element={<ProductUpdate />} />
-          <Route path="category" element={<CategoryList />} />
-          <Route path="categoryAdd" element={<CategoryAdd />} />
-          <Route path="categoryUpdate/:id" element={<CategoryUpdate />} />
-          <Route path="comments" element={<Comments />} />
-          <Route path="order" element={<AdminOrder />} />
-          <Route path="customers" element={<Customer />} />
-          <Route path="vouchers" element={<VouchersList />} />
-          <Route path="voucherAdd" element={<VoucherAdd />} />
-          <Route path="voucherUpdate/:id" element={<VoucherUpdate />} />
-          <Route path="customerList" element={<CustomerList />} />
-          <Route path="customerAdd" element={<CustomerAdd />} />
-          <Route path="customerUpdate/:id" element={<CustomerUpdate />} />
-          <Route path="manufacturerList" element={<ManufacturerList />} />
-          <Route path="manufacturerAdd" element={<ManufacturerAdd />} />
-          <Route path="manufacturerUpdate/:id" element={<ManufacturerUpdate />} />
-        </Route>
-        <Route path="/" element={<Home />} />
-        <Route path="/cuahang" element={<Cuahang />} />
-        <Route path="/register_login" element={<RegisterLogin />} />
-        <Route path="/search" element={<Search />} />
-        <Route path="/productDetail/:id" element={<ProductDetail />} />
-        <Route path="/search" element={<Search />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/category/:Category_ID" element={<CategoryProducts />} />
-        <Route path="/cart" element={<CartPage />} />
-        <Route path="/reset-password/:token" element={<ResetPassword />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/comments" element={<Comments />} />
-        <Route path="/payment" element={<PaymentPage />} />
-        <Route path="/order" element={<OrderStatusList />} />
-        <Route path="/change-password" element={<ChangePassword />} />
-        <Route path="/contact" element={<Contact />} />
-      </Routes>
-    </BrowserRouter>
+    <Fragment>
+      <Toaster  position="top-center" reverseOrder={false}/>
+      <BrowserRouter basename="/">
+        <Routes>
+          {/* <Route element={<ProtectedRoute />}> */}
+          <Route path="/admin" element={<HomeAdmin />}>
+            <Route index element={<Statistics />} />
+            <Route path="products" element={<ProductList />} />
+            <Route path="product-add" element={<ProductAdd />} />
+            <Route path="productUpdate/:id" element={<ProductUpdate />} />
+            <Route path="category" element={<CategoryList />} />
+            <Route path="categoryAdd" element={<CategoryAdd />} />
+            <Route path="categoryUpdate/:id" element={<CategoryUpdate />} />
+            <Route path="comments" element={<Comments />} />
+            <Route path="order" element={<AdminOrder />} />
+            <Route path="customers" element={<Customer />} />
+            <Route path="vouchers" element={<VouchersList />} />
+            <Route path="voucherAdd" element={<VoucherAdd />} />
+            <Route path="voucherUpdate/:id" element={<VoucherUpdate />} />
+            <Route path="customerList" element={<CustomerList />} />
+            <Route path="customerAdd" element={<CustomerAdd />} />
+            <Route path="customerUpdate/:id" element={<CustomerUpdate />} />
+            <Route path="manufacturerList" element={<ManufacturerList />} />
+            <Route path="manufacturerAdd" element={<ManufacturerAdd />} />
+            <Route path="manufacturerUpdate/:id" element={<ManufacturerUpdate />} />
+          </Route>
+          <Route path="/" element={<Home />} />
+          <Route path="/cuahang" element={<Cuahang />} />
+          <Route path="/register_login" element={<RegisterLogin />} />
+          <Route path="/search" element={<Search />} />
+          <Route path="/productDetail/:id" element={<ProductDetail />} />
+          <Route path="/search" element={<Search />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/category/:Category_ID" element={<CategoryProducts />} />
+          <Route path="/cart" element={<CartPage />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/comments" element={<Comments />} />
+          <Route path="/payment" element={<PaymentPage />} />
+          <Route path="/order" element={<OrderStatusList />} />
+          <Route path="/change-password" element={<ChangePassword />} />
+          <Route path="/contact" element={<Contact />} />
+        </Routes>
+      </BrowserRouter>
+    </Fragment>
   );
 }
 

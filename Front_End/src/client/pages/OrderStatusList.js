@@ -12,6 +12,7 @@ function OrderStatus() {
         const token = localStorage.getItem('token'); // Assuming token is stored as "token" in localStorage
         const user = JSON.parse(localStorage.getItem('user')); // Assuming user info is stored as "user"
         const userId = user?.id; // Get User_ID from the stored user info
+        console.log(userId)
 
         if (userId && token) {
             axios.get(`http://localhost:3000/user/orders/${userId}`, {
