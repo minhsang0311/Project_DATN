@@ -3,7 +3,6 @@ import axios from 'axios';
 import '../styles/components/Contact.css';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import Banner from './Banner';
 
 const Contact = () => {
     const [name, setName] = useState('');
@@ -29,7 +28,6 @@ const Contact = () => {
     return (
         <Fragment>
             <Header />
-            <Banner />
             <div className="contact-page">
                 <div className="contact-info">
                     <div className="contact-details">

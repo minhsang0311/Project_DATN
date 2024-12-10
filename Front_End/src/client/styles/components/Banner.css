@@ -2,9 +2,8 @@
     height: auto;
     margin: 130px auto 40px;
     display: grid;
-    width: 100%;
     gap: 5px;
-    max-width: 1320px;
+    max-width: 1350px;
     padding-top: 10px;
     grid-template-columns: 1fr 4fr;
   }
@@ -51,7 +50,7 @@
   
   .banner .trai {
     position: relative;
-    overflow: hidden; /* Ensure images don't overflow the container */
+    overflow: hidden; 
   }
   
   .banner .image-container {
@@ -82,7 +81,7 @@
   
   .banner .prev-next i {
     cursor: pointer;
-    font-size: 2em;
+    font-size: 1.7em;
     padding: 0 10px;
     color: #770f0f;
   }
@@ -96,17 +95,17 @@
   }
   
   .indicators .dot {
-    height: 10px;
-    width: 10px;
+    height: 8px;
+    width: 8px;
     margin: 0 5px;
-    background-color: rgb(255, 255, 255);
+    background-color: rgb(86, 30, 30);
     border-radius: 50%;
     display: inline-block;
     cursor: pointer;
   }
    
   .indicators .dot.active {
-    background-color: red;
+    background-color: rgb(184, 131, 131);
   }
   @media (max-width: 480px) {
     .banner { 

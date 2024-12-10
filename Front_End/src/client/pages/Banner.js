@@ -1,19 +1,23 @@
 import { useEffect, useState } from 'react';
-import '../styles/components/Banner.css';
+import { useNavigate } from 'react-router-dom'; // Import hook điều hướng
 import { Link } from 'react-router-dom';
+import '../styles/components/Banner.css';
 
 const Banner = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isDanhMucVisible, setIsDanhMucVisible] = useState(false);
+  const [list, setList] = useState([]);
   const totalImages = 4;
-  const [list, ganListLoai] = useState([]);
+  const navigate = useNavigate(); // Hook điều hướng
 
+  // Fetch danh mục từ API
   useEffect(() => {
-    fetch(`http://localhost:3000/user/category`)
+    fetch('http://localhost:3000/user/category')
       .then((res) => res.json())
-      .then((data) => ganListLoai(data));
+      .then((data) => setList(data));
   }, []);
 
+  // Tự động chuyển ảnh sau mỗi 4 giây
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % totalImages);
@@ -21,50 +25,51 @@ const Banner = () => {
     return () => clearInterval(interval);
   }, [totalImages]);
 
+  // Danh sách ảnh với productId tương ứng
   const images = [
-    '../assets/img/banner1.jpg',
-    '../assets/img/banner2.jpg',
-    '../assets/img/banner3.webp',
-    '../assets/img/banner4.jpg',
+    { src: '../assets/img/banner1.jpg', productId: 63 },
+    { src: '../assets/img/banner2.jpg', productId: 64 },
+    { src: '../assets/img/banner3.webp', productId: 65 },
+    { src: '../assets/img/banner4.png', productId: 17 },
   ];
 
-  const toggleDanhMuc = () => {
-    setIsDanhMucVisible(!isDanhMucVisible);
+  // Xử lý khi click vào ảnh
+  const handleImageClick = (productId) => {
+    navigate(`/productDetail/${productId}`); // Chuyển hướng đến trang chi tiết sản phẩm
   };
 
   return (
     <div className="banner">
       {/* Menu danh mục */}
-       <div className="menu-doc">
-        <div className="danh-muc" onClick={toggleDanhMuc}>
+      <div className="menu-doc">
+        <div className="danh-muc" onClick={() => setIsDanhMucVisible(!isDanhMucVisible)}>
           <i className="fa-solid fa-bars"></i> <p>Danh mục</p>
         </div>
-
-        <ul
-          id="danh-muc-list"
-          style={{ display: isDanhMucVisible ? 'none' : 'block' }}
-        >
-          {list.map((loai, index) => (
-            <li key={index}>
-              <Link to={`/loai/${loai.Category_ID}`}>{loai.Category_Name}</Link>
+        <ul id="danh-muc-list" style={{ display: isDanhMucVisible ? 'none' : 'block' }}>
+          {list.map((loai) => (
+            <li key={loai.Category_ID}>
+              <Link to={`/category/${loai.Category_ID}`}>{loai.Category_Name}</Link>
             </li>
           ))}
         </ul>
-      </div> 
+      </div>
 
       {/* Banner chính */}
       <div className="trai">
-        <div className="image-container" style={{ transform: `translateX(-${currentIndex * 100}%)` }}>
-          {images.map((src, index) => (
+        <div
+          className="image-container"
+          style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+        >
+          {images.map((image, index) => (
             <img
               key={index}
-              src={src}
+              src={image.src}
               alt={`Banner ${index + 1}`}
               className="banner-image"
+              onClick={() => handleImageClick(image.productId)} // Thêm sự kiện onClick
             />
           ))}
         </div>
-
 
         {/* Nút chuyển ảnh */}
         <div className="prev-next">
@@ -91,8 +96,7 @@ const Banner = () => {
           ))}
         </div>
       </div>
-      </div>
-
+    </div>
   );
 };
 

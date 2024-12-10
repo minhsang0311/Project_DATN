@@ -3,53 +3,46 @@ import axios from 'axios';
 import { Link } from "react-router-dom";
 import '../../styles/pages/manufacturerList.css';
 
-const ManufacturerList = ({ searchResults }) => {
+const ManufacturerList = () => {
   const [manufacturers, setManufacturers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Fetch manufacturers from the API
   useEffect(() => {
     const fetchManufacturers = async () => {
-      if (searchResults) {
-        // Nếu có dữ liệu từ tìm kiếm, hiển thị luôn
-        setManufacturers(searchResults);
-        setLoading(false);
-        return;
-      }
-
       try {
-        const response = await axios.get('http://localhost:3000/admin/brands'); // API lấy danh sách tất cả
+        const response = await axios.get('http://localhost:3000/admin/brands'); // Adjust the API endpoint as necessary
         setManufacturers(response.data);
+        setLoading(false);
       } catch (err) {
         console.error('Error fetching manufacturers:', err);
-        setError('Không thể tải danh sách nhà sản xuất.');
-      } finally {
+        setError('Failed to load manufacturers');
         setLoading(false);
       }
     };
 
     fetchManufacturers();
-  }, [searchResults]);
+  }, []);
 
   const deleteManufacturer = async (id) => {
     const confirmDelete = window.confirm('Bạn có chắc là bạn muốn xóa nhà sản xuất này?');
-    if (!confirmDelete) return;
+    if (!confirmDelete) return;  
 
     try {
+      // Gửi yêu cầu xóa đến phụ trợ
       await axios.delete(`http://localhost:3000/admin/brandDelete/${id}`);
       setManufacturers(manufacturers.filter(manufacturer => manufacturer.Brand_ID !== id));
     } catch (err) {
       console.error('Lỗi xóa nhà sản xuất:', err);
+
       if (err.response && err.response.data && err.response.data.message) {
-        window.alert(err.response.data.message);
+        window.alert(err.response.data.message); 
       } else {
-        window.alert('Không xóa được nhà sản xuất.');
+        window.alert('Không xóa được nhà sản xuất');
       }
     }
   };
-
-  if (loading) return <p>Đang tải dữ liệu...</p>;
-  if (error) return <p>{error}</p>;
 
   return (
     <div className="manufacturerList-list">
@@ -81,11 +74,11 @@ const ManufacturerList = ({ searchResults }) => {
             ))}
           </tbody>
         </table>
-      ) : (
-        <p className='manufacturerList-p'>Không có nhà sản xuất nào để hiển thị.</p>
-      )}
-    </div>
-  );
-};
-
-export default ManufacturerList;
+        ) : (
+          <p className ='manufacturerList-p'>Không có nhà sản xuất nào để hiển thị.</p>
+        )}
+      </div>
+    );
+  };
+  
+  export default ManufacturerList;

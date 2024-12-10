@@ -33,7 +33,6 @@ const SPLienQuan = ({ id, sosp }) => {
 
   return (
     <div className="splienquan">
-      <h2>Sản phẩm liên quan</h2>
       <div className="products-grid">
         {listsp.slice(0, 5).map((sp, i) =>
           <div className="relatedproduct" key={i}>

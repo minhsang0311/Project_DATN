@@ -15,14 +15,14 @@ function DanhMuc_Home() {
             <div className="listdanhmuc_home">
                 <h1>DANH MỤC NỔI BẬT</h1>
                 <div className="box">
-                { list.map( (loai, index)=>{ return (
-                    <Link to = { "/category/" + loai.Category_ID }>
-                    <div className="box-dm" key={index}>
+                { list.map( (loai, index)=>
+                    <Link to = { "/category/" + loai.Category_ID } key={index}>
+                    <div className="box-dm">
                         <img src={loai.Category_Image} alt={loai.Category_Name} />
                         <Link to = { "/category/" + loai.Category_ID }>{loai.Category_Name}</Link> 
                     </div>
                     </Link>
-                )})}
+                )}
                 </div>
             </div>
         </div>

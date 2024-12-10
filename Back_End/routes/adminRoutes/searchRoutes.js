@@ -10,6 +10,4 @@ const { adminMiddleware } = require('../../middlewares/adminMiddlware');
 router.get('/searchAdmin',  searchController.generalSearch);
 
 
-
-
 module.exports = router;

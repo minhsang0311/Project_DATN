@@ -64,7 +64,7 @@
 
 .cuahang .box-sp {display: grid;grid-template-columns: repeat(3, 1fr);gap: 20px;}
 .cuahang .box-sp .product {
-   min-width: 200px;background-color: rgb(255, 255, 255);height: 400px;box-shadow: 0 0px 2px 0 rgba(60,64,67,0.1), 0 0px 6px 0px rgba(60,64,67,0.25);border-radius: 10px;position: relative;}
+   min-width: 170px;background-color: rgb(255, 255, 255);height: 400px;box-shadow: 0 0px 2px 0 rgba(60,64,67,0.1), 0 0px 6px 0px rgba(60,64,67,0.25);border-radius: 10px;position: relative;}
  .cuahang .box-sp .product .discount-label {z-index: 2;color: white;font-size: 14px;font-weight: 500;position: absolute; top:10px;left: 5px;background-color: #4FC3F7;border-radius: 5px;padding: 5px 10px}
  .cuahang .box-sp .product .img-wrapper {
     width: 100%; 

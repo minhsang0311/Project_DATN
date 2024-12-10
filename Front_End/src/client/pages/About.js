@@ -86,7 +86,7 @@ const About = () => {
                                 <iframe 
                                     width="360" 
                                     height="270" 
-                                    src="https://www.youtube.com/embed/TNB-kOd5PYA" 
+                                    src="https://www.youtube.com/embed/wIYjKHmAKEk" 
                                     title="NHẬP KHẨU ĐỒ GIA DỤNG NHÀ BẾP MÀ BỎ QUA VIDEO NÀY THÌ QUÁ PHÍ!!! (PHẦN 1)" 
                                     frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                     referrerpolicy="strict-origin-when-cross-origin" 
@@ -96,16 +96,7 @@ const About = () => {
                         </div>
                     </div>
 
-                    <div className="bando">
-                        <iframe
-                            title="Google Map"
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.8354345090075!2d144.95373631531085!3d-37.81627927975156!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642af0f11fd81%3A0xf5777cb6a8ab1b52!2sGoogle!5e0!3m2!1sen!2sau!4v1614629820025!5m2!1sen!2sau"
-                            width="100%"
-                            height="400"
-                            allowFullScreen=""
-                            loading="lazy"
-                        ></iframe>
-                    </div>
+                    
                 </div>
             <Footer/>
         </Fragment>
