@@ -4,6 +4,9 @@
     margin-top: 30px;
     gap: 20px 15px
  }
+ .splienquan{
+   background-color: whitesmoke;
+ }
 .splienquan .products-grid .relatedproduct {
     min-width: 200px;
     background-color: rgb(255, 255, 255);

@@ -54,14 +54,12 @@ function SpMoi() {
             <div className="left-image">
             {showToast && <div className="toast">Đã thêm vào giỏ hàng</div>}
                 <img src="/assets/img/banner20.jpg" alt="img1"/>
-                <img src="/assets/img/banner20.jpg" alt="img2"/>
+                <img src="/assets/img/banner20.1.jpg" alt="img2"/>
             </div>
             <div className="right-products">
                 <div className="header1">
                     <p>SẢN PHẨM MỚI</p>
-                    <div className="xem_them">
-                        <h5>Xem thêm</h5> 
-                    </div>
+                   
                 </div>
                 <div className="box-sp">
                     {listsp.slice(0,8).map((sp, i) =>

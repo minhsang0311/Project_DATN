@@ -20,7 +20,7 @@ function Home() {
                 <SpMoi />
                 <SpMostView />
                 <div className="gt_home">
-                    <img src="/assets/img/banner22.png" alt="" />
+                    <div className='img_gt'><img src="/assets/img/banner22.png" alt="" /></div>
                     <div className="box_gt_home">
                         <div className="item">
                             <img src="/assets/img/item1.png" alt="" />

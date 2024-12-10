@@ -2,7 +2,7 @@ header {background-color: #F3F3F3;height: 130px;width: 100%;position: fixed;z-in
 header .hr {border: none; height: 1px;background-color: #dfe8df; }
 header .top{display:flex;justify-content: space-between;padding: 5px 6%;}
 header .top ul.trai, ul.phai1{display: flex; gap:20px}
-header .top ul.trai, ul.phai1 li{list-style: none;}
+header .top ul.trai, ul.phai1 li{list-style: none;font-size: 15px;}
 header .top .trai a{text-decoration: none;color:rgb(84, 73, 73);font-size: 13px;margin:0 auto}
 header .top a:hover{color: #4fc3f7}
 header .top span{color:blue}
@@ -17,6 +17,28 @@ header .middle form.timkiem {
   margin-bottom: 20px;
   height: 40px;
 }
+header .middle .right{display: flex;justify-content: center;gap: 30px;padding-top: 20px;}
+header .middle .right i{font-size: 25px;color: #333;transition: 0.3s;}
+header .middle .right i:hover{color: #5b94d1;}
+header .middle .right .giohang .cart-icon {
+  position: relative;
+  display: inline-block;
+}
+.cart-count {
+  position: absolute;
+  top: -8px;             /* Adjust vertical position */
+  right: -10px;          /* Adjust horizontal position */
+  background-color: red; /* Background color for quantity */
+  color: white;          /* Text color */
+  font-size: 13px;       /* Adjust font size */
+  font-weight: bold;
+  border-radius: 50%;    /* Make it a circle */
+  width: 18px;           /* Set width */
+  height: 18px;          /* Set height */
+  display: flex;
+  align-items: center;   /* Center the number vertically */
+  justify-content: center; /* Center the number horizontally */
+}
 
 .timkiem input {
   height: 40px;
@@ -26,46 +48,13 @@ header .middle form.timkiem {
   background-color: #fff; /* Màu nền trắng */
   outline: none; /* Không viền khi focus */
   transition: border-color 0.3s; /* Hiệu ứng chuyển tiếp cho viền */
-}
-.icon_user {
-  margin-left: 20px;
-  margin-top: 15px; /* Khoảng cách từ input đến biểu tượng người dùng */
+  padding: 0 15px;
 }
 
-/* header .middle .giohang{margin-top: 20px;margin: 20px;position: relative;} */
-header .middle .giohang h2{font-size:16px;position: absolute;top:-5px;right: -17px;}
-/* header .middle i.fa-magnifying-glass {position: absolute;left: 900px;top: 25px;color: #888} */
-.icon_user i {
-  font-size: 32px;
-  color: #333; 
-}
-header .middle .giohang{margin-top: 15px;margin: 20px;}
-header .middle i.fa-magnifying-glass {position: absolute;left: 900px;top: 25px;color: #888}
-header .middle i.fa-cart-shopping {font-size: 24px;cursor: pointer;color: #574141}
-/* Thêm vào styles/components/Header.css */
 
-/* Thêm vào styles/components/Header.css */
 
-.trangthai {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 15px;
-}
-
-.trangthai a {
-  color: #333; /* Màu biểu tượng */
-  font-size: 26px; /* Tăng kích thước để đậm hơn */
-  font-weight: bold; /* Làm đậm biểu tượng */
-  transition: color 0.3s;
-}
-
-.trangthai a:hover {
-  color: #ff5733; /* Màu nổi bật khi di chuột */
-}
 
   
-/* styles/components/Header.css */
 .dropdown {
   position: absolute;
   margin: 0 auto;

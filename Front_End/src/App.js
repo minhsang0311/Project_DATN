@@ -41,10 +41,12 @@ import OrderStatusList from './client/pages/OrderStatusList.js'
 import Contact from './client/pages/Contact.js'
 import { Fragment } from 'react';
 
+
+
 function App() {
   return (
     <Fragment>
-      <Toaster  position="top-center" reverseOrder={false}/>
+  
       <BrowserRouter basename="/">
         <Routes>
           {/* <Route element={<ProtectedRoute />}> */}

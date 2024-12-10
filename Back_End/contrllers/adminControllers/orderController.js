@@ -19,20 +19,7 @@ exports.getOrderList = (req, res) => {
             }
         });
     };
-    
-exports.putOrder =(req, res) => {
-    const orderId = req.params.id;
-    const { Status } = req.body; // Nhận trạng thái từ body
-  
-    // Cập nhật trong cơ sở dữ liệu
-    const sql = 'UPDATE `orders` SET Status = ? WHERE Order_ID = ?';
-    db.query(sql, [Status, orderId], (err, result) => {
-      if (err) {
-          return res.status(500).json({ message: "Lỗi lấy trạng thái đơn hàng", err });
-      }
-      res.json(data);
-  });
-};
+
     
 exports.putOrder = (req, res) => {
   const orderId = req.params.id;
@@ -50,3 +37,4 @@ exports.putOrder = (req, res) => {
       res.json({ message: 'Cập nhật trạng thái thành công' });
   });
 };
+

@@ -110,7 +110,7 @@ const ProductDetail = () => {
 
             <div className="home">
                 <div className='thanh-dieu-huong'>
-                    <Link to="/"><h3>Trang chủ</h3></Link> /
+                    <Link to="/"><h3>Trang chủ</h3></Link> 
                     <Link to="/cuahang"><h3>{sp.Product_Name}</h3></Link>
                 </div>
                 {showToast && <div className="toast">Đã thêm vào giỏ hàng</div>}
@@ -173,17 +173,18 @@ const ProductDetail = () => {
                                     </tr>
                                     <tr>
                                         <td>Model</td>
-                                        <td> {sp.Description.split('\n').map((desc, index) => (
-                                            <li key={index}>{desc.replace('-', '')}</li>
-                                        ))}</td>
+                                        <td>
+                                            <ul style={{ padding: 0, margin: 0 }}>
+                                                {sp.Description.split('\n').map((desc, index) => (
+                                                    <li key={index}>{desc.replace('-', '').trim()}</li>
+                                                ))}
+                                            </ul>
+                                        </td>
                                     </tr>
-                                    {/* <tr>
-                                        <td>Thông số</td>
-                                        <td>{sp.Description}</td>
-                                    </tr> */}
                                 </tbody>
                             </table>
                         </div>
+
                     </div>
                 </div>
                 <Comments productId={id} />

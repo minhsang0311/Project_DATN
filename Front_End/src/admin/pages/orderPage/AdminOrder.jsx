@@ -23,7 +23,10 @@ const AdminOrder = ({ searchResults }) => {
             },
           });
           const data = await response.json();
-          setOrders(data);
+
+          // Sort orders by Order_ID from smallest to largest
+          const sortedOrders = data.sort((a, b) => a.Order_ID - b.Order_ID);
+          setOrders(sortedOrders);
           setLoading(false);
         } catch (err) {
           setError('Lỗi khi lấy danh sách đơn hàng');
@@ -35,28 +38,48 @@ const AdminOrder = ({ searchResults }) => {
     fetchOrders();
   }, [searchResults]); // Re-run effect when searchResults change
 
-  const handleStatusChange = async (orderId) => {
-    const token = localStorage.getItem('token');
-    try {
-      await axios.put(`http://localhost:3000/admin/order/${orderId}`, 
-        { Status: newStatus },
-        {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          },
-        }
-      );
-      setOrders((prevOrders) =>
-        prevOrders.map((order) =>
-          order.Order_ID === orderId ? { ...order, Status: newStatus } : order
-        )
-      );
-      setNewStatus('');
-      setSelectedOrder(null);
-    } catch (err) {
-      setError('Lỗi khi cập nhật trạng thái đơn hàng');
-    }
+ const handleStatusChange = async (orderId) => {
+  const token = localStorage.getItem('token');
+  const currentOrder = orders.find(order => order.Order_ID === orderId);
+
+  // Xác định các trạng thái có thể chuyển
+  const validTransitions = {
+    1: [2], // Chờ xác nhận -> Đã xác nhận
+    2: [3], // Đã xác nhận -> Đang chuẩn bị hàng
+    3: [4], // Đang chuẩn bị hàng -> Đang vận chuyển
+    4: [5], // Đang vận chuyển -> Đã giao hàng
+    5: [],  // Đã giao hàng không thể quay lại
+    6: []   // Đã hủy không thể quay lại
   };
+
+  // Kiểm tra nếu trạng thái mới hợp lệ
+  if (!validTransitions[currentOrder.Status].includes(Number(newStatus))) {
+    setError('Trạng thái không thể quay lại');
+    return;
+  }
+
+  try {
+    await axios.put(`http://localhost:3000/admin/order/${orderId}`, 
+      { Status: newStatus },
+      {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      }
+    );
+
+    // Cập nhật trạng thái trong state
+    setOrders((prevOrders) =>
+      prevOrders.map((order) =>
+        order.Order_ID === orderId ? { ...order, Status: newStatus } : order
+      )
+    );
+    setNewStatus('');
+    setSelectedOrder(null);
+  } catch (err) {
+    setError('Lỗi khi cập nhật trạng thái đơn hàng');
+  }
+};
 
   if (loading) return <div className="loading">Loading...</div>;
   if (error) return <div className="error">{error}</div>;
@@ -88,7 +111,6 @@ const AdminOrder = ({ searchResults }) => {
                     onChange={(e) => setNewStatus(e.target.value)}
                     className="status-select"
                   >
-                    <option value="">Chọn trạng thái</option>
                     <option value={1}>Chờ xác nhận</option>
                     <option value={2}>Đã xác nhận</option>
                     <option value={3}>Đang chuẩn bị hàng</option>
