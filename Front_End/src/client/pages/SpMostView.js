@@ -45,15 +45,13 @@ function SpMostView() {
     return (
         <div className="spbanchay">
             <div className="left-image">
-                <img src="/assets/img/banner21.png" alt="" />
-                <img src="/assets/img/banner21.png" alt="" />
+                <img src="/assets/img/banner21.1.jpg" alt="" />
+                <img src="/assets/img/banner21.2.jpg" alt="" />
             </div>
             <div className="right-products">
                 <div className="header1">
                     <p>ĐƯỢC QUAN TÂM</p>
-                    <div className="xem_them">
-                        <h5>Xem thêm</h5>
-                    </div>
+                    
                 </div>
                 <div className="box-sp">
                     {listsp.slice(0, 8).map((sp, i) => (

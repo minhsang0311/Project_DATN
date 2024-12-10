@@ -92,53 +92,54 @@ const Comments = ({ productId }) => {
 
     return (
         <div className="comments-section">
-            <h3>Bình luận</h3>
-            {error && <p className="error">{error}</p>}
-            {success && <p className="success">{success}</p>}
-            <ul>
-                {comments.length > 0 ? (
-                    comments.map((comment) => (
-                        <li key={comment.Review_ID} className="comment-item">
-                            <img
-                                src="https://i.pinimg.com/736x/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg"
-                                alt={comment.User_Name}
-                                className="user-avatar"
-                            />
-                            <div className="comment-content">
-                                <strong>{comment.User_Name}</strong>
-                                <div className="stars">{renderStars(comment.Ratting)}</div>
-                                <p>{comment.Comment}</p>
-                            </div>
-                        </li>
-                    ))
-                ) : (
-                    <li>Chưa có bình luận nào.</li>
-                )}
-            </ul>
-
-            <form onSubmit={handleAddComment}>
-                <textarea
-                    placeholder="Nội dung bình luận"
-                    value={newComment}
-                    onChange={(e) => setNewComment(e.target.value)}
-                    required
-                />
-                <label>
-                    Đánh giá:
-                    <select
-                        value={rating}
-                        onChange={(e) => setRating(e.target.value)}
-                    >
-                        <option value={5}>5</option>
-                        <option value={4}>4</option>
-                        <option value={3}>3</option>
-                        <option value={2}>2</option>
-                        <option value={1}>1</option>
-                    </select>
-                </label>
-                <button type="submit">Gửi bình luận</button>
-            </form>
-        </div>
+        <h3>Bình luận</h3>
+        {error && <p className="error">{error}</p>}
+        {success && <p className="success">{success}</p>}
+        <ul>
+            {comments.length > 0 ? (
+                comments.map((comment) => (
+                    <li key={comment.Review_ID} className="comment-item">
+                        <img
+                            src="https://i.pinimg.com/736x/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg"
+                            alt={comment.User_Name}
+                            className="user-avatar"
+                        />
+                        <div className="comment-content">
+                            <strong>{comment.User_Name}</strong>
+                            <div className="stars">{renderStars(comment.Ratting)}</div>
+                            <p>{comment.Comment}</p>
+                        </div>
+                    </li>
+                ))
+            ) : (
+                <li></li>
+            )}
+        </ul>
+    
+        <form onSubmit={handleAddComment}>
+            <textarea
+                placeholder="Nội dung bình luận"
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                required
+            />
+            <label>
+                Đánh giá:
+                <select
+                    value={rating}
+                    onChange={(e) => setRating(parseInt(e.target.value))}
+                >
+                    <option value={5}>5 sao</option>
+                    <option value={4}>4 sao</option>
+                    <option value={3}>3 sao</option>
+                    <option value={2}>2 sao</option>
+                    <option value={1}>1 sao</option>
+                </select>
+            </label>
+            <button type="submit">Gửi bình luận</button>
+        </form>
+    </div>
+    
     );
 };
 

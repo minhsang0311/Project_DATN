@@ -71,7 +71,7 @@ function Header() {
       <hr className="hr" />
       <div className="middle">
         <div className="logo_trangchu">
-          <img src="../assets/img/logo3.png" alt="Logo" />
+          <Link to="/"><img src="../assets/img/logo3.png" alt="Logo" /></Link>
         </div>
         <div>
           <form className="timkiem" onSubmit={handleSearch}>
@@ -83,18 +83,24 @@ function Header() {
             />
           </form>
         </div>
-        <div className="icon_user">
-          <Link to="/register_login">
-            <i className="fa-solid fa-user fa-2x"></i>
-          </Link>
+        <div className='right'>
+          <div className="icon_user">
+            <Link to="/register_login">
+              <i className="fa-solid fa-user fa-2x"></i>
+            </Link>
+          </div>
+          <div className='giohang'>
+            <Link to="/cart">
+            <div className="cart-icon">
+              <i className="fa-solid fa-cart-shopping"></i>
+              {totalQuantity > 0 && <span className="cart-count">{totalQuantity}</span>}
+            </div>
+            </Link>
+          </div>
+          <div className='trangthai'>
+          <Link to="/order"><i className="bi bi-truck"></i></Link>
+          </div>
         </div>
-        <div className='giohang'>
-          <Link to="/cart">
-            <i className="fa-solid fa-cart-shopping">{totalQuantity > 0 ? totalQuantity : ''}</i>
-          </Link>
-        </div>
-        <div className='trangthai'>
-        <Link to="/order"><i className="bi bi-truck"></i></Link></div>
       </div>
       <Nav />
     </header >

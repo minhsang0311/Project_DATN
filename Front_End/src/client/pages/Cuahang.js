@@ -6,6 +6,7 @@ import Footer from '../components/Footer';
 import Product from './Product';
 import ReactPaginate from 'react-paginate';
 import usePagination from "./paginate/Paginate";
+
 function Cuahang() {
     const [listsp, setListSP] = useState([]);
     const [filteredSP, setFilteredSP] = useState([]);
@@ -15,7 +16,7 @@ function Cuahang() {
     const [maxPrice, setMaxPrice] = useState("");
     const [sortOrder, setSortOrder] = useState("");
 
-    const pageSize = 6; // Số sản phẩm mỗi trang
+    const pageSize = 9;
     const { spTrong1Trang, tongSoTrang, currentPage, handlePageChange } = usePagination(filteredSP, pageSize);
 
     useEffect(() => {
@@ -33,29 +34,28 @@ function Cuahang() {
             .then(data => setBrands(data));
     }, []);
 
+    // Trigger filter on any change
+    useEffect(() => {
+        handleFilter();
+    }, [brand, minPrice, maxPrice, sortOrder]);
+
     const handleFilter = () => {
         let url = `http://localhost:3000/user/filteredProducts?`;
-    
-        if (minPrice) url += `minPrice=${minPrice}&`;
-        if (maxPrice) url += `maxPrice=${maxPrice}&`;
+        if (minPrice) url += `minPrice=${minPrice.replace(/,/g, '')}&`;
+        if (maxPrice) url += `maxPrice=${maxPrice.replace(/,/g, '')}&`;
         if (sortOrder) url += `sortOrder=${sortOrder}&`;
         if (brand) url += `brand=${brand}&`;
-    
+
         fetch(url)
             .then(res => res.json())
             .then(data => {
-                setFilteredSP(data); // Cập nhật danh sách sản phẩm đã lọc
-                // usePagination tự động reset currentPage về 0 nhờ `useEffect`
+                setFilteredSP(data);
             });
     };
-    
 
-    const handleClearFilters = () => {
-        setBrand("");
-        setMinPrice("");
-        setMaxPrice("");
-        setSortOrder("");
-        setFilteredSP(listsp); // Reset danh sách
+    // Format number with commas
+    const formatPrice = (value) => {
+        return value.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     };
 
     return (
@@ -74,16 +74,18 @@ function Cuahang() {
                         
                         <div className="price-range">
                             <input
-                                type="number"
+                                type="text"
                                 placeholder="Giá tối thiểu"
                                 value={minPrice}
-                                onChange={(e) => setMinPrice(e.target.value)}
+                                onChange={(e) => setMinPrice(formatPrice(e.target.value))}
+                                step="50000"
                             />
                             <input
-                                type="number"
+                                type="text"
                                 placeholder="Giá tối đa"
                                 value={maxPrice}
-                                onChange={(e) => setMaxPrice(e.target.value)}
+                                onChange={(e) => setMaxPrice(formatPrice(e.target.value))}
+                                step="50000"
                             />
                         </div>
                         <h4>Thương hiệu</h4>
@@ -95,10 +97,6 @@ function Cuahang() {
                                 </option>
                             ))}
                         </select>
-                        <div className='loc_boloc'>
-                            <button onClick={handleFilter}>Lọc</button>
-                            <button onClick={handleClearFilters} className="clear-filters">Bỏ lọc</button>
-                        </div>
                     </div>
                     <div className="right-products">
                         <div className="box-sp">

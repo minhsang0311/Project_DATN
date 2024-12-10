@@ -97,31 +97,31 @@
     text-align: center;
 }
 
-.left h2 {
+.statistics .left h2 {
     text-align: center;
 }
 
-.left h3 {
+.statistics .left h3 {
     text-align: center;
     margin-top: 20px;
 }
-.right, .left, .center {
+.statistics .right, .left, .center {
     width: 100%; 
     
     justify-items: center;
 }
-.left div {
+.statistics .left div {
     margin: auto;
     border-radius: 50%; /* Make it circular */
     padding: 20px; /* Padding inside the circle */
     display: inline-block; /* Fit to the content */
     background-color: #ffffff;
 }
-.right div{
+.statistics .right div{
     height: 300px;
     width: 300px;
 }
-.center div {
+.statistics .center div {
     text-align: center;
     align-items: center;
     height: 300px;

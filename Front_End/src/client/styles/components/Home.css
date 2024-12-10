@@ -10,10 +10,10 @@
 .home .spbanchay .right-products .header1 .xem_them {font-weight: 600;border: 1px solid #855454; border-radius: 100px;padding: 5px 10px;cursor: pointer; color:#AE9595;}
 .home .spbanchay .box-sp {display: grid;grid-template-columns: repeat(4, 1fr);gap: 15px;}
 .home .spbanchay .box-sp .product {
-   min-width: 200px;background-color: rgb(255, 255, 255);height: 370px;box-shadow: 0 0px 2px 0 rgba(60,64,67,0.1), 0 0px 6px 0px rgba(60,64,67,0.25);border-radius: 10px;position: relative;
+   min-width: 170px;background-color: rgb(255, 255, 255);height: 370px;box-shadow: 0 0px 2px 0 rgba(60,64,67,0.1), 0 0px 6px 0px rgba(60,64,67,0.25);border-radius: 10px;position: relative;
 }
- .home .spbanchay .box-sp .product .discount-label {z-index: 2;color: white;font-size: 14px;font-weight: 500;position: absolute; top:10px;left: 5px;background-color: #4FC3F7;border-radius: 5px;padding: 5px 10px}
- .home .spbanchay .box-sp .product .img-wrapper {
+.home .spbanchay .box-sp .product .discount-label {z-index: 2;color: white;font-size: 14px;font-weight: 500;position: absolute; top:10px;left: 5px;background-color: #4FC3F7;border-radius: 5px;padding: 5px 10px}
+.home .spbanchay .box-sp .product .img-wrapper {
     width: 100%; /* Đảm bảo hình ảnh chiếm toàn bộ chiều rộng */
     height: 230px; /* Cố định chiều cao */
     overflow: hidden; /* Ẩn các phần của hình ảnh bị tràn */
@@ -22,7 +22,7 @@
     align-items: center;
 }
 .home .spbanchay .box-sp .product .img-wrapper img {width: 100%;height: 90%;transition: 0.5s;margin-top: 10px;}
- .home .spbanchay .box-sp .product .img-wrapper img:hover {transform: scale(1.1);}
+.home .spbanchay .box-sp .product .img-wrapper img:hover {transform: scale(1.1);}
 .home .spbanchay .box-sp .product a {
    display: -webkit-box;
    -webkit-line-clamp: 2; /* Giới hạn 2 dòng */
@@ -37,11 +37,11 @@
    text-decoration: none;
    margin: 10px 5px;
 } 
-.home .spbanchay .box-sp .product .price_giohang{align-items: center;;display: flex;justify-content:space-between;margin-top: 10px;}
- .home .spbanchay .box-sp .product .price .old-price {text-decoration: line-through;color: #AE9595;font-size: 14px;margin: 5px;}
- .home .spbanchay .box-sp .product .price .new-price {font-weight: 600;color: #ee7c2a;font-size: 16px;margin: 5px}
- .home .spbanchay .box-sp .product .add-to-cart {
-   font-size: 15px;background-color: #ffffff;padding:5px 10px;color: #4fc3f7;
+.home .spbanchay .box-sp .product .price_giohang{align-items: center;display: flex;justify-content:space-between;margin-top: 10px;}
+.home .spbanchay .box-sp .product .price .old-price {text-decoration: line-through;color: #AE9595;min-inline-size: 10px;margin: 5px;}
+.home .spbanchay .box-sp .product .price .new-price {font-weight: 600;color: #ee7c2a;min-inline-size: 12px;margin: 5px}
+.home .spbanchay .box-sp .product .add-to-cart {
+   min-inline-size: 15px;background-color: #ffffff;padding:5px 10px;color: #4fc3f7;
    border: 1px solid #4fc3f7;
    border-radius: 50px;
    transition: background-color 0.3s ease, color 0.3s ease;
@@ -69,7 +69,6 @@
 .home_SpMostView .spbanchay .product-list .product .price .old-price {text-decoration: line-through;color: #AE9595;font-size: 20px;}
 .home_SpMostView .spbanchay .product-list .product .price .new-price {font-weight: 500;color: #ee7c2a;font-size: 22px;}
 .home_SpMostView .spbanchay .product-list .product .add-to-cart {color: #4fc3f7;background-color: #ffffff;border: 1px solid #4fc3f7;border-radius: 50px;padding: 10px 20px;cursor: pointer;transition: background-color 0.3s ease, color 0.3s ease;margin-top: 10px;font-size: 16px;text-align: center; }
-
 .home_SpMostView .spbanchay .product-list .product .add-to-cart:hover {background-color: #4fc3f7;color: white;}
 
 .home .spbanchay .box-sp .product .add-to-cart:hover {background-color: #4fc3f7;color: white;}
@@ -141,7 +140,8 @@
    transition: background-color 0.3s ease, color 0.3s ease;
    cursor: pointer;
    margin-right: 10px;
-} .home .spkhuyenmai .box-sp .product .add-to-cart:hover {background-color: #4fc3f7;color: white;}
+} 
+.home .spkhuyenmai .box-sp .product .add-to-cart:hover {background-color: #4fc3f7;color: white;}
 
 .home .listdanhmuc_home{max-width: 1350px;margin: 30px auto 10px;background-color:white;padding: 20px;}
 .home .listdanhmuc_home h1{font-size: 25px;font-weight: 500;color:#5d5555}
@@ -161,7 +161,7 @@
    margin:200px auto 0px;
  }
  
- .item {
+ .box_gt_home .item {
    padding: 100px 20px 50px;
    text-align: center;
    position: relative; 
@@ -179,12 +179,12 @@
    border-radius: 1000px;
    /* box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px; */
  }
-.item p.tieude {margin-top: 30px; color: #000000; font-size: 16px}
- .item p {margin-top: 20px; color: #af7a7a; font-size: 14px;line-height: 1.7;}
+
+ .box_gt_home .item p.tieude {margin-top: 30px; color: #000000; font-size: 16px}
+ .box_gt_home .item p {margin-top: 20px; color: #af7a7a; font-size: 14px;line-height: 1.7;}
  
-.gt_home img{
-   width: 100%;
-}
+ .gt_home .img_gt img{width: 100%;}
+
 @media (max-width: 800px) {
    .home .spbanchay { grid-template-columns: 1fr;}
    .home .spbanchay .left-image img{display: none; }
