@@ -70,7 +70,12 @@ const ProductList = ({ searchResults }) => {
                             <img src={product.Image} alt={product.Product_Name} className="product-img" />
                         </div>
                         <div className="grid-item">{Number(product.Price).toLocaleString("vi")} VNĐ</div>
-                        <div className="grid-item">{product.Description}</div>
+                        <div className="grid-item">{product.Description.split('\n').map((desc, index) => (
+                            <div className="description" key={index}>{desc.replace('-', '')}</div>
+                        ))}</div>
+                        {/* {product.Description.split('\n').map((desc, index) => (
+                            <div className="grid-item" key={index}>{desc.replace('-', '')}</div>
+                        ))} */}
                         <div className="grid-item">{product.Views}</div>
                         <div className="grid-item">{product.Show_Hidden === 1 ? "Hiện" : "Ẩn"}</div>
                         <div className="grid-item grid-item-button">

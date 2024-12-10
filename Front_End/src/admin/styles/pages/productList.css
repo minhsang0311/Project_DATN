@@ -1,11 +1,13 @@
-.box-productlist{
+.box-productlist {
     background-color: white;
     border-radius: 10px;
 }
+
 .headertop-admin {
     margin-top: 20px;
     padding-top: 15px;
 }
+
 .header_admin {
     display: flex;
     justify-content: space-between;
@@ -24,23 +26,24 @@
 }
 
 .header_admin .button_admin {
-    background-color: white; 
+    background-color: white;
     padding: 10px 20px;
     border: none;
     color: #56A4FF;
     font-weight: bold;
-    border-radius: 30px; 
-    cursor: pointer; 
+    border-radius: 30px;
+    cursor: pointer;
 }
 
 .header_admin .button_admin a {
     text-decoration: none;
-    color: #56A4FF; 
-    font-size: 16px; 
+    color: #56A4FF;
+    font-size: 16px;
 }
+
 .grid-container {
     display: grid;
-    grid-template-columns: 80px 180px 140px 160px 290px 100px 90px 150px ;
+    grid-template-columns: 80px 180px 140px 160px 290px 100px 90px 150px;
     margin-top: 20px;
     border-radius: 10px;
     padding: 15px;
@@ -56,23 +59,35 @@
 }
 
 .grid-item {
-    padding: 10px;  
+    padding: 10px;
     border: 1px solid #e0e0e0;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column; /* Hiển thị nội dung theo chiều dọc */
+    justify-content: flex-start; /* Canh đầu nội dung theo chiều dọc */
+    align-items: center; /* Canh giữa nội dung theo chiều ngang */
+    text-align: center;
+    background-color: #f9f9f9; /* Màu nền nhẹ */
+    border-radius: 5px; /* Bo tròn các góc */
 }
-
+.grid-item .description {
+    margin: 5px 0; /* Khoảng cách giữa các dòng mô tả */
+    font-size: 14px; /* Kích thước chữ */
+    color: #333; /* Màu chữ */
+    text-align: justify; /* Căn đều nội dung */
+    width: 100%; /* Đảm bảo mô tả chiếm toàn bộ chiều ngang của cột */
+}
 .product-img {
     max-width: 60px;
     border-radius: 5px;
 }
+
 .grid-item-button {
     display: flex;
-    justify-content: space-around; 
+    justify-content: space-around;
 }
+
 .edit-btn,
-.delete-btn {   
+.delete-btn {
     background-color: transparent;
     border: none;
     font-size: 18px;
@@ -86,32 +101,42 @@
 .delete-btn {
     color: #dc3545;
 }
+
 .image-preview-item {
-    position: relative; /* This allows us to position the "X" icon relative to the image */
+    position: relative;
+    /* This allows us to position the "X" icon relative to the image */
     display: inline-block;
     margin: 5px;
-  }
-  
-  .image-preview-item img {
+}
+
+.image-preview-item img {
     width: 50px;
     height: 50px;
-    object-fit: cover; /* Ensures image scaling */
-  }
-  
-  .image-preview-item button {
-    position: absolute; /* Absolute positioning to place the button on top of the image */
-    top: -17px; /* Align it at the top of the container */
-    right: -17px; /* Align it to the right of the container */
-    background-color: transparent; /* Make background transparent */
-    border: none; /* Remove default button border */
-    color: #fff; /* White icon color */
-    font-size: 18px; /* Adjust size of the icon */
-    cursor: pointer; /* Change cursor to pointer to indicate it's clickable */
+    object-fit: cover;
+    /* Ensures image scaling */
+}
+
+.image-preview-item button {
+    position: absolute;
+    /* Absolute positioning to place the button on top of the image */
+    top: -17px;
+    /* Align it at the top of the container */
+    right: -17px;
+    /* Align it to the right of the container */
+    background-color: transparent;
+    /* Make background transparent */
+    border: none;
+    /* Remove default button border */
+    color: #fff;
+    /* White icon color */
+    font-size: 18px;
+    /* Adjust size of the icon */
+    cursor: pointer;
+    /* Change cursor to pointer to indicate it's clickable */
     padding: 5px;
-  }
-  .image-preview-item button i {
+}
+
+.image-preview-item button i {
     color: black;
-  }
-
-
+}
 

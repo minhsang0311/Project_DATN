@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../../styles/pages/AdminOrder.css';
 
-const OrderManagement = () => {
+const OrderManagement = ({ searchResults }) => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -11,6 +11,12 @@ const OrderManagement = () => {
 
   useEffect(() => {
     const fetchOrders = async () => {
+      if (searchResults) {
+        setOrders(searchResults); // Dùng kết quả tìm kiếm nếu có
+        setLoading(false);
+        return;
+      }
+
       const token = localStorage.getItem('token');
       try {
         const response = await fetch(`http://localhost:3000/admin/order`, {
@@ -20,19 +26,21 @@ const OrderManagement = () => {
         });
         const data = await response.json();
         setOrders(data);
-        setLoading(false);
       } catch (err) {
         setError('Lỗi khi lấy danh sách đơn hàng');
+      } finally {
         setLoading(false);
       }
     };
+
     fetchOrders();
-  }, []);
+  }, [searchResults]);
 
   const handleStatusChange = async (orderId) => {
     const token = localStorage.getItem('token');
     try {
-      await axios.put(`http://localhost:3000/admin/order/${orderId}`, 
+      await axios.put(
+        `http://localhost:3000/admin/order/${orderId}`,
         { Status: newStatus },
         {
           headers: {

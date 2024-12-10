@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import '../../styles/pages/customerList.css'; 
+import '../../styles/pages/customerList.css';
 import { Link } from "react-router-dom";
 
-
-const CustomerList = () => {
+const CustomerList = ({ searchResults }) => {
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -12,8 +11,16 @@ const CustomerList = () => {
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/admin/customers');
-        setCustomers(response.data);
+        let response;
+        if (searchResults && searchResults.length > 0) {
+          // Sử dụng kết quả từ tìm kiếm
+          setCustomers(searchResults);
+        } else {
+          // Nếu không có searchResults, fetch toàn bộ danh sách khách hàng
+          response = await axios.get('http://localhost:3000/admin/customers');
+          setCustomers(response.data);
+        }
+
       } catch (error) {
         console.error("Error fetching customers:", error);
         setError("Không thể tải danh sách khách hàng.");
@@ -23,9 +30,8 @@ const CustomerList = () => {
     };
 
     fetchCustomers();
-  }, []);
+  }, [searchResults]);
 
-  // Function to delete a customer by ID
   const handleDelete = async (userId) => {
     if (window.confirm("Bạn có chắc chắn muốn xóa khách hàng này?")) {
       try {
@@ -45,8 +51,8 @@ const CustomerList = () => {
     <div className="customer-list">
       <h2>Danh sách khách hàng</h2>
       <button className="customer-add-button">
-                    <Link to="/admin/customerAdd">Thêm khách hàng</Link>
-                </button>
+        <Link to="/admin/customerAdd">Thêm khách hàng</Link>
+      </button>
       {customers.length > 0 ? (
         <table className="customer-table">
           <thead className="customer-thead">
@@ -68,8 +74,8 @@ const CustomerList = () => {
                 <td>{customer.Phone || 'N/A'}</td>
                 <td>{customer.Role === 1 ? 'Admin' : 'User'}</td>
                 <td>
-                <Link to={`/admin/customerUpdate/${customer.User_ID}`}  className="customer-edit-btn">✏️</Link>
-                <button className="customer-delete-btn" onClick={() => handleDelete(customer.User_ID)}>🗑️</button>
+                  <Link to={`/admin/customerUpdate/${customer.User_ID}`} className="customer-edit-btn">✏️</Link>
+                  <button className="customer-delete-btn" onClick={() => handleDelete(customer.User_ID)}>🗑️</button>
                 </td>
               </tr>
             ))}
@@ -83,6 +89,3 @@ const CustomerList = () => {
 };
 
 export default CustomerList;
-
-
-
