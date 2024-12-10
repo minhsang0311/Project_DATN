@@ -8,6 +8,7 @@ ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 const StatisticsSalePro = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [salesData, setSalesData] = useState([]); // To store the product sales data
   const [chartData, setChartData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -33,7 +34,6 @@ const StatisticsSalePro = () => {
     }
   }, [startDate, endDate]);
 
-  // Hàm gọi API để lấy tổng số sản phẩm bán được
   const handleFetchData = () => {
     if (!startDate || !endDate) {
       alert("Vui lòng nhập ngày bắt đầu và ngày kết thúc!");
@@ -52,21 +52,23 @@ const StatisticsSalePro = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        if (!data || typeof data.TotalSalePro === "undefined") {
+        if (!Array.isArray(data)) {
           setError("Dữ liệu trả về không hợp lệ.");
           return;
         }
 
-        const totalSalePro = parseFloat(data.TotalSalePro); // Giả sử API trả về số sản phẩm bán được dưới trường "TotalSalePro"
+        setSalesData(data); // Set the sales data
 
-        const label = `Tổng sản phẩm bán được từ ${startDate} đến ${endDate}`;
+        // Calculate total quantity sold across all products
+        const totalQuantitySold = data.reduce((acc, item) => acc + item.totalQuantity, 0);
 
+        // Prepare data for the chart to show only total sales
         setChartData({
-          labels: [label],
+          labels: ["Tổng số sản phẩm bán được"], // Only one label
           datasets: [
             {
-              label: "Sản phẩm bán được",
-              data: [totalSalePro],
+              label: "Tổng số sản phẩm bán được",
+              data: [totalQuantitySold], // Single value for the total sales
               backgroundColor: "rgba(75, 192, 192, 0.5)",
               borderColor: "rgba(75, 192, 192, 1)",
               borderWidth: 1,
@@ -80,7 +82,7 @@ const StatisticsSalePro = () => {
 
   return (
     <div className="revenue-statistics">
-      <h2>THỐNG KÊ SẢN PHẨM ĐÃ BÁN</h2>
+      <h2>THỐNG KÊ TỔNG SỐ SẢN PHẨM ĐÃ BÁN</h2>
       <div className="filter-section">
         <label>
           Ngày bắt đầu:
@@ -103,6 +105,28 @@ const StatisticsSalePro = () => {
         </button>
       </div>
       {error && <p style={{ color: "red" }}>{error}</p>}
+
+      <div className="table-section">
+        {salesData.length > 0 && (
+          <table>
+            <thead>
+              <tr>
+                <th>Tên sản phẩm</th>
+                <th>Số lượng bán</th>
+              </tr>
+            </thead>
+            <tbody>
+              {salesData.map((item, index) => (
+                <tr key={index}>
+                  <td>{item.productName}</td>
+                  <td>{item.totalQuantity}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
+
       <div className="chart-section">
         {chartData ? (
           <Bar

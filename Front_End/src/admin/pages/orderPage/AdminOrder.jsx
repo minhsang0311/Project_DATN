@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../../styles/pages/AdminOrder.css';
 
-const OrderManagement = ({ searchResults }) => {
+const AdminOrder = ({ searchResults }) => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -11,36 +11,34 @@ const OrderManagement = ({ searchResults }) => {
 
   useEffect(() => {
     const fetchOrders = async () => {
-      if (searchResults) {
-        setOrders(searchResults); // Dùng kết quả tìm kiếm nếu có
+      if (searchResults && searchResults.length > 0) {
+        setOrders(searchResults);  // Use the search results directly if available
         setLoading(false);
-        return;
-      }
-
-      const token = localStorage.getItem('token');
-      try {
-        const response = await fetch(`http://localhost:3000/admin/order`, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          },
-        });
-        const data = await response.json();
-        setOrders(data);
-      } catch (err) {
-        setError('Lỗi khi lấy danh sách đơn hàng');
-      } finally {
-        setLoading(false);
+      } else {
+        const token = localStorage.getItem('token');
+        try {
+          const response = await fetch(`http://localhost:3000/admin/order`, {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+            },
+          });
+          const data = await response.json();
+          setOrders(data);
+          setLoading(false);
+        } catch (err) {
+          setError('Lỗi khi lấy danh sách đơn hàng');
+          setLoading(false);
+        }
       }
     };
 
     fetchOrders();
-  }, [searchResults]);
+  }, [searchResults]); // Re-run effect when searchResults change
 
   const handleStatusChange = async (orderId) => {
     const token = localStorage.getItem('token');
     try {
-      await axios.put(
-        `http://localhost:3000/admin/order/${orderId}`,
+      await axios.put(`http://localhost:3000/admin/order/${orderId}`, 
         { Status: newStatus },
         {
           headers: {
@@ -122,4 +120,4 @@ const OrderManagement = ({ searchResults }) => {
   );
 };
 
-export default OrderManagement;
+export default AdminOrder;

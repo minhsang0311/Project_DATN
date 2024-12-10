@@ -36,19 +36,26 @@ exports.generalSearch = (req, res) => {
             params = [searchPattern];
             break;
         case 'orders':
-            sql = `SELECT o.*, v.Code FROM orders o
-                   LEFT JOIN Vouchers v 
-                   ON o.Voucher_ID = v.Voucher_ID
-                   WHERE 
-                   o.Order_ID LIKE ? 
-                   OR v.Code LIKE ?
-                   OR o.Status LIKE ?
-                   OR Email LIKE ?
-                   OR Phone LIKE ?
-                   OR User_Name LIKE ?
-                   OR Address LIKE ?
-                   OR payment_method LIKE ?
-                   OR created_at LIKE ?
+            sql = `SELECT 
+                    o.*, 
+                    v.Code, 
+                    os.Status_Name AS Status
+                FROM orders o
+                LEFT JOIN Vouchers v 
+                    ON o.Voucher_ID = v.Voucher_ID
+                LEFT JOIN order_status os
+                    ON o.Status = os.Status_ID
+                WHERE 
+                    o.Order_ID LIKE ? 
+                    OR v.Code LIKE ? 
+                    OR o.Status LIKE ? 
+                    OR o.Email LIKE ? 
+                    OR o.Phone LIKE ? 
+                    OR o.User_Name LIKE ? 
+                    OR o.Address LIKE ? 
+                    OR o.payment_method LIKE ? 
+                    OR o.created_at LIKE ?
+
                    `;
             params = [searchPattern, searchPattern, searchPattern, searchPattern,
                 searchPattern, searchPattern, searchPattern, searchPattern, searchPattern];
@@ -68,7 +75,6 @@ exports.generalSearch = (req, res) => {
                     r.User_Name LIKE ? 
                     OR r.Comment LIKE ?
                     OR p.Product_Name LIKE ?
-                
                    `;
             params = [searchPattern, searchPattern, searchPattern];
             break;

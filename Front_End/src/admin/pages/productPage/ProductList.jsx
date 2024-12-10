@@ -3,20 +3,20 @@ import { Fragment, useEffect, useState } from "react";
 import "../../styles/pages/productList.css";
 
 const ProductList = ({ searchResults }) => {
-    const token = localStorage.getItem('token'); 
+    const token = localStorage.getItem('token');
     const url = `http://localhost:3000/admin`;
     const [productList, setProductList] = useState([]);
 
     useEffect(() => {
-        if (!searchResults || searchResults.length === 0) { 
+        if (!searchResults || searchResults.length === 0) {
             // Fetch toàn bộ danh sách sản phẩm khi không có kết quả tìm kiếm
             fetch(`${url}/productList`, {
                 method: 'GET',
                 headers: { "Content-type": "application/json", 'Authorization': 'Bearer ' + token }
             })
-            .then(res => res.json())
-            .then(data => setProductList(data))
-            .catch(error => console.error('Error fetching product list:', error));
+                .then(res => res.json())
+                .then(data => setProductList(data))
+                .catch(error => console.error('Error fetching product list:', error));
         }
     }, [token, searchResults]);
 
@@ -30,14 +30,14 @@ const ProductList = ({ searchResults }) => {
                 'Authorization': 'Bearer ' + token
             }
         })
-        .then(res => {
-            if (!res.ok) {
-                return res.json().then(err => { alert(err.message); });
-            } else {
-                alert("Đã xóa sản phẩm");
-                setProductList(prev => prev.filter(product => product.Product_ID !== id));
-            }
-        });
+            .then(res => {
+                if (!res.ok) {
+                    return res.json().then(err => { alert(err.message); });
+                } else {
+                    alert("Đã xóa sản phẩm");
+                    setProductList(prev => prev.filter(product => product.Product_ID !== id));
+                }
+            });
     };
 
     // Hiển thị searchResults nếu có, nếu không sẽ hiển thị toàn bộ productList
@@ -70,12 +70,11 @@ const ProductList = ({ searchResults }) => {
                             <img src={product.Image} alt={product.Product_Name} className="product-img" />
                         </div>
                         <div className="grid-item">{Number(product.Price).toLocaleString("vi")} VNĐ</div>
-                        <div className="grid-item">{product.Description.split('\n').map((desc, index) => (
-                            <div className="description" key={index}>{desc.replace('-', '')}</div>
-                        ))}</div>
-                        {/* {product.Description.split('\n').map((desc, index) => (
-                            <div className="grid-item" key={index}>{desc.replace('-', '')}</div>
-                        ))} */}
+                        <div className="grid-item">
+                            {product.Description.split('\n').map((desc, index) => (
+                                <div className="description" key={index}>{desc.replace('-', '')}</div>
+                            ))}
+                        </div>
                         <div className="grid-item">{product.Views}</div>
                         <div className="grid-item">{product.Show_Hidden === 1 ? "Hiện" : "Ẩn"}</div>
                         <div className="grid-item grid-item-button">

@@ -8,7 +8,7 @@ const { adminMiddleware } = require('../../middlewares/adminMiddlware');
 
 
 
-router.get('/order', adminMiddleware, orderController.getOrderList);
+router.get('/order', orderController.getOrderList);
 router.put('/order/:id', adminMiddleware, orderController.putOrder);
 
 
