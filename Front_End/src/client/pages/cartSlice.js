@@ -8,13 +8,17 @@ const cartSlice = createSlice({
   },
   reducers: {
     addToCart: (state, action) => {
-      const item = state.items.find(item => item.id === action.payload.id);
-      if (item) {
-        item.quantity += 1; // Tăng số lượng nếu sản phẩm đã có
+      const newItem = action.payload;
+      const existingItem = state.items.find((item) => item.id === newItem.id);
+
+      if (existingItem) {
+        existingItem.quantity += 1; // Nếu sản phẩm đã có trong giỏ, tăng số lượng
       } else {
-        state.items.push({ ...action.payload, quantity: 1 }); // Thêm sản phẩm mới
+        state.items.push({ ...newItem, quantity: 1 }); // Nếu chưa có, thêm mới
       }
-      localStorage.setItem('cart', JSON.stringify(state.items)); // Cập nhật localStorage
+
+      // Lưu giỏ hàng vào localStorage
+      localStorage.setItem('cart', JSON.stringify(state.items));
     },
     removeFromCart: (state, action) => {
       state.items = state.items.filter(item => item.id !== action.payload);
@@ -38,8 +42,13 @@ const cartSlice = createSlice({
         localStorage.setItem('cart', JSON.stringify(state.items)); // Cập nhật localStorage
       }
     },
+    setCartItems: (state, action) => {
+      // Cập nhật giỏ hàng từ một nguồn dữ liệu khác (ví dụ: sau khi load lại trang)
+      state.items = action.payload;
+      localStorage.setItem('cart', JSON.stringify(state.items)); // Cập nhật localStorage
+    },
   },
 });
 
-export const { addToCart, removeFromCart, clearCart, incrementQuantity, decrementQuantity } = cartSlice.actions;
+export const { addToCart, removeFromCart, clearCart, incrementQuantity, decrementQuantity, setCartItems } = cartSlice.actions;
 export default cartSlice.reducer;

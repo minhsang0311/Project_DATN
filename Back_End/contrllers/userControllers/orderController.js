@@ -3,9 +3,9 @@ const db = require('../../config/db');
 exports.getOrderList = (req, res) => {
     const userId = req.params.userId;
     const sql = `
-        SELECT o.Order_ID, o.User_ID, o.Address, 
+        SELECT o.Order_ID, o.User_ID, o.Phone, o.User_Name, o.Address,  
                o.payment_method, o.total_amount, o.created_at,  
-               o.total_quantity, os.Status_Name AS Status 
+               o.total_quantity, o.Note, os.Status_Name AS Status 
         FROM orders o
         JOIN order_status os ON o.Status = os.Status_ID
         WHERE o.User_ID = ?
@@ -13,6 +13,23 @@ exports.getOrderList = (req, res) => {
     db.query(sql, [userId], (err, data) => {
         if (err) {
             return res.status(500).json({ message: "Lỗi lấy trạng thái đơn hàng", err });
+        }
+        res.json(data);
+    });
+};
+exports.getOrderDetail = (req, res) => {
+    const orderId = req.params.orderId;
+    const sql = `
+        SELECT o.Order_ID, o.User_ID, o.Phone, o.User_Name, o.Address,  
+               o.payment_method, o.total_amount, o.created_at,  
+               o.total_quantity, o.Note, os.Status_Name AS Status 
+        FROM orders o
+        JOIN order_status os ON o.Status = os.Status_ID
+        WHERE o.Order_ID = ?
+    `;
+    db.query(sql, [orderId], (err, data) => {
+        if (err) {
+            return res.status(500).json({ message: "Lỗi lấy chi tiết đơn hàng", err });
         }
         res.json(data);
     });

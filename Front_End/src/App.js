@@ -40,6 +40,7 @@ import PaymentPage from './client/pages/PaymentPage.js'
 import OrderStatusList from './client/pages/OrderStatusList.js'
 import Contact from './client/pages/Contact.js'
 import { Fragment } from 'react';
+import OrderDetails from './client/pages/OrderDetails.js';
 
 
 
@@ -87,6 +88,8 @@ function App() {
           <Route path="/order" element={<OrderStatusList />} />
           <Route path="/change-password" element={<ChangePassword />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/orderDetail/:orderId" element={<OrderDetails />} />
+
         </Routes>
       </BrowserRouter>
     </Fragment>
