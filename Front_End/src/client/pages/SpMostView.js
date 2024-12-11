@@ -6,7 +6,7 @@ function SpMostView() {
     const [listsp, setListSP] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
+    const [showToast, setShowToast] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -32,7 +32,10 @@ function SpMostView() {
             savedCart.push({ ...product, quantity: 1 });
         }
         localStorage.setItem('cart', JSON.stringify(savedCart));
-        navigate('/cart');
+        setShowToast(true);
+        setTimeout(() => {
+            setShowToast(false);
+        }, 3000); // Hiện thông báo trong 3 giây
     };
 
     const formatCurrency = (value) => {
@@ -45,6 +48,7 @@ function SpMostView() {
     return (
         <div className="spbanchay">
             <div className="left-image">
+
                 <img src="/assets/img/banner21.1.jpg" alt="" />
                 <img src="/assets/img/banner21.2.jpg" alt="" />
             </div>

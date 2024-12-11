@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { addToCart } from './cartSlice';
 import { useDispatch } from 'react-redux';
 
 function Product({ product }) {
     const dispatch = useDispatch(); 
-
+    const [showToast, setShowToast] = useState(false);
     const formatCurrency = (value) => {
         return new Intl.NumberFormat('vi-VN', {
             style: 'currency',
@@ -22,10 +22,16 @@ function Product({ product }) {
           quantity: 1 // Mặc định là 1
         };
         dispatch(addToCart(cartItem)); // Gửi hành động thêm vào giỏ hàng
-    };
 
+    setShowToast(true);
+    setTimeout(() => {
+        setShowToast(false);
+    }, 3000);}; // Hiện thông báo trong 3 giây
     return (
+    
+       
         <div className="product">
+             {showToast && <div className="toast">Đã thêm vào giỏ hàng</div>}
             {product.Promotion > 0 && (
                 <div className="discount-label">-{product.Promotion}%</div>
             )}

@@ -18,45 +18,6 @@ const ProductDetail = () => {
     const [showToast, setShowToast] = useState(false);
     const dispatch = useDispatch();
 
-    // Lấy dữ liệu giỏ hàng từ Redux Store
-
-    // Lấy dữ liệu từ localStorage khi component được mount
-    useEffect(() => {
-        const savedCart = JSON.parse(localStorage.getItem('cart')) || [];
-        savedCart.forEach(item => {
-            dispatch(addToCart(item));
-        });
-    }, [dispatch]);
-
-    const handleThumbnailClick = (src) => {
-        setMainImage(src);
-    };
-    const formatCurrency = (value) => {
-        return new Intl.NumberFormat('vi-VN', {
-            style: 'currency',
-            currency: 'VND',
-        }).format(value);
-    };
-    // Hàm thêm vào giỏ hàng
-    const handleAddToCart = () => {
-        const cartItem = {
-            id: sp.Product_ID,
-            image: sp.Image,
-            name: sp.Product_Name,
-            price: sp.Price,
-        };
-        dispatch(addToCart(cartItem));
-
-        // Lưu vào localStorage
-        const currentCart = JSON.parse(localStorage.getItem('cart')) || [];
-        currentCart.push(cartItem);
-        localStorage.setItem('cart', JSON.stringify(currentCart));
-
-        setShowToast(true);
-        setTimeout(() => {
-            setShowToast(false);
-        }, 3000); // Hiện thông báo trong 3 giây
-    };
     // Lấy dữ liệu chi tiết sản phẩm
     useEffect(() => {
         const fetchProductDetail = async () => {
@@ -77,7 +38,63 @@ const ProductDetail = () => {
         };
         fetchProductDetail();
     }, [id]);
-    //Hàm mua ngay 
+
+    // Kiểm tra giỏ hàng từ localStorage khi tải lại trang, tránh thêm lại sản phẩm
+    useEffect(() => {
+        if (sp) {
+            const savedCart = JSON.parse(localStorage.getItem('cart')) || [];
+            const isProductInCart = savedCart.find(item => item.id === sp.Product_ID);
+
+            // Nếu sản phẩm đã có trong giỏ hàng, chỉ cần không thêm vào nữa
+            if (!isProductInCart) {
+                localStorage.setItem('cart', JSON.stringify(savedCart));
+            }
+        }
+    }, [sp]); // Chỉ gọi effect này khi sp thay đổi
+
+    const handleThumbnailClick = (src) => {
+        setMainImage(src);
+    };
+
+    const formatCurrency = (value) => {
+        return new Intl.NumberFormat('vi-VN', {
+            style: 'currency',
+            currency: 'VND',
+        }).format(value);
+    };
+
+    const handleAddToCart = () => {
+        const cartItem = {
+            id: sp?.Product_ID,
+            image: sp?.Image,
+            name: sp?.Product_Name,
+            price: sp?.Price,
+            quantity: 1, // Đảm bảo số lượng là 1 khi thêm vào
+        };
+
+        // Lấy giỏ hàng hiện tại từ localStorage
+        const currentCart = JSON.parse(localStorage.getItem('cart')) || [];
+        const existingItem = currentCart.find(item => item.id === cartItem.id);
+
+        // Nếu sản phẩm đã có trong giỏ hàng, tăng số lượng
+        if (existingItem) {
+            existingItem.quantity += 1;
+        } else {
+            currentCart.push(cartItem); // Thêm sản phẩm mới vào giỏ
+        }
+
+        // Lưu giỏ hàng vào localStorage
+        localStorage.setItem('cart', JSON.stringify(currentCart));
+
+        // Dispatch hành động thêm sản phẩm vào Redux
+        dispatch(addToCart(cartItem));
+
+        setShowToast(true);
+        setTimeout(() => {
+            setShowToast(false);
+        }, 3000); // Hiện thông báo trong 3 giây
+    };
+
     const handleBuyNow = () => {
         const productDetails = {
             id: sp.Product_ID,
@@ -87,7 +104,6 @@ const ProductDetail = () => {
             quantity: 1,
         };
 
-        // Chuyển hướng đến trang thanh toán với thông tin sản phẩm
         navigate('/payment', { state: { productDetails } });
     };
 
@@ -126,7 +142,6 @@ const ProductDetail = () => {
                                     <img id="mainImage" src={mainImage} alt="Sản phẩm" height="380px" />
                                 </div>
                                 <div className="thumbnail-images">
-                                    {/* Duyệt qua danh sách ảnh và hiển thị dưới dạng thumbnail */}
                                     {images.map((imageSrc, index) => (
                                         <img
                                             key={index}
@@ -184,13 +199,11 @@ const ProductDetail = () => {
                                 </tbody>
                             </table>
                         </div>
-
                     </div>
                 </div>
-                <Comments productId={id} />
-                <div className="related-products">
-                    <SPLienQuan id={id} sosp={5} />
-                </div>
+                <Comments productId={id}/>
+                <div className='ralated-products'></div>
+                <SPLienQuan id = {id} sosp={5}  />
             </div>
             <Footer />
         </Fragment>

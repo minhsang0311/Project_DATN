@@ -6,15 +6,15 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { useNavigate } from 'react-router-dom';
 
-const formatCurrency = (value) => {
-    return Number(value).toLocaleString('vi') + ' VNĐ';
-};
 
 const CartPage = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const items = useSelector(state => state.cart.items);
     const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const formatCurrency = (value) => {
+        return Number(value).toLocaleString('vi') + ' VNĐ';
+    };
 
     useEffect(() => {
         localStorage.setItem('cart', JSON.stringify(items));

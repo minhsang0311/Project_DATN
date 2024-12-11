@@ -9,7 +9,7 @@ import '../styles/components/Home.css';
 function SpMoi() {
     const [listsp, ganListSP] = useState([]);
     const dispatch = useDispatch(); // Khởi tạo useDispatch
-
+    const [showToast, setShowToast] = useState(false);
     useEffect(() => {
         fetch("http://localhost:3000/user/productKhuyenMai")
             .then(res => res.json()).then(data => ganListSP(data));
@@ -31,11 +31,16 @@ function SpMoi() {
             quantity: 1 // Mặc định là 1
         };
         dispatch(addToCart(cartItem)); // Gửi hành động thêm vào giỏ hàng
+        setShowToast(true);
+    setTimeout(() => {
+        setShowToast(false);
+    }, 3000); // Hiện thông báo trong 3 giây
     };
 
     return (
         <div className="spkhuyenmai">
             <div className="box">
+                 {showToast && <div className="toast">Đã thêm vào giỏ hàng</div>}
                 <div className="header1">
                     <i className="fas fa-tags"></i>
                     <h1>DEAL DÀNH CHO BẠN</h1>
