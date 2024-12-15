@@ -15,7 +15,7 @@ function OrderStatus() {
         console.log(userId)
 
         if (userId && token) {
-            axios.get(`http://localhost:3000/user/orders/${userId}`, {
+            axios.get(`${process.env.REACT_APP_HOST_URL}user/orders/${userId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

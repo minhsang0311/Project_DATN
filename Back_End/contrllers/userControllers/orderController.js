@@ -4,7 +4,7 @@ exports.getOrderList = (req, res) => {
     const userId = req.params.userId;
     const sql = `
         SELECT o.Order_ID, o.User_ID, o.Address, 
-               o.payment_method, o.total_amount, o.created_at, o.Product_Name, 
+               o.payment_method, o.total_amount, o.created_at,
                o.total_quantity, os.Status_Name AS Status 
         FROM orders o
         JOIN order_status os ON o.Status = os.Status_ID

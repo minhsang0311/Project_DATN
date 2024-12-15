@@ -14,14 +14,14 @@ exports.sendContactEmail = (req, res) => {
         const transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-                user: 'minhsangg0311@gmail.com',
-                pass: 'txpm bdcg qbuj evhi',
+                user: process.env.USER_EMAIL,
+                pass: process.env.PASS_EMAIL,
             },
         });
 
         const mailOptions = {
             from: email,
-            to: 'minhsangg0311@gmail.com', // Email cố định nhận thông báo
+            to: process.env.USER_EMAIL, // Email cố định nhận thông báo
             subject: `Yêu cầu liên hệ của ${name}`,
             text: `Bạn nhận được yêu cầu liên hệ từ:\n\nTên người gửi: ${name}\nEmail: ${email}\nTin nhắn: ${message}`,
         };

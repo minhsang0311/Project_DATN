@@ -20,7 +20,7 @@ function Cuahang() {
     const { spTrong1Trang, tongSoTrang, currentPage, handlePageChange } = usePagination(filteredSP, pageSize);
 
     useEffect(() => {
-        fetch("http://localhost:3000/user/productList")
+        fetch(`${process.env.REACT_APP_HOST_URL}user/productList`)
             .then(res => res.json())
             .then(data => {
                 setListSP(data);
@@ -29,7 +29,7 @@ function Cuahang() {
     }, []);
 
     useEffect(() => {
-        fetch("http://localhost:3000/user/brands")
+        fetch(`${process.env.REACT_APP_HOST_URL}user/brands`)
             .then(res => res.json())
             .then(data => setBrands(data));
     }, []);
@@ -40,7 +40,7 @@ function Cuahang() {
     }, [brand, minPrice, maxPrice, sortOrder]);
 
     const handleFilter = () => {
-        let url = `http://localhost:3000/user/filteredProducts?`;
+        let url = `${process.env.REACT_APP_HOST_URL}user/filteredProducts?`;
         if (minPrice) url += `minPrice=${minPrice.replace(/,/g, '')}&`;
         if (maxPrice) url += `maxPrice=${maxPrice.replace(/,/g, '')}&`;
         if (sortOrder) url += `sortOrder=${sortOrder}&`;

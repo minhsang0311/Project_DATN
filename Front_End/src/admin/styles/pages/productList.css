@@ -61,7 +61,7 @@
 .grid-item {
     padding: 10px;
     border: 1px solid #e0e0e0;
-    display: flex;
+    /* display: flex; */
     /* flex-direction: column; */
     justify-content: flex-start;
     align-items: center;
@@ -87,6 +87,9 @@
 .grid-item-button {
     display: flex;
     justify-content: space-around;
+}
+.grid-item-element {
+    display: flex;
 }
 
 .edit-btn,

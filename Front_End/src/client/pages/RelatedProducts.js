@@ -8,7 +8,7 @@ const SPLienQuan = ({ id, sosp }) => {
   const [listsp, setListSP] = useState([]);
   const dispatch = useDispatch(); // Khởi tạo useDispatch
   useEffect(() => {
-    fetch(`http://localhost:3000/user/san_pham_lien_quan/${id}/${sosp}`)
+    fetch(`${process.env.REACT_APP_HOST_URL}user/san_pham_lien_quan/${id}/${sosp}`)
       .then((res) => res.json())
       .then((data) => setListSP(data));
   }, [id, sosp]);

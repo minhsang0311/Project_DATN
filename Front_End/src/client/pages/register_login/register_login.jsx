@@ -17,6 +17,10 @@ const RegisterLogin = () => {
     const [message, setMessage] = useState('');
     const [isRightPanelActive, setIsRightPanelActive] = useState(false);
     const [shouldSubmit, setShouldSubmit] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showPasswordLogin, setShowPasswordLogin] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
 
     // Login
     const [loginMessage, setLoginMessage] = useState(''); // Thêm trạng thái cho thông báo lỗi đăng nhập
@@ -48,7 +52,7 @@ const RegisterLogin = () => {
 
     useEffect(() => {
         const registerUser = async () => {
-            const url = "http://localhost:3000/auth/register";
+            const url = `${process.env.REACT_APP_HOST_URL}auth/register`;
             const opt = {
                 method: "POST",
                 body: JSON.stringify(formData),
@@ -83,7 +87,7 @@ const RegisterLogin = () => {
             setLoginMessage("Vui lòng nhập đủ thông tin!");
             return;
         }
-        const url = "http://localhost:3000/auth/login";
+        const url = `${process.env.REACT_APP_HOST_URL}auth/login`;
         const tt = { Email: userNameRef.current.value, Password: pwRef.current.value };
         const opt = {
             method: "POST",
@@ -147,24 +151,40 @@ const RegisterLogin = () => {
                         onChange={handleChange}
                         required
                     />
-                    <input
-                        className='input_register'
-                        type="password"
-                        name="Password"
-                        placeholder="Nhập mật khẩu"
-                        value={formData.Password}
-                        onChange={handleChange}
-                        required
-                    />
-                    <input
-                        className='input_register'
-                        type="password"
-                        placeholder="Nhập lại mật khẩu"
-                        value={confirmPassword}
-                        onChange={handleConfirmPasswordChange}
-                        required
-                    />
-                    <input
+                    <div className="input-container">
+                        <input
+                            className='input_register'
+                            type={showPassword ? "text" : "password"}
+                            name="Password"
+                            placeholder="Nhập mật khẩu"
+                            value={formData.Password}
+                            onChange={handleChange}
+                            required
+                        />
+                        <span
+                            className="icon"
+                            onClick={() => setShowPassword(!showPassword)}
+                        >
+                            {showPassword ? <i class="bi bi-eye"></i> : <i class="bi bi-eye-slash"></i>}
+                        </span>
+                    </div>
+                    <div className="input-container">
+                        <input
+                            className='input_register'
+                            type={showConfirmPassword ? "text" : "password"}
+                            placeholder="Nhập lại mật khẩu"
+                            value={confirmPassword}
+                            onChange={handleConfirmPasswordChange}
+                            required
+                        />
+                        <span
+                            className="icon"
+                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                        >
+                            {showConfirmPassword ? <i class="bi bi-eye"></i> : <i class="bi bi-eye-slash"></i>}
+                        </span>
+                    </div>
+                    {/* <input
                         className='input_register'
                         type="number"
                         name="Phone"
@@ -172,7 +192,7 @@ const RegisterLogin = () => {
                         value={formData.Phone}
                         onChange={handleChange}
                         required
-                    />
+                    /> */}
                     <button className='button_register' type="submit">Đăng ký</button>
                 </form>
             </div>
@@ -187,13 +207,23 @@ const RegisterLogin = () => {
                         ref={userNameRef}
                         required
                     />
-                    <input
-                        className='input_register'
-                        type="password"
-                        placeholder="Nhập mật khẩu"
-                        ref={pwRef}
-                        required
-                    />
+                    <div className="input-container">
+                        <input
+                            className='input_register'
+                            type={showPasswordLogin ? "text" : "password"}
+                            name="Password"
+                            placeholder="Nhập mật khẩu"
+                            ref={pwRef}
+                            required
+                        />
+
+                        <span
+                            className="icon"
+                            onClick={() => setShowPasswordLogin(!showPasswordLogin)}
+                        >
+                            {showPasswordLogin ? <i class="bi bi-eye"></i> : <i class="bi bi-eye-slash"></i>}
+                        </span>
+                    </div>
                     <Link to='/forgot-password'>Quên mật khẩu?</Link>
                     <button className='button_register' type="submit">Đăng nhập</button>
                 </form>

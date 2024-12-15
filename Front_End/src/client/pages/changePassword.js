@@ -7,6 +7,9 @@ const ChangePassword = () => {
     const [oldPassword, setOldPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [showPasswordOld, setShowPasswordOld] = useState(false)
+    const [showPasswordNew, setShowPasswordNew] = useState(false)
+    const [showPasswordConfirmChangePW, setShowPasswordConfirmChangePW] = useState(false)
     const [message, setMessage] = useState("");
     const [error, setError] = useState("");
     const navigate = useNavigate();
@@ -42,7 +45,7 @@ const ChangePassword = () => {
 
             // Gửi yêu cầu tới API đổi mật khẩu
             const response = await axios.post(
-                "http://localhost:3000/user/change-password",
+                `${process.env.REACT_APP_HOST_URL}user/change-password`,
                 { oldPassword, newPassword },
                 { headers: { Authorization: `Bearer ${tokenUser}` } }
             );
@@ -70,30 +73,56 @@ const ChangePassword = () => {
             <form onSubmit={handleChangePassword}>
                 <div className="form-group">
                     <label>Mật khẩu cũ:</label>
-                    <input
-                        type="password"
-                        value={oldPassword}
-                        onChange={(e) => setOldPassword(e.target.value)}
-                        required
-                    />
+                    <div className="input-container">
+
+                        <input
+                            type={showPasswordOld ? "text" : "password"}
+                            value={oldPassword}
+                            onChange={(e) => setOldPassword(e.target.value)}
+                            required
+                        />
+                        <span
+                            className="icon"
+                            onClick={() => setShowPasswordOld(!showPasswordOld)}
+                        >
+                            {showPasswordOld ? <i class="bi bi-eye"></i> : <i class="bi bi-eye-slash"></i>}
+                        </span>
+                    </div>
                 </div>
                 <div className="form-group">
                     <label>Mật khẩu mới:</label>
-                    <input
-                        type="password"
-                        value={newPassword}
-                        onChange={(e) => setNewPassword(e.target.value)}
-                        required
-                    />
+                    <div className="input-container">
+                        <input
+                            type={showPasswordNew ? "text" : "password"}
+                            value={newPassword}
+                            onChange={(e) => setNewPassword(e.target.value)}
+                            required
+                        />
+                        <span
+                            className="icon"
+                            onClick={() => setShowPasswordNew(!showPasswordNew)}
+                        >
+                            {showPasswordNew ? <i class="bi bi-eye"></i> : <i class="bi bi-eye-slash"></i>}
+                        </span>
+                    </div>
                 </div>
                 <div className="form-group">
                     <label>Xác nhận mật khẩu mới:</label>
-                    <input
-                        type="password"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        required
-                    />
+                    <div className="input-container">
+                        <input
+                            type={showPasswordConfirmChangePW ? "text" : "password"}
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            required
+                        />
+                        <span
+                            className="icon"
+                            onClick={()=>setShowPasswordConfirmChangePW(!showPasswordConfirmChangePW)}
+                        >
+                            {showPasswordConfirmChangePW ? <i class="bi bi-eye"></i> : <i class="bi bi-eye-slash"></i>}
+
+                        </span>
+                    </div>
                 </div>
                 <button type="submit" className="change_pw">Đổi mật khẩu</button>
             </form>

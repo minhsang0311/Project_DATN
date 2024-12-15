@@ -61,7 +61,7 @@ const ProductDetail = () => {
     useEffect(() => {
         const fetchProductDetail = async () => {
             try {
-                const response = await fetch(`http://localhost:3000/user/productDetail/${id}`);
+                const response = await fetch(`${process.env.REACT_APP_HOST_URL}user/productDetail/${id}`);
                 const data = await response.json();
                 if (data.message) {
                     setError(data.message);

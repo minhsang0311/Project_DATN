@@ -1,5 +1,6 @@
 
 import Toaster from  'react-hot-toast'
+import { Fragment } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 // Component Admin
@@ -39,15 +40,14 @@ import ChangePassword from './client/pages/changePassword.js';
 import PaymentPage from './client/pages/PaymentPage.js'
 import OrderStatusList from './client/pages/OrderStatusList.js'
 import Contact from './client/pages/Contact.js'
-import { Fragment } from 'react';
+import Wishlist from './client/pages/wishlist.js';
 
 function App() {
   return (
     <Fragment>
-      <Toaster  position="top-center" reverseOrder={false}/>
+      {/* <Toaster  position="top-center" reverseOrder={false}/> */}
       <BrowserRouter basename="/">
         <Routes>
-          {/* <Route element={<ProtectedRoute />}> */}
           <Route path="/admin" element={<HomeAdmin />}>
             <Route index element={<Statistics />} />
             <Route path="products" element={<ProductList />} />
@@ -85,6 +85,7 @@ function App() {
           <Route path="/order" element={<OrderStatusList />} />
           <Route path="/change-password" element={<ChangePassword />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/wishlist/:userId" element={<Wishlist />} />
         </Routes>
       </BrowserRouter>
     </Fragment>

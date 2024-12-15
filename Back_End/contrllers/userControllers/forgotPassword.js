@@ -17,12 +17,12 @@ exports.forgotPassword = (req, res) => {
             const transporter = nodemailer.createTransport({
                 service: 'gmail',
                 auth: {
-                    user: 'minhsangg0311@gmail.com',
-                    pass: 'txpm bdcg qbuj evhi',
+                    user: process.env.USER_EMAIL,
+                    pass: process.env.PASS_EMAIL,
                 },
             });
             const mailOptions = {
-                from: 'minhsangg0311@gmail.com',
+                from: process.env.USER_EMAIL,
                 to: email,
                 subject: 'Yêu cầu đặt lại mật khẩu',
                 text: `Click vào link để đặt lại mật khẩu của bạn: http://localhost:4200/reset-password/${token}`,

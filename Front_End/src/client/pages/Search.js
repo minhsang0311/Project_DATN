@@ -21,7 +21,7 @@ function Search() {
         setSearchQuery(query || "");
 
         if (query) {
-            fetch(`http://localhost:3000/user/products_search/?query=${query}`)
+            fetch(`${process.env.REACT_APP_HOST_URL}user/products_search/?query=${query}`)
                 .then(res => {
                     if (!res.ok) {
                         throw new Error("Network response was not ok");

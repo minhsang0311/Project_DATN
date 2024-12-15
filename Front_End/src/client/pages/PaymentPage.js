@@ -51,7 +51,7 @@ const PaymentPage = () => {
         const tokenUser = localStorage.getItem("tokenUser");
         const debounceTimeout = setTimeout(() => {
             if (voucherCode) {
-                fetch(`http://localhost:3000/user/voucher`, {
+                fetch(`${process.env.REACT_APP_HOST_URL}user/voucher`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -120,7 +120,7 @@ const PaymentPage = () => {
         // Xử lý theo phương thức thanh toán
         if (paymentMethod === 'COD') {
             // Xử lý thanh toán COD
-            fetch('http://localhost:3000/user/payment', {
+            fetch(`${process.env.REACT_APP_HOST_URL}user/payment`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -143,7 +143,7 @@ const PaymentPage = () => {
                 });
         } else if (paymentMethod === 'Online') {
             // Xử lý thanh toán Online
-            fetch('http://localhost:3000/user/payment', {
+            fetch(`${process.env.REACT_APP_HOST_URL}user/payment`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
