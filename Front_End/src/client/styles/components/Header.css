@@ -57,6 +57,7 @@ header .middle .right .giohang .cart-icon {
   
 .dropdown {
   position: absolute;
+  z-index: 2;
   margin: 0 auto;
   background-color: white;
   border: 1px solid #ddd;
@@ -91,6 +92,22 @@ header .middle .right .giohang .cart-icon {
   font-weight: bold;
   background-color: #56A4FF;
 }
+.wishlist-count {
+  position: absolute;
+  top: 40px;             
+  right: 138px;          
+  background-color: red; 
+  color: white;          
+  font-size: 13px;      
+  font-weight: bold;
+  border-radius: 50%;    
+  width: 18px;           
+  height: 18px;          
+  display: flex;
+  align-items: center;   
+  justify-content: center; 
+}
+
 /* Điện thoại đứng */
 @media screen and (min-width:240px) {
 

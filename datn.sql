@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Máy chủ: localhost:3306
--- Thời gian đã tạo: Th10 26, 2024 lúc 11:01 AM
--- Phiên bản máy phục vụ: 8.0.30
--- Phiên bản PHP: 7.4.14
+-- Máy chủ: 127.0.0.1
+-- Thời gian đã tạo: Th12 10, 2024 lúc 05:07 PM
+-- Phiên bản máy phục vụ: 10.4.32-MariaDB
+-- Phiên bản PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -28,8 +28,8 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `brands` (
-  `Brand_ID` int NOT NULL,
-  `Brand_Name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL
+  `Brand_ID` int(11) NOT NULL,
+  `Brand_Name` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -51,9 +51,9 @@ INSERT INTO `brands` (`Brand_ID`, `Brand_Name`) VALUES
 --
 
 CREATE TABLE `categories` (
-  `Category_ID` int NOT NULL,
-  `Category_Name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `Category_Image` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `Category_ID` int(11) NOT NULL,
+  `Category_Name` varchar(255) DEFAULT NULL,
+  `Category_Image` varchar(255) NOT NULL,
   `Show_Hidden` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -76,42 +76,45 @@ INSERT INTO `categories` (`Category_ID`, `Category_Name`, `Category_Image`, `Sho
 --
 
 CREATE TABLE `orders` (
-  `Order_ID` int NOT NULL,
-  `User_ID` int NOT NULL,
-  `Voucher_ID` int DEFAULT NULL,
-  `Status` int NOT NULL,
-  `Email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `Phone` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `User_Name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `Address` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `payment_method` enum('COD','Online') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `total_amount` int DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `total_quantity` int DEFAULT '0',
-  `Note` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `Order_ID` int(11) NOT NULL,
+  `User_ID` int(11) NOT NULL,
+  `Voucher_ID` int(11) DEFAULT NULL,
+  `Status` int(11) NOT NULL,
+  `Email` varchar(255) DEFAULT NULL,
+  `Phone` varchar(15) DEFAULT NULL,
+  `User_Name` varchar(255) DEFAULT NULL,
+  `Address` varchar(255) DEFAULT NULL,
+  `payment_method` enum('COD','Online') DEFAULT NULL,
+  `total_amount` int(11) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `total_quantity` int(11) DEFAULT 0,
+  `Note` varchar(255) DEFAULT NULL,
+  `canceled_reason` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `orders`
 --
 
-INSERT INTO `orders` (`Order_ID`, `User_ID`, `Voucher_ID`, `Status`, `Email`, `Phone`, `User_Name`, `Address`, `payment_method`, `total_amount`, `created_at`, `total_quantity`, `Note`) VALUES
-(1, 3, 1, 5, 'sangnmps34186@fpt.edu.vn', '123', 'MinhSang123', '123-Phần mềm Quang Trung\r\n', NULL, 100000, '2024-11-08 15:36:02', 3, NULL),
-(2, 29, 1, 5, 'nguyenhiep12062004@gmail.com', '123', 'Hiep12345', '123-Phần mềm Quang Trung\r\n', NULL, 100000, '2024-11-14 15:36:02', 6, NULL),
-(3, 2, NULL, 5, 'sangnmps34186@fpt.edu.vn', '1323', NULL, '123abc', 'COD', 17567500, '2024-11-10 05:26:00', 10, NULL),
-(4, 2, NULL, 1, 'sangnmps34186@fpy.edu.vn', '1323', NULL, '123abc', 'COD', 17567500, '2024-11-15 05:30:11', 10, 'ádfdsfd'),
-(5, 2, NULL, 1, 'sangnmps34186@fpy.edu.vn', '1323', NULL, '123abc', 'COD', NULL, '2024-11-15 06:01:42', 5, NULL),
-(6, 2, NULL, 1, 'sangnmps34186@fpy.edu.vn', '1323', NULL, '123abc', 'COD', NULL, '2024-11-15 06:05:32', 5, 'sfdshdfuhgoierhgior'),
-(7, 2, NULL, 1, 'sangnmm1', '1323', NULL, '123abc', 'COD', 102920000, '2024-11-15 06:28:25', 5, 'sdjskdkjf'),
-(8, 2, NULL, 1, 'sangnmm1', '1323', NULL, '123abc', 'COD', 20588000, '2024-11-15 09:39:00', 0, NULL),
-(9, 2, 1, 1, 'sangnmm1', '1323', NULL, '123abc', 'COD', 20588000, '2024-11-15 09:41:30', 0, NULL),
-(10, 2, 1, 1, 'sangnmm1', '1323', NULL, '123abc', 'COD', 20588000, '2024-11-15 09:44:54', NULL, 'sdgdfgdfgdfgfd'),
-(11, 2, 1, 1, 'sangnmps34186@fpt.edu.vn', '0332122375', NULL, '123abc', 'COD', 32475000, '2024-11-15 09:52:11', 3, 'àghyrtyht'),
-(12, 2, 1, 1, 'sangnmps34186@fpt.edu.vnn', '123abc1', '132323423', 'Nguyễn MInh Sang', 'COD', 92450000, '2024-11-15 09:56:36', 10, 'ádasdasdasdas'),
-(13, 2, NULL, 1, 'sangnmps34186@fpt.edu.vnn', '123abc1', '132323423', 'Nguyễn MInh Sang', 'COD', 92450000, '2024-11-15 09:57:33', 10, NULL),
-(14, 2, 1, 1, 'sangnmps34186@fpy.edu.vn', '123abc', '1323', 'Nguyễn MInh Sang', 'COD', 6375000, '2024-11-15 10:17:06', 5, 'sdfgdfghdfg'),
-(15, 2, NULL, 1, 'sangnmps34186@fpy.edu.vn', '123abc', '1323', 'Nguyễn MInh Sang', 'COD', 12750000, '2024-11-15 10:17:26', 5, NULL),
-(20, 37, 10, 5, 'sangnmps34186@fpt.edu.vnn', '123abc1', '1111111111111111', 'Nguyễn MInh Sang', 'COD', 492150, '2024-11-24 04:50:25', 1, NULL);
+INSERT INTO `orders` (`Order_ID`, `User_ID`, `Voucher_ID`, `Status`, `Email`, `Phone`, `User_Name`, `Address`, `payment_method`, `total_amount`, `created_at`, `total_quantity`, `Note`, `canceled_reason`) VALUES
+(1, 3, 1, 5, 'sangnmps34186@fpt.edu.vn', '123', 'MinhSang123', '123-Phần mềm Quang Trung\r\n', NULL, 100000, '2024-11-08 15:36:02', 3, NULL, NULL),
+(2, 29, 1, 3, 'nguyenhiep12062004@gmail.com', '123', 'Hiep12345', '123-Phần mềm Quang Trung\r\n', NULL, 100000, '2024-11-14 15:36:02', 6, NULL, NULL),
+(3, 2, NULL, 5, 'sangnmps34186@fpt.edu.vn', '1323', NULL, '123abc', 'COD', 17567500, '2024-11-10 05:26:00', 10, NULL, NULL),
+(4, 2, NULL, 3, 'sangnmps34186@fpy.edu.vn', '1323', NULL, '123abc', 'COD', 17567500, '2024-11-15 05:30:11', 10, 'ádfdsfd', NULL),
+(5, 2, NULL, 2, 'sangnmps34186@fpy.edu.vn', '1323', NULL, '123abc', 'COD', NULL, '2024-11-15 06:01:42', 5, NULL, NULL),
+(6, 2, NULL, 3, 'sangnmps34186@fpy.edu.vn', '1323', NULL, '123abc', 'COD', NULL, '2024-11-15 06:05:32', 5, 'sfdshdfuhgoierhgior', NULL),
+(7, 2, NULL, 2, 'sangnmm1', '1323', NULL, '123abc', 'COD', 102920000, '2024-11-15 06:28:25', 5, 'sdjskdkjf', NULL),
+(8, 2, NULL, 2, 'sangnmm1', '1323', NULL, '123abc', 'COD', 20588000, '2024-11-15 09:39:00', 0, NULL, NULL),
+(9, 2, 1, 2, 'sangnmm1', '1323', NULL, '123abc', 'COD', 20588000, '2024-11-15 09:41:30', 0, NULL, NULL),
+(10, 2, 1, 3, 'sangnmm1', '1323', NULL, '123abc', 'COD', 20588000, '2024-11-15 09:44:54', NULL, 'sdgdfgdfgdfgfd', NULL),
+(11, 2, 1, 2, 'sangnmps34186@fpt.edu.vn', '0332122375', NULL, '123abc', 'COD', 32475000, '2024-11-15 09:52:11', 3, 'àghyrtyht', NULL),
+(12, 2, 1, 3, 'sangnmps34186@fpt.edu.vnn', '123abc1', '132323423', 'Nguyễn MInh Sang', 'COD', 92450000, '2024-11-15 09:56:36', 10, 'ádasdasdasdas', NULL),
+(13, 2, NULL, 2, 'sangnmps34186@fpt.edu.vnn', '123abc1', '132323423', 'Nguyễn MInh Sang', 'COD', 92450000, '2024-11-15 09:57:33', 10, NULL, NULL),
+(14, 2, 1, 2, 'sangnmps34186@fpy.edu.vn', '123abc', '1323', 'Nguyễn MInh Sang', 'COD', 6375000, '2024-11-15 10:17:06', 5, 'sdfgdfghdfg', NULL),
+(15, 2, NULL, 1, 'sangnmps34186@fpy.edu.vn', '123abc', '1323', 'Nguyễn MInh Sang', 'COD', 12750000, '2024-11-15 10:17:26', 5, NULL, NULL),
+(20, 37, 10, 4, 'sangnmps34186@fpt.edu.vnn', '123abc1', '1111111111111111', 'Nguyễn MInh Sang', 'COD', 492150, '2024-11-24 04:50:25', 1, NULL, NULL),
+(21, 37, NULL, 6, 'minhsangg0310@gmail.com', '0376136846', 'Nguyễn Hiệp', '49 nguyễn văn đậu', 'COD', 4791700, '2024-12-10 05:22:50', 3, NULL, 'Khách hàng thay đổi quyết định'),
+(22, 37, NULL, 2, 'nguyenhiep12062004@gmail.com', '0376136846a', 'Nguyễn Hiệpaaa', '49 nguyễn văn đậu', 'COD', 1005000, '2024-12-10 06:16:37', 3, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -120,12 +123,12 @@ INSERT INTO `orders` (`Order_ID`, `User_ID`, `Voucher_ID`, `Status`, `Email`, `P
 --
 
 CREATE TABLE `order_details` (
-  `Order_Detail_ID` int NOT NULL,
-  `Order_ID` int NOT NULL,
-  `Product_ID` int NOT NULL,
-  `Product_Name` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `Order_Detail_ID` int(11) NOT NULL,
+  `Order_ID` int(11) NOT NULL,
+  `Product_ID` int(11) NOT NULL,
+  `Product_Name` varchar(100) DEFAULT NULL,
   `Price` decimal(10,2) DEFAULT NULL,
-  `Quantity` int DEFAULT NULL
+  `Quantity` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -170,7 +173,12 @@ INSERT INTO `order_details` (`Order_Detail_ID`, `Order_ID`, `Product_ID`, `Produ
 (37, 14, 3, NULL, 3250000.00, 3),
 (38, 15, 1, NULL, 1500000.00, 2),
 (39, 15, 3, NULL, 3250000.00, 3),
-(46, 20, 21, NULL, 579000.00, 1);
+(46, 20, 21, NULL, 579000.00, 1),
+(47, 21, 24, NULL, 679000.00, 1),
+(48, 21, 35, NULL, 875700.00, 1),
+(49, 21, 17, NULL, 3237000.00, 1),
+(50, 22, 29, NULL, 107500.00, 2),
+(51, 22, 49, NULL, 790000.00, 1);
 
 -- --------------------------------------------------------
 
@@ -179,8 +187,8 @@ INSERT INTO `order_details` (`Order_Detail_ID`, `Order_ID`, `Product_ID`, `Produ
 --
 
 CREATE TABLE `order_status` (
-  `Status_ID` int NOT NULL,
-  `Status_Name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
+  `Status_ID` int(11) NOT NULL,
+  `Status_Name` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -202,15 +210,15 @@ INSERT INTO `order_status` (`Status_ID`, `Status_Name`) VALUES
 --
 
 CREATE TABLE `products` (
-  `Product_ID` int NOT NULL,
-  `Category_ID` int NOT NULL,
-  `Brand_ID` int NOT NULL,
-  `Product_Name` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `Description` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `Promotion` int DEFAULT NULL,
-  `Price` int DEFAULT NULL,
-  `Image` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `Views` int DEFAULT NULL,
+  `Product_ID` int(11) NOT NULL,
+  `Category_ID` int(11) NOT NULL,
+  `Brand_ID` int(11) NOT NULL,
+  `Product_Name` varchar(100) DEFAULT NULL,
+  `Description` varchar(255) DEFAULT NULL,
+  `Promotion` int(11) DEFAULT NULL,
+  `Price` int(11) DEFAULT NULL,
+  `Image` varchar(255) DEFAULT NULL,
+  `Views` int(11) DEFAULT NULL,
   `Show_Hidden` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -324,9 +332,9 @@ INSERT INTO `products` (`Product_ID`, `Category_ID`, `Brand_ID`, `Product_Name`,
 --
 
 CREATE TABLE `product_images` (
-  `Image_ID` int NOT NULL,
-  `Product_ID` int NOT NULL,
-  `Image_URL` varchar(255) COLLATE utf8mb4_general_ci NOT NULL
+  `Image_ID` int(11) NOT NULL,
+  `Product_ID` int(11) NOT NULL,
+  `Image_URL` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -519,12 +527,12 @@ INSERT INTO `product_images` (`Image_ID`, `Product_ID`, `Image_URL`) VALUES
 --
 
 CREATE TABLE `reviews` (
-  `Review_ID` int NOT NULL,
-  `User_ID` int NOT NULL,
-  `Product_ID` int NOT NULL,
-  `Ratting` int DEFAULT NULL,
-  `Comment` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `User_Name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `Review_ID` int(11) NOT NULL,
+  `User_ID` int(11) NOT NULL,
+  `Product_ID` int(11) NOT NULL,
+  `Ratting` int(11) DEFAULT NULL,
+  `Comment` varchar(255) DEFAULT NULL,
+  `User_Name` varchar(255) DEFAULT NULL,
   `Show_Hidden` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -549,14 +557,14 @@ INSERT INTO `reviews` (`Review_ID`, `User_ID`, `Product_ID`, `Ratting`, `Comment
 --
 
 CREATE TABLE `users` (
-  `User_ID` int NOT NULL,
-  `User_Name` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `Email` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `Password` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `resetToken` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `resetTokenExpiry` bigint DEFAULT NULL,
-  `Phone` varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `Role` int DEFAULT '0'
+  `User_ID` int(11) NOT NULL,
+  `User_Name` varchar(100) DEFAULT NULL,
+  `Email` varchar(100) DEFAULT NULL,
+  `Password` varchar(255) DEFAULT NULL,
+  `resetToken` varchar(255) DEFAULT NULL,
+  `resetTokenExpiry` bigint(20) DEFAULT NULL,
+  `Phone` varchar(20) DEFAULT NULL,
+  `Role` int(11) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -578,7 +586,11 @@ INSERT INTO `users` (`User_ID`, `User_Name`, `Email`, `Password`, `resetToken`, 
 (35, 'MinhSang12344444', 'sangnmps34186@fpt.edu.vn1111', '$2b$10$Zzl/X93m5Mcr880QlkKNg.yq5q7pXnSfa8HeczSGqBITnFUJ4OFXi', NULL, NULL, '0123456789', 0),
 (36, 'MinhSang123444445679698', 'sangnmps34186@fpt.edu.vn111134534534', '$2b$10$cg29kg2ZIql4WDutMqu4me.sv9zquFcoCla6D9XP3IpBqEWG7iwPu', NULL, NULL, '0123456789', 0),
 (37, 'Nguyễn Minh Sang', 'minhsangg0311@gmail.com', '$2b$10$o5Mfj9uq/1ETXtdREIDBQOTHesyIdzQvOz/E6/qZd1ovg6yTihmdy', NULL, NULL, '0123456789', 0),
-(38, 'MinhSang123457576567', 'sangnmps34186@fpt.edu.vn4364365465', '$2b$10$RNUEBKa7EWsgAnsdojsiFeB3iKFLJ1dMVusV1SsOu2K/Ai64/ZiqC', NULL, NULL, '0123456789', 0);
+(38, 'MinhSang123457576567', 'sangnmps34186@fpt.edu.vn4364365465', '$2b$10$RNUEBKa7EWsgAnsdojsiFeB3iKFLJ1dMVusV1SsOu2K/Ai64/ZiqC', NULL, NULL, '0123456789', 0),
+(39, 'Hiep1234567', 'nguyenhiep12062@gmail.com', '$2b$10$SVHVT9ESKx.R2pCo2BsvMODmSWeKp5j/hwbB93JVrjyrRzwSX7T/K', NULL, NULL, '0987654321', 0),
+(40, 'Nguyenhiep', 'hiepnps34248@fpt.edu.vn', '$2b$10$zYjchqD9dVv1seV/MWZQ6u9DNn08ywLtVHgMQ6gD.GLIxnv4dqBxG', NULL, NULL, '0123456665', 1),
+(41, 'Hiep12345678', 'hiepnps34248@fpt.edu.vnn', '$2b$10$0zAG/mrtYr4eRLPILdcyXuL39qi/HMwBEvv8ddV1PmFJ3St7a8/0S', NULL, NULL, '0123456789', 0),
+(42, 'Hiep123456789', 'hiepnps34248111@fpt.edu.vnn', '$2b$10$Nja5RnN74qxFiKHaeYunme0wlsoQkFliMocyGsnNuXX9CStwZt.N2', NULL, NULL, '09123456789', 0);
 
 -- --------------------------------------------------------
 
@@ -587,12 +599,12 @@ INSERT INTO `users` (`User_ID`, `User_Name`, `Email`, `Password`, `resetToken`, 
 --
 
 CREATE TABLE `vouchers` (
-  `Voucher_ID` int NOT NULL,
-  `Code` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `Discount` int DEFAULT NULL,
+  `Voucher_ID` int(11) NOT NULL,
+  `Code` varchar(50) DEFAULT NULL,
+  `Discount` int(11) DEFAULT NULL,
   `Expiration_Date` date DEFAULT NULL,
-  `User_ID` int DEFAULT NULL,
-  `Locked` tinyint(1) DEFAULT '0'
+  `User_ID` int(11) DEFAULT NULL,
+  `Locked` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -613,7 +625,11 @@ INSERT INTO `vouchers` (`Voucher_ID`, `Code`, `Discount`, `Expiration_Date`, `Us
 (11, NULL, NULL, NULL, NULL, 0),
 (12, 'MinhSang', 11, '2024-11-28', NULL, 0),
 (13, 'MinhSang', 12, '2024-11-28', NULL, 0),
-(14, 'E41D0B82', 15, '2024-12-25', 38, 0);
+(14, 'E41D0B82', 15, '2024-12-25', 38, 0),
+(15, 'DD6D45D7', 15, '2025-01-02', 39, 0),
+(16, '35D5F095', 15, '2025-01-02', 40, 0),
+(17, 'D69E867A', 15, '2025-01-05', 41, 0),
+(18, '4DC558E2', 15, '2025-01-05', 42, 0);
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -698,61 +714,61 @@ ALTER TABLE `vouchers`
 -- AUTO_INCREMENT cho bảng `brands`
 --
 ALTER TABLE `brands`
-  MODIFY `Brand_ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `Brand_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT cho bảng `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `Category_ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `Category_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT cho bảng `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `Order_ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `Order_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT cho bảng `order_details`
 --
 ALTER TABLE `order_details`
-  MODIFY `Order_Detail_ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `Order_Detail_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- AUTO_INCREMENT cho bảng `order_status`
 --
 ALTER TABLE `order_status`
-  MODIFY `Status_ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `Status_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT cho bảng `products`
 --
 ALTER TABLE `products`
-  MODIFY `Product_ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
+  MODIFY `Product_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
 
 --
 -- AUTO_INCREMENT cho bảng `product_images`
 --
 ALTER TABLE `product_images`
-  MODIFY `Image_ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=195;
+  MODIFY `Image_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=197;
 
 --
 -- AUTO_INCREMENT cho bảng `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `Review_ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `Review_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT cho bảng `users`
 --
 ALTER TABLE `users`
-  MODIFY `User_ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `User_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT cho bảng `vouchers`
 --
 ALTER TABLE `vouchers`
-  MODIFY `Voucher_ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `Voucher_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
@@ -797,9 +813,19 @@ ALTER TABLE `reviews`
 -- Các ràng buộc cho bảng `vouchers`
 --
 ALTER TABLE `vouchers`
-  ADD CONSTRAINT `fk_users_vouchers` FOREIGN KEY (`User_ID`) REFERENCES `users` (`User_ID`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `fk_users_vouchers` FOREIGN KEY (`User_ID`) REFERENCES `users` (`User_ID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
+CREATE TABLE Wishlist (
+    Wishlist_ID INT AUTO_INCREMENT PRIMARY KEY,
+    User_ID INT NOT NULL,
+    Product_ID INT NOT NULL,
+    added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (User_ID) REFERENCES Users(User_ID) ON DELETE CASCADE,
+    FOREIGN KEY (Product_ID) REFERENCES Products(Prosuct_ID) ON DELETE CASCADE
+);

@@ -26,7 +26,7 @@ const Comments = ({ productId }) => {
         const fetchComments = async () => {
             try {
                 const response = await fetch(
-                    `http://localhost:3000/user/reviews/${productId}`
+                    `${process.env.REACT_APP_HOST_URL}user/reviews/${productId}`
                 );
                 if (response.ok) {
                     const data = await response.json();
@@ -88,7 +88,7 @@ const Comments = ({ productId }) => {
         };
 
         try {
-            const response = await fetch(`http://localhost:3000/user/reviews`, {
+            const response = await fetch(`${process.env.REACT_APP_HOST_URL}user/reviews`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

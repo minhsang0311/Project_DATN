@@ -10,7 +10,7 @@ const SPLienQuan = ({ id, sosp }) => {
   const [showToast, setShowToast] = useState(false);
 
   useEffect(() => {
-    fetch(`http://localhost:3000/user/san_pham_lien_quan/${id}/${sosp}`)
+    fetch(`${process.env.REACT_APP_HOST_URL}user/san_pham_lien_quan/${id}/${sosp}`)
       .then((res) => res.json())
       .then((data) => {
         console.log('Dữ liệu trả về từ API:', data); // Log để kiểm tra cấu trúc dữ liệu
