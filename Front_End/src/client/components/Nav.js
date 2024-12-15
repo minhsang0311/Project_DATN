@@ -4,7 +4,7 @@ import '../styles/components/Nav.css';
 const Nav = () =>{
     const [list, ganListLoai] = useState( [] );
     useEffect ( () => {
-        fetch(`http://localhost:3000/user/category`)
+        fetch(`${process.env.REACT_APP_HOST_URL}user/category`)
         .then(res=>res.json())
         .then( data => ganListLoai(data) );
     } , []);

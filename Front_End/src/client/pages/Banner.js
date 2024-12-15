@@ -12,7 +12,7 @@ const Banner = () => {
 
   // Fetch danh mục từ API
   useEffect(() => {
-    fetch('http://localhost:3000/user/category')
+    fetch(`${process.env.REACT_APP_HOST_URL}user/category`)
       .then((res) => res.json())
       .then((data) => setList(data));
   }, []);

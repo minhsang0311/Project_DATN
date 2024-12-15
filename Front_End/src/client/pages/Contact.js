@@ -13,7 +13,7 @@ const Contact = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:3000/user/contact', {
+            const response = await axios.post(`${process.env.REACT_APP_HOST_URL}user/contact`, {
                 name,
                 email,
                 message

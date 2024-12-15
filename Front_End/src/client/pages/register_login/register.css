@@ -190,3 +190,25 @@ button.ghost {
     font-size: 14px;
     text-align: center;
 }
+.input-container {
+    /* display: flex; */
+    position: relative;
+    width: 100%;
+}
+
+.input-container .icon {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 18px;
+    color: #666;
+    user-select: none;
+    z-index: 2;
+}
+
+.input-container input {
+    padding-right: 40px; /* Chừa không gian cho icon */
+}
+
