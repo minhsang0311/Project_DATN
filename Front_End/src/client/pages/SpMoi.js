@@ -11,6 +11,8 @@ function SpMoi() {
     const dispatch = useDispatch();
     const navigate = useNavigate()
     const [likedProducts, setLikedProducts] = useState([]);
+
+    const [showToast, setShowToast] = useState(false);
     useEffect(() => {
         fetch(`${process.env.REACT_APP_HOST_URL}user/productNew`)
             .then(res => res.json())
@@ -54,6 +56,11 @@ function SpMoi() {
         }
         localStorage.setItem('cart', JSON.stringify(savedCart));
         navigate('/cart');
+
+        setShowToast(true);
+        setTimeout(() => {
+            setShowToast(false);
+        }, 3000); // Hiện thông báo trong 3 giây
     };
     const handleWishlistToggle = async (product) => {
         const userId = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).id : null;
@@ -101,6 +108,7 @@ function SpMoi() {
     return (
         <div className="spbanchay">
             <div className="left-image">
+                {showToast && <div className="toast">Đã thêm vào giỏ hàng</div>}
                 <img src="/assets/img/banner20.jpg" alt="img1" />
                 <img src="/assets/img/banner20.1.jpg" alt="img2" />
             </div>

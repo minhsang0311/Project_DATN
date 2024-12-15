@@ -9,6 +9,7 @@ const Comments = ({ productId }) => {
     const [username, setUsername] = useState('');
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
+    const [canComment, setCanComment] = useState(false); // Kiểm tra quyền bình luận
 
     useEffect(() => {
         const storedUser = localStorage.getItem('user');
@@ -16,6 +17,8 @@ const Comments = ({ productId }) => {
             const user = JSON.parse(storedUser);
             setUserId(user.id);
             setUsername(user.username);
+        } else {
+            setError("Bạn cần đăng nhập để bình luận.");
         }
     }, []);
 
@@ -41,10 +44,39 @@ const Comments = ({ productId }) => {
         fetchComments();
     }, [productId]);
 
+    // Kiểm tra xem người dùng đã mua sản phẩm chưa
+    useEffect(() => {
+        const checkIfCanComment = async () => {
+            if (!userId) return;  // Nếu không có userId, không kiểm tra quyền bình luận
+
+            try {
+                const response = await fetch(`http://localhost:3000/user/orders/canComment/${userId}/${productId}`, {
+                    method: 'GET',
+                    headers: {
+                        "Content-Type": "application/json",
+                    }
+                });
+
+                const data = await response.json();
+                setCanComment(data.canComment);  // Nếu canComment = true, người dùng có thể bình luận
+            } catch (error) {
+                console.error('Lỗi khi kiểm tra quyền bình luận:', error);
+                setError('Không thể kiểm tra quyền bình luận.');
+            }
+        };
+
+        checkIfCanComment();
+    }, [userId, productId]); // Thêm productId vào dependency array để kiểm tra lại khi thay đổi sản phẩm
+
     const handleAddComment = async (e) => {
         e.preventDefault();
         setError('');
         setSuccess('');
+
+        if (!newComment.trim()) {
+            setError('Vui lòng nhập nội dung bình luận.');
+            return;
+        }
 
         const newCommentData = {
             User_ID: userId,
@@ -92,54 +124,58 @@ const Comments = ({ productId }) => {
 
     return (
         <div className="comments-section">
-        <h3>Bình luận</h3>
-        {error && <p className="error">{error}</p>}
-        {success && <p className="success">{success}</p>}
-        <ul>
-            {comments.length > 0 ? (
-                comments.map((comment) => (
-                    <li key={comment.Review_ID} className="comment-item">
-                        <img
-                            src="https://i.pinimg.com/736x/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg"
-                            alt={comment.User_Name}
-                            className="user-avatar"
-                        />
-                        <div className="comment-content">
-                            <strong>{comment.User_Name}</strong>
-                            <div className="stars">{renderStars(comment.Ratting)}</div>
-                            <p>{comment.Comment}</p>
-                        </div>
-                    </li>
-                ))
+            <h3>Bình luận</h3>
+            {error && <p className="error">{error}</p>}
+            {success && <p className="success">{success}</p>}
+            <ul>
+                {comments.length > 0 ? (
+                    comments.map((comment) => (
+                        <li key={comment.Review_ID} className="comment-item">
+                            <img
+                                src="https://i.pinimg.com/736x/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg"
+                                alt={comment.User_Name}
+                                className="user-avatar"
+                            />
+                            <div className="comment-content">
+                                <strong>{comment.User_Name}</strong>
+                                <div className="stars">{renderStars(comment.Ratting)}</div>
+                                <p>{comment.Comment}</p>
+                            </div>
+                        </li>
+                    ))
+                ) : (
+                    <li><p>Chưa có bình luận nào cho sản phẩm này.</p></li>
+                )}
+            </ul>
+
+            {/* Hiển thị form bình luận chỉ nếu người dùng đã mua sản phẩm */}
+            {canComment ? (
+                <form onSubmit={handleAddComment}>
+                    <textarea
+                        placeholder="Nội dung bình luận"
+                        value={newComment}
+                        onChange={(e) => setNewComment(e.target.value)}
+                        required
+                    />
+                    <label>
+                        Đánh giá:
+                        <select
+                            value={rating}
+                            onChange={(e) => setRating(parseInt(e.target.value))}
+                        >
+                            <option value={5}>5 sao</option>
+                            <option value={4}>4 sao</option>
+                            <option value={3}>3 sao</option>
+                            <option value={2}>2 sao</option>
+                            <option value={1}>1 sao</option>
+                        </select>
+                    </label>
+                    <button className='postcomment' type="submit">Gửi bình luận</button>
+                </form>
             ) : (
-                <li></li>
+                <p>Bạn cần mua sản phẩm này trước khi có thể bình luận.</p>
             )}
-        </ul>
-    
-        <form onSubmit={handleAddComment}>
-            <textarea
-                placeholder="Nội dung bình luận"
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
-                required
-            />
-            <label>
-                Đánh giá:
-                <select
-                    value={rating}
-                    onChange={(e) => setRating(parseInt(e.target.value))}
-                >
-                    <option value={5}>5 sao</option>
-                    <option value={4}>4 sao</option>
-                    <option value={3}>3 sao</option>
-                    <option value={2}>2 sao</option>
-                    <option value={1}>1 sao</option>
-                </select>
-            </label>
-            <button type="submit">Gửi bình luận</button>
-        </form>
-    </div>
-    
+        </div>
     );
 };
 

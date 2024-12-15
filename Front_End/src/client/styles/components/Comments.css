@@ -1,5 +1,5 @@
 .comments-section {
-    max-width:1350px;
+    max-width:60%;
     margin: 20px auto;
     background-color: #f7f7f7;
     padding: 20px;
@@ -93,7 +93,7 @@
     font-size: 14px;
 }
 
-.comments-section button {
+.comments-section .postcomment {
     background-color: #56A4FF;
     color: white;
     padding: 12px;
@@ -104,9 +104,19 @@
     transition: background-color 0.3s;
 }
 
-.comments-section button:hover {
+.comments-section .postcomment:hover {
     background-color: hsl(220, 81%, 41%);
 }
+.comment-content .buttoncomment {
+  
+    
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
 
 .error {
     color: red;

@@ -10,7 +10,7 @@ function SpMoi() {
     const [listsp, ganListSP] = useState([]);
     const [likedProducts, setLikedProducts] = useState([]);
     const dispatch = useDispatch(); // Khởi tạo useDispatch
-
+    const [showToast, setShowToast] = useState(false);
     useEffect(() => {
         fetch(`${process.env.REACT_APP_HOST_URL}user/productKhuyenMai`)
             .then(res => res.json()).then(data => ganListSP(data));
@@ -43,6 +43,10 @@ function SpMoi() {
             quantity: 1 // Mặc định là 1
         };
         dispatch(addToCart(cartItem)); // Gửi hành động thêm vào giỏ hàng
+        setShowToast(true);
+    setTimeout(() => {
+        setShowToast(false);
+    }, 3000); // Hiện thông báo trong 3 giây
     };
     const handleWishlistToggle = async (product) => {
         const userId = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).id : null;
@@ -90,6 +94,7 @@ function SpMoi() {
     return (
         <div className="spkhuyenmai">
             <div className="box">
+                 {showToast && <div className="toast">Đã thêm vào giỏ hàng</div>}
                 <div className="header1">
                     <i className="fas fa-tags"></i>
                     <h1>DEAL DÀNH CHO BẠN</h1>
