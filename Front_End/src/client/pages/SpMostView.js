@@ -1,13 +1,16 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import '../styles/components/Home.css';
+import { useDispatch } from "react-redux";
+import { addToCart } from "./cartSlice";
 
 function SpMostView() {
     const [listsp, setListSP] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [sp, error, setError] = useState(null);
     const [showToast, setShowToast] = useState(false);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         fetch("http://localhost:3000/user/productMostView")
@@ -22,16 +25,32 @@ function SpMostView() {
             });
     }, []);
 
-    const handleAddToCart = (product) => {
-        const savedCart = JSON.parse(localStorage.getItem('cart')) || [];
-        const existingProduct = savedCart.find(item => item.Product_ID === product.Product_ID);
+    const handleAddToCart = (sp) => {
+        const cartItem = {
+            id: sp?.Product_ID,
+            image: sp?.Image,
+            name: sp?.Product_Name,
+            price: sp?.Price,
+            quantity: 1, // Đảm bảo số lượng là 1 khi thêm vào
+        };
 
-        if (existingProduct) {
-            existingProduct.quantity = (existingProduct.quantity || 1) + 1;
+        // Lấy giỏ hàng hiện tại từ localStorage
+        const currentCart = JSON.parse(localStorage.getItem('cart')) || [];
+        const existingItem = currentCart.find(item => item.id === cartItem.id);
+
+        // Nếu sản phẩm đã có trong giỏ hàng, tăng số lượng
+        if (existingItem) {
+            existingItem.quantity += 1;
         } else {
-            savedCart.push({ ...product, quantity: 1 });
+            currentCart.push(cartItem); // Thêm sản phẩm mới vào giỏ
         }
-        localStorage.setItem('cart', JSON.stringify(savedCart));
+
+        // Lưu giỏ hàng vào localStorage
+        localStorage.setItem('cart', JSON.stringify(currentCart));
+
+        // Dispatch hành động thêm sản phẩm vào Redux
+        dispatch(addToCart(cartItem));
+
         setShowToast(true);
         setTimeout(() => {
             setShowToast(false);
@@ -55,7 +74,7 @@ function SpMostView() {
             <div className="right-products">
                 <div className="header1">
                     <p>ĐƯỢC QUAN TÂM</p>
-                    
+
                 </div>
                 <div className="box-sp">
                     {listsp.slice(0, 8).map((sp, i) => (
@@ -80,7 +99,7 @@ function SpMostView() {
                                         <p className="new-price">{formatCurrency(sp.Price)}</p>
                                     )}
                                 </div>
-                                <button className="add-to-cart" onClick={() => handleAddToCart(sp)}>Giỏ hàng</button>
+                                <button onClick={() => handleAddToCart(sp)} className="add-to-cart">Thêm vào giỏ</button>
                             </div>
                         </div>
                     ))}

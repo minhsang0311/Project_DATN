@@ -8,6 +8,7 @@ import '../styles/components/Home.css';
 
 function SpMoi() {
     const [listsp, ganListSP] = useState([]);
+    const [sp] = useState(null);
     const dispatch = useDispatch();
     const navigate = useNavigate()
     const [showToast, setShowToast] = useState(false);
@@ -24,29 +25,36 @@ function SpMoi() {
         }).format(value);
     };
 
-    const handleAddToCart = (product) => {
+    const handleAddToCart = (sp) => {
         const cartItem = {
-            id: product.Product_ID,
-            image: product.Image,
-            name: product.Product_Name,
-            price: product.Promotion > 0 ? product.Price - (product.Promotion * product.Price) / 100 : product.Price,
-            quantity: 1
+            id: sp?.Product_ID,
+            image: sp?.Image,
+            name: sp?.Product_Name,
+            price: sp?.Price,
+            quantity: 1, // Đảm bảo số lượng là 1 khi thêm vào
         };
-        dispatch(addToCart(cartItem));
-        const savedCart = JSON.parse(localStorage.getItem('cart')) || [];
-        const existingProduct = savedCart.find(item => item.Product_ID === product.Product_ID);
 
-        if (existingProduct) {
-            existingProduct.quantity = (existingProduct.quantity || 1) + 1;
+        // Lấy giỏ hàng hiện tại từ localStorage
+        const currentCart = JSON.parse(localStorage.getItem('cart')) || [];
+        const existingItem = currentCart.find(item => item.id === cartItem.id);
+
+        // Nếu sản phẩm đã có trong giỏ hàng, tăng số lượng
+        if (existingItem) {
+            existingItem.quantity += 1;
         } else {
-            savedCart.push({ ...product, quantity: 1 });
+            currentCart.push(cartItem); // Thêm sản phẩm mới vào giỏ
         }
-        localStorage.setItem('cart', JSON.stringify(savedCart));
-     
+
+        // Lưu giỏ hàng vào localStorage
+        localStorage.setItem('cart', JSON.stringify(currentCart));
+
+        // Dispatch hành động thêm sản phẩm vào Redux
+        dispatch(addToCart(cartItem));
+
         setShowToast(true);
-    setTimeout(() => {
-        setShowToast(false);
-    }, 3000); // Hiện thông báo trong 3 giây
+        setTimeout(() => {
+            setShowToast(false);
+        }, 3000); // Hiện thông báo trong 3 giây
     };
 
     return (
@@ -62,7 +70,7 @@ function SpMoi() {
                    
                 </div>
                 <div className="box-sp">
-                    {listsp.slice(0,8).map((sp, i) =>
+                    {listsp.slice(0,8).map((sp, i) => (
                         <div className="product" key={i}>
                             {sp.Promotion > 0 && (
                                 <div className="discount-label">
@@ -70,9 +78,9 @@ function SpMoi() {
                                 </div>
                             )}
                             <div className="img-wrapper">
-                                <img src={sp.Image} alt="" />
+                                <img src={sp.Image} alt={sp.Product_Name}/>
                             </div>
-                            <Link to={"/productDetail/"+ sp.Product_ID}><a>{sp.Product_Name}</a></Link>
+                            <Link to={"/productDetail/"+ sp.Product_ID}>{sp.Product_Name}</Link>
                             <div className="price_giohang">
                                 <div className="price">
                                     {sp.Promotion > 0 ? (
@@ -84,10 +92,10 @@ function SpMoi() {
                                         <p className="new-price">{formatCurrency(sp.Price)}</p>
                                     )}
                                 </div>
-                                <button className="add-to-cart" onClick={() => handleAddToCart(sp)}>Giỏ hàng</button>
+                                <button onClick={() => handleAddToCart(sp)} className="add-to-cart">Thêm vào giỏ</button>
                             </div>
                         </div>
-                    )}
+                    ))}
                 </div>
             </div>
         </div>
