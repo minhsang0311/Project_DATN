@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import '../styles/components/Home.css';
 import { useDispatch } from "react-redux";
 import { addToCart } from "./cartSlice";
+import toast, { Toaster } from "react-hot-toast";
 
 function SpMostView() {
     const [listsp, setListSP] = useState([]);
@@ -51,8 +52,10 @@ function SpMostView() {
         // Nếu sản phẩm đã có trong giỏ hàng, tăng số lượng
         if (existingItem) {
             existingItem.quantity += 1;
+            toast.success('Đã tăng số lượng sản phẩm trong giỏ hàng!');
         } else {
             currentCart.push(cartItem); // Thêm sản phẩm mới vào giỏ
+            toast.success('Đã thêm sản phẩm vào giỏ hàng!');
         }
 
         // Lưu giỏ hàng vào localStorage
@@ -60,11 +63,6 @@ function SpMostView() {
 
         // Dispatch hành động thêm sản phẩm vào Redux
         dispatch(addToCart(cartItem));
-
-        setShowToast(true);
-        setTimeout(() => {
-            setShowToast(false);
-        }, 3000); // Hiện thông báo trong 3 giây
     };
 
     const formatCurrency = (value) => {
@@ -118,6 +116,7 @@ function SpMostView() {
     return (
         <div className="spbanchay">
             <div className="left-image">
+            <Toaster position="top-right" reverseOrder={false} /> {/* Thêm Toaster */}
 
                 <img src="/assets/img/banner21.1.jpg" alt="" />
                 <img src="/assets/img/banner21.2.jpg" alt="" />

@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { addToCart } from "./cartSlice"; // Import hành động thêm vào giỏ hàng
 import '../styles/components/Home.css';
+import toast, { Toaster } from "react-hot-toast";
 
 function SpMoi() {
     const [listsp, ganListSP] = useState([]);
@@ -51,8 +52,10 @@ function SpMoi() {
         // Nếu sản phẩm đã có trong giỏ hàng, tăng số lượng
         if (existingItem) {
             existingItem.quantity += 1;
+            toast.success('Đã tăng số lượng sản phẩm trong giỏ hàng!');
         } else {
             currentCart.push(cartItem); // Thêm sản phẩm mới vào giỏ
+            toast.success('Đã thêm sản phẩm vào giỏ hàng!');
         }
 
         // Lưu giỏ hàng vào localStorage
@@ -112,7 +115,7 @@ function SpMoi() {
     return (
         <div className="spkhuyenmai">
             <div className="box">
-                 {showToast && <div className="toast">Đã thêm vào giỏ hàng</div>}
+            <Toaster position="top-right" reverseOrder={false} /> {/* Thêm Toaster */}
                 <div className="header1">
                     <i className="fas fa-tags"></i>
                     <h1>DEAL DÀNH CHO BẠN</h1>

@@ -59,6 +59,7 @@ exports.postreviews = (req, res) => {
             // Nếu đã bình luận rồi, không cho phép bình luận thêm
             if (reviewResults.length > 0) {
                 return res.status(403).json({ message: 'Bạn đã bình luận cho sản phẩm này' });
+                
             }
 
             // Nếu chưa có bình luận, tiến hành thêm bình luận mới
