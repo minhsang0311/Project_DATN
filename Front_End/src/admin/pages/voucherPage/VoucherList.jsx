@@ -2,24 +2,26 @@ import { Link } from "react-router-dom";
 import { Fragment, useEffect, useState } from "react";
 import "../../styles/pages/voucherList.css";
 
-const VouchersList = () => {
+const VouchersList = ({ searchResults }) => {
     const token = localStorage.getItem('token');
     const url = `http://localhost:3000/admin`;
     const [vouchers, setVouchers] = useState([]);
 
     // Fetch danh sách voucher
     useEffect(() => {
-        fetch(`${url}/vouchers`, {
-            method: 'GET',
-            headers: {
-                "Content-type": "application/json",
-                'Authorization': 'Bearer ' + token
-            }
-        })
-            .then(res => res.json())
-            .then(data => setVouchers(data))
-            .catch(error => console.error('Error fetching voucher list:', error));
-    }, [token]);
+        if (!searchResults || searchResults.length === 0) {
+            fetch(`${url}/vouchers`, {
+                method: 'GET',
+                headers: {
+                    "Content-type": "application/json",
+                    'Authorization': 'Bearer ' + token
+                }
+            })
+                .then(res => res.json())
+                .then(data => setVouchers(data))
+                .catch(error => console.error('Error fetching voucher list:', error));
+        }
+    }, [token, searchResults]);
 
     // Hàm xóa voucher
     const lockVoucher = (id) => {
@@ -59,6 +61,7 @@ const VouchersList = () => {
             })
             .catch(error => console.error("Error locking voucher:", error));
     };
+    const displayVouchers = searchResults && searchResults.length > 0 ? searchResults : vouchers;
 
 
     return (
@@ -78,7 +81,7 @@ const VouchersList = () => {
                 <div className="grid-header-voucher">Thời Hạn</div>
                 <div className="grid-header-voucher">Trạng thái</div>
                 <div className="grid-header-voucher">Thao tác</div>
-                {vouchers.map((voucher, index) => (
+                {displayVouchers.map((voucher, index) => (
                     <Fragment key={voucher.Voucher_ID}>
                         <div className="grid-item-voucher">{index + 1}</div>
                         <div className="grid-item-voucher">{voucher.Code}</div>
@@ -88,8 +91,8 @@ const VouchersList = () => {
                         <div className="grid-item-voucher grid-item-button">
                             <Link
                                 to={`/admin/voucherUpdate/${voucher.Voucher_ID}`}
-                                // className={`edit-btn ${voucher.Locked ? "disabled" : ""}`}
-                                // style={{ pointerEvents: voucher.Locked ? "none" : "auto" }}
+                            // className={`edit-btn ${voucher.Locked ? "disabled" : ""}`}
+                            // style={{ pointerEvents: voucher.Locked ? "none" : "auto" }}
                             >
                                 ✏️
                             </Link>

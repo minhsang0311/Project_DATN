@@ -1,6 +1,6 @@
 
 import Toaster from  'react-hot-toast'
-import { Fragment } from 'react';
+// import { Fragment } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 // Component Admin
@@ -47,9 +47,8 @@ import OrderDetails from './client/pages/OrderDetails.js';
 
 function App() {
   return (
-    <Fragment>
-      {/* <Toaster  position="top-center" reverseOrder={false}/> */}
-      <BrowserRouter basename="/">
+    <BrowserRouter basename="/">
+        {/* <Toaster  position="top-center" reverseOrder={false}/> */}
         <Routes>
           <Route path="/admin" element={<HomeAdmin />}>
             <Route index element={<Statistics />} />
@@ -92,7 +91,6 @@ function App() {
           <Route path="/orderDetail/:orderId" element={<OrderDetails />} />
         </Routes>
       </BrowserRouter>
-    </Fragment>
   );
 }
 

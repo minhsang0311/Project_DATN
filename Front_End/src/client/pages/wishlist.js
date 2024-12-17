@@ -2,6 +2,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { Link } from "react-router-dom";
 import '../styles/components/Wishlist.css';
 
 function Wishlist() {
@@ -93,10 +94,17 @@ function Wishlist() {
                     <div className="grid-header">Thao tác</div>
                     {wishlist.map((product, index) => (
                         <Fragment key={product.Product_ID}>
+
                             <div className="grid-item grid-item-element">{index + 1}</div>
-                            <div className="grid-item grid-item-element">{product.Product_Name}</div>
                             <div className="grid-item grid-item-element">
-                                <img src={product.Image} alt={product.Product_Name} className="product-img" />
+                                <Link to={`/productDetail/${product.Product_ID}`}>
+                                    {product.Product_Name}
+                                </Link>
+                            </div>
+                            <div className="grid-item grid-item-element">
+                                <Link to={`/productDetail/${product.Product_ID}`}>
+                                    <img src={product.Image} alt={product.Product_Name} className="product-img" />
+                                </Link>
                             </div>
                             <div className="grid-item grid-item-element">{Number(product.Price).toLocaleString("vi")} VNĐ</div>
                             <div className="grid-item">

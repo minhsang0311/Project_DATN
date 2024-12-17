@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import '../../styles/pages/commentList.css';
-const Comments = () => {
+const Comments = ({ searchResults }) => {
     const [comments, setComments] = useState([]);
     const token = localStorage.getItem('token')
     const [error, setError] = useState('');
     useEffect(() => {
+        if (!searchResults || searchResults.length === 0) {
         const fetchComments = async () => {
             try {
                 const response = await fetch('http://localhost:3000/admin/reviews', {
@@ -21,7 +22,8 @@ const Comments = () => {
             }
         };
         fetchComments();
-    }, []);
+    }
+    }, [searchResults]);
     const handleVisibilityToggle = async (id, currentStatus) => {
         const newStatus = currentStatus === 1 ? 0 : 1;
         try {
@@ -41,6 +43,7 @@ const Comments = () => {
             setError('Lỗi khi cập nhật trạng thái hiển thị');
         }
     };
+    const displayComents = searchResults && searchResults.length > 0 ? searchResults : comments;
 
     if (error) {
         return <div>{error}</div>;
@@ -64,7 +67,7 @@ const Comments = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {comments.map(comment => (
+                    {displayComents.map(comment => (
                         <tr key={comment.Review_ID}>
 
                             <td>{comment.Review_ID}</td>
