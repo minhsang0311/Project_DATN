@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../styles/components/resetPassword.css';  // Cập nhật đường dẫn đến file CSS của bạn nếu cần
+import toast, { Toaster } from 'react-hot-toast';
 
 const ResetPassword = () => {
     const { token } = useParams();  // Lấy token từ URL
@@ -17,7 +18,7 @@ const ResetPassword = () => {
         e.preventDefault();
 
         if (newPassword !== confirmPassword) {
-            setMessage('Mật khẩu không khớp, vui lòng thử lại.');
+            toast.error('Mật khẩu không khớp, vui lòng thử lại.');
             return;
         }
 
@@ -29,11 +30,11 @@ const ResetPassword = () => {
             );
             console.log(response)
             console.log(response.data.message)
-            alert(response.data.message);
+          toast.success(response.data.message);
 
             navigate('/register_login'); // Chuyển hướng người dùng đến trang đăng nhập
         } catch (error) {
-            setMessage(error.response ? error.response.data.message : 'Có lỗi xảy ra.');
+            toast.error(error.response ? error.response.data.message : 'Có lỗi xảy ra.');
         } finally {
             setLoading(false); // Kết thúc quá trình gửi yêu cầu
         }
@@ -41,6 +42,8 @@ const ResetPassword = () => {
 
     return (
         <div className="reset_password">
+                 <Toaster position="top-right" reverseOrder={false} /> {/* Thêm Toaster */}
+
             <h2>Đặt lại mật khẩu</h2>
             {message && <p>{message}</p>}
             <form onSubmit={handleSubmit}>

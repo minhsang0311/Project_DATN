@@ -20,7 +20,7 @@ function OrderStatus() {
             navigate('/register_login');
         } else {
             if (user.role !== 0) {
-                alert('Tài khoản không thể đổi mật khẩu');
+                alert('Tài khoản không thể xem trạng thái đơn hàng');
                 navigate('/register_login');
             }
         }
@@ -36,8 +36,8 @@ function OrderStatus() {
         }
     }, [navigate]);
 
-    const handleViewOrderDetails = (orderId) => {
-        navigate(`/orderDetail/${orderId}`);
+    const handleViewOrderDetails = (Order_Detail_ID) => {
+        navigate(`/orderDetail/${Order_Detail_ID}`);
     };
 
     return (
@@ -50,23 +50,26 @@ function OrderStatus() {
                     <thead>
                         <tr>
                             <th>Mã đơn hàng</th>
-                            <th>Trạng thái đơn hàng</th>
+                            <th>Tên sản phẩm</th>
                             <th>Ngày đặt hàng</th>
                             <th>Địa chỉ</th>
                             <th>Tổng tiền</th>
+                            <th>Trạng thái đơn hàng</th>
                             <th>Chi tiết đơn hàng</th>
                         </tr>
                     </thead>
                     <tbody>
                         {orders.map((order) => (
+                            
                             <tr key={order.Order_ID}>
                                 <td>{order.Order_ID}</td>
-                                <td>{order.Status}</td>
+                                <td>{order.Product_Name}</td>
                                 <td>{order.created_at}</td>
-                                <td>{order.Address}</td>
+                                <td>{order.Address}</td> 
                                 <td>{order.total_amount} VND</td>
+                                 <td>{order.Status}</td>
                                 <td>
-                                <button className="button-detail" onClick={() => handleViewOrderDetails(order.Order_ID)}>
+                                <button className="button-detail" onClick={() => handleViewOrderDetails(order.Order_Detail_ID)}>
     Xem Chi Tiết
 </button>
 

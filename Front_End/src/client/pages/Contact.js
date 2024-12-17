@@ -18,18 +18,26 @@ const Contact = () => {
                 email,
                 message
             });
-            alert('Đã gửi thành công ')
-            setResponseMessage(response.data.message);
+            console.log("Gửi liên hệ thành công!");
+            setName('');
+            setEmail('');
+            setMessage('');
         } catch (error) {
-            setResponseMessage(error.response ? error.response.data.message : 'Có lỗi xảy ra.');
+            const errMessage = error.response
+                ? error.response.data.message
+                : 'Có lỗi xảy ra. Vui lòng thử lại!';
+            setResponseMessage(errMessage);
         }
     };
+    
 
     return (
         <Fragment>
             <Header />
+           
             <div className="contact-page">
                 <div className="contact-info">
+                
                     <div className="contact-details">
                         <p>
                             <i className="fa fa-map-marker"></i>
@@ -41,7 +49,7 @@ const Contact = () => {
                         </p>
                         <p>
                             <i className="fa fa-envelope"></i>
-                            Homenext@gamil.com
+                            Homenext@gmail.com
                         </p>
                     </div>
                     <h2>Liên hệ với chúng tôi</h2>

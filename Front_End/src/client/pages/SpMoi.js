@@ -111,7 +111,9 @@ function SpMoi() {
                 } else {
                     setLikedProducts(prev => [...prev, product.Product_ID]);
                 }
-                alert(data.message);
+                toast.success(data.message)
+
+                // alert(data.message);
             } else {
                 alert("bạn chưa đăng nhập");
                 // navigate('/register_login')
