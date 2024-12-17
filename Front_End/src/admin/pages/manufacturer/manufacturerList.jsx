@@ -50,9 +50,9 @@ const ManufacturerList = ({ searchResults }) => {
     <div className="box-productlist">
       <div className="headertop-admin">
         <div className="header_admin">
-          <h2>Danh sách nhà sản xuất</h2>
+          <h2>DANH SÁCH NHÀ SẢN XUẤT</h2>
           <button className="button_admin">
-            <Link to="/admin/manufacturerAdd">Thêm nhà sản xuất</Link>
+            <Link to="/admin/manufacturerAdd">THÊM NHÀ SẢN XUẤT</Link>
           </button>
         </div>
       </div>

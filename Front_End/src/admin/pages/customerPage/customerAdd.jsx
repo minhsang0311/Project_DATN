@@ -65,11 +65,11 @@ const CustomerAdd = () => {
     };
 
     return (
-        <div className="form-container-customer-add">
-            <div className="form-header">
+        <div className="form-container-productadd">
+            <div className="form-header-addproduct">
                 <h2 className="form-h2">THÊM KHÁCH HÀNG</h2>
             </div>
-            <form className="customer-add-form" onSubmit={handleSubmit}>
+            <form className="productadd-form" onSubmit={handleSubmit}>
                 {error && <p className="error-message">{error}</p>}
                 <div className="input-customer-add">
                     <div className="form-group">

@@ -43,7 +43,7 @@ const VoucherAdd = () => {
 
     return (
         <div className="form-container-productadd">
-            <div className="form-header">
+            <div className="form-header-addproduct">
                 <h2>THÊM VOUCHER</h2>
             </div>
             <form className="productadd-form" onSubmit={Submit}>

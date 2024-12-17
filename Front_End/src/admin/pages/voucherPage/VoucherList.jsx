@@ -68,9 +68,9 @@ const VouchersList = ({ searchResults }) => {
         <div className="box-voucherList">
             <div className="headertop-admin-voucher">
                 <div className="header_admin_voucher">
-                    <h2>Danh sách voucher</h2>
+                    <h2>DANH SÁCH VOUCHER</h2>
                     <button className="button_admin_voucher">
-                        <Link to="/admin/voucherAdd">Thêm voucher</Link>
+                        <Link to="/admin/voucherAdd">THÊM VOUCHER</Link>
                     </button>
                 </div>
             </div>
