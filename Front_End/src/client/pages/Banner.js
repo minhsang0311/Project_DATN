@@ -11,7 +11,7 @@ const Banner = () => {
   const navigate = useNavigate(); // Hook điều hướng
   
   useEffect(() => {
-    fetch('http://localhost:3000/user/brand')
+    fetch(`${process.env.REACT_APP_HOST_URL}user/brand`)
       .then((res) => res.json())
       .then((data) => setListbrands(data));
   }, []);

@@ -3,6 +3,7 @@ import axios from 'axios';
 import '../styles/components/Contact.css';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import toast, { Toaster } from 'react-hot-toast';
 
 const Contact = () => {
     const [name, setName] = useState('');
@@ -13,23 +14,32 @@ const Contact = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:3000/user/contact', {
+            const response = await axios.post(`${process.env.REACT_APP_HOST_URL}user/contact`, {
                 name,
                 email,
                 message
             });
-            alert('Đã gửi thành công ')
-            setResponseMessage(response.data.message);
+            toast.success("Gửi liên hệ thành công!");
+            setName('');
+            setEmail('');
+            setMessage('');
         } catch (error) {
-            setResponseMessage(error.response ? error.response.data.message : 'Có lỗi xảy ra.');
+            const errMessage = error.response
+                ? error.response.data.message
+                : 'Có lỗi xảy ra. Vui lòng thử lại!';
+            setResponseMessage(errMessage);
         }
     };
+    
 
     return (
         <Fragment>
             <Header />
+            <Toaster position="top-right" reverseOrder={false} /> {/* Thêm Toaster */}
+
             <div className="contact-page">
                 <div className="contact-info">
+                
                     <div className="contact-details">
                         <p>
                             <i className="fa fa-map-marker"></i>
@@ -41,7 +51,7 @@ const Contact = () => {
                         </p>
                         <p>
                             <i className="fa fa-envelope"></i>
-                            Homenext@gamil.com
+                            Homenext@gmail.com
                         </p>
                     </div>
                     <h2>Liên hệ với chúng tôi</h2>

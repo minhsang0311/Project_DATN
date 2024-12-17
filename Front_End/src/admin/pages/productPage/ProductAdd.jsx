@@ -266,6 +266,7 @@ const ProductAdd = () => {
                                 } />
                         </div>
                         <div className="radio-group">
+                        <label>Ẩn/Hiện</label>
                             <label>
                                 <input
                                     type="radio"
@@ -289,7 +290,7 @@ const ProductAdd = () => {
                         </div>
                     </div>
                 </div>
-                <button type="submit" className="submit-btn" onClick={Submit}>SUBMIT</button>
+                <button type="submit" className="submit-btn" onClick={Submit}>THÊM</button>
             </form>
         </div>
     )

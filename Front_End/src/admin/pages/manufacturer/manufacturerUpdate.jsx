@@ -2,16 +2,22 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom'; // Use useNavigate instead of useHistory
 import axios from 'axios';
 import '../../styles/pages/manufacturerUpdate.css';
+
 const ManufacturerUpdate = () => {
   const { id } = useParams();  // Get Brand_ID from URL
   const navigate = useNavigate(); // useNavigate hook for navigation
+  const token = localStorage.getItem('token'); // Get the token from localStorage
 
   const [brandName, setBrandName] = useState('');
   const [loading, setLoading] = useState(false);
 
   // Fetch the current brand details when the component mounts
   useEffect(() => {
-    axios.get(`http://localhost:3000/admin/brandDetail/${id}`)
+    axios.get(`http://localhost:3000/admin/brandDetail/${id}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`, // Include token in the Authorization header
+      },
+    })
       .then(response => {
         const { Brand_Name } = response.data;
         setBrandName(Brand_Name);
@@ -19,7 +25,7 @@ const ManufacturerUpdate = () => {
       .catch(error => {
         console.error('Error fetching brand details:', error);
       });
-  }, [id]);
+  }, [id, token]);
 
   // Handle form submission
   const handleSubmit = (e) => {
@@ -30,7 +36,11 @@ const ManufacturerUpdate = () => {
 
     setLoading(true);
 
-    axios.put(`http://localhost:3000/admin/brandUpdate/${id}`, formData)
+    axios.put(`http://localhost:3000/admin/brandUpdate/${id}`, formData, {
+      headers: {
+        'Authorization': `Bearer ${token}`, // Include token in the Authorization header
+      },
+    })
       .then(() => {
         setLoading(false);
         navigate('/admin/manufacturerList'); // Redirect to the list of brands after successful update
@@ -42,10 +52,12 @@ const ManufacturerUpdate = () => {
   };
 
   return (
-    <div className="manufacturerUpdate-container">
-      <h2 className='manufacturerUpdate-h2'>Sửa nhà sản xuất</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="manufacturerUpdate-form-group">
+    <div className="form-container-productadd">
+      <div className="form-header-update">
+        <h2>CẬP NHẬT NHÀ SẢN XUẤT</h2>
+      </div>
+      <form onSubmit={handleSubmit} className="productadd-form">
+        <div className="form-group">
           <label>Brand Name</label>
           <input
             type="text"
@@ -56,8 +68,8 @@ const ManufacturerUpdate = () => {
           />
         </div>
 
-        <button type="submit" className="btn btn-manufacturerUpdate" disabled={loading}>
-          {loading ? 'Updating...' : 'Update Brand'}
+        <button type="submit" className="submit-btn" disabled={loading}>
+          {loading ? 'Updating...' : 'CẬP NHẬT'}
         </button>
       </form>
     </div>

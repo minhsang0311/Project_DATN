@@ -45,6 +45,7 @@ const HomeAdmin = () => {
 
     const handleLogout = () => {
         localStorage.removeItem('token');
+        localStorage.removeItem('user');
         navigate('/register_login');
     };
 
@@ -168,6 +169,7 @@ const HomeAdmin = () => {
                 </div>
 
                 <div className="main--wrapper">
+                    
                     <Routes>
                         <Route path="/" element={<Statistics />} />
                         <Route path="products" element={<ProductList searchResults={searchResults} />} />
@@ -189,6 +191,7 @@ const HomeAdmin = () => {
                         <Route path="manufacturerUpdate/:id" element={<ManufacturerUpdate />} />
                     </Routes>
                 </div>
+                
             </div>
         </div>
     );

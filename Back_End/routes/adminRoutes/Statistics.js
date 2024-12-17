@@ -9,4 +9,5 @@ router.get('/stats-probrand', adminMiddleware, StatisticsController.StatisticsPr
 router.get('/stats-statisticsRevenue', adminMiddleware, StatisticsController.getRevenueStatistics);
 router.get('/stats-statisticsSalePro', adminMiddleware, StatisticsController.DailySaleProByDateRange);
 router.get('/stats-orderStatus', adminMiddleware, StatisticsController.OrderStatusStats);
+router.get('/stats-totalRevenue', adminMiddleware,StatisticsController.getTotalRevenue)
 module.exports = router;

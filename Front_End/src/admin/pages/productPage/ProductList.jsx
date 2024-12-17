@@ -47,9 +47,9 @@ const ProductList = ({ searchResults }) => {
         <div className="box-productlist">
             <div className="headertop-admin">
                 <div className="header_admin">
-                    <h2>Danh sách sản phẩm</h2>
+                    <h2>DANH SÁCH SẢN PHẨM</h2>
                     <button className="button_admin">
-                        <Link to="/admin/product-add">Thêm sản phẩm</Link>
+                        <Link to="/admin/product-add">THÊM SẢN PHẨM</Link>
                     </button>
                 </div>
             </div>
@@ -64,19 +64,19 @@ const ProductList = ({ searchResults }) => {
                 <div className="grid-header">Thao tác</div>
                 {displayProducts.map((product, index) => (
                     <Fragment key={product.Product_ID}>
-                        <div className="grid-item">{product.Product_ID}</div>
-                        <div className="grid-item">{product.Product_Name}</div>
-                        <div className="grid-item">
+                        <div className="grid-item grid-item-element">{product.Product_ID}</div>
+                        <div className="grid-item grid-item-element">{product.Product_Name}</div>
+                        <div className="grid-item grid-item-element">
                             <img src={product.Image} alt={product.Product_Name} className="product-img" />
                         </div>
-                        <div className="grid-item">{Number(product.Price).toLocaleString("vi")} VNĐ</div>
+                        <div className="grid-item grid-item-element">{Number(product.Price).toLocaleString("vi")} VNĐ</div>
                         <div className="grid-item">
                             {product.Description.split('\n').map((desc, index) => (
                                 <div className="description" key={index}>{desc.replace('-', '')}</div>
                             ))}
                         </div>
-                        <div className="grid-item">{product.Views}</div>
-                        <div className="grid-item">{product.Show_Hidden === 1 ? "Hiện" : "Ẩn"}</div>
+                        <div className="grid-item grid-item-element">{product.Views}</div>
+                        <div className="grid-item grid-item-element">{product.Show_Hidden === 1 ? "Hiện" : "Ẩn"}</div>
                         <div className="grid-item grid-item-button">
                             <Link to={`/admin/productUpdate/${product.Product_ID}`} className="edit-btn">✏️</Link>
                             <button className="delete-btn" onClick={() => deleteProduct(product.Product_ID)}>🗑️</button>

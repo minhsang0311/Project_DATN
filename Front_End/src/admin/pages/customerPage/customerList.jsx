@@ -1,89 +1,91 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import '../../styles/pages/customerList.css';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
+import "../../styles/pages/customerList.css";
 
 const CustomerList = ({ searchResults }) => {
-  const [customers, setCustomers] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
+  const token = localStorage.getItem('token');
+  const url = `http://localhost:3000/admin`;
+  const [customers, setcustomersList] = useState([]);
+  const [loading, setLoading] = useState(false); // Loading state
+  const [error, setError] = useState(null); // Error state
   useEffect(() => {
-    const fetchCustomers = async () => {
-      try {
-        let response;
-        if (searchResults && searchResults.length > 0) {
-          // Sử dụng kết quả từ tìm kiếm
-          setCustomers(searchResults);
-        } else {
-          // Nếu không có searchResults, fetch toàn bộ danh sách khách hàng
-          response = await axios.get('http://localhost:3000/admin/customers');
-          setCustomers(response.data);
-        }
-
-      } catch (error) {
-        console.error("Error fetching customers:", error);
-        setError("Không thể tải danh sách khách hàng.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCustomers();
-  }, [searchResults]);
+    if (!searchResults || searchResults.length === 0) {
+        // Fetch toàn bộ danh sách sản phẩm khi không có kết quả tìm kiếm
+        fetch(`${url}/customers`, {
+            method: 'GET',
+            headers: { "Content-type": "application/json", 'Authorization': 'Bearer ' + token }
+        })
+            .then(res => res.json())
+            .then(data => {
+              console.log(data)
+              setcustomersList(data)})
+            
+            .catch(error => console.error('Error fetching product list:', error));
+    }
+}, [token, searchResults]);
 
   const handleDelete = async (userId) => {
     if (window.confirm("Bạn có chắc chắn muốn xóa khách hàng này?")) {
       try {
-        await axios.delete(`http://localhost:3000/admin/customerDelete/${userId}`);
-        setCustomers(customers.filter(customer => customer.User_ID !== userId));
+        const response = await fetch(`${url}/customerDelete/${userId}`, {
+          method: 'DELETE',
+          headers: {
+            "Content-type": "application/json",
+            'Authorization': 'Bearer ' + token
+          }
+        });
+
+        if (!response.ok) {
+          const errorResponse = await response.json();
+          alert(errorResponse.message || "Không thể xóa khách hàng.");
+        } else {
+          alert("Đã xóa khách hàng.");
+          setcustomersList(prev => prev.filter(customer => customer.User_ID !== userId));
+        }
       } catch (error) {
-        console.error("Error deleting customer:", error);
+        console.error('Error deleting customer:', error);
         setError("Không thể xóa khách hàng.");
       }
     }
   };
 
+  // Hiển thị searchResults nếu có, nếu không sẽ hiển thị toàn bộ customers
+  const displayCustomers = searchResults && searchResults.length > 0 ? searchResults : customers;
+
   if (loading) return <p>Đang tải dữ liệu...</p>;
   if (error) return <p>{error}</p>;
 
   return (
-    <div className="customer-list">
-      <h2>Danh sách khách hàng</h2>
-      <button className="customer-add-button">
-        <Link to="/admin/customerAdd">Thêm khách hàng</Link>
-      </button>
-      {customers.length > 0 ? (
-        <table className="customer-table">
-          <thead className="customer-thead">
-            <tr className="customer-tr">
-              <th>ID</th>
-              <th>Tên người dùng</th>
-              <th>Email</th>
-              <th>Điện thoại</th>
-              <th>Vai trò</th>
-              <th>Thao tác</th>
-            </tr>
-          </thead>
-          <tbody>
-            {customers.map(customer => (
-              <tr className="customer-tr" key={customer.User_ID}>
-                <td>{customer.User_ID}</td>
-                <td>{customer.User_Name}</td>
-                <td>{customer.Email || 'N/A'}</td>
-                <td>{customer.Phone || 'N/A'}</td>
-                <td>{customer.Role === 1 ? 'Admin' : 'User'}</td>
-                <td>
-                  <Link to={`/admin/customerUpdate/${customer.User_ID}`} className="customer-edit-btn">✏️</Link>
-                  <button className="customer-delete-btn" onClick={() => handleDelete(customer.User_ID)}>🗑️</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      ) : (
-        <p>Không có khách hàng nào để hiển thị.</p>
-      )}
+    <div className="box-productlist">
+      <div className="headertop-admin">
+        <div className="header_admin">
+          <h2>DANH SÁCH KHÁCH HÀNG</h2>
+          <button className="button_admin">
+            <Link to="/admin/customerAdd">THÊM KHÁCH HÀNG</Link>
+          </button>
+        </div>
+      </div>
+      <div className="grid-container-customer">
+        <div className="grid-header">ID</div>
+        <div className="grid-header">Tên người dùng</div>
+        <div className="grid-header">Email</div>
+        <div className="grid-header">Điện thoại</div>
+        <div className="grid-header">Vai trò</div>
+        <div className="grid-header">Thao tác</div>
+        {displayCustomers.map((customer) => (
+          <Fragment key={customer.User_ID}>
+            <div className="grid-item grid-item-element">{customer.User_ID}</div>
+            <div className="grid-item grid-item-element">{customer.User_Name}</div>
+            <div className="grid-item grid-item-element">{customer.Email || 'N/A'}</div>
+            <div className="grid-item grid-item-element">{customer.Phone || 'N/A'}</div>
+            <div className="grid-item grid-item-element">{customer.Role === 1 ? 'Admin' : 'User'}</div>
+            <div className="grid-item grid-item-button">
+              <Link to={`/admin/customerUpdate/${customer.User_ID}`} className="edit-btn">✏️</Link>
+              <button className="delete-btn" onClick={() => handleDelete(customer.User_ID)}>🗑️</button>
+            </div>
+          </Fragment>
+        ))}
+      </div>
     </div>
   );
 };

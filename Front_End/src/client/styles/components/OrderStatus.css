@@ -1,7 +1,7 @@
 .order-status {
     padding: 40px;
     margin: 0 auto;
-    max-width: 1200px;
+    max-width: 100%;
     margin-top: 150px;
     background-color: #fff;
     border-radius: 8px;
@@ -62,4 +62,40 @@ tr:hover {
     th, td {
         padding: 8px 12px;
     }
+}
+.cancel-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cancel-modal textarea {
+    width: 300px;
+    height: 100px;
+    margin-bottom: 10px;
+}
+
+.cancel-modal button {
+    margin: 5px;
+}
+
+.button-detail {
+    background-color: #56A4FF;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button-detail:hover {
+    background-color: #4090e0;
 }

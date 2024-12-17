@@ -20,11 +20,19 @@ const StatisticsSalePro = () => {
     const firstDayLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
     const lastDayLastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
 
-    // Định dạng yyyy-mm-dd cho input date
-    const formatDate = (date) => date.toISOString().split("T")[0];
+    const formatDate = (date) => {
+      return date.toLocaleDateString('en-CA');
+    };
 
-    setStartDate(formatDate(firstDayLastMonth));
-    setEndDate(formatDate(lastDayLastMonth));
+    const start = formatDate(firstDayLastMonth);
+    const end = formatDate(lastDayLastMonth);
+
+    console.log("Start Date: ", start);  // Kiểm tra giá trị startDate
+    console.log("End Date: ", end);  // Kiểm tra giá trị endDate
+
+    setStartDate(start);
+    setEndDate(end);
+    handleFetchData();
   }, []);
 
   // Tự động gọi API khi `startDate` và `endDate` được thiết lập
@@ -35,14 +43,7 @@ const StatisticsSalePro = () => {
   }, [startDate, endDate]);
 
   const handleFetchData = () => {
-    if (!startDate || !endDate) {
-      alert("Vui lòng nhập ngày bắt đầu và ngày kết thúc!");
-      return;
-    }
-
     setLoading(true);
-    setError("");
-
     fetch(`http://localhost:3000/admin/stats-statisticsSalePro?startDate=${startDate}&endDate=${endDate}`, {
       method: "GET",
       headers: {
@@ -52,33 +53,39 @@ const StatisticsSalePro = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        if (!Array.isArray(data)) {
-          setError("Dữ liệu trả về không hợp lệ.");
+        console.log(data)
+        if (startDate > endDate) {
+          alert("Ngày bắt đầu và ngày kết thúc không hợp lệ");
           return;
         }
 
-        setSalesData(data); // Set the sales data
+        // Kiểm tra xem dữ liệu trả về có phải là mảng không
+        if (Array.isArray(data)) {
+          setSalesData(data);
 
-        // Calculate total quantity sold across all products
-        const totalQuantitySold = data.reduce((acc, item) => acc + item.totalQuantity, 0);
-
-        // Prepare data for the chart to show only total sales
-        setChartData({
-          labels: ["Tổng số sản phẩm bán được"], // Only one label
-          datasets: [
-            {
-              label: "Tổng số sản phẩm bán được",
-              data: [totalQuantitySold], // Single value for the total sales
-              backgroundColor: "rgba(75, 192, 192, 0.5)",
-              borderColor: "rgba(75, 192, 192, 1)",
-              borderWidth: 1,
-            },
-          ],
-        });
+          const totalQuantitySold = data.reduce((acc, item) => acc + item.totalQuantity, 0);
+          setChartData({
+            labels: ["Tổng số sản phẩm bán được"], // Only one label
+            datasets: [
+              {
+                label: "Tổng số sản phẩm bán được",
+                data: [totalQuantitySold], // Single value for the total sales
+                backgroundColor: "rgba(75, 192, 192, 0.5)",
+                borderColor: "rgba(75, 192, 192, 1)",
+                borderWidth: 1,
+              },
+            ],
+          });
+        }
       })
-      .catch(() => setError("Lỗi khi lấy dữ liệu thống kê."))
+      .catch((err) => {
+        console.log("Lỗi khi lấy dữ liệu thống kê.", err);
+        setError("Lỗi khi lấy dữ liệu thống kê.");
+      })
       .finally(() => setLoading(false));
+    setError("");
   };
+
 
   return (
     <div className="revenue-statistics">

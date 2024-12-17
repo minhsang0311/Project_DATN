@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import axios from 'axios';
 import '../../styles/pages/AdminOrder.css';
 
@@ -9,116 +9,138 @@ const AdminOrder = ({ searchResults }) => {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [newStatus, setNewStatus] = useState('');
 
+  // Lấy danh sách đơn hàng từ API
   useEffect(() => {
-    const fetchOrders = async () => {
-      if (searchResults && searchResults.length > 0) {
-        setOrders(searchResults);  // Use the search results directly if available
-        setLoading(false);
-      } else {
+    if (!searchResults || searchResults.length === 0) {
+      const fetchOrders = async () => {
         const token = localStorage.getItem('token');
+
+        if (!token) {
+          setError('Không tìm thấy token. Vui lòng đăng nhập lại.');
+          setLoading(false);
+          return;
+        }
+
         try {
-          const response = await fetch(`http://localhost:3000/admin/order`, {
+          const response = await axios.get('http://localhost:3000/admin/order', {
             headers: {
-              'Authorization': `Bearer ${token}`,
+              Authorization: `Bearer ${token}`,
             },
           });
-          const data = await response.json();
-          setOrders(data);
-          setLoading(false);
+          // Sắp xếp danh sách đơn hàng theo Order_ID tăng dần
+          const sortedOrders = response.data.sort((a, b) => a.Order_ID - b.Order_ID);
+          setOrders(sortedOrders);
         } catch (err) {
-          setError('Lỗi khi lấy danh sách đơn hàng');
+          setError('Lỗi khi lấy danh sách đơn hàng.');
+        } finally {
           setLoading(false);
         }
-      }
-    };
+      };
 
-    fetchOrders();
-  }, [searchResults]); // Re-run effect when searchResults change
+      fetchOrders();
+    }
+  }, [searchResults]);
 
+  // Cập nhật trạng thái đơn hàng
   const handleStatusChange = async (orderId) => {
     const token = localStorage.getItem('token');
+
     try {
-      await axios.put(`http://localhost:3000/admin/order/${orderId}`, 
+      await axios.put(
+        `http://localhost:3000/admin/order/${orderId}`,
         { Status: newStatus },
         {
           headers: {
-            'Authorization': `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
-      setOrders((prevOrders) =>
-        prevOrders.map((order) =>
+
+      // Cập nhật trạng thái trong danh sách đơn hàng
+      setOrders((prevOrders) => {
+        let updatedOrders = prevOrders.map((order) =>
           order.Order_ID === orderId ? { ...order, Status: newStatus } : order
-        )
-      );
+        );
+        return updatedOrders;
+      });
+
+      // Reset trạng thái mới và selectedOrder
       setNewStatus('');
       setSelectedOrder(null);
     } catch (err) {
-      setError('Lỗi khi cập nhật trạng thái đơn hàng');
+      setError('Lỗi khi cập nhật trạng thái đơn hàng.');
     }
   };
 
-  if (loading) return <div className="loading">Loading...</div>;
+  if (loading) return <div className="loading">Đang tải...</div>;
   if (error) return <div className="error">{error}</div>;
+  const displayOrders = searchResults && searchResults.length > 0 ? searchResults : orders;
 
   return (
-    <div className="order-management">
-      <h1 className="order-title">Quản lý đơn hàng</h1>
-      <table className="order-table">
-        <thead>
-          <tr className="table-header">
-            <th className="header-item">Order ID</th>
-            <th className="header-item">User ID</th>
-            <th className="header-item">Status</th>
-            <th className="header-item">Email</th>
-            <th className="header-item">Phone</th>
-            <th className="header-item">Address</th>
-            <th className="header-item">Update Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {orders.map((order) => (
-            <tr key={order.Order_ID} className="table-row">
-              <td className="row-item">{order.Order_ID}</td>
-              <td className="row-item">{order.User_ID}</td>
-              <td className="row-item">
+    <div className="box-productlist">
+      <div className="headertop-admin">
+        <div className="header_admin">
+          <h2>DANH SÁCH ĐƠN HÀNG</h2>
+        </div>
+      </div>
+      <div className="grid-container-order">
+            <div className="grid-header">Order ID</div>
+            <div className="grid-header">Tên khách hàng</div>
+            <div className="grid-header">Email</div>
+            <div className="grid-header">Số điện thoại</div>
+            <div className="grid-header">Địa chỉ</div>
+            <div className="grid-header">Trạng thái</div>
+            <div className="grid-header">Cập nhật trạng thái</div>
+          {displayOrders.map((order) => (
+            <Fragment key={order.Order_ID}>
+              <div className="grid-item grid-item-element">{order.Order_ID}</div>
+              <div className="grid-item grid-item-element">{order.User_Name}</div>
+              <div className="grid-item grid-item-element">{order.Email}</div>
+              <div className="grid-item grid-item-element">{order.Phone}</div>
+              <div className="grid-item grid-item-element">{order.Address}</div>
+              <div className="grid-item grid-item-element">
                 {selectedOrder === order.Order_ID ? (
                   <select
                     value={newStatus}
                     onChange={(e) => setNewStatus(e.target.value)}
                     className="status-select"
                   >
-                    <option value="">Chọn trạng thái</option>
-                    <option value={1}>Chờ xác nhận</option>
-                    <option value={2}>Đã xác nhận</option>
-                    <option value={3}>Đang chuẩn bị hàng</option>
-                    <option value={4}>Đang vận chuyển</option>
-                    <option value={5}>Đã giao hàng</option>
-                    <option value={6}>Đã hủy</option>
+                    <option value="1">Chờ xác nhận</option>
+                    <option value="2">Đã xác nhận</option>
+                    <option value="3">Đang chuẩn bị hàng</option>
+                    <option value="4">Đang vận chuyển</option>
+                    <option value="5">Đã giao hàng</option>
+                    <option value="6">Đã hủy</option>
                   </select>
                 ) : (
                   <span className="status-display">{order.Status}</span>
                 )}
-              </td>
-              <td className="row-item">{order.Email}</td>
-              <td className="row-item">{order.Phone}</td>
-              <td className="row-item">{order.Address}</td>
-              <td className="row-item">
+              </div>
+              <div className="grid-item grid-item-element">
                 {selectedOrder === order.Order_ID ? (
-                  <button className="update-button" onClick={() => handleStatusChange(order.Order_ID)}>Cập nhật</button>
+                  <button
+                    className="update-button"
+                    onClick={() => handleStatusChange(order.Order_ID)}
+                  >
+                    Cập nhật
+                  </button>
                 ) : (
-                  <button className="change-status-button" onClick={() => { setSelectedOrder(order.Order_ID); setNewStatus(order.Status); }}>
+                  <button
+                    className="change-status-button"
+                    onClick={() => {
+                      setSelectedOrder(order.Order_ID);
+                      setNewStatus(order.Status); // Hiển thị Fragmentạng thái cũ khi chọn thay đổi
+                    }}
+                  >
                     Thay đổi trạng thái
                   </button>
                 )}
-              </td>
-            </tr>
+              </div>
+            </Fragment>
           ))}
-        </tbody>
-      </table>
+      </div>
     </div>
   );
 };
 
 export default AdminOrder;
-

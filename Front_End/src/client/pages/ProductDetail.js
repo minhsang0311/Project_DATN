@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { toast, Toaster } from 'react-hot-toast'; // Import toast
 import '../styles/components/ProductDetail.css';
 import SPLienQuan from './RelatedProducts';
 import Comments from './Comments';
@@ -15,53 +16,13 @@ const ProductDetail = () => {
     const [error, setError] = useState('');
     let { id } = useParams();
     const navigate = useNavigate();
-    const [showToast, setShowToast] = useState(false);
     const dispatch = useDispatch();
 
-    // Lấy dữ liệu giỏ hàng từ Redux Store
-
-    // Lấy dữ liệu từ localStorage khi component được mount
-    useEffect(() => {
-        const savedCart = JSON.parse(localStorage.getItem('cart')) || [];
-        savedCart.forEach(item => {
-            dispatch(addToCart(item));
-        });
-    }, [dispatch]);
-
-    const handleThumbnailClick = (src) => {
-        setMainImage(src);
-    };
-    const formatCurrency = (value) => {
-        return new Intl.NumberFormat('vi-VN', {
-            style: 'currency',
-            currency: 'VND',
-        }).format(value);
-    };
-    // Hàm thêm vào giỏ hàng
-    const handleAddToCart = () => {
-        const cartItem = {
-            id: sp.Product_ID,
-            image: sp.Image,
-            name: sp.Product_Name,
-            price: sp.Price,
-        };
-        dispatch(addToCart(cartItem));
-
-        // Lưu vào localStorage
-        const currentCart = JSON.parse(localStorage.getItem('cart')) || [];
-        currentCart.push(cartItem);
-        localStorage.setItem('cart', JSON.stringify(currentCart));
-
-        setShowToast(true);
-        setTimeout(() => {
-            setShowToast(false);
-        }, 3000); // Hiện thông báo trong 3 giây
-    };
     // Lấy dữ liệu chi tiết sản phẩm
     useEffect(() => {
         const fetchProductDetail = async () => {
             try {
-                const response = await fetch(`http://localhost:3000/user/productDetail/${id}`);
+                const response = await fetch(`${process.env.REACT_APP_HOST_URL}user/productDetail/${id}`);
                 const data = await response.json();
                 if (data.message) {
                     setError(data.message);
@@ -77,7 +38,47 @@ const ProductDetail = () => {
         };
         fetchProductDetail();
     }, [id]);
-    //Hàm mua ngay 
+
+    const handleThumbnailClick = (src) => {
+        setMainImage(src);
+    };
+
+    const formatCurrency = (value) => {
+        return new Intl.NumberFormat('vi-VN', {
+            style: 'currency',
+            currency: 'VND',
+        }).format(value);
+    };
+
+    const handleAddToCart = () => {
+        const cartItem = {
+            id: sp?.Product_ID,
+            image: sp?.Image,
+            name: sp?.Product_Name,
+            price: sp?.Price,
+            quantity: 1, // Đảm bảo số lượng là 1 khi thêm vào
+        };
+
+        // Lấy giỏ hàng hiện tại từ localStorage
+        const currentCart = JSON.parse(localStorage.getItem('cart')) || [];
+        const existingItem = currentCart.find(item => item.id === cartItem.id);
+
+        // Nếu sản phẩm đã có trong giỏ hàng, tăng số lượng
+        if (existingItem) {
+            existingItem.quantity += 1;
+            toast.success('Đã tăng số lượng sản phẩm trong giỏ hàng!');
+        } else {
+            currentCart.push(cartItem); // Thêm sản phẩm mới vào giỏ
+            toast.success('Đã thêm sản phẩm vào giỏ hàng!');
+        }
+
+        // Lưu giỏ hàng vào localStorage
+        localStorage.setItem('cart', JSON.stringify(currentCart));
+
+        // Dispatch hành động thêm sản phẩm vào Redux
+        dispatch(addToCart(cartItem));
+    };
+
     const handleBuyNow = () => {
         const productDetails = {
             id: sp.Product_ID,
@@ -87,7 +88,6 @@ const ProductDetail = () => {
             quantity: 1,
         };
 
-        // Chuyển hướng đến trang thanh toán với thông tin sản phẩm
         navigate('/payment', { state: { productDetails } });
     };
 
@@ -107,13 +107,12 @@ const ProductDetail = () => {
     return (
         <Fragment>
             <Header />
-
+            <Toaster position="top-right" reverseOrder={false} /> {/* Thêm Toaster */}
             <div className="home">
                 <div className='thanh-dieu-huong'>
                     <Link to="/"><h3>Trang chủ</h3></Link> 
                     <Link to="/cuahang"><h3>{sp.Product_Name}</h3></Link>
                 </div>
-                {showToast && <div className="toast">Đã thêm vào giỏ hàng</div>}
                 <div className="spchitiet">
 
                     <div className="left-image">
@@ -126,7 +125,6 @@ const ProductDetail = () => {
                                     <img id="mainImage" src={mainImage} alt="Sản phẩm" height="380px" />
                                 </div>
                                 <div className="thumbnail-images">
-                                    {/* Duyệt qua danh sách ảnh và hiển thị dưới dạng thumbnail */}
                                     {images.map((imageSrc, index) => (
                                         <img
                                             key={index}
@@ -184,13 +182,11 @@ const ProductDetail = () => {
                                 </tbody>
                             </table>
                         </div>
-
                     </div>
                 </div>
-                <Comments productId={id} />
-                <div className="related-products">
-                    <SPLienQuan id={id} sosp={5} />
-                </div>
+                <Comments productId={id}/>
+                <div className='ralated-products'></div>
+                <SPLienQuan id = {id} sosp={5}  />
             </div>
             <Footer />
         </Fragment>

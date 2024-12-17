@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import bcrypt from 'bcryptjs'; // Import bcryptjs
-import '../../styles/pages/customerAdd.css'
+import '../../styles/pages/customerAdd.css';
 
 const CustomerAdd = () => {
     const [customer, setCustomer] = useState({ User_Name: '', Email: '', Password: '', Phone: '', Role: 0 });
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const token = localStorage.getItem('token'); // Get the token from localStorage
 
     const handleSubmit = async (evt) => {
         evt.preventDefault();
@@ -41,7 +42,7 @@ const CustomerAdd = () => {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer yourTokenHere' // Replace with the actual token if required
+                'Authorization': `Bearer ${token}` // Include token in the Authorization header
             },
             body: JSON.stringify(data)
         };
@@ -65,11 +66,11 @@ const CustomerAdd = () => {
     };
 
     return (
-        <div className="form-container-customer-add">
-            <div className="form-header">
+        <div className="form-container-productadd">
+            <div className="form-header-addproduct">
                 <h2 className="form-h2">THÊM KHÁCH HÀNG</h2>
             </div>
-            <form className="customer-add-form" onSubmit={handleSubmit}>
+            <form className="productadd-form" onSubmit={handleSubmit}>
                 {error && <p className="error-message">{error}</p>}
                 <div className="input-customer-add">
                     <div className="form-group">

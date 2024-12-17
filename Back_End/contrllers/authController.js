@@ -69,9 +69,9 @@ async function sendVoucherEmail(email, voucherCode, discount, expirationDate) {
 
 // Hàm đăng ký người dùng và gửi voucher
 exports.register = async (req, res) => {
-    const { User_Name, Email, Password, Phone } = req.body;
+    const { User_Name, Email, Password} = req.body;
 
-    if (!User_Name || !Password || !Email || !Phone) {
+    if (!User_Name || !Password || !Email) {
         return res.status(400).json({ message: 'Vui lòng cung cấp đầy đủ thông tin.' });
     }
 
@@ -97,19 +97,19 @@ exports.register = async (req, res) => {
         });
     }
 
-    const phoneRegex = /^0\d{9,10}$/;
-    if (!phoneRegex.test(Phone)) {
-        return res.status(400).json({
-            message: 'Số điện thoại phải bắt đầu bằng số 0 và có từ 10 đến 11 chữ số.'
-        });
-    }
+    // const phoneRegex = /^0\d{9,10}$/;
+    // if (!phoneRegex.test(Phone)) {
+    //     return res.status(400).json({
+    //         message: 'Số điện thoại phải bắt đầu bằng số 0 và có từ 10 đến 11 chữ số.'
+    //     });
+    // }
 
     try {
         // Hash mật khẩu và thêm người dùng mới
         const hashedPassword = await bcrypt.hash(Password, saltRounds);
         const userResult = await db.query(
-            "INSERT INTO users (User_Name, Email, Password, Phone) VALUES (?, ?, ?, ?)",
-            [User_Name, Email, hashedPassword, Phone]
+            "INSERT INTO users (User_Name, Email, Password) VALUES (?, ?, ?)",
+            [User_Name, Email, hashedPassword]
         );
 
         const newUserId = userResult.insertId; // Lấy ID của người dùng mới tạo
@@ -138,20 +138,24 @@ exports.register = async (req, res) => {
 
 exports.login = (req, res) => {
     const { Email, Password } = req.body;
+    console.log("Incoming request:", { Email, Password });
     if (!Email || !Password) {
         return res.status(400).json({ message: 'Vui lòng cung cấp email và mật khẩu.' });
     }
     let findUserSql = `SELECT * FROM Users WHERE Email = ?`;
     db.query(findUserSql, [Email], async (err, results) => {
+        console.error("Database error:", err);
         if (err) {
             return res.status(500).json({ message: 'Có lỗi xảy ra khi truy vấn cơ sở dữ liệu.' });
         }
+        console.log("Database query results:", results);
         if (!results || results.length === 0) {
             return res.status(400).json({ message: 'Email hoặc mật khẩu không đúng.' });
         }
         const user = results[0];
         console.log('user', user.Role)
         const match = await bcrypt.compare(Password, user.Password);
+        console.log("Password match result:", match);
         if (!match) {
             return res.status(400).json({ message: 'Email hoặc mật khẩu không đúng.' });
         }

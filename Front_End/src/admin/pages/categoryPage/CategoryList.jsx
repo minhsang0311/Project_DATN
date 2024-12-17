@@ -57,9 +57,9 @@ function CategoryList({ searchResults }) {
         <div className="box-categorylist">
             <div className="headertop-admin-category">
                 <div className="header_admin_category">
-                    <h2>Danh sách danh mục</h2>
+                    <h2>DANH SÁCH DANH MỤC</h2>
                     <button className="button_admin_category">
-                        <Link to="/admin/categoryAdd">Thêm danh mục</Link>
+                        <Link to="/admin/categoryAdd">THÊM DANH MỤC</Link>
                     </button>
                 </div>
             </div>
@@ -75,8 +75,8 @@ function CategoryList({ searchResults }) {
                         <div className="grid-item-category">{category.Category_Name}</div>
                         <div className="grid-item-category">{category.Show_Hidden === 1 ? "Hiện" : "Ẩn"}</div>
                         <div className="grid-item-category grid-item-button-category">
-                            <Link to={`/admin/categoryUpdate/${category.Category_ID}`} className="category-edit-btn">✏️</Link>
-                            <button className="category-delete-btn" onClick={() => deleteCategory(category.Category_ID)}>🗑️</button>
+                            <Link to={`/admin/categoryUpdate/${category.Category_ID}`} className="edit-btn">✏️</Link>
+                            <button className="delete-btn" onClick={() => deleteCategory(category.Category_ID)}>🗑️</button>
                         </div>
                     </React.Fragment>
                 ))}

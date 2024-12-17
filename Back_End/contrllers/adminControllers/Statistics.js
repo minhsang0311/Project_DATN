@@ -42,7 +42,7 @@ exports.OrderStatusStats = (req, res) => {
     GROUP BY o.Status, os.Status_Name
     ORDER BY o.Status;
   `;
-  
+
   db.query(orderStatusQuery, (err, results) => {
     if (err) {
       return res.json({ "message": "Lỗi thống kê trạng thái đơn hàng", err });
@@ -53,11 +53,6 @@ exports.OrderStatusStats = (req, res) => {
 //Thống kê doanh thu
 exports.getRevenueStatistics = (req, res) => {
   const { startDate, endDate } = req.query;
-
-  if (!startDate || !endDate) {
-    return res.status(400).json({ message: "Vui lòng cung cấp ngày bắt đầu và ngày kết thúc" });
-  }
-
   const sql = `
     SELECT 
       SUM(total_amount) AS TotalRevenue
@@ -68,10 +63,8 @@ exports.getRevenueStatistics = (req, res) => {
       AND created_at <= ?
       AND Status = 5
   `;
-
   const startDateTime = `${startDate} 00:00:00`;
   const endDateTime = `${endDate} 23:59:59`;
-
   db.query(sql, [startDateTime, endDateTime], (err, data) => {
     if (err) {
       return res.status(500).json({ message: "Lỗi khi lấy dữ liệu tổng doanh thu", error: err });
@@ -80,7 +73,24 @@ exports.getRevenueStatistics = (req, res) => {
     res.json(data[0]); // Trả về đối tượng chứa tổng doanh thu
   });
 };
+//Lấy tổng số doanh thu
+exports.getTotalRevenue = (req, res) => {
+  const sql = `
+    SELECT 
+      SUM(total_amount) AS TotalRevenue
+    FROM 
+      orders
+    WHERE 
+      Status = 5
+  `;
 
+  db.query(sql, (err, data) => {
+    if (err) {
+      return res.status(500).json({ message: "Lỗi khi lấy dữ liệu tổng doanh thu", error: err });
+    }
+    res.json(data[0]); // Trả về đối tượng chứa tổng doanh thu
+  });
+};
 
 // Thống kê số lượng sản phẩm đã bán
 exports.DailySaleProByDateRange = (req, res) => {

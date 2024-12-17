@@ -10,7 +10,7 @@
     width: 100%;
 }
 
-.sidebar {
+.sidebar {  
     width: 18%;
     padding: 0 1.7rem;
     color: #000;
@@ -25,8 +25,8 @@
 }
 
 .logo img {
-    width: 140px;
-    height: 100px;
+    width: 200px;
+    height: auto;
 }
 
 .menu {

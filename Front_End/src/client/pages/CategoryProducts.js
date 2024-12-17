@@ -26,13 +26,13 @@ function CategoryProducts() {
     const { spTrong1Trang, tongSoTrang, currentPage, handlePageChange } = usePagination(listsp, pageSize);
 
     useEffect(() => {
-        fetch(`http://localhost:3000/user/Products/${Category_ID}`)
+        fetch(`${process.env.REACT_APP_HOST_URL}user/Products/${Category_ID}`)
           .then(res => res.json())
           .then(data => {
             setListSP(data);
           });
     
-        fetch(`http://localhost:3000/user/category/${Category_ID}`) // API lấy thông tin danh mục
+        fetch(`${process.env.REACT_APP_HOST_URL}user/category/${Category_ID}`) // API lấy thông tin danh mục
           .then(res => res.json())
           .then(categoryData => {
             setCategoryName(categoryData.Category_Name); // Cập nhật tên danh mục

@@ -13,28 +13,21 @@ exports.getAllBrands = (req, res) => {
   });
 };
 
-// Thêm mới một brand
+// Thêm mới một brand (without image)
 exports.addBrand = (req, res) => {
   console.log("Request Body:", req.body);
-  console.log("Uploaded File:", req.file);
   
   const { Brand_Name } = req.body;
-  const Brand_Image = req.file ? req.file.filename : null; // Get the file name if a file is uploaded
 
+  // Ensure Brand_Name is provided
   if (!Brand_Name) {
       console.log("Missing Brand_Name in request body");
       return res.status(400).json({ message: 'Brand name is required' });
   }
 
-  // Make sure that the file type is an image (optional, but recommended)
-  const allowedImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
-  if (req.file && !allowedImageTypes.includes(req.file.mimetype)) {
-      console.log("Invalid image type");
-      return res.status(400).json({ message: 'Invalid image type. Only JPEG, PNG, and GIF are allowed.' });
-  }
-
-  const query = 'INSERT INTO brands (Brand_Name, Brand_Image) VALUES (?, ?)';
-  const values = [Brand_Name, Brand_Image];
+  // Insert into database (without image)
+  const query = 'INSERT INTO brands (Brand_Name) VALUES (?)';
+  const values = [Brand_Name];
 
   db.query(query, values, (error, result) => {
       if (error) {
@@ -46,6 +39,7 @@ exports.addBrand = (req, res) => {
       res.status(201).json({ message: 'Brand added successfully', brandId: result.insertId });
   });
 };
+
 
 
 // Lấy thông tin nhà sản xuất theo Brand_ID
@@ -76,18 +70,17 @@ exports.getManufacturerById = (req, res) => {
 };
 
 
-// Cập nhật thông tin nhà sản xuất
+// Cập nhật thông tin nhà sản xuất (without image)
 exports.updateBrand = (req, res) => {
   const { id } = req.params; 
   const { Brand_Name } = req.body;
-  const Brand_Image = req.file ? req.file.filename : null;
 
   if (!id) {
     console.log("Thiếu Brand_ID trong tham số yêu cầu");
     return res.status(400).json({ message: 'Brand ID là bắt buộc' });
   }
 
-  if (!Brand_Name && !Brand_Image) {
+  if (!Brand_Name) {
     console.log("Thiếu thông tin cập nhật");
     return res.status(400).json({ message: 'Cần ít nhất một trường thông tin để cập nhật' });
   }
@@ -111,12 +104,9 @@ exports.updateBrand = (req, res) => {
       queryUpdate += 'Brand_Name = ?, ';
       values.push(Brand_Name);
     }
-    if (Brand_Image) {
-      queryUpdate += 'Brand_Image = ?, ';
-      values.push(Brand_Image);
-    }
 
-    queryUpdate = queryUpdate.slice(0, -2); 
+    // Remove the part for Brand_Image since it's not being updated
+    queryUpdate = queryUpdate.slice(0, -2); // Remove trailing comma and space
     queryUpdate += ' WHERE Brand_ID = ?';
     values.push(id);
 
@@ -131,6 +121,7 @@ exports.updateBrand = (req, res) => {
     });
   });
 };
+
 
 
 // xóa nhà sản xuất khi trong nhà sản xuất không có sản phẩm nào thì mới xóa được
