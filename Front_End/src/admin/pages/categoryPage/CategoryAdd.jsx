@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom'
 import { toast, Toaster } from 'react-hot-toast'; // Import toast
 import '../../styles/pages/categoryAdd.css'
+
 const CategoryAdd = () => {
     const navigate = useNavigate()
     const token = localStorage.getItem('token')

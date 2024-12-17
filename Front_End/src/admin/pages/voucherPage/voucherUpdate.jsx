@@ -84,7 +84,7 @@ const VoucherUpdate = () => {
 
     return (
         <div className="form-container-productadd">
-            <div className="form-header">
+            <div className="form-header-addproduct">
                 <h2>SỬA VOUCHER</h2>
             </div>
             {error && <div className="error-message">{error}</div>}

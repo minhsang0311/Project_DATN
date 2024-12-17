@@ -52,9 +52,9 @@ const CustomerList = ({ searchResults }) => {
     <div className="box-productlist">
       <div className="headertop-admin">
         <div className="header_admin">
-          <h2>Danh sách khách hàng</h2>
+          <h2>DANH SÁCH KHÁCH HÀNG</h2>
           <button className="button_admin">
-            <Link to="/admin/customerAdd">Thêm khách hàng</Link>
+            <Link to="/admin/customerAdd">THÊM KHÁCH HÀNG</Link>
           </button>
         </div>
       </div>

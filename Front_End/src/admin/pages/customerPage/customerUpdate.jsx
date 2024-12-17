@@ -56,9 +56,11 @@ const CustomerUpdate = () => {
   if (error) return <p>{error}</p>;
 
   return (
-    <div className="customer-update">
-      <h2>Cập nhật thông tin khách hàng</h2>
-      <form onSubmit={handleSubmit}>
+    <div className="form-container-productadd">
+      <div className="form-header-update">
+        <h2>CẬP NHẬT THÔNG TIN KHÁCH HÀNG</h2>
+      </div>
+      <form onSubmit={handleSubmit} className="productadd-form">
         <div className="form-group">
           <label>Tên người dùng</label>
           <input
@@ -101,7 +103,7 @@ const CustomerUpdate = () => {
           </select>
         </div>
 
-        <button type="submit" className="customer-update-btn">Lưu thay đổi</button>
+        <button type="submit" className="submit-btn">LƯU THAY ĐỔI</button>
       </form>
     </div>
   );

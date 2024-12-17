@@ -47,9 +47,9 @@ const ProductList = ({ searchResults }) => {
         <div className="box-productlist">
             <div className="headertop-admin">
                 <div className="header_admin">
-                    <h2>Danh sách sản phẩm</h2>
+                    <h2>DANH SÁCH SẢN PHẨM</h2>
                     <button className="button_admin">
-                        <Link to="/admin/product-add">Thêm sản phẩm</Link>
+                        <Link to="/admin/product-add">THÊM SẢN PHẨM</Link>
                     </button>
                 </div>
             </div>

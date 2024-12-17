@@ -48,52 +48,49 @@ function CategoryUpdate() {
         }));
     };
     return (
-        <div className="form-container-categoryadd">
-        <div className="form-header-categoryupdate">
-            <h2>SỬA DANH MỤC</h2>
-        </div>
-        <form className="category-update-form col-md-11 border border-danger border-2 m-auto mt-2" onSubmit={submitData}>
-            <div className="input-group">
-                <div className="input-field">
-                    <label htmlFor="category-name">Tên danh mục</label>
-                    <input
-                        type="text"
-                        id="category-name"
-                        placeholder="Nhập tên sản phẩm ..."
-                        value={category.Category_Name || ''} 
-                        onChange={handleInputChange} 
-                        name="Category_Name" 
-                    />
-                </div>
-                <div className="input-field">
-                    <label>Ẩn/Hiện</label>
-                    <div className="radio-options">
-                        <label>
-                            <input
-                                type="radio"
-                                name="Show_Hidden"
-                                value="0"
-                                checked={category.Show_Hidden === 0}
-                                onChange={() => setCategory({ ...category, Show_Hidden: 0 })}
-                            /> Ẩn
-                        </label>
-                        <label>
-                            <input
-                                type="radio"
-                                name="Show_Hidden"
-                                value="1"
-                                checked={category.Show_Hidden === 1}
-                                onChange={() => setCategory({ ...category, Show_Hidden: 1 })}
-                            /> Hiện
-                        </label>
+        <div className="form-container-productadd">
+            <div className="form-header-update">
+                <h2>SỬA DANH MỤC</h2>
+            </div>
+            <form className="productadd-form" onSubmit={submitData}>
+                    <div className="form-group">
+                        <label htmlFor="category-name">Tên danh mục</label>
+                        <input
+                            type="text"
+                            id="category-name"
+                            placeholder="Nhập tên sản phẩm ..."
+                            value={category.Category_Name || ''}
+                            onChange={handleInputChange}
+                            name="Category_Name"
+                        />
                     </div>
+                    <div className="input-field">
+                        <label>Ẩn/Hiện</label>
+                        <div className="radio-options">
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="Show_Hidden"
+                                    value="0"
+                                    checked={category.Show_Hidden === 0}
+                                    onChange={() => setCategory({ ...category, Show_Hidden: 0 })}
+                                /> Ẩn
+                            </label>
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="Show_Hidden"
+                                    value="1"
+                                    checked={category.Show_Hidden === 1}
+                                    onChange={() => setCategory({ ...category, Show_Hidden: 1 })}
+                                /> Hiện
+                            </label>
+                        </div>
+                    </div>
+                <div className="button-group m-3 d-flex">
+                    <button type="submit" className="submit-btn">CẬP NHẬT</button>
                 </div>
-            </div>
-
-            <div className="button-group m-3 d-flex">
-                <button type="submit" className="btn btn-warning fw-bolder">Cập nhật danh mục</button>
-            </div>
-        </form>
+            </form>
         </div>
     );
 }

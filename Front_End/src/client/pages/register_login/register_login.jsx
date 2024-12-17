@@ -10,8 +10,7 @@ const RegisterLogin = () => {
     const [formData, setFormData] = useState({
         User_Name: '',
         Email: '',
-        Password: '',
-        Phone: ''
+        Password: ''
     });
     const [confirmPassword, setConfirmPassword] = useState('');
     const [message, setMessage] = useState('');
@@ -64,7 +63,7 @@ const RegisterLogin = () => {
                 const data = await response.json();
                 setMessage(data.message);
                 if (response.ok) {
-                    setFormData({ User_Name: '', Email: '', Password: '', Phone: '' });
+                    setFormData({ User_Name: '', Email: '', Password: ''});
                     setConfirmPassword('');
                     alert('Đăng ký thành công! Vui lòng kiểm tra email để nhận mã khuyến mãi.');
                     setIsRightPanelActive(false);

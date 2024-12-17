@@ -42,10 +42,12 @@ const ManufacturerUpdate = () => {
   };
 
   return (
-    <div className="manufacturerUpdate-container">
-      <h2 className='manufacturerUpdate-h2'>Sửa nhà sản xuất</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="manufacturerUpdate-form-group">
+    <div className="form-container-productadd">
+      <div className="form-header-update">
+        <h2>CẬP NHẬT NHÀ SẢN XUẤT</h2>
+      </div>
+      <form onSubmit={handleSubmit} className="productadd-form">
+        <div className="form-group">
           <label>Brand Name</label>
           <input
             type="text"
@@ -56,8 +58,8 @@ const ManufacturerUpdate = () => {
           />
         </div>
 
-        <button type="submit" className="btn btn-manufacturerUpdate" disabled={loading}>
-          {loading ? 'Updating...' : 'Update Brand'}
+        <button type="submit" className="submit-btn" disabled={loading}>
+          {loading ? 'Updating...' : 'CẬP NHẬT'}
         </button>
       </form>
     </div>
