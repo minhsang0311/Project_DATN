@@ -5,9 +5,12 @@ import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { addToCart } from "./cartSlice";
 import '../styles/components/Home.css';
+import toast, { Toaster } from "react-hot-toast";
 
 function SpMoi() {
     const [listsp, ganListSP] = useState([]);
+    const [sp] = useState(null);
+    const [error, setError] = useState(null);
     const dispatch = useDispatch();
     const navigate = useNavigate()
     const [likedProducts, setLikedProducts] = useState([]);
@@ -17,6 +20,7 @@ function SpMoi() {
         fetch(`${process.env.REACT_APP_HOST_URL}user/productNew`)
             .then(res => res.json())
             .then(data => ganListSP(data));
+            
         // Fetch danh sách yêu thích của người dùng
         const fetchWishlist = async () => {
             const userId = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).id : null;
@@ -37,26 +41,34 @@ function SpMoi() {
         }).format(value);
     };
 
-    const handleAddToCart = (product) => {
+    const handleAddToCart = (sp) => {
         const cartItem = {
-            id: product.Product_ID,
-            image: product.Image,
-            name: product.Product_Name,
-            price: product.Promotion > 0 ? product.Price - (product.Promotion * product.Price) / 100 : product.Price,
-            quantity: 1
+            id: sp?.Product_ID,
+            image: sp?.Image,
+            name: sp?.Product_Name,
+            price: sp?.Price,
+            quantity: 1, // Đảm bảo số lượng là 1 khi thêm vào
         };
-        dispatch(addToCart(cartItem));
-        const savedCart = JSON.parse(localStorage.getItem('cart')) || [];
-        const existingProduct = savedCart.find(item => item.Product_ID === product.Product_ID);
 
-        if (existingProduct) {
-            existingProduct.quantity = (existingProduct.quantity || 1) + 1;
+        // Lấy giỏ hàng hiện tại từ localStorage
+        const currentCart = JSON.parse(localStorage.getItem('cart')) || [];
+        const existingItem = currentCart.find(item => item.id === cartItem.id);
+
+        // Nếu sản phẩm đã có trong giỏ hàng, tăng số lượng
+        if (existingItem) {
+            existingItem.quantity += 1;
+            toast.success('Đã tăng số lượng sản phẩm trong giỏ hàng!');
         } else {
-            savedCart.push({ ...product, quantity: 1 });
+            currentCart.push(cartItem); // Thêm sản phẩm mới vào giỏ
+            toast.success('Đã thêm sản phẩm vào giỏ hàng!');
         }
-        localStorage.setItem('cart', JSON.stringify(savedCart));
-        navigate('/cart');
 
+
+        // Lưu giỏ hàng vào localStorage
+        localStorage.setItem('cart', JSON.stringify(currentCart));
+
+        // Dispatch hành động thêm sản phẩm vào Redux
+        dispatch(addToCart(cartItem));
         setShowToast(true);
         setTimeout(() => {
             setShowToast(false);
@@ -108,7 +120,7 @@ function SpMoi() {
     return (
         <div className="spbanchay">
             <div className="left-image">
-                {showToast && <div className="toast">Đã thêm vào giỏ hàng</div>}
+            <Toaster position="top-right" reverseOrder={false} /> {/* Thêm Toaster */}
                 <img src="/assets/img/banner20.jpg" alt="img1" />
                 <img src="/assets/img/banner20.1.jpg" alt="img2" />
             </div>
@@ -118,7 +130,9 @@ function SpMoi() {
 
                 </div>
                 <div className="box-sp">
-                    {listsp.slice(0, 8).map((sp, i) =>
+
+                    {listsp.slice(0,8).map((sp, i) => (
+ 
                         <div className="product" key={i}>
                             {sp.Promotion > 0 && (
                                 <div className="discount-label">
@@ -126,9 +140,10 @@ function SpMoi() {
                                 </div>
                             )}
                             <div className="img-wrapper">
-                                <img src={sp.Image} alt="" />
+                                <img src={sp.Image} alt={sp.Product_Name}/>
                             </div>
-                            <Link to={"/productDetail/" + sp.Product_ID}><a>{sp.Product_Name}</a></Link>
+
+                            <Link to={"/productDetail/"+ sp.Product_ID}>{sp.Product_Name}</Link>
                             <div className="price_giohang">
                                 <div className="price">
                                     {sp.Promotion > 0 ? (
@@ -140,7 +155,7 @@ function SpMoi() {
                                         <p className="new-price">{formatCurrency(sp.Price)}</p>
                                     )}
                                 </div>
-                                <button className="add-to-cart" onClick={() => handleAddToCart(sp)}>Giỏ hàng</button>
+                                <button onClick={() => handleAddToCart(sp)} className="add-to-cart">Thêm vào giỏ</button>
                             </div>
                             <div
                                 className={`heart-icon ${isProductInWishlist(sp.Product_ID) ? 'liked' : ''}`}
@@ -158,7 +173,7 @@ function SpMoi() {
                                 ></i>
                             </div>
                         </div>
-                    )}
+                    ))}
                 </div>
             </div>
         </div>

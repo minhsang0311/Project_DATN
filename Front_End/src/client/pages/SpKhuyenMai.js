@@ -5,9 +5,11 @@ import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { addToCart } from "./cartSlice"; // Import hành động thêm vào giỏ hàng
 import '../styles/components/Home.css';
+import toast, { Toaster } from "react-hot-toast";
 
 function SpMoi() {
     const [listsp, ganListSP] = useState([]);
+    const [sp] = useState(null);
     const [likedProducts, setLikedProducts] = useState([]);
     const dispatch = useDispatch(); // Khởi tạo useDispatch
     const [showToast, setShowToast] = useState(false);
@@ -34,19 +36,38 @@ function SpMoi() {
         }).format(value);
     };
 
-    const handleAddToCart = (product) => {
+    const handleAddToCart = (sp) => {
         const cartItem = {
-            id: product.Product_ID,
-            image: product.Image,
-            name: product.Product_Name,
-            price: product.Promotion > 0 ? product.Price - (product.Promotion * product.Price) / 100 : product.Price,
-            quantity: 1 // Mặc định là 1
+            id: sp?.Product_ID,
+            image: sp?.Image,
+            name: sp?.Product_Name,
+            price: sp?.Price,
+            quantity: 1, // Đảm bảo số lượng là 1 khi thêm vào
         };
-        dispatch(addToCart(cartItem)); // Gửi hành động thêm vào giỏ hàng
+
+        // Lấy giỏ hàng hiện tại từ localStorage
+        const currentCart = JSON.parse(localStorage.getItem('cart')) || [];
+        const existingItem = currentCart.find(item => item.id === cartItem.id);
+
+        // Nếu sản phẩm đã có trong giỏ hàng, tăng số lượng
+        if (existingItem) {
+            existingItem.quantity += 1;
+            toast.success('Đã tăng số lượng sản phẩm trong giỏ hàng!');
+        } else {
+            currentCart.push(cartItem); // Thêm sản phẩm mới vào giỏ
+            toast.success('Đã thêm sản phẩm vào giỏ hàng!');
+        }
+
+        // Lưu giỏ hàng vào localStorage
+        localStorage.setItem('cart', JSON.stringify(currentCart));
+
+        // Dispatch hành động thêm sản phẩm vào Redux
+        dispatch(addToCart(cartItem));
+
         setShowToast(true);
-    setTimeout(() => {
-        setShowToast(false);
-    }, 3000); // Hiện thông báo trong 3 giây
+        setTimeout(() => {
+            setShowToast(false);
+        }, 3000); // Hiện thông báo trong 3 giây
     };
     const handleWishlistToggle = async (product) => {
         const userId = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).id : null;
@@ -94,13 +115,13 @@ function SpMoi() {
     return (
         <div className="spkhuyenmai">
             <div className="box">
-                 {showToast && <div className="toast">Đã thêm vào giỏ hàng</div>}
+            <Toaster position="top-right" reverseOrder={false} /> {/* Thêm Toaster */}
                 <div className="header1">
                     <i className="fas fa-tags"></i>
                     <h1>DEAL DÀNH CHO BẠN</h1>
                 </div>
                 <div className="box-sp">
-                    {listsp.slice(0, 10).map((sp, i) =>
+                    {listsp.slice(0, 10).map((sp, i) =>(
                         <div className="product" key={i}>
                             {sp.Promotion > 0 && (
                                 <div className="discount-label">
@@ -123,7 +144,8 @@ function SpMoi() {
                                     )}
                                 </div>
 
-                                <button className="add-to-cart" onClick={() => handleAddToCart(sp)}>Giỏ hàng</button>
+
+                                <button onClick={()=> handleAddToCart(sp)} className="add-to-cart">Thêm vào giỏ</button>
                                 <div
                                     className={`heart-icon ${isProductInWishlist(sp.Product_ID) ? 'liked' : ''}`}
                                     onClick={() => handleWishlistToggle(sp)}
@@ -139,9 +161,10 @@ function SpMoi() {
                                         style={{ fontSize: "24px", color: isProductInWishlist(sp.Product_ID) ? "red" : "#ccc" }}
                                     ></i>
                                 </div>
+
                             </div>
                         </div>
-                    )}
+                    ))}
                 </div>
             </div>
         </div>

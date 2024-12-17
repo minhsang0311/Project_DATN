@@ -41,7 +41,6 @@ import PaymentPage from './client/pages/PaymentPage.js'
 import OrderStatusList from './client/pages/OrderStatusList.js'
 import Contact from './client/pages/Contact.js'
 import Wishlist from './client/pages/wishlist.js';
-import { Fragment } from 'react';
 import OrderDetails from './client/pages/OrderDetails.js';
 
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { toast, Toaster } from 'react-hot-toast'; // Import toast
 import '../styles/components/ProductDetail.css';
 import SPLienQuan from './RelatedProducts';
 import Comments from './Comments';
@@ -15,7 +16,6 @@ const ProductDetail = () => {
     const [error, setError] = useState('');
     let { id } = useParams();
     const navigate = useNavigate();
-    const [showToast, setShowToast] = useState(false);
     const dispatch = useDispatch();
 
     // Lấy dữ liệu chi tiết sản phẩm
@@ -38,19 +38,6 @@ const ProductDetail = () => {
         };
         fetchProductDetail();
     }, [id]);
-
-    // Kiểm tra giỏ hàng từ localStorage khi tải lại trang, tránh thêm lại sản phẩm
-    useEffect(() => {
-        if (sp) {
-            const savedCart = JSON.parse(localStorage.getItem('cart')) || [];
-            const isProductInCart = savedCart.find(item => item.id === sp.Product_ID);
-
-            // Nếu sản phẩm đã có trong giỏ hàng, chỉ cần không thêm vào nữa
-            if (!isProductInCart) {
-                localStorage.setItem('cart', JSON.stringify(savedCart));
-            }
-        }
-    }, [sp]); // Chỉ gọi effect này khi sp thay đổi
 
     const handleThumbnailClick = (src) => {
         setMainImage(src);
@@ -79,8 +66,10 @@ const ProductDetail = () => {
         // Nếu sản phẩm đã có trong giỏ hàng, tăng số lượng
         if (existingItem) {
             existingItem.quantity += 1;
+            toast.success('Đã tăng số lượng sản phẩm trong giỏ hàng!');
         } else {
             currentCart.push(cartItem); // Thêm sản phẩm mới vào giỏ
+            toast.success('Đã thêm sản phẩm vào giỏ hàng!');
         }
 
         // Lưu giỏ hàng vào localStorage
@@ -88,11 +77,6 @@ const ProductDetail = () => {
 
         // Dispatch hành động thêm sản phẩm vào Redux
         dispatch(addToCart(cartItem));
-
-        setShowToast(true);
-        setTimeout(() => {
-            setShowToast(false);
-        }, 3000); // Hiện thông báo trong 3 giây
     };
 
     const handleBuyNow = () => {
@@ -123,13 +107,12 @@ const ProductDetail = () => {
     return (
         <Fragment>
             <Header />
-
+            <Toaster position="top-right" reverseOrder={false} /> {/* Thêm Toaster */}
             <div className="home">
                 <div className='thanh-dieu-huong'>
                     <Link to="/"><h3>Trang chủ</h3></Link> 
                     <Link to="/cuahang"><h3>{sp.Product_Name}</h3></Link>
                 </div>
-                {showToast && <div className="toast">Đã thêm vào giỏ hàng</div>}
                 <div className="spchitiet">
 
                     <div className="left-image">

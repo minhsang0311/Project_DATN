@@ -55,8 +55,8 @@ function Header() {
           <Link to="/about">Giới thiệu</Link>|
           <Link to="/contact">Liên hệ</Link>|
           <li>
-            <a href="/#">
-              Hotline: <span><b>077718379</b></span>
+            <a href="tel:+8427718379">
+              Hotline: <span><b>+84277718379</b></span>
             </a>
           </li>
         </ul>

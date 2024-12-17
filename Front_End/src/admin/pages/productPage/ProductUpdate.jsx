@@ -296,7 +296,7 @@ const ProductUpdate = () => {
                         </div>
                         <div className="form-group">
                             <label htmlFor="product-description">Mô tả sản phẩm</label>
-                            <input
+                            <textarea
                                 type="text"
                                 id="product-description"
                                 placeholder="Nhập mô tả sản phẩm ..."
@@ -304,7 +304,8 @@ const ProductUpdate = () => {
                                 onChange={e => {
                                     setProductUpdate({ ...productUpdate, Description: e.target.value });
                                 }}
-                            />
+                                style={{ height: '130px' }} 
+                            ></textarea>
                         </div>
                         <div className="form-group">
                             <label htmlFor="product-category">Lượt xem</label>

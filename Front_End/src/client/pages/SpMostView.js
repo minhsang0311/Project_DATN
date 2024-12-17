@@ -1,14 +1,18 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import '../styles/components/Home.css';
+import { useDispatch } from "react-redux";
+import { addToCart } from "./cartSlice";
+import toast, { Toaster } from "react-hot-toast";
 
 function SpMostView() {
     const [listsp, setListSP] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [sp ] = useState(null);
     const [error, setError] = useState(null);
     const [likedProducts, setLikedProducts] = useState([]);
     const [showToast, setShowToast] = useState(false);
-    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         fetch(`${process.env.REACT_APP_HOST_URL}user/productMostView`)
@@ -32,20 +36,33 @@ function SpMostView() {
         fetchWishlist();
     }, []);
 
-    const handleAddToCart = (product) => {
-        const savedCart = JSON.parse(localStorage.getItem('cart')) || [];
-        const existingProduct = savedCart.find(item => item.Product_ID === product.Product_ID);
+    const handleAddToCart = (sp) => {
+        const cartItem = {
+            id: sp?.Product_ID,
+            image: sp?.Image,
+            name: sp?.Product_Name,
+            price: sp?.Price,
+            quantity: 1, // Đảm bảo số lượng là 1 khi thêm vào
+        };
 
-        if (existingProduct) {
-            existingProduct.quantity = (existingProduct.quantity || 1) + 1;
+        // Lấy giỏ hàng hiện tại từ localStorage
+        const currentCart = JSON.parse(localStorage.getItem('cart')) || [];
+        const existingItem = currentCart.find(item => item.id === cartItem.id);
+
+        // Nếu sản phẩm đã có trong giỏ hàng, tăng số lượng
+        if (existingItem) {
+            existingItem.quantity += 1;
+            toast.success('Đã tăng số lượng sản phẩm trong giỏ hàng!');
         } else {
-            savedCart.push({ ...product, quantity: 1 });
+            currentCart.push(cartItem); // Thêm sản phẩm mới vào giỏ
+            toast.success('Đã thêm sản phẩm vào giỏ hàng!');
         }
-        localStorage.setItem('cart', JSON.stringify(savedCart));
-        setShowToast(true);
-        setTimeout(() => {
-            setShowToast(false);
-        }, 3000); // Hiện thông báo trong 3 giây
+
+        // Lưu giỏ hàng vào localStorage
+        localStorage.setItem('cart', JSON.stringify(currentCart));
+
+        // Dispatch hành động thêm sản phẩm vào Redux
+        dispatch(addToCart(cartItem));
     };
 
     const formatCurrency = (value) => {
@@ -99,6 +116,7 @@ function SpMostView() {
     return (
         <div className="spbanchay">
             <div className="left-image">
+            <Toaster position="top-right" reverseOrder={false} /> {/* Thêm Toaster */}
 
                 <img src="/assets/img/banner21.1.jpg" alt="" />
                 <img src="/assets/img/banner21.2.jpg" alt="" />
@@ -131,7 +149,7 @@ function SpMostView() {
                                         <p className="new-price">{formatCurrency(sp.Price)}</p>
                                     )}
                                 </div>
-                                <button className="add-to-cart" onClick={() => handleAddToCart(sp)}>Giỏ hàng</button>
+                                <button onClick={() => handleAddToCart(sp)} className="add-to-cart">Thêm vào giỏ</button>
                                 <div
                                     className={`heart-icon ${isProductInWishlist(sp.Product_ID) ? 'liked' : ''}`}
                                     onClick={() => handleWishlistToggle(sp)}

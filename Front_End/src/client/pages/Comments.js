@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/components/Comments.css';
+import toast, { Toaster } from "react-hot-toast";
 
 const Comments = ({ productId }) => {
     const [comments, setComments] = useState([]);
@@ -7,8 +8,6 @@ const Comments = ({ productId }) => {
     const [rating, setRating] = useState(5);
     const [userId, setUserId] = useState(null);
     const [username, setUsername] = useState('');
-    const [error, setError] = useState('');
-    const [success, setSuccess] = useState('');
     const [canComment, setCanComment] = useState(false); // Kiểm tra quyền bình luận
 
     useEffect(() => {
@@ -18,7 +17,7 @@ const Comments = ({ productId }) => {
             setUserId(user.id);
             setUsername(user.username);
         } else {
-            setError("Bạn cần đăng nhập để bình luận.");
+            toast.error("Bạn cần đăng nhập để bình luận.");
         }
     }, []);
 
@@ -33,11 +32,11 @@ const Comments = ({ productId }) => {
                     setComments(data);
                 } else {
                     const errorData = await response.json();
-                    setError(errorData.message || 'Không có bình luận cho sản phẩm này.');
+                    // toast.error(errorData.message || 'Không có bình luận cho sản phẩm này.');
                 }
             } catch (error) {
                 console.error('Lỗi khi lấy bình luận:', error);
-                setError('Không thể tải bình luận.');
+                toast.error('Không thể tải bình luận.');
             }
         };
 
@@ -61,20 +60,18 @@ const Comments = ({ productId }) => {
                 setCanComment(data.canComment);  // Nếu canComment = true, người dùng có thể bình luận
             } catch (error) {
                 console.error('Lỗi khi kiểm tra quyền bình luận:', error);
-                setError('Không thể kiểm tra quyền bình luận.');
+                toast.error('Không thể kiểm tra quyền bình luận.');
             }
         };
 
         checkIfCanComment();
-    }, [userId, productId]); // Thêm productId vào dependency array để kiểm tra lại khi thay đổi sản phẩm
+    }, [userId, productId]);
 
     const handleAddComment = async (e) => {
         e.preventDefault();
-        setError('');
-        setSuccess('');
 
         if (!newComment.trim()) {
-            setError('Vui lòng nhập nội dung bình luận.');
+            toast.error('Vui lòng nhập nội dung bình luận.');
             return;
         }
 
@@ -100,13 +97,13 @@ const Comments = ({ productId }) => {
             if (response.ok) {
                 setNewComment('');
                 setComments((prev) => [...prev, { ...newCommentData, Review_ID: data.reviewId }]);
-                setSuccess(data.message || 'Thêm bình luận thành công!');
+                toast.success(data.message || 'Thêm bình luận thành công!');
             } else {
-                setError(data.message || 'Không thể thêm bình luận.');
+                toast.error(data.message || 'Không thể thêm bình luận.');
             }
         } catch (error) {
             console.error('Lỗi khi thêm bình luận:', error);
-            setError('Không thể gửi bình luận.');
+            toast.error('Không thể gửi bình luận.');
         }
     };
 
@@ -124,9 +121,9 @@ const Comments = ({ productId }) => {
 
     return (
         <div className="comments-section">
+            <Toaster position="top-right" reverseOrder={false} />
             <h3>Bình luận</h3>
-            {error && <p className="error">{error}</p>}
-            {success && <p className="success">{success}</p>}
+
             <ul>
                 {comments.length > 0 ? (
                     comments.map((comment) => (
