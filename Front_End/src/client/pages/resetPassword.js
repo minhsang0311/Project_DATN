@@ -35,8 +35,6 @@ const ResetPassword = () => {
             navigate('/register_login'); // Chuyển hướng người dùng đến trang đăng nhập
         } catch (error) {
             toast.error(error.response ? error.response.data.message : 'Có lỗi xảy ra.');
-        } finally {
-            setLoading(false); // Kết thúc quá trình gửi yêu cầu
         }
     };
 
