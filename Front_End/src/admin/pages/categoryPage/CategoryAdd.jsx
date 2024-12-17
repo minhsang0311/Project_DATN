@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom'
+import { toast, Toaster } from 'react-hot-toast'; // Import toast
 import '../../styles/pages/categoryAdd.css'
 const CategoryAdd = () => {
     const navigate = useNavigate()
@@ -42,8 +43,11 @@ const CategoryAdd = () => {
     }
 
     return (
+        
         <div className="form-container-productadd">
             <div className="form-header-addproduct">
+                            <Toaster position="top-right" reverseOrder={false} /> {/* Thêm Toaster */}
+                
                 <h2>THÊM DANH MỤC</h2>
             </div>
             <form className="productadd-form" onSubmit={Submit}>
