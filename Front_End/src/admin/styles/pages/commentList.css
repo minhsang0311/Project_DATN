@@ -49,10 +49,7 @@
     margin-right: 10px;
 }
 
-.admin-comments button:nth-child(2) {
-    background-color: #f44336;
-    color: white;
-}
+
 
 .error-message {
     text-align: center;
