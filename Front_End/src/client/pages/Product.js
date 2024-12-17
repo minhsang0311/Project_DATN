@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { addToCart } from './cartSlice';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import toast, { Toaster } from 'react-hot-toast';
 
 function Product({ product }) {
     const dispatch = useDispatch();
@@ -59,9 +60,9 @@ function Product({ product }) {
 
                 if (response.ok) {
                     setIsLiked(false); // Cập nhật trạng thái yêu thích
-                    alert(data.message || 'Đã xoá sản phẩm khỏi danh sách yêu thích');
+                    toast.success(data.message || 'Đã xoá sản phẩm khỏi danh sách yêu thích');
                 } else {
-                    alert(data.message || 'Có lỗi xảy ra khi xoá sản phẩm');
+                    toast.error(data.message || 'Có lỗi xảy ra khi xoá sản phẩm');
                 }
             } else {
                 // Nếu chưa yêu thích, gửi yêu cầu thêm vào danh sách yêu thích (POST)
@@ -79,9 +80,9 @@ function Product({ product }) {
 
                 if (response.ok) {
                     setIsLiked(true); // Cập nhật trạng thái yêu thích
-                    alert(data.message || 'Đã thêm sản phẩm vào danh sách yêu thích');
+                   toast.success(data.message || 'Đã thêm sản phẩm vào danh sách yêu thích');
                 } else {
-                    alert(data.message || 'Có lỗi xảy ra khi thêm sản phẩm');
+                   toast.error(data.message || 'Có lỗi xảy ra khi thêm sản phẩm');
                 }
             }
         } catch (error) {
@@ -108,6 +109,8 @@ function Product({ product }) {
 
     return (
         <div className="product">
+                        <Toaster position="top-right" reverseOrder={false} /> {/* Thêm Toaster */}
+
             {product.Promotion > 0 && (
                 <div className="discount-label">-{product.Promotion}%</div>
             )}
