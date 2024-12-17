@@ -3,12 +3,28 @@ const db = require('../../config/db');
 exports.getOrderList = (req, res) => {
     const userId = req.params.userId;
     const sql = `
-        SELECT o.Order_ID, o.User_ID, o.Phone, o.User_Name, o.Address,  
-               o.payment_method, o.total_amount, o.created_at,  
-               o.total_quantity, o.Note, os.Status_Name AS Status 
-        FROM orders o
-        JOIN order_status os ON o.Status = os.Status_ID
-        WHERE o.User_ID = ?
+       SELECT 
+    o.Order_ID, 
+    o.User_ID, 
+    o.Phone, 
+    o.User_Name, 
+    o.Address,  
+    o.payment_method, 
+    o.total_amount, 
+    o.created_at,  
+    o.total_quantity, 
+    o.Note, 
+    os.Status_Name AS Status,
+    p.Product_Name,
+    od.quantity,
+    od.Order_Detail_ID
+   
+FROM orders o
+JOIN order_status os ON o.Status = os.Status_ID
+JOIN order_details od ON o.Order_ID = od.Order_ID
+JOIN products p ON od.Product_ID = p.Product_ID
+WHERE o.User_ID = ?
+
     `;
     db.query(sql, [userId], (err, data) => {
         if (err) {
@@ -17,23 +33,48 @@ exports.getOrderList = (req, res) => {
         res.json(data);
     });
 };
-exports.getOrderDetail = (req, res) => {
-    const orderId = req.params.orderId;
+
+exports.getOrderDetailById = (req, res) => {
+    const { orderDetailId } = req.params; // Get the order_detail_id from the URL
+
     const sql = `
-        SELECT o.Order_ID, o.User_ID, o.Phone, o.User_Name, o.Address,  
-               o.payment_method, o.total_amount, o.created_at,  
-               o.total_quantity, o.Note, os.Status_Name AS Status 
-        FROM orders o
+        SELECT 
+            o.Order_ID,
+            o.User_ID,
+            o.Phone,
+            o.User_Name,
+            o.Address,
+            o.payment_method,
+            o.total_amount,
+            o.created_at,
+            o.total_quantity,
+            o.Note,
+            os.Status_Name AS Status,
+            od.Order_Detail_ID,
+            p.Product_Name,
+            od.Quantity,
+            od.Price
+        FROM order_details od
+        JOIN orders o ON od.Order_ID = o.Order_ID
         JOIN order_status os ON o.Status = os.Status_ID
-        WHERE o.Order_ID = ?
+        JOIN products p ON od.Product_ID = p.Product_ID
+        WHERE od.Order_Detail_ID = ?
     `;
-    db.query(sql, [orderId], (err, data) => {
+
+    db.query(sql, [orderDetailId], (err, results) => {
         if (err) {
-            return res.status(500).json({ message: "Lỗi lấy chi tiết đơn hàng", err });
+            return res.status(500).json({ message: 'Error retrieving order detail', err });
         }
-        res.json(data);
+
+        if (results.length === 0) {
+            return res.status(404).json({ message: 'Order detail not found' });
+        }
+
+        res.json(results);
     });
 };
+
+
 
 exports.putcancelOrder = (req, res) => {
     const { orderId } = req.params;

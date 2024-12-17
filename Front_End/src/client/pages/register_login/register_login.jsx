@@ -4,6 +4,8 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { dalogin } from "../../reducers/authSlice";
 import './register.css';
+import toast, { Toaster } from "react-hot-toast";
+
 
 const RegisterLogin = () => {
     // Register
@@ -43,7 +45,7 @@ const RegisterLogin = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (formData.Password !== confirmPassword) {
-            setMessage('Mật khẩu và xác nhận mật khẩu không khớp!');
+            toast.error('Mật khẩu và xác nhận mật khẩu không khớp!');
             return;
         }
         setShouldSubmit(true);
@@ -61,15 +63,15 @@ const RegisterLogin = () => {
             try {
                 const response = await fetch(url, opt);
                 const data = await response.json();
-                setMessage(data.message);
+                // toast.error(data.message);
                 if (response.ok) {
                     setFormData({ User_Name: '', Email: '', Password: ''});
                     setConfirmPassword('');
-                    alert('Đăng ký thành công! Vui lòng kiểm tra email để nhận mã khuyến mãi.');
+                    toast.success('Đăng ký thành công! Vui lòng kiểm tra email để nhận mã khuyến mãi.');
                     setIsRightPanelActive(false);
                 }
             } catch (error) {
-                setMessage('Có lỗi xảy ra, vui lòng thử lại.');
+                toast.error('Có lỗi xảy ra, vui lòng thử lại.');
             } finally {
                 setShouldSubmit(false);
             }
@@ -83,7 +85,7 @@ const RegisterLogin = () => {
     const submitDuLieu = (event) => {
         event.preventDefault();
         if (userNameRef.current.value === "" || pwRef.current.value === "") {
-            setLoginMessage("Vui lòng nhập đủ thông tin!");
+            toast.error("Vui lòng nhập đủ thông tin!");
             return;
         }
         const url = `${process.env.REACT_APP_HOST_URL}auth/login`;
@@ -94,24 +96,25 @@ const RegisterLogin = () => {
             headers: { 'Content-Type': 'application/json' },
         };
         fetch(url, opt)
-            .then(res => res.json())
-            .then(data => {
-                if (data.token) {
-                    localStorage.setItem('token', data.token);
-                    dispatch(dalogin(data));
-                    navigate('/admin');
-                } else if (data.tokenUser) {
-                    localStorage.setItem('tokenUser', data.tokenUser);
-                    dispatch(dalogin(data));
-                    navigate('/');
-                } {
-                    setLoginMessage(data.message || "Đăng nhập thất bại, vui lòng thử lại!");
-                }
-            })
-            .catch(error => {
-                console.error("Đã xảy ra lỗi:", error);
-                setLoginMessage("Có lỗi xảy ra, vui lòng thử lại!");
-            });
+        .then(res => res.json())
+        .then(data => {
+            if (data.token) {
+                localStorage.setItem('token', data.token);
+                dispatch(dalogin(data));
+                navigate('/admin');
+            } else if (data.tokenUser) {
+                localStorage.setItem('tokenUser', data.tokenUser);
+                dispatch(dalogin(data));
+                navigate('/');
+            } else {
+                toast.error("Đăng nhập thất bại, vui lòng thử lại!");
+            }
+        })
+        .catch(error => {
+            console.error("Đã xảy ra lỗi:", error);
+            toast.error("Có lỗi xảy ra, vui lòng thử lại!");
+        });
+    
     };
 
     // Xử lý chuyển đổi giữa các panel
@@ -128,6 +131,8 @@ const RegisterLogin = () => {
 
     return (
         <div className={`container_register ${isRightPanelActive ? 'right-panel-active' : ''}`} id="container">
+                            <Toaster position="top-right" reverseOrder={false} /> {/* Thêm Toaster */}
+
             <div className="form-container sign-up-container">
                 <form onSubmit={handleSubmit} className="form">
                     {message && <p className="message">{message}</p>}

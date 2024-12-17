@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import '../styles/components/ChangePassword.css'
+import toast, { Toaster } from "react-hot-toast";
 
 const ChangePassword = () => {
     const [oldPassword, setOldPassword] = useState("");
@@ -35,7 +36,7 @@ const ChangePassword = () => {
         setError("");
 
         if (newPassword !== confirmPassword) {
-            setError("Mật khẩu mới và xác nhận mật khẩu không đúng.");
+            toast.error("Mật khẩu mới và xác nhận mật khẩu không đúng.");
             return;
         }
 
@@ -53,11 +54,11 @@ const ChangePassword = () => {
             setOldPassword("");
             setNewPassword("");
             setConfirmPassword("");
-            alert("Bạn đã thay đổi mật khẩu thành công!");
+            toast.success("Bạn đã thay đổi mật khẩu thành công!");
             navigate('/register_login');
         } catch (err) {
             if (err.response && err.response.data) {
-                setError(err.response.data.message);
+                toast.error(err.response.data.message);
             } else {
                 setError("Đã xảy ra lỗi khi đổi mật khẩu.");
             }
@@ -66,9 +67,11 @@ const ChangePassword = () => {
 
     return (
         <div className="change-password">
+                            <Toaster position="top-right" reverseOrder={false} /> {/* Thêm Toaster */}
+
             <h2>Thay đổi mật khẩu</h2>
-            {message && <p className="success-message">{message}</p>}
-            {error && <p className="error-message">{error}</p>}
+            {/* {message && <p className="success-message">{message}</p>}
+            {error && <p className="error-message">{error}</p>} */}
 
             <form onSubmit={handleChangePassword}>
                 <div className="form-group">

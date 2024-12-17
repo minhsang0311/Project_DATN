@@ -108,7 +108,8 @@ function SpMoi() {
                 } else {
                     setLikedProducts(prev => [...prev, product.Product_ID]);
                 }
-                alert(data.message);
+                toast.success(data.message)
+
             } else {
                 alert("Bạn chưa đăng nhập");
                 // navigate('/register_login')

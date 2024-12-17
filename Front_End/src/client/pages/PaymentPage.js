@@ -3,6 +3,7 @@ import '../styles/components/PaymentPage.css';
 import Header from '../components/Header';
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import toast, { Toaster } from 'react-hot-toast';
 
 const PaymentPage = () => {
     const [cartItems, setCartItems] = useState([]);
@@ -36,7 +37,7 @@ const PaymentPage = () => {
 
         const storedUserId = JSON.parse(localStorage.getItem('user'));
         if (!storedUserId) {
-            alert('Bạn cần phải đăng nhập để thanh toán');
+           toast.error('Bạn cần phải đăng nhập để thanh toán');
             navigate('/register_login');
         } else {
             if (storedUserId.role !== 0) {
@@ -63,11 +64,11 @@ const PaymentPage = () => {
                     .then(response => response.json())
                     .then(data => {
                         if (data.success === true) {
-                            setDiscount(data.discount);
-                            setVoucherMessage(`Voucher áp dụng thành công! Giảm ${data.discount}%`);
+                            toast.error(data.discount);
+                            toast.success(`Voucher áp dụng thành công! Giảm ${data.discount}%`);
                         } else {
                             setDiscount(0);
-                            setVoucherMessage(data.message);
+                            toast.error(data.message);
                         }
                     })
                     .catch(() => {
@@ -93,10 +94,10 @@ const PaymentPage = () => {
 
     const handlePayment = () => {
         if (!name || !address || !phone || !email || !userId) {
-            return alert("Vui lòng nhập đầy đủ thông tin mua hàng trước khi thanh toán.");
+            return toast.error("Vui lòng nhập đầy đủ thông tin mua hàng trước khi thanh toán.");
         }
         if (!paymentMethod) {
-            return alert('Vui lòng chọn phương thức thanh toán.');
+            return toast.error('Vui lòng chọn phương thức thanh toán.');
         }
 
         const orderData = {
@@ -134,7 +135,7 @@ const PaymentPage = () => {
                         }
                         navigate('/order');
                     } else {
-                        alert(data.message);
+                      
                     }
                 })
                 .catch(error => {
@@ -175,6 +176,8 @@ const PaymentPage = () => {
         <Fragment>
             <Header />
             <div className='container-pay'>
+            <Toaster position="top-right" reverseOrder={false} /> {/* Thêm Toaster */}
+
                 <h1>THANH TOÁN</h1>
                 <div className="container-payment">
                     <div className="section">

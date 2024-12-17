@@ -109,7 +109,9 @@ function SpMostView() {
                 } else {
                     setLikedProducts(prev => [...prev, product.Product_ID]);
                 }
-                alert(data.message);
+                toast.success(data.message)
+
+                // alert(data.message);
             } else {
                 alert("Bạn chưa đăng nhập");
                 // navigate('/register_login')
