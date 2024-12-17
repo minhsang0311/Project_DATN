@@ -109,7 +109,7 @@ exports.register = async (req, res) => {
         const hashedPassword = await bcrypt.hash(Password, saltRounds);
         const userResult = await db.query(
             "INSERT INTO users (User_Name, Email, Password) VALUES (?, ?, ?)",
-            [User_Name, Email, hashedPassword, Phone]
+            [User_Name, Email, hashedPassword]
         );
 
         const newUserId = userResult.insertId; // Lấy ID của người dùng mới tạo

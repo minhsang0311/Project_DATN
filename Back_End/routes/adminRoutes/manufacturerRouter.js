@@ -3,7 +3,8 @@ const path = require('path');
 const multer = require('multer');
 const router = express.Router();
 const manufacturerController = require('../../contrllers/adminControllers/manufacturerController');
-
+const { adminMiddleware } = require('../../middlewares/adminMiddlware');
+ 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, 'uploads/brand_images/'); 
@@ -14,11 +15,10 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-router.get('/brands', manufacturerController.getAllBrands);
-router.post('/brandAdd', upload.single('Brand_Image'), manufacturerController.addBrand);
-router.get('/brandDetail/:id', manufacturerController.getManufacturerById);
-router.put('/brandUpdate/:id', upload.single('Brand_Image'), manufacturerController.updateBrand);
-// xóa nhà sản xuất 
-router.delete('/brandDelete/:id', manufacturerController.deleteBrand); 
+router.get('/brands', adminMiddleware, manufacturerController.getAllBrands);
+router.post('/brandAdd', upload.single('Brand_Image') , adminMiddleware, manufacturerController.addBrand);
+router.get('/brandDetail/:id', adminMiddleware, manufacturerController.getManufacturerById);
+router.put('/brandUpdate/:id', adminMiddleware, upload.single('Brand_Image'), manufacturerController.updateBrand);
+router.delete('/brandDelete/:id', adminMiddleware, manufacturerController.deleteBrand); 
 
 module.exports = router;
