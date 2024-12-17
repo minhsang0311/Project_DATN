@@ -41,9 +41,9 @@ const CartPage = () => {
                     <table className="cart-table">
                         <thead>
                             <tr>
-                                <th>Số Thứ Tự</th>
+                                <th>STT</th>
                                 <th>Tên Sản Phẩm</th>
-                                <th>Hình Ảnh</th>
+                                <th>Ảnh</th>
                                 <th>Giá</th>
                                 <th>Số Lượng</th>
                                 <th>Thành Tiền</th>
@@ -54,7 +54,7 @@ const CartPage = () => {
                             {items.map((item, index) => (
                                 <tr key={item.id}>
                                     <td>{index + 1}</td>
-                                    <td>{item.name}</td>
+                                    <td >{item.name}</td>
                                     <td>
                                         <img src={item.image} alt={item.name} className="cart-item-image" />
                                     </td>

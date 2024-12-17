@@ -40,32 +40,32 @@ header .middle .right .giohang .cart-icon {
   justify-content: center; /* Center the number horizontally */
 }
 
-.timkiem input {
+header .middle form.timkiem input {
   height: 40px;
   border-radius: 5px;
-  width: 500px; /* Chiều rộng của ô tìm kiếm */
+  width: 100%;
+  min-width: 600px; /* Tăng kích thước ban đầu */
+  max-width: 700px; /* Giới hạn chiều rộng tối đa */
   border: none;
-  background-color: #fff; /* Màu nền trắng */
-  outline: none; /* Không viền khi focus */
-  transition: border-color 0.3s; /* Hiệu ứng chuyển tiếp cho viền */
+  background-color: #fff;
+  outline: none;
+  transition: border-color 0.3s;
   padding: 0 15px;
 }
 
 
-
-
-  
 .dropdown {
   position: absolute;
   margin: 0 auto;
   background-color: white;
   border: 1px solid #ddd;
   box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-  right: 140px;
-  border-radius: 15px;
-  width: 120px;
+  border-radius: 10px;
+  top:25px;
+  width: 160px;
   display: flex;
   flex-direction: column;
+  z-index: 100;
 }
 
 .dropdown a,
@@ -86,20 +86,49 @@ header .middle .right .giohang .cart-icon {
 
 .dropdown .change-pw:hover,
 .dropdown button:hover {
-  border-radius: 15px;
+  border-radius: 10px;
   color: white;
-  font-weight: bold;
+  font-weight:600;
   background-color: #56A4FF;
 }
-/* Điện thoại đứng */
-@media screen and (min-width:240px) {
 
-}
-/* Điện thoại ngang và máy tính dọc */
-@media screen and (min-width:768px) {
 
-}
-/* Laptop và máy tính bảng ngang */
-@media screen and (min-width:1024px) {
+@media (min-width: 769px) and (max-width: 1024px) {
+    header{height: 160px;}
+    header .middle form.timkiem input {
+      min-width: 400px; 
+    }
+  }
+@media (min-width: 1024px) and (max-width: 1300px) {
+    header{height: 160px;}}
+@media (max-width: 769px) {
+  header .top{padding: 8px;}
+  header .top ul.trai{gap:5px}
+  header .middle {align-items: center;padding: 0 8px;}
+  header .middle .logo_trangchu img {
+    height:40px;
+    width: 120px;
+  }
+  header .middle form.timkiem {
+    width: 100%;
+    margin: 10px 0;
+  }
+  header .middle form.timkiem input {
+    min-width: 200px; /* Input chiếm toàn bộ chiều rộng */
+  }
+  header .middle .right {
+    padding-top: 10px;
+    display: flex;
+    gap:10px;
 
+  }
+  header .middle .right i {
+    font-size: 20px;
+  }
+  .cart-count{
+    font-size: 10px;
+    width: 15px;
+    height: 15px;
+  }
 }
+  

@@ -89,16 +89,7 @@ exports.getFilteredProducts = (req, res) => {
     });
 };
 // productController.js
-exports.getAllBrands = (req, res) => {
-    const sql = `SELECT Brand_ID, Brand_Name FROM brands`;
-    db.query(sql, (err, data) => {
-        if (err) {
-            res.status(500).json({ message: "Lỗi khi lấy danh sách thương hiệu", err });
-        } else {
-            res.json(data);
-        }
-    });
-};
+
 
 exports.getProductsNew = (req, res) => {
     let sql = `SELECT * FROM products ORDER BY Product_ID DESC`;  
@@ -212,10 +203,18 @@ exports.getAllproductMostView =  (req, res) => {
     });
 };
 //Route lấy sản phẩm của một loại
-exports.getAllProducts =  (req, res) => {
+exports.getAllProducts_Category =  (req, res) => {
     const { Category_ID } = req.params;
     const sql = 'SELECT * FROM Products WHERE Category_ID = ?';
     db.query(sql, [Category_ID], (err, result) => {
+        if (err) return res.json({ message: 'Lỗi lấy sản phẩm', err });
+        res.json(result);
+    });
+};
+exports.getAllProducts_Brand =  (req, res) => {
+    const { Brand_ID } = req.params;
+    const sql = 'SELECT * FROM Products WHERE Brand_ID = ?';
+    db.query(sql, [Brand_ID], (err, result) => {
         if (err) return res.json({ message: 'Lỗi lấy sản phẩm', err });
         res.json(result);
     });

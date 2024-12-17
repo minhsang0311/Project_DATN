@@ -29,7 +29,7 @@ function Cuahang() {
     }, []);
 
     useEffect(() => {
-        fetch("http://localhost:3000/user/brands")
+        fetch("http://localhost:3000/user/brand")
             .then(res => res.json())
             .then(data => setBrands(data));
     }, []);

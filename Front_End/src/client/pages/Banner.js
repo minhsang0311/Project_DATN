@@ -6,15 +6,14 @@ import '../styles/components/Banner.css';
 const Banner = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isDanhMucVisible, setIsDanhMucVisible] = useState(false);
-  const [list, setList] = useState([]);
+  const [listbrands, setListbrands] = useState([]);
   const totalImages = 4;
   const navigate = useNavigate(); // Hook điều hướng
-
-  // Fetch danh mục từ API
+  
   useEffect(() => {
-    fetch('http://localhost:3000/user/category')
+    fetch('http://localhost:3000/user/brand')
       .then((res) => res.json())
-      .then((data) => setList(data));
+      .then((data) => setListbrands(data));
   }, []);
 
   // Tự động chuyển ảnh sau mỗi 4 giây
@@ -43,12 +42,12 @@ const Banner = () => {
       {/* Menu danh mục */}
       <div className="menu-doc">
         <div className="danh-muc" onClick={() => setIsDanhMucVisible(!isDanhMucVisible)}>
-          <i className="fa-solid fa-bars"></i> <p>Danh mục</p>
+          <i className="fa-solid fa-bars"></i> <p>Hãng sản phẩm</p>
         </div>
         <ul id="danh-muc-list" style={{ display: isDanhMucVisible ? 'none' : 'block' }}>
-          {list.map((loai) => (
-            <li key={loai.Category_ID}>
-              <Link to={`/category/${loai.Category_ID}`}>{loai.Category_Name}</Link>
+          {listbrands.map((brand) => (
+            <li key={brand.Brand_ID}>
+              <Link to={`/brand/${brand.Brand_ID}`}>{brand.Brand_Name}</Link>
             </li>
           ))}
         </ul>

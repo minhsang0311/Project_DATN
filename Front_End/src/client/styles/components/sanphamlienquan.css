@@ -1,24 +1,26 @@
 .splienquan .products-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr); 
-    margin-top: 30px;
-    gap: 20px 15px
- }
- .splienquan{
+   display: grid;
+   grid-template-columns: repeat(5, 1fr);
+   gap: 15px;
+   box-sizing: border-box;
+   width: 100%;
+   max-width: 100%;
+   padding: 0 15px;
+}
+
+.splienquan {
    background-color: whitesmoke;
- }
+   width: 100%;
+}
 .splienquan .products-grid .relatedproduct {
-    min-width: 200px;
-    background-color: rgb(255, 255, 255);
-    height: 370px;
-    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
-    border-radius: 10px;
-    position: relative;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
- }
+   min-width: 170px;
+   background-color: rgb(255, 255, 255);
+   height: 370px;
+   box-shadow: 0 0px 2px 0 rgba(60,64,67,0.1), 0 0px 6px 0px rgba(60,64,67,0.25);
+   border-radius: 10px;
+   position: relative;
+   width: 100%; /* Ensure full width within grid */
+}
  
  .splienquan .products-grid .relatedproduct .discount-label {
     z-index: 2;
@@ -110,4 +112,19 @@
     background-color: #4fc3f7;
     color: white;
  }
+
+ @media (max-width: 769px) {
+   .splienquan .products-grid {grid-template-columns: repeat(2, 1fr); gap: 20px;}
+   .splienquan .products-grid .relatedproduct {
+      min-width: 100%; /* Ensure products fill the grid */
+      max-width: 100%;
+   }
+ }
+ @media (min-width: 769px) and (max-width: 1024px) {
+   .splienquan .products-grid {grid-template-columns: repeat(3, 1fr); gap: 20px;}
+   .splienquan .products-grid .relatedproduct {
+      min-width: 150px; /* Hoặc giảm kích thước */
+    }
+ }
+ 
  

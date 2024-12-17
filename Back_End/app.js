@@ -37,6 +37,7 @@ const orderRoutesClient = require('./routes/userRoutes/orderRoutes')
 const productRoutesClient = require('./routes/userRoutes/productRoutes');
 const contactRouterClient = require('./routes/userRoutes/contactRoutes')
 const voucherRouterClient = require('./routes/userRoutes/voucherRoutes')
+const brandRouterClient = require('./routes/userRoutes/brandRoutes.js')
 
 
 app.use(cors(corsOpt));
@@ -67,7 +68,8 @@ app.use('/user', [
     orderRoutesClient,
     paymentRoutesClient,
     contactRouterClient,
-    voucherRouterClient
+    voucherRouterClient,
+    brandRouterClient
 ]);
 
 app.get('/search', searchProducts);
