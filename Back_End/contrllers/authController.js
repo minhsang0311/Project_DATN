@@ -69,9 +69,9 @@ async function sendVoucherEmail(email, voucherCode, discount, expirationDate) {
 
 // Hàm đăng ký người dùng và gửi voucher
 exports.register = async (req, res) => {
-    const { User_Name, Email, Password, Phone } = req.body;
+    const { User_Name, Email, Password} = req.body;
 
-    if (!User_Name || !Password || !Email || !Phone) {
+    if (!User_Name || !Password || !Email) {
         return res.status(400).json({ message: 'Vui lòng cung cấp đầy đủ thông tin.' });
     }
 
@@ -97,18 +97,18 @@ exports.register = async (req, res) => {
         });
     }
 
-    const phoneRegex = /^0\d{9,10}$/;
-    if (!phoneRegex.test(Phone)) {
-        return res.status(400).json({
-            message: 'Số điện thoại phải bắt đầu bằng số 0 và có từ 10 đến 11 chữ số.'
-        });
-    }
+    // const phoneRegex = /^0\d{9,10}$/;
+    // if (!phoneRegex.test(Phone)) {
+    //     return res.status(400).json({
+    //         message: 'Số điện thoại phải bắt đầu bằng số 0 và có từ 10 đến 11 chữ số.'
+    //     });
+    // }
 
     try {
         // Hash mật khẩu và thêm người dùng mới
         const hashedPassword = await bcrypt.hash(Password, saltRounds);
         const userResult = await db.query(
-            "INSERT INTO users (User_Name, Email, Password, Phone) VALUES (?, ?, ?, ?)",
+            "INSERT INTO users (User_Name, Email, Password) VALUES (?, ?, ?)",
             [User_Name, Email, hashedPassword, Phone]
         );
 
