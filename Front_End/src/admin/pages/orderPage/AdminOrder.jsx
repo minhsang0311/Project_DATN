@@ -85,16 +85,16 @@ const AdminOrder = ({ searchResults }) => {
       </div>
       <div className="grid-container-order">
             <div className="grid-header">Order ID</div>
-            <div className="grid-header">User ID</div>
+            <div className="grid-header">Tên khách hàng</div>
             <div className="grid-header">Email</div>
-            <div className="grid-header">Phone</div>
-            <div className="grid-header">Address</div>
-            <div className="grid-header">Status</div>
-            <div className="grid-header">Update Status</div>
+            <div className="grid-header">Số điện thoại</div>
+            <div className="grid-header">Địa chỉ</div>
+            <div className="grid-header">Trạng thái</div>
+            <div className="grid-header">Cập nhật trạng thái</div>
           {displayOrders.map((order) => (
             <Fragment key={order.Order_ID}>
               <div className="grid-item grid-item-element">{order.Order_ID}</div>
-              <div className="grid-item grid-item-element">{order.User_ID}</div>
+              <div className="grid-item grid-item-element">{order.User_Name}</div>
               <div className="grid-item grid-item-element">{order.Email}</div>
               <div className="grid-item grid-item-element">{order.Phone}</div>
               <div className="grid-item grid-item-element">{order.Address}</div>

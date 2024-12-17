@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom'
+import '../../styles/pages/categoryAdd.css'
 const CategoryAdd = () => {
     const navigate = useNavigate()
     const token = localStorage.getItem('token')
@@ -41,13 +42,13 @@ const CategoryAdd = () => {
     }
 
     return (
-        <div className="form-container-category-add">
-            <div className="form-header">
+        <div className="form-container-productadd">
+            <div className="form-header-addproduct">
                 <h2>THÊM DANH MỤC</h2>
             </div>
-            <form className="category-add-form" onSubmit={Submit}>
+            <form className="productadd-form" onSubmit={Submit}>
                 <div className="input-category-add">
-                    <div className="form-group-left">
+                  
                         <div className="form-group">
                             <label htmlFor="category-name">Tên danh mục</label>
                             <input
@@ -86,7 +87,6 @@ const CategoryAdd = () => {
                                     /> Hiện
                                 </label>
                             </div>
-                        </div>
                     </div>
                 </div>
                 <button type="submit" className="submit-btn">THÊM DANH MỤC</button>

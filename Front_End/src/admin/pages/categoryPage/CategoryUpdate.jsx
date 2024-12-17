@@ -48,6 +48,10 @@ function CategoryUpdate() {
         }));
     };
     return (
+        <div className="form-container-categoryadd">
+        <div className="form-header-categoryupdate">
+            <h2>SỬA DANH MỤC</h2>
+        </div>
         <form className="category-update-form col-md-11 border border-danger border-2 m-auto mt-2" onSubmit={submitData}>
             <div className="input-group">
                 <div className="input-field">
@@ -90,6 +94,7 @@ function CategoryUpdate() {
                 <button type="submit" className="btn btn-warning fw-bolder">Cập nhật danh mục</button>
             </div>
         </form>
+        </div>
     );
 }
 
