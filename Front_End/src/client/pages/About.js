@@ -60,7 +60,6 @@ const About = () => {
                             <h1>Khám Phá Bộ Sưu Tập Đồ Gia Dụng 2024</h1>
                         </div>
                         <div class="box_video">
-                            <div className='item_video'>
                                 <iframe 
                                     width="360" 
                                     height="270" 
@@ -70,8 +69,6 @@ const About = () => {
                                     referrerpolicy="strict-origin-when-cross-origin" 
                                     allowfullscreen>
                                 </iframe>    
-                            </div>
-                            <div className='item_video'>
                                 <iframe 
                                     width="360" 
                                     height="270" 
@@ -81,8 +78,6 @@ const About = () => {
                                     referrerpolicy="strict-origin-when-cross-origin" 
                                     allowfullscreen>
                                 </iframe>  
-                            </div>
-                            <div className='item_video'>
                                 <iframe 
                                     width="360" 
                                     height="270" 
@@ -92,7 +87,6 @@ const About = () => {
                                     referrerpolicy="strict-origin-when-cross-origin" 
                                     allowfullscreen>
                                 </iframe>  
-                            </div>
                         </div>
                     </div>
 

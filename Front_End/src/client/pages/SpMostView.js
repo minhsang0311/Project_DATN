@@ -160,7 +160,7 @@ function SpMostView() {
                                         <p className="new-price">{formatCurrency(sp.Price)}</p>
                                     )}
                                 </div>
-                                <button onClick={() => handleAddToCart(sp)} className="add-to-cart">Thêm vào giỏ</button>
+                                <button onClick={() => handleAddToCart(sp)} className="add-to-cart">Giỏ hàng</button>
                                 <div
                                     className={`heart-icon ${isProductInWishlist(sp.Product_ID) ? 'liked' : ''}`}
                                     onClick={() => handleWishlistToggle(sp)}

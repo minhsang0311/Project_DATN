@@ -15,45 +15,42 @@
   text-align: center;
 }
 
-.cart-table {
+.cart-page .cart-table {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 20px;
 }
 
-.cart-table th,
-.cart-table td {
+.cart-page .cart-table th,
+.cart-page .cart-table td {
   padding: 12px;
   text-align: center;
   border: 1px solid #ddd;
 }
 
-.cart-table th {
+.cart-page .cart-table th {
   background-color: #4fc3f7;
-  /* Màu nền cho tiêu đề bảng */
   color: white;
   font-weight: bold;
 }
 
-.cart-table tr:nth-child(even) {
+.cart-page .cart-page .cart-table tr:nth-child(even) {
   background-color: #f2f2f2;
-  /* Màu nền cho hàng chẵn */
 }
 
-.cart-table img {
+.cart-page .cart-table img {
   width: 50px;
-  /* Kích thước hình ảnh trong bảng */
   height: auto;
   border-radius: 4px;
 }
 
-.quantity-controls {
+.cart-page .quantity-controls {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.quantity-controls button {
+.cart-page .quantity-controls button {
   background-color: #4fc3f7;
   color: white;
   border: none;
@@ -64,15 +61,12 @@
   transition: background-color 0.3s;
 }
 
-.quantity-controls button:hover {
+.cart-page .quantity-controls button:hover {
   background-color: #1976D2;
-  /* Màu nút khi hover */
 }
 
-.btn-clear-cart,
-.btn-payment {
+.cart-page .btn-payment {
   background-color: #2196F3;
-  /* Màu nền cho nút */
   color: white;
   border: none;
   border-radius: 4px;
@@ -85,131 +79,113 @@
   text-decoration: none;
 }
 
-.btn-clear-cart:hover,
-.btn-payment:hover {
+
+.cart-page .btn-payment:hover {
   background-color: #1976D2;
-  /* Màu nút khi hover */
+}
+.cart-page .btn-clear-cart {
+  background-color: #f44336;  /* Màu đỏ */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 12px 20px;
+  cursor: pointer;
+  margin: 10px 5px;
+  display: inline-block;
+  transition: background-color 0.3s;
+  text-align: center;
+  text-decoration: none;
 }
 
-/* Thêm responsive cho màn hình nhỏ */
+.cart-page .btn-clear-cart:hover {
+  background-color: #d32f2f;  /* Màu đỏ đậm khi hover */
+}
+
+
+/* Existing previous CSS remains the same */
+
 @media (max-width: 768px) {
   .cart-page {
     padding: 10px;
+    margin-top: 50px;
   }
 
-  .cart-table th,
-  .cart-table td {
-    font-size: 14px;
-    padding: 10px;
+  /* Truncate long product names */
+  .cart-page .cart-table td:nth-child(2) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: -webkit-nowrap;
+    white-space: nowrap;
   }
 
-  .btn-clear-cart,
-  .btn-payment {
+  /* Multi-line truncation for product names */
+  .cart-page .cart-table td:nth-child(2) {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-height: 5em; /* Approximately 3 lines */
+    line-height: 1.5em;
+    white-space: normal;
+  }
+
+  /* Rest of the existing mobile styles */
+  .cart-page .cart-table th,
+  .cart-page .cart-table td {
+    font-size: 12px;
+    padding: 8px;
+  }
+
+  .cart-page .quantity-controls button {
+    padding: 4px 6px;
+    font-size: 12px;
+  }
+
+  .cart-page .quantity-controls input[type="number"] {
+    width: 40px;
+    padding: 4px;
+    font-size: 12px;
+  }
+
+  .cart-page .cart-table img {
+    width: 40px;
+  }
+
+  .cart-page .btn-clear-cart,
+  .cart-page .btn-payment {
+    font-size: 12px;
+    padding: 8px 10px;
     width: 100%;
     margin: 5px 0;
   }
+}
 
-
-  .cart-item-image {
-    width: 50px;
-    /* Kích thước hình ảnh sản phẩm */
-    height: auto;
-    /* Giữ tỷ lệ hình ảnh */
+/* Keep the existing tablet styles */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .cart-page {
+    padding: 15px;
+    margin-top: 100px;
+    max-width: 90%;
   }
 
-  h2 {
-    color: #333;
+  .cart-page .cart-table th,
+  .cart-page .cart-table td {
+    font-size: 16px;
+    padding: 10px;
   }
 
-  .btn-clear-cart {
-    background-color: #d9534f;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-
-  .btn-clear-cart:hover {
-    background-color: #c9302c;
-  }
-
-  body {
-    font-family: Arial, sans-serif;
-    background-color: #f8f9fa;
-    margin: 0;
-  }
-
-  h1 {
-    color: #343a40;
-    text-align: center;
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-  }
-
-  thead {
-    background-color: #007bff;
-    color: white;
-  }
-
-  th,
-  td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #dee2e6;
-  }
-
-  tr:hover {
-    background-color: #e9ecef;
-  }
-
-  input[type="number"] {
+  .cart-page .cart-table img {
     width: 60px;
-    padding: 5px;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
   }
 
-  .buttonXoa {
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 4px;
-    cursor: pointer;
+  .cart-page .btn-clear-cart,
+  .cart-page .btn-payment {
+    padding: 10px 18px;
+    font-size: 16px;
   }
 
-  .buttonXoa:hover {
-    background-color: #c82333;
-  }
-
-  .thanhtoantien {
-    text-align: center;
-
-  }
-
-  .thanhtoantien .tongtien {
-    color: #343a40;
-    margin-top: 20px;
-    text-align: center;
-  }
-
-  .thanhtoantien button {
-    background-color: green;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1rem;
-  }
-
-  .imgcart {
-    width: 40%;
-    height: 80px;
+  .cart-page .quantity-controls button {
+    padding: 6px 10px;
   }
 }

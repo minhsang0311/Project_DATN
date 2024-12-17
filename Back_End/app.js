@@ -37,6 +37,7 @@ const orderRoutesClient = require('./routes/userRoutes/orderRoutes')
 const productRoutesClient = require('./routes/userRoutes/productRoutes');
 const contactRouterClient = require('./routes/userRoutes/contactRoutes')
 const voucherRouterClient = require('./routes/userRoutes/voucherRoutes')
+const brandRouterClient = require('./routes/userRoutes/brandRoutes.js')
 const wishlistRouterClinet = require('./routes/userRoutes/wishlistRoutes')
 
 
@@ -69,6 +70,7 @@ app.use('/user', [
     paymentRoutesClient,
     contactRouterClient,
     voucherRouterClient,
+    brandRouterClient,
     wishlistRouterClinet
 ]);
 

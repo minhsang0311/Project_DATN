@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom'
 import { toast, Toaster } from 'react-hot-toast'; // Import toast
-import '../../styles/pages/categoryAdd.css'
+import '../../styles/pages/CategoryAdd.css'
 
 const CategoryAdd = () => {
     const navigate = useNavigate()
