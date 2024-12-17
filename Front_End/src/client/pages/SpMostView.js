@@ -8,11 +8,12 @@ import toast, { Toaster } from "react-hot-toast";
 function SpMostView() {
     const [listsp, setListSP] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [sp ] = useState(null);
+    const [sp] = useState(null);
     const [error, setError] = useState(null);
     const [likedProducts, setLikedProducts] = useState([]);
     const [showToast, setShowToast] = useState(false);
     const dispatch = useDispatch();
+    const navigate = useNavigate()
 
     useEffect(() => {
         fetch(`${process.env.REACT_APP_HOST_URL}user/productMostView`)
@@ -73,8 +74,15 @@ function SpMostView() {
     };
     const handleWishlistToggle = async (product) => {
         const userId = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).id : null;
+        const userRole = JSON.parse(localStorage.getItem('user'))
         if (!userId) {
-            alert('Bạn cần đăng nhập để thêm sản phẩm vào yêu thích!');
+            alert('Bạn cần đăng nhập để quản lý danh sách yêu thích!');
+            navigate('/register_login')
+            return;
+        }
+        if (userRole.role !== 0) {
+            alert('Tài khoản không thể thêm sản phẩm yêu thích!');
+            navigate('/register_login')
             return;
         }
 
@@ -103,7 +111,8 @@ function SpMostView() {
                 }
                 alert(data.message);
             } else {
-                alert(data.message);
+                alert("Bạn chưa đăng nhập");
+                // navigate('/register_login')
             }
         } catch (error) {
             console.log("Lỗi khi thêm/xóa sản phẩm khỏi yêu thích:", error);
@@ -116,7 +125,7 @@ function SpMostView() {
     return (
         <div className="spbanchay">
             <div className="left-image">
-            <Toaster position="top-right" reverseOrder={false} /> {/* Thêm Toaster */}
+                <Toaster position="top-right" reverseOrder={false} /> {/* Thêm Toaster */}
 
                 <img src="/assets/img/banner21.1.jpg" alt="" />
                 <img src="/assets/img/banner21.2.jpg" alt="" />
