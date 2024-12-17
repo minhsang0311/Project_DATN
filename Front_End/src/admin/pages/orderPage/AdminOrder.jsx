@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import axios from 'axios';
 import '../../styles/pages/AdminOrder.css';
 
-const AdminOrder = () => {
+const AdminOrder = ({ searchResults }) => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -11,33 +11,35 @@ const AdminOrder = () => {
 
   // Lấy danh sách đơn hàng từ API
   useEffect(() => {
-    const fetchOrders = async () => {
-      const token = localStorage.getItem('token');
+    if (!searchResults || searchResults.length === 0) {
+      const fetchOrders = async () => {
+        const token = localStorage.getItem('token');
 
-      if (!token) {
-        setError('Không tìm thấy token. Vui lòng đăng nhập lại.');
-        setLoading(false);
-        return;
-      }
+        if (!token) {
+          setError('Không tìm thấy token. Vui lòng đăng nhập lại.');
+          setLoading(false);
+          return;
+        }
 
-      try {
-        const response = await axios.get('http://localhost:3000/admin/order', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        // Sắp xếp danh sách đơn hàng theo Order_ID tăng dần
-        const sortedOrders = response.data.sort((a, b) => a.Order_ID - b.Order_ID);
-        setOrders(sortedOrders);
-      } catch (err) {
-        setError('Lỗi khi lấy danh sách đơn hàng.');
-      } finally {
-        setLoading(false);
-      }
-    };
+        try {
+          const response = await axios.get('http://localhost:3000/admin/order', {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          // Sắp xếp danh sách đơn hàng theo Order_ID tăng dần
+          const sortedOrders = response.data.sort((a, b) => a.Order_ID - b.Order_ID);
+          setOrders(sortedOrders);
+        } catch (err) {
+          setError('Lỗi khi lấy danh sách đơn hàng.');
+        } finally {
+          setLoading(false);
+        }
+      };
 
-    fetchOrders();
-  }, []);
+      fetchOrders();
+    }
+  }, [searchResults]);
 
   // Cập nhật trạng thái đơn hàng
   const handleStatusChange = async (orderId) => {
@@ -72,31 +74,31 @@ const AdminOrder = () => {
 
   if (loading) return <div className="loading">Đang tải...</div>;
   if (error) return <div className="error">{error}</div>;
+  const displayOrders = searchResults && searchResults.length > 0 ? searchResults : orders;
 
   return (
-    <div className="order-management">
-      <h1 className="order-title">Quản lý đơn hàng</h1>
-      <table className="order-table">
-        <thead>
-          <tr className="table-header">
-            <th className="header-item">Order ID</th>
-            <th className="header-item">User ID</th>
-            <th className="header-item">Email</th>
-            <th className="header-item">Phone</th>
-            <th className="header-item">Address</th>
-            <th className="header-item">Status</th>
-            <th className="header-item">Update Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {orders.map((order) => (
-            <tr key={order.Order_ID} className="table-row">
-              <td className="row-item">{order.Order_ID}</td>
-              <td className="row-item">{order.User_ID}</td>
-              <td className="row-item">{order.Email}</td>
-              <td className="row-item">{order.Phone}</td>
-              <td className="row-item">{order.Address}</td>
-              <td className="row-item">
+    <div className="box-productlist">
+      <div className="headertop-admin">
+        <div className="header_admin">
+          <h2>Danh sách đơn hàng</h2>
+        </div>
+      </div>
+      <div className="grid-container-order">
+            <div className="grid-header">Order ID</div>
+            <div className="grid-header">User ID</div>
+            <div className="grid-header">Email</div>
+            <div className="grid-header">Phone</div>
+            <div className="grid-header">Address</div>
+            <div className="grid-header">Status</div>
+            <div className="grid-header">Update Status</div>
+          {displayOrders.map((order) => (
+            <Fragment key={order.Order_ID}>
+              <div className="grid-item grid-item-element">{order.Order_ID}</div>
+              <div className="grid-item grid-item-element">{order.User_ID}</div>
+              <div className="grid-item grid-item-element">{order.Email}</div>
+              <div className="grid-item grid-item-element">{order.Phone}</div>
+              <div className="grid-item grid-item-element">{order.Address}</div>
+              <div className="grid-item grid-item-element">
                 {selectedOrder === order.Order_ID ? (
                   <select
                     value={newStatus}
@@ -113,8 +115,8 @@ const AdminOrder = () => {
                 ) : (
                   <span className="status-display">{order.Status}</span>
                 )}
-              </td>
-              <td className="row-item">
+              </div>
+              <div className="grid-item grid-item-element">
                 {selectedOrder === order.Order_ID ? (
                   <button
                     className="update-button"
@@ -127,17 +129,16 @@ const AdminOrder = () => {
                     className="change-status-button"
                     onClick={() => {
                       setSelectedOrder(order.Order_ID);
-                      setNewStatus(order.Status); // Hiển thị trạng thái cũ khi chọn thay đổi
+                      setNewStatus(order.Status); // Hiển thị Fragmentạng thái cũ khi chọn thay đổi
                     }}
                   >
                     Thay đổi trạng thái
                   </button>
                 )}
-              </td>
-            </tr>
+              </div>
+            </Fragment>
           ))}
-        </tbody>
-      </table>
+      </div>
     </div>
   );
 };

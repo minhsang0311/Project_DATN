@@ -37,7 +37,7 @@ const StatisticsOrderStatus = () => {
       .catch(error => console.error('Lỗi lấy dữ liệu thống kê trạng thái đơn hàng:', error));
   }, []);
 
-  const statusLabels = statusData.map(item => `Trạng thái ${item.Status_Name}`);
+  const statusLabels = statusData.map(item => `${item.Status_Name}`);
   const orderCounts = statusData.map(item => item.order_count);
 
   const pieChartData = {

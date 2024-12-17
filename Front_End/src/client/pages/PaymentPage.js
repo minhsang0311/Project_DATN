@@ -3,7 +3,6 @@ import '../styles/components/PaymentPage.css';
 import Header from '../components/Header';
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import toast from "react-hot-toast";
 
 const PaymentPage = () => {
     const [cartItems, setCartItems] = useState([]);
@@ -19,23 +18,23 @@ const PaymentPage = () => {
     const [voucherMessage, setVoucherMessage] = useState('');
     const navigate = useNavigate();
     const location = useLocation();
-    const { productDetails } = location.state || {}; // Access the passed product details
+    const { productDetails } = location.state || {}; // Nhận thông tin sản phẩm từ "Mua ngay"
 
-    //mua ngay
+    // useEffect để xử lý khi có sản phẩm "Mua ngay"
     useEffect(() => {
         if (productDetails) {
-            const currentCart = JSON.parse(localStorage.getItem('cart')) || [];
-            currentCart.push(productDetails);
-            localStorage.setItem('cart', JSON.stringify(currentCart));
+            // Nếu có sản phẩm từ "Mua ngay", chỉ hiển thị sản phẩm này
+            setCartItems([{
+                ...productDetails,
+                quantity: 1 // Mặc định số lượng là 1 khi mua ngay
+            }]);
+        } else {
+            // Nếu không phải "Mua ngay", hiển thị toàn bộ sản phẩm trong giỏ hàng
+            const storedCartItems = JSON.parse(localStorage.getItem('cart')) || [];
+            setCartItems(storedCartItems);
         }
-    }, [productDetails]);
-    useEffect(() => {
-        // Lấy giỏ hàng và User ID từ localStorage
+
         const storedUserId = JSON.parse(localStorage.getItem('user'));
-        const storedCartItems = JSON.parse(localStorage.getItem('cart')) || [];
-        const userID = storedUserId.id
-        setCartItems(storedCartItems);
-        setUserId(userID);
         if (!storedUserId) {
             alert('Bạn cần phải đăng nhập để thanh toán');
             navigate('/register_login');
@@ -46,7 +45,9 @@ const PaymentPage = () => {
             }
         }
 
-    }, [navigate]);
+        setUserId(storedUserId?.id || null);
+    }, [navigate, productDetails]);
+
     useEffect(() => {
         const tokenUser = localStorage.getItem("tokenUser");
         const debounceTimeout = setTimeout(() => {
@@ -61,11 +62,10 @@ const PaymentPage = () => {
                 })
                     .then(response => response.json())
                     .then(data => {
-                        console.log(data)
                         if (data.success === true) {
                             setDiscount(data.discount);
                             setVoucherMessage(`Voucher áp dụng thành công! Giảm ${data.discount}%`);
-                        } else if (data.success === false) {
+                        } else {
                             setDiscount(0);
                             setVoucherMessage(data.message);
                         }
@@ -80,9 +80,9 @@ const PaymentPage = () => {
             }
         }, 1000); // 1 giây debounce
 
-        // Dọn dẹp timeout khi voucherCode thay đổi trước khi timeout kết thúc
         return () => clearTimeout(debounceTimeout);
     }, [voucherCode]);
+
     const handleVoucherChange = (e) => {
         setVoucherCode(e.target.value);
     };
@@ -117,9 +117,7 @@ const PaymentPage = () => {
             Note: note || null
         };
 
-        // Xử lý theo phương thức thanh toán
         if (paymentMethod === 'COD') {
-            // Xử lý thanh toán COD
             fetch(`${process.env.REACT_APP_HOST_URL}user/payment`, {
                 method: 'POST',
                 headers: {
@@ -131,8 +129,10 @@ const PaymentPage = () => {
                 .then(data => {
                     if (data.success === true) {
                         alert('Thanh toán COD thành công!');
-                        console.log(localStorage.removeItem('cart'));
-                        navigate('/order'); 
+                        if (!productDetails) {
+                            localStorage.removeItem('cart'); // Xóa giỏ hàng nếu không phải "Mua ngay"
+                        }
+                        navigate('/order');
                     } else {
                         alert(data.message);
                     }
@@ -142,7 +142,6 @@ const PaymentPage = () => {
                     alert('Lỗi khi xử lý thanh toán COD.');
                 });
         } else if (paymentMethod === 'Online') {
-            // Xử lý thanh toán Online
             fetch(`${process.env.REACT_APP_HOST_URL}user/payment`, {
                 method: 'POST',
                 headers: {
@@ -155,7 +154,7 @@ const PaymentPage = () => {
                     if (data.success === true) {
                         if (data.url) {
                             window.location.href = data.url;
-                            localStorage.removeItem('cart');
+                            if (!productDetails) localStorage.removeItem('cart');
                         } else {
                             alert('Không thể chuyển đến cổng thanh toán. Vui lòng thử lại.');
                         }
@@ -171,8 +170,6 @@ const PaymentPage = () => {
             alert('Phương thức thanh toán không hợp lệ.');
         }
     };
-
-
 
     return (
         <Fragment>
@@ -283,7 +280,6 @@ const PaymentPage = () => {
                                     onChange={handleVoucherChange}
                                 />
                             </label>
-                            {/* <button onClick={applyVoucher}>Áp Dụng</button> */}
                             {voucherMessage && <p className="voucher-message">{voucherMessage}</p>}
                         </div>
                         <div className='money'>

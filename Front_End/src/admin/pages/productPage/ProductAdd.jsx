@@ -266,6 +266,7 @@ const ProductAdd = () => {
                                 } />
                         </div>
                         <div className="radio-group">
+                        <label>Ẩn/Hiện</label>
                             <label>
                                 <input
                                     type="radio"
