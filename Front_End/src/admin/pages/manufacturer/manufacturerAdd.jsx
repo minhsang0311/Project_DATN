@@ -39,12 +39,12 @@ const ManufacturerAdd = () => {
     };
 
     return (
-        <div className="form-container-manufacturerAdd">
-            <div className="form-header-manufacturerAdd">
-                <h2 className="manufacturerAdd-h2">THÊM NHÀ SẢN XUẤT</h2>
+        <div className="form-container-productadd">
+            <div className="form-header-addproduct">
+                <h2>THÊM NHÀ SẢN XUẤT</h2>
             </div>
-            <form className="manufacturerAdd-form" onSubmit={handleSubmit}>
-                <div className="form-group-manufacturerAdd">
+            <form className="productadd-form" onSubmit={handleSubmit}>
+                <div className="form-group">
                     <label htmlFor="manufacturer-name">Tên Nhà Sản Xuất</label>
                     <input
                         type="text"
@@ -60,7 +60,7 @@ const ManufacturerAdd = () => {
 
                 {error && <div className="error-message">{error}</div>}
 
-                <button type="submit" className="submit-btn-manufacturerAdd">THÊM NHÀ SẢN XUẤT</button>
+                <button type="submit" className="submit-btn">THÊM NHÀ SẢN XUẤT</button>
             </form>
         </div>
     );

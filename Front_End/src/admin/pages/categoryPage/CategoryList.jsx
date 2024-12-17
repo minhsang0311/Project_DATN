@@ -57,9 +57,9 @@ function CategoryList({ searchResults }) {
         <div className="box-categorylist">
             <div className="headertop-admin-category">
                 <div className="header_admin_category">
-                    <h2>Danh sách danh mục</h2>
+                    <h2>DANH SÁCH DANH MỤC</h2>
                     <button className="button_admin_category">
-                        <Link to="/admin/categoryAdd">Thêm danh mục</Link>
+                        <Link to="/admin/categoryAdd">THÊM DANH MỤC</Link>
                     </button>
                 </div>
             </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import '../../styles/pages/commentList.css';
 const Comments = ({ searchResults }) => {
     const [comments, setComments] = useState([]);
@@ -6,23 +6,23 @@ const Comments = ({ searchResults }) => {
     const [error, setError] = useState('');
     useEffect(() => {
         if (!searchResults || searchResults.length === 0) {
-        const fetchComments = async () => {
-            try {
-                const response = await fetch('http://localhost:3000/admin/reviews', {
-                    method: 'GET',
-                    headers: {
-                        "Content-Type": "application/json",
-                        'Authorization': 'Bearer ' + token
-                    }
-                });
-                const data = await response.json();
-                setComments(data);
-            } catch (err) {
-                setError('Lỗi khi lấy dữ liệu bình luận');
-            }
-        };
-        fetchComments();
-    }
+            const fetchComments = async () => {
+                try {
+                    const response = await fetch('http://localhost:3000/admin/reviews', {
+                        method: 'GET',
+                        headers: {
+                            "Content-Type": "application/json",
+                            'Authorization': 'Bearer ' + token
+                        }
+                    });
+                    const data = await response.json();
+                    setComments(data);
+                } catch (err) {
+                    setError('Lỗi khi lấy dữ liệu bình luận');
+                }
+            };
+            fetchComments();
+        }
     }, [searchResults]);
     const handleVisibilityToggle = async (id, currentStatus) => {
         const newStatus = currentStatus === 1 ? 0 : 1;
@@ -50,41 +50,35 @@ const Comments = ({ searchResults }) => {
     }
 
     return (
-        <div className="admin-comments">
-            <h1>Quản lý Bình luận</h1>
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
+        <div className="box-productlist">
+            <div className="headertop-admin">
+                <div className="header_admin">
+                    <h2>DANH SÁCH BÌNH LUẬN</h2>
+                </div>
+            </div>
+            <div className="grid-container-comment">
+                <div className="grid-header">ID</div>
+                <div className="grid-header">Người dùng</div>
+                <div className="grid-header">Tên sản phẩm</div>
+                <div className="grid-header">Bình luận</div>
+                <div className="grid-header">Ẩn/ Hiện</div>
+                {displayComents.map(comment => (
+                    <Fragment key={comment.Review_ID}>
 
-                        <th>Người dùng</th>
-                        
-                        <th>Tên sản phẩm</th>
-                        <th>Bình luận</th>
-                        <th>Ẩn/ Hiện</th>
+                        <div className="grid-item grid-item-element">{comment.Review_ID}</div>
+                        <div className="grid-item grid-item-element">{comment.User_Name}</div>
+                        <div className="grid-item grid-item-element">{comment.Product_Name}</div>
 
+                        <div className="grid-item grid-item-element">{comment.Comment}</div>
+                        <div className="grid-item grid-item-element show-hidden">{comment.Show_Hidden === 1 ? 'Hiển thị' : 'Ẩn'}/
+                            <button onClick={() => handleVisibilityToggle(comment.Review_ID, comment.Show_Hidden)}>
+                                {comment.Show_Hidden === 1 ? 'Ẩn' : 'Hiển thị'}
+                            </button>
 
-                    </tr>
-                </thead>
-                <tbody>
-                    {displayComents.map(comment => (
-                        <tr key={comment.Review_ID}>
-
-                            <td>{comment.Review_ID}</td>
-                             <td>{comment.User_Name}</td>
-                            <td>{comment.Product_Name}</td>
-                           
-                            <td>{comment.Comment}</td>
-                            <td>{comment.Show_Hidden === 1 ? 'Hiển thị' : 'Ẩn'}/
-                                <button onClick={() => handleVisibilityToggle(comment.Review_ID, comment.Show_Hidden)}>
-                                    {comment.Show_Hidden === 1 ? 'Ẩn' : 'Hiển thị'}
-                                </button>
-
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+                        </div>
+                    </Fragment>
+                ))}
+            </div>
         </div>
     );
 };

@@ -80,7 +80,7 @@ const AdminOrder = ({ searchResults }) => {
     <div className="box-productlist">
       <div className="headertop-admin">
         <div className="header_admin">
-          <h2>Danh sách đơn hàng</h2>
+          <h2>DANH SÁCH ĐƠN HÀNG</h2>
         </div>
       </div>
       <div className="grid-container-order">
