@@ -30,7 +30,7 @@ exports.sendContactEmail = (req, res) => {
             if (error) {
                 return res.status(500).json({ message: 'Không thể gửi email', error });
             }
-            // res.json({ message: 'Yêu cầu liên hệ của bạn đã được gửi thành công' });
+            res.json({ message: 'Yêu cầu liên hệ của bạn đã được gửi thành công' });
         });
     });
 };
