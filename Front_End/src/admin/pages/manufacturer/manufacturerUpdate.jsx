@@ -59,7 +59,7 @@ const ManufacturerUpdate = () => {
         </div>
 
         <button type="submit" className="submit-btn" disabled={loading}>
-          {loading ? 'Updating...' : 'Cập nhật nhà sản xuất'}
+          {loading ? 'Updating...' : 'CẬP NHẬT'}
         </button>
       </form>
     </div>

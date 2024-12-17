@@ -103,7 +103,7 @@ const CustomerUpdate = () => {
           </select>
         </div>
 
-        <button type="submit" className="submit-btn">Lưu thay đổi</button>
+        <button type="submit" className="submit-btn">LƯU THAY ĐỔI</button>
       </form>
     </div>
   );
