@@ -45,6 +45,7 @@ const HomeAdmin = () => {
 
     const handleLogout = () => {
         localStorage.removeItem('token');
+        localStorage.removeItem('user');
         navigate('/register_login');
     };
 
