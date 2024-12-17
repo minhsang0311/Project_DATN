@@ -59,16 +59,23 @@ const RegisterLogin = () => {
                 body: JSON.stringify(formData),
                 headers: { 'Content-Type': 'application/json' }
             };
-
+    
             try {
                 const response = await fetch(url, opt);
                 const data = await response.json();
-                // toast.error(data.message);
+    
+                // Kiểm tra nếu response trả về thông báo lỗi email đã tồn tại
                 if (response.ok) {
-                    setFormData({ User_Name: '', Email: '', Password: ''});
+                    setFormData({ User_Name: '', Email: '', Password: '' });
                     setConfirmPassword('');
                     toast.success('Đăng ký thành công! Vui lòng kiểm tra email để nhận mã khuyến mãi.');
                     setIsRightPanelActive(false);
+                } else {
+                    if (data.message === "Email đã được đăng ký") {
+                        toast.error("Email này đã được đăng ký, vui lòng chọn email khác.");
+                    } else {
+                        toast.error(data.message || "Có lỗi xảy ra, vui lòng thử lại.");
+                    }
                 }
             } catch (error) {
                 toast.error('Có lỗi xảy ra, vui lòng thử lại.');
@@ -76,12 +83,12 @@ const RegisterLogin = () => {
                 setShouldSubmit(false);
             }
         };
-
+    
         if (shouldSubmit) {
             registerUser();
         }
     }, [shouldSubmit, formData]);
-
+    
     const submitDuLieu = (event) => {
         event.preventDefault();
         if (userNameRef.current.value === "" || pwRef.current.value === "") {
