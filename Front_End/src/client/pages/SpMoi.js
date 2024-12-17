@@ -20,7 +20,7 @@ function SpMoi() {
         fetch(`${process.env.REACT_APP_HOST_URL}user/productNew`)
             .then(res => res.json())
             .then(data => ganListSP(data));
-            
+
         // Fetch danh sách yêu thích của người dùng
         const fetchWishlist = async () => {
             const userId = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).id : null;
@@ -76,8 +76,15 @@ function SpMoi() {
     };
     const handleWishlistToggle = async (product) => {
         const userId = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).id : null;
+        const userRole = JSON.parse(localStorage.getItem('user'))
         if (!userId) {
-            alert('Bạn cần đăng nhập để thêm sản phẩm vào yêu thích!');
+            alert('Bạn cần đăng nhập để quản lý danh sách yêu thích!');
+            navigate('/register_login')
+            return;
+        }
+        if (userRole.role !== 0) {
+            alert('Tài khoản không thể thêm sản phẩm yêu thích!');
+            navigate('/register_login')
             return;
         }
 
@@ -106,7 +113,8 @@ function SpMoi() {
                 }
                 alert(data.message);
             } else {
-                alert(data.message);
+                alert("bạn chưa đăng nhập");
+                // navigate('/register_login')
             }
         } catch (error) {
             console.log("Lỗi khi thêm/xóa sản phẩm khỏi yêu thích:", error);
@@ -120,7 +128,7 @@ function SpMoi() {
     return (
         <div className="spbanchay">
             <div className="left-image">
-            <Toaster position="top-right" reverseOrder={false} /> {/* Thêm Toaster */}
+                <Toaster position="top-right" reverseOrder={false} /> {/* Thêm Toaster */}
                 <img src="/assets/img/banner20.jpg" alt="img1" />
                 <img src="/assets/img/banner20.1.jpg" alt="img2" />
             </div>
@@ -131,8 +139,8 @@ function SpMoi() {
                 </div>
                 <div className="box-sp">
 
-                    {listsp.slice(0,8).map((sp, i) => (
- 
+                    {listsp.slice(0, 8).map((sp, i) => (
+
                         <div className="product" key={i}>
                             {sp.Promotion > 0 && (
                                 <div className="discount-label">
@@ -140,10 +148,10 @@ function SpMoi() {
                                 </div>
                             )}
                             <div className="img-wrapper">
-                                <img src={sp.Image} alt={sp.Product_Name}/>
+                                <img src={sp.Image} alt={sp.Product_Name} />
                             </div>
 
-                            <Link to={"/productDetail/"+ sp.Product_ID}>{sp.Product_Name}</Link>
+                            <Link to={"/productDetail/" + sp.Product_ID}>{sp.Product_Name}</Link>
                             <div className="price_giohang">
                                 <div className="price">
                                     {sp.Promotion > 0 ? (

@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { addToCart } from './cartSlice';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 function Product({ product }) {
     const dispatch = useDispatch();
     const [isLiked, setIsLiked] = useState(false); // Trạng thái yêu thích sản phẩm
     const [loading, setLoading] = useState(false);
-
+    const navigate = useNavigate()
     const formatCurrency = (value) => {
         return new Intl.NumberFormat('vi-VN', {
             style: 'currency',
@@ -28,11 +29,18 @@ function Product({ product }) {
 
     const handleAddToWishlist = async (product) => {
         const userId = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).id : null;
+        const userRole = JSON.parse(localStorage.getItem('user'))
         if (!userId) {
             alert('Bạn cần đăng nhập để quản lý danh sách yêu thích!');
+            navigate('/register_login')
             return;
         }
-    
+        if (userRole.role !== 0) {
+            alert('Tài khoản không thể thêm sản phẩm yêu thích!');
+            navigate('/register_login')
+            return;
+        }
+
         try {
             setLoading(true);
             if (isLiked) {
@@ -48,7 +56,7 @@ function Product({ product }) {
                     }),
                 });
                 const data = await response.json();
-    
+
                 if (response.ok) {
                     setIsLiked(false); // Cập nhật trạng thái yêu thích
                     alert(data.message || 'Đã xoá sản phẩm khỏi danh sách yêu thích');
@@ -68,7 +76,7 @@ function Product({ product }) {
                     }),
                 });
                 const data = await response.json();
-    
+
                 if (response.ok) {
                     setIsLiked(true); // Cập nhật trạng thái yêu thích
                     alert(data.message || 'Đã thêm sản phẩm vào danh sách yêu thích');
@@ -82,7 +90,7 @@ function Product({ product }) {
             setLoading(false);
         }
     };
-    
+
     // Kiểm tra nếu sản phẩm đã có trong wishlist
     useEffect(() => {
         const checkIfLiked = async () => {
@@ -123,8 +131,8 @@ function Product({ product }) {
                 <button onClick={() => handleAddToCart(product)} className="add-to-cart">Giỏ hàng</button>
             </div>
             {/* Biểu tượng trái tim yêu thích */}
-            <div 
-                className={`heart-icon ${isLiked ? 'liked' : ''}`} 
+            <div
+                className={`heart-icon ${isLiked ? 'liked' : ''}`}
                 onClick={() => handleAddToWishlist(product)}
                 style={{ position: 'absolute', top: '10px', right: '10px', cursor: 'pointer' }}
             >

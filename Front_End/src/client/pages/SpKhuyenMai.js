@@ -3,6 +3,7 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { addToCart } from "./cartSlice"; // Import hành động thêm vào giỏ hàng
 import '../styles/components/Home.css';
 import toast, { Toaster } from "react-hot-toast";
@@ -13,6 +14,7 @@ function SpMoi() {
     const [likedProducts, setLikedProducts] = useState([]);
     const dispatch = useDispatch(); // Khởi tạo useDispatch
     const [showToast, setShowToast] = useState(false);
+    const navigate = useNavigate()
     useEffect(() => {
         fetch(`${process.env.REACT_APP_HOST_URL}user/productKhuyenMai`)
             .then(res => res.json()).then(data => ganListSP(data));
@@ -71,8 +73,15 @@ function SpMoi() {
     };
     const handleWishlistToggle = async (product) => {
         const userId = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).id : null;
+        const userRole = JSON.parse(localStorage.getItem('user'))
         if (!userId) {
-            alert('Bạn cần đăng nhập để thêm sản phẩm vào yêu thích!');
+            alert('Bạn cần đăng nhập để quản lý danh sách yêu thích!');
+            navigate('/register_login')
+            return;
+        }
+        if (userRole.role !== 0) {
+            alert('Tài khoản không thể thêm sản phẩm yêu thích!');
+            navigate('/register_login')
             return;
         }
 
@@ -101,7 +110,8 @@ function SpMoi() {
                 }
                 alert(data.message);
             } else {
-                alert(data.message);
+                alert("Bạn chưa đăng nhập");
+                // navigate('/register_login')
             }
         } catch (error) {
             console.log("Lỗi khi thêm/xóa sản phẩm khỏi yêu thích:", error);
@@ -115,13 +125,13 @@ function SpMoi() {
     return (
         <div className="spkhuyenmai">
             <div className="box">
-            <Toaster position="top-right" reverseOrder={false} /> {/* Thêm Toaster */}
+                <Toaster position="top-right" reverseOrder={false} /> {/* Thêm Toaster */}
                 <div className="header1">
                     <i className="fas fa-tags"></i>
                     <h1>DEAL DÀNH CHO BẠN</h1>
                 </div>
                 <div className="box-sp">
-                    {listsp.slice(0, 10).map((sp, i) =>(
+                    {listsp.slice(0, 10).map((sp, i) => (
                         <div className="product" key={i}>
                             {sp.Promotion > 0 && (
                                 <div className="discount-label">
@@ -145,7 +155,7 @@ function SpMoi() {
                                 </div>
 
 
-                                <button onClick={()=> handleAddToCart(sp)} className="add-to-cart">Thêm vào giỏ</button>
+                                <button onClick={() => handleAddToCart(sp)} className="add-to-cart">Thêm vào giỏ</button>
                                 <div
                                     className={`heart-icon ${isProductInWishlist(sp.Product_ID) ? 'liked' : ''}`}
                                     onClick={() => handleWishlistToggle(sp)}
