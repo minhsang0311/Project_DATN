@@ -56,7 +56,6 @@ const SPLienQuan = ({ id, sosp }) => {
 
   return (
     <div className="splienquan">
-      <h2>Sản phẩm liên quan</h2>
       {showToast && <div className="toast">Đã thêm vào giỏ hàng</div>}
       <div className="products-grid">
         {listsp.length > 0 ? (

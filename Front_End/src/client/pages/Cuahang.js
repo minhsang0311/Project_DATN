@@ -29,7 +29,7 @@ function Cuahang() {
     }, []);
 
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_HOST_URL}user/brands`)
+        fetch(`${process.env.REACT_APP_HOST_URL}user/brand`)
             .then(res => res.json())
             .then(data => setBrands(data));
     }, []);
