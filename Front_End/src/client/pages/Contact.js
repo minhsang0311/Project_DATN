@@ -3,6 +3,7 @@ import axios from 'axios';
 import '../styles/components/Contact.css';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import toast, { Toaster } from 'react-hot-toast';
 
 const Contact = () => {
     const [name, setName] = useState('');
@@ -18,7 +19,7 @@ const Contact = () => {
                 email,
                 message
             });
-            console.log("Gửi liên hệ thành công!");
+            toast.success("Gửi liên hệ thành công!");
             setName('');
             setEmail('');
             setMessage('');
@@ -34,7 +35,8 @@ const Contact = () => {
     return (
         <Fragment>
             <Header />
-           
+            <Toaster position="top-right" reverseOrder={false} /> {/* Thêm Toaster */}
+
             <div className="contact-page">
                 <div className="contact-info">
                 

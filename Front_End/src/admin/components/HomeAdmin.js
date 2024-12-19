@@ -21,6 +21,7 @@ import CustomerUpdate from '../pages/customerPage/customerUpdate';
 import ManufacturerList from '../pages/manufacturer/manufacturerList';
 import ManufacturerAdd from '../pages/manufacturer/manufacturerAdd';
 import ManufacturerUpdate from '../pages/manufacturer/manufacturerUpdate';
+import OrderDetail from '../pages/orderPage/OrderDetail';
 
 const HomeAdmin = () => {
     const navigate = useNavigate();
@@ -180,6 +181,7 @@ const HomeAdmin = () => {
                         <Route path="categoryUpdate/:id" element={<CategoryUpdate />} />
                         <Route path="comments" element={<Comments searchResults={searchResults}/>} />
                         <Route path="order" element={<AdminOrder searchResults={searchResults} />} />
+                        <Route path="order/:orderId" element={<OrderDetail searchResults={searchResults} />} />
                         <Route path="vouchers" element={<VouchersList searchResults={searchResults}/>} />
                         <Route path="voucherAdd" element={<VoucherAdd/>}/>
                         <Route path="voucherUpdate/:id" element={<VoucherUpdate/>}/>

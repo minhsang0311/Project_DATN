@@ -6,6 +6,7 @@ import '../../styles/pages/customerUpdate.css';
 const CustomerUpdate = () => {
   const { id } = useParams(); // Lấy `id` từ URL
   const navigate = useNavigate();
+  const token = localStorage.getItem('token'); // Get the token from localStorage
 
   const [customer, setCustomer] = useState({
     User_Name: '',
@@ -19,7 +20,11 @@ const CustomerUpdate = () => {
   useEffect(() => {
     const fetchCustomer = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/admin/customerDetail/${id}`);
+        const response = await axios.get(`http://localhost:3000/admin/customerDetail/${id}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`  // Include token in the Authorization header
+          }
+        });
         setCustomer(response.data);
       } catch (error) {
         console.error("Error fetching customer details:", error);
@@ -30,7 +35,7 @@ const CustomerUpdate = () => {
     };
 
     fetchCustomer();
-  }, [id]);
+  }, [id, token]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -43,7 +48,11 @@ const CustomerUpdate = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:3000/admin/customerUpdate/${id}`, customer);
+      await axios.put(`http://localhost:3000/admin/customerUpdate/${id}`, customer, {
+        headers: {
+          'Authorization': `Bearer ${token}`  // Include token in the Authorization header
+        }
+      });
       alert("Cập nhật khách hàng thành công!");
       navigate("/admin/customerList"); // Quay lại trang danh sách khách hàng
     } catch (error) {

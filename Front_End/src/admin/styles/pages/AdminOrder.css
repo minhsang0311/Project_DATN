@@ -71,9 +71,41 @@
   }
 .grid-container-order{
   display: grid;
-    grid-template-columns:80px 170px 290px 130px 190px 150px 170px;
+    grid-template-columns:80px 200px 240px 220px 190px 100px 150px ;
     margin-top: 20px;
     border-radius: 10px;
     padding: 15px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+/* Nút Hủy */
+.cancel-button {
+  background-color: #f44336;
+  color: white;
+  padding: 5px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 5px;
+  transition: background-color 0.3s;
+}
+
+.cancel-button:hover {
+  background-color: #da190b;
+}
+
+/* Nút Xem chi tiết */
+.detail-button {
+  background-color: #56A4FF;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.detail-button:hover {
+  background-color: #007bb5;
 }

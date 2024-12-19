@@ -3,6 +3,7 @@ const db = require('../../config/db');
 exports.getOrderList = (req, res) => {
     const userId = req.params.userId;
     const sql = `
+
        SELECT 
     o.Order_ID, 
     o.User_ID, 

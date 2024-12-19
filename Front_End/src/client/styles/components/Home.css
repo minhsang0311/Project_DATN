@@ -185,12 +185,13 @@
  
  .gt_home .img_gt img{width: 100%;}
 
-@media (max-width: 800px) {
+@media (max-width: 769px) {
    .home .spbanchay { grid-template-columns: 1fr;}
    .home .spbanchay .left-image img{display: none; }
    .home .spbanchay .right-products .box-sp {grid-template-columns: repeat(2, 1fr);}
    .home .spkhuyenmai .box-sp { grid-template-columns:repeat(2 ,1fr)}
-   .home .listdanhmuc_home .box { grid-template-columns:repeat(3 ,1fr)}
+   .home .listdanhmuc_home .box { grid-template-columns:repeat(3 ,1fr);gap:0px}
+   .home .listdanhmuc_home .box .box-dm{margin:0px 10px;}
    .home .box_gt_home{grid-template-columns: 1fr;}
 }
 @media (min-width: 769px) and (max-width: 1024px) {

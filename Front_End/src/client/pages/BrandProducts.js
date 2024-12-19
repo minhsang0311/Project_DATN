@@ -7,7 +7,7 @@ import ReactPaginate from 'react-paginate';
 import usePagination from "./paginate/Paginate";
 
 
-const categoryImages = {
+const brandImages = {
     '1': '/assets/img/banner_loai_bepdien.jpg', 
     '2': '/assets/img/banner_loai_mayxaysinhto.jpg',
     '3': '/assets/img/banner_loai_noi.jpg',
@@ -16,28 +16,29 @@ const categoryImages = {
     '6': '/assets/img/banner_loai_mayhutbui.jpg',
   };
   
-function CategoryProducts() {
-    const { Category_ID } = useParams();
+function BrandProducts() {
+    const { Brand_ID } = useParams();
     const [listsp, setListSP] = useState([]);
-    const [categoryName, setCategoryName] = useState("");
+    const [brandName, setBrandName] = useState([]);
 
 
     const pageSize = 6; // Số sản phẩm mỗi trang
     const { spTrong1Trang, tongSoTrang, currentPage, handlePageChange } = usePagination(listsp, pageSize);
 
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_HOST_URL}user/Products/${Category_ID}`)
+        fetch(`http://localhost:3000/user/Products_brand/${Brand_ID}`)
           .then(res => res.json())
           .then(data => {
             setListSP(data);
           });
     
-        fetch(`${process.env.REACT_APP_HOST_URL}user/category/${Category_ID}`) // API lấy thông tin danh mục
+        fetch(`http://localhost:3000/user/brand/${Brand_ID}`) // API lấy thông tin danh mục
           .then(res => res.json())
-          .then(categoryData => {
-            setCategoryName(categoryData.Category_Name); // Cập nhật tên danh mục
+          .then(brandData => {
+            
+            setBrandName(brandData.Brand_Name); // Cập nhật tên danh mục
           });
-    }, [Category_ID]);
+    }, [Brand_ID]);
     
     
 
@@ -47,14 +48,11 @@ function CategoryProducts() {
             <div className="cuahang">
                 <div className='thanh-dieu-huong'>
                     <Link to="/"><h3>Trang chủ</h3></Link> / 
-                    <a href><h3>{categoryName}</h3></a>
+                    <a href><h3>{brandName}</h3></a>
                 </div>
                 <div className="noidung">
                     <div className="left_box">
-                        <img 
-                            src={categoryImages[Category_ID]} 
-                            alt={categoryName} 
-                        />
+                       
                     </div>
                     <div className="right-products">
                         <div className="box-sp">
@@ -79,4 +77,4 @@ function CategoryProducts() {
     );
 }
 
-export default CategoryProducts;
+export default BrandProducts;

@@ -14,6 +14,7 @@ import ProductUpdate from './admin/pages/productPage/ProductUpdate.jsx';
 import Comments from './admin/pages/commentPage/commentList.jsx';
 import Statistics from './admin/pages/Statistics/Statistics.jsx';
 import AdminOrder from './admin/pages/orderPage/AdminOrder.jsx';
+import OrderDetail from './admin/pages/orderPage/OrderDetail.jsx'
 import Customer from './admin/pages/customerPage/customerList.jsx';
 import VouchersList from './admin/pages/voucherPage/VoucherList.jsx';
 import VoucherAdd from './admin/pages/voucherPage/voucherAdd.jsx';
@@ -26,11 +27,12 @@ import ManufacturerAdd from './admin/pages/manufacturer/manufacturerAdd.jsx';
 import ManufacturerUpdate from './admin/pages/manufacturer/manufacturerUpdate.jsx';
 
 // Component Client
-import ProductDetail from './client/pages/ProductDetail';
+import ProductDetail from './client/pages/ProductDetail.js';
 import Home from './client/pages/HomePage.js';
 import About from './client/pages/About.js';
 import Cuahang from './client/pages/Cuahang.js';
 import CategoryProducts from './client/pages/CategoryProducts.js';
+import BrandProducts from './client/pages/BrandProducts.js';
 import Search from './client/pages/Search.js';
 import RegisterLogin from './client/pages/register_login/register_login.jsx';
 import CartPage from './client/pages/CartPage.js';
@@ -42,6 +44,7 @@ import OrderStatusList from './client/pages/OrderStatusList.js'
 import Contact from './client/pages/Contact.js'
 import Wishlist from './client/pages/wishlist.js';
 import OrderDetails from './client/pages/OrderDetails.js';
+;
 
 
 function App() {
@@ -59,6 +62,7 @@ function App() {
             <Route path="categoryUpdate/:id" element={<CategoryUpdate />} />
             <Route path="comments" element={<Comments />} />
             <Route path="order" element={<AdminOrder />} />
+            <Route path="order/:orderId" element={<OrderDetail />} /> 
             <Route path="customers" element={<Customer />} />
             <Route path="vouchers" element={<VouchersList />} />
             <Route path="voucherAdd" element={<VoucherAdd />} />
@@ -78,6 +82,7 @@ function App() {
           <Route path="/search" element={<Search />} />
           <Route path="/about" element={<About />} />
           <Route path="/category/:Category_ID" element={<CategoryProducts />} />
+          <Route path="/brand/:Brand_ID" element={<BrandProducts />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />

@@ -107,13 +107,11 @@
   .indicators .dot.active {
     background-color: rgb(184, 131, 131);
   }
-  @media (max-width: 480px) {
-    .banner { 
-      display: none;
-    }
+  @media (max-width: 400px) {
+    .banner {grid-template-columns: 1fr;}
     .banner .menu-doc{display: none;}
  }
- @media (min-width: 769px) and (max-width: 1024px) {
+ @media (min-width: 500px) and (max-width: 1024px) {
     .banner {grid-template-columns: 1fr;}
     .banner .menu-doc{display: none;}
  
