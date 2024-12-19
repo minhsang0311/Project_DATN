@@ -10,7 +10,7 @@ router.get('/customers', adminMiddleware, customerController.getAllCustomers);
 router.post('/customerAdd', adminMiddleware, customerController.postCustomer);
 router.get('/customerDetail/:id', adminMiddleware, customerController.getCustomerDetail);
 router.put('/customerUpdate/:id', customerController.putCustomer);
-router.delete('/customerDelete/:id', adminMiddleware, customerController.deleteCustomer);
+router.put('/customerLock/:id', adminMiddleware, customerController.toggleCustomerLock);
 
 module.exports = router;
 
