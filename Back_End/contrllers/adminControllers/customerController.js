@@ -56,8 +56,8 @@ exports.putCustomer = function(req, res) {
   });
 };
 
-// Xóa một khách hàng
-exports.deleteCustomer = function(req, res) {
+// Khóa hoặc mở khóa khách hàng
+exports.toggleCustomerLock = function(req, res) {
   let id = req.params.id;
 
   // Kiểm tra xem có đơn hàng nào của khách hàng này không (giả sử có bảng orders liên kết)
@@ -67,19 +67,33 @@ exports.deleteCustomer = function(req, res) {
       return res.json({ "thongbao": "Lỗi khi kiểm tra đơn hàng", err });
     }
 
-    // Nếu có đơn hàng của khách hàng, không cho phép xóa
+    // Nếu có đơn hàng của khách hàng, không cho phép khóa
     if (results[0].count > 0) {
-      return res.json({ "thongbao": "Không thể xóa khách hàng vì có đơn hàng liên quan" });
+      return res.json({ "thongbao": "Không thể khóa khách hàng vì có đơn hàng liên quan" });
     }
 
-    // Nếu không có đơn hàng, tiến hành xóa
-    let sql = `DELETE FROM users WHERE User_ID = ?`;
-    db.query(sql, id, (err, data) => {
+    // Kiểm tra trạng thái khóa hiện tại của người dùng
+    let checkLockStatusSql = `SELECT is_locked FROM users WHERE User_ID = ?`;
+    db.query(checkLockStatusSql, id, (err, user) => {
       if (err) {
-        res.json({ "thongbao": "Lỗi xóa khách hàng", err });
-      } else {
-        res.json({ "thongbao": "Đã xóa khách hàng thành công" });
+        return res.json({ "thongbao": "Lỗi khi kiểm tra trạng thái khóa", err });
       }
+
+      if (user.length === 0) {
+        return res.json({ "thongbao": "Khách hàng không tồn tại" });
+      }
+
+      // Nếu người dùng chưa bị khóa, tiến hành khóa
+      let newLockStatus = user[0].is_locked ? 0 : 1;
+      let updateSql = `UPDATE users SET is_locked = ? WHERE User_ID = ?`;
+      db.query(updateSql, [newLockStatus, id], (err, data) => {
+        if (err) {
+          res.json({ "thongbao": "Lỗi khi thay đổi trạng thái khóa", err });
+        } else {
+          let lockStatus = newLockStatus ? "khóa" : "mở khóa";
+          res.json({ "thongbao": `Đã ${lockStatus} khách hàng thành công` });
+        }
+      });
     });
   });
 };
