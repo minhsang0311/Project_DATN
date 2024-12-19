@@ -27,7 +27,6 @@
   width: 100%; /* Chiếm toàn bộ chiều rộng của phần chứa */
   max-width: 470px; /* Đặt chiều rộng tối đa */
   min-width: 350px; /* Đặt chiều rộng tối đa */
-  height: auto; /* Giữ tỷ lệ khung hình */
   margin: 0 auto; /* Căn giữa nếu cần */
 }
 .home .spchitiet .right-products .product-info{
@@ -90,8 +89,7 @@
 }
 
 .product-specifications {
-  max-width: 75%;
-
+  margin-top: 20px;
   background-color: #f9f9f9;
   padding: 20px;
   border-radius: 10px;
