@@ -128,21 +128,72 @@ exports.getVoucherDetail = function (req, res) {
 exports.lockVoucher = (req, res) => {
     const id = req.params.id;
 
+    // Validate voucher ID
     if (!id || isNaN(id) || id <= 0) {
         return res.status(400).json({ message: "ID không hợp lệ" });
     }
 
-    const sql = `UPDATE Vouchers SET Locked = 1 WHERE Voucher_ID = ?`;
+    // Check if voucher exists in the database
+    const sql = `SELECT * FROM Vouchers WHERE Voucher_ID = ?`;
     db.query(sql, [id], (err, results) => {
         if (err) {
-            console.error("Lỗi khóa voucher:", err);
-            return res.status(500).json({ message: "Lỗi server khi khóa voucher", error: err.message });
+            console.error("Error checking voucher:", err);
+            return res.status(500).json({ message: "Lỗi server khi kiểm tra voucher", error: err.message });
         }
 
-        if (results.affectedRows === 0) {
+        if (results.length === 0) {
             return res.status(404).json({ message: "Voucher không tồn tại" });
         }
 
-        res.json({ message: "Voucher đã được khóa thành công" });
+        const voucher = results[0];
+
+        // Check if the voucher has been assigned to a user (exists in the users table)
+        const userSql = `SELECT * FROM users WHERE Voucher_ID = ?`;
+        db.query(userSql, [id], (err, userResults) => {
+            if (err) {
+                console.error("Error checking user:", err);
+                return res.status(500).json({ message: "Lỗi server khi kiểm tra người dùng", error: err.message });
+            }
+
+            if (userResults.length > 0) {
+                return res.status(400).json({ message: "Voucher đã được cung cấp cho người dùng và không thể khóa" });
+            }
+
+            // Check if voucher is used in any orders that are not canceled
+            const orderSql = `SELECT * FROM orders WHERE Voucher_ID = ? AND Status <> 3`; // Assuming Status 3 is canceled
+            db.query(orderSql, [id], (err, orderResults) => {
+                if (err) {
+                    console.error("Error checking orders:", err);
+                    return res.status(500).json({ message: "Lỗi server khi kiểm tra đơn hàng", error: err.message });
+                }
+
+                if (orderResults.length > 0) {
+                    return res.status(400).json({ message: "Voucher đã được sử dụng trong đơn hàng và không thể khóa" });
+                }
+
+                // Check if the voucher has expired
+                const currentDate = new Date();
+                const expiryDate = new Date(voucher.Expiration_Date);
+                if (expiryDate < currentDate) {
+                    return res.status(400).json({ message: "Voucher đã hết hạn và không thể khóa" });
+                }
+
+                // Lock the voucher
+                const lockSql = `UPDATE Vouchers SET Locked = 1 WHERE Voucher_ID = ?`;
+                db.query(lockSql, [id], (err, updateResults) => {
+                    if (err) {
+                        console.error("Error locking voucher:", err);
+                        return res.status(500).json({ message: "Lỗi server khi khóa voucher", error: err.message });
+                    }
+
+                    if (updateResults.affectedRows === 0) {
+                        return res.status(404).json({ message: "Voucher không tồn tại" });
+                    }
+
+                    return res.json({ message: "Voucher đã được khóa thành công" });
+                });
+            });
+        });
     });
 };
+

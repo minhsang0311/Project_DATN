@@ -71,10 +71,6 @@ const ProductAdd = () => {
             alert("Vui lòng chọn hình ảnh chính cho sản phẩm!");
             return;
         }
-        if (!product.Views) {
-            alert("Vui lòng chọn số lượt xem cho sản phẩm!");
-            return;
-        }
 
         if (!product.Description) {
             alert("Vui lòng nhập mô tả cho sản phẩm!");
@@ -92,7 +88,7 @@ const ProductAdd = () => {
         formData.append('Category_ID', product.Category_ID);
         formData.append('Brand_ID', product.Brand_ID);
         formData.append('Image', image); // Ảnh chính
-        formData.append('Views', product.Views);
+        // formData.append('Views', product.Views);
         formData.append('Description', product.Description);
         formData.append('Show_Hidden', product.Show_Hidden);
 
@@ -254,7 +250,7 @@ const ProductAdd = () => {
                                 }}
                             />
                         </div>
-                        <div className="form-group">
+                        {/* <div className="form-group">
                             <label htmlForfor="product-category">Lượt xem</label>
                             <input
                                 type="number"
@@ -264,7 +260,7 @@ const ProductAdd = () => {
                                 onChange={e =>
                                     setProduct({ ...product, Views: e.target.value })
                                 } />
-                        </div>
+                        </div> */}
                         <div className="radio-group">
                         <label>Ẩn/Hiện</label>
                             <label>

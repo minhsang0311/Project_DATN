@@ -7,7 +7,7 @@ const VouchersList = ({ searchResults }) => {
     const url = `http://localhost:3000/admin`;
     const [vouchers, setVouchers] = useState([]);
 
-    // Fetch danh sách voucher
+    // Fetch voucher list
     useEffect(() => {
         if (!searchResults || searchResults.length === 0) {
             fetch(`${url}/vouchers`, {
@@ -23,46 +23,54 @@ const VouchersList = ({ searchResults }) => {
         }
     }, [token, searchResults]);
 
-    // Hàm xóa voucher
-    const lockVoucher = (id) => {
-        if (!window.confirm('Bạn có chắc chắn muốn khóa voucher này không?')) return;
+    // Function to lock/unlock voucher
+    const toggleVoucherLock = (id, expirationDate, isUsed, isLocked) => {
+        const currentDate = new Date();
+        const expiryDate = new Date(expirationDate);
 
+        // Check if the voucher has been used and cannot be modified
+        if (isUsed) {
+            alert("Voucher đã được cung cấp cho người dùng và không thể thay đổi trạng thái.");
+            return;
+        }
+
+        // Check if the voucher has expired
+        if (expiryDate < currentDate) {
+            alert("Voucher đã hết hạn và không thể thay đổi trạng thái.");
+            return;
+        }
+
+        const action = isLocked ? 'Mở khóa' : 'Khóa';
+        if (!window.confirm(`Bạn có chắc chắn muốn ${action.toLowerCase()} voucher này không?`)) {
+            return;
+        }
+
+        // Gọi API để khóa/mở khóa voucher
         fetch(`${url}/vouchers/${id}/lock`, {
             method: 'PATCH',
             headers: {
                 "Content-type": "application/json",
                 'Authorization': 'Bearer ' + token,
-            },
+            }
         })
-            .then(res => {
-                const contentType = res.headers.get("content-type");
-                if (!res.ok) {
-                    return res.text().then(text => {
-                        throw new Error(`Lỗi: ${res.status} ${res.statusText}\n${text}`);
-                    });
-                }
-                if (contentType && contentType.includes("application/json")) {
-                    return res.json();
-                } else {
-                    throw new Error("Phản hồi không phải là JSON hợp lệ.");
-                }
-            })
+            .then(res => res.json())
             .then(data => {
                 if (data.message.includes("không tồn tại")) {
                     alert(data.message);
                 } else {
-                    alert("Voucher đã được khóa thành công!");
-                    setVouchers(prev =>
+                    alert(`Voucher đã được ${action.toLowerCase()} thành công!`);
+                    // Cập nhật lại trạng thái của voucher sau khi đã thay đổi
+                    setVouchers(prev => 
                         prev.map(voucher =>
-                            voucher.Voucher_ID === id ? { ...voucher, Locked: 1 } : voucher
+                            voucher.Voucher_ID === id ? { ...voucher, Locked: !isLocked } : voucher
                         )
                     );
                 }
             })
-            .catch(error => console.error("Error locking voucher:", error));
+            .catch(error => console.error("Error toggling voucher lock:", error));
     };
-    const displayVouchers = searchResults && searchResults.length > 0 ? searchResults : vouchers;
 
+    const displayVouchers = searchResults && searchResults.length > 0 ? searchResults : vouchers;
 
     return (
         <div className="box-voucherList">
@@ -86,27 +94,26 @@ const VouchersList = ({ searchResults }) => {
                         <div className="grid-item-voucher">{index + 1}</div>
                         <div className="grid-item-voucher">{voucher.Code}</div>
                         <div className="grid-item-voucher">{voucher.Discount}%</div>
-                        <div className="grid-item-voucher">{voucher.Expiration_Date}</div>
+                        <div className="grid-item-voucher">
+                            {voucher.Expiration_Date ? voucher.Expiration_Date.split('T')[0] : 'Không có hạn'}
+                        </div>
                         <div className="grid-item-voucher">{voucher.Locked ? "Đã khóa" : "Hoạt động"}</div>
                         <div className="grid-item-voucher grid-item-button">
                             <Link
                                 to={`/admin/voucherUpdate/${voucher.Voucher_ID}`}
-                            // className={`edit-btn ${voucher.Locked ? "disabled" : ""}`}
-                            // style={{ pointerEvents: voucher.Locked ? "none" : "auto" }}
                             >
                                 ✏️
                             </Link>
                             <button
-                                onClick={() => lockVoucher(voucher.Voucher_ID)}
+                                onClick={() => toggleVoucherLock(voucher.Voucher_ID, voucher.Expiration_Date, voucher.isUsed, voucher.Locked)} // Passing params
                                 className={`delete-btn ${voucher.Locked ? "disabled" : ""}`}
                                 disabled={voucher.Locked}
                             >
-                                🗑️
+                                {voucher.Locked ? "Mở khóa" : "Khóa"}
                             </button>
                         </div>
                     </Fragment>
                 ))}
-
             </div>
         </div>
     );

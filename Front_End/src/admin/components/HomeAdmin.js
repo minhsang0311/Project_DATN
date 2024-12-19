@@ -29,6 +29,26 @@ const HomeAdmin = () => {
     const [searchResults, setSearchResults] = useState([]);
     const [entityType, setEntityType] = useState('products'); // Loại đối tượng mặc định là sản phẩm
 
+    // Xác định entityType dựa trên đường dẫn hiện tại
+    useEffect(() => {
+        const path = location.pathname;
+        if (path.includes('products')) {
+            setEntityType('products');
+        } else if (path.includes('category')) {
+            setEntityType('categories');
+        } else if (path.includes('customerList')) {
+            setEntityType('users');
+        } else if (path.includes('manufacturerList')) {
+            setEntityType('manufacturer');
+        } else if (path.includes('order')) {
+            setEntityType('orders');
+        } else if (path.includes('comments')) {
+            setEntityType('comment');
+        } else if (path.includes('vouchers')) {
+            setEntityType('voucher');
+        }
+    }, [location.pathname]);
+
     useEffect(() => {
         const token = localStorage.getItem('token');
         const tokenRole = JSON.parse(localStorage.getItem("user"));

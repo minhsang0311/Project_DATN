@@ -2,7 +2,16 @@ const db = require('../../config/db');
 // const removeDiacritics = require('diacritics').remove;
 
 exports.getAllProducts = (req, res) => {
-    let sql = `SELECT * FROM Products`;
+    let sql = `SELECT 
+    products.*,
+    brands.Brand_Name AS brand_name,
+    categories.Category_Name AS category_name
+FROM 
+    products
+JOIN 
+    brands ON products.Brand_ID = brands.Brand_ID
+JOIN 
+    categories ON products.Category_ID = categories.Category_ID;`;
     db.query(sql, (err, data) => {
         if (err) return res.json({ "message": "Lỗi lấy danh sách sản phẩm", err });
         res.json(data);

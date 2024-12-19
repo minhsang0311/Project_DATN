@@ -14,7 +14,6 @@ const VoucherUpdate = () => {
         Locked: 0,
     });
 
-    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         // Lấy chi tiết voucher
@@ -39,7 +38,6 @@ const VoucherUpdate = () => {
                 console.error("Lỗi lấy chi tiết voucher:", err);
                 alert("Lỗi kết nối server.");
             })
-            .finally(() => setLoading(false));
     }, [id, token, navigate]);
 
     const handleSubmit = async (e) => {
@@ -49,7 +47,14 @@ const VoucherUpdate = () => {
             setError("Vui lòng điền đầy đủ thông tin.");
             return;
         }
+        const currentDate = new Date();
+        const expirationDate = new Date(voucher.Expiration_Date);
 
+        // Kiểm tra nếu ngày hết hạn nhỏ hơn ngày hiện tại
+        if (expirationDate < currentDate) {
+            alert("Ngày hết hạn của voucher phải lớn hơn ngày hiện tại.");
+            return;
+        }
         try {
             const response = await fetch(`http://localhost:3000/admin/putVoucher/${id}`, {
                 method: "PUT",
@@ -79,8 +84,6 @@ const VoucherUpdate = () => {
             console.error("Lỗi cập nhật voucher:", err);
         }
     };
-
-    if (loading) return <p>Đang tải thông tin...</p>;
 
     return (
         <div className="form-container-productadd">

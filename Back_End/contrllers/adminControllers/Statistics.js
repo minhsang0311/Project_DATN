@@ -53,8 +53,14 @@ exports.OrderStatusStats = (req, res) => {
 //Thống kê doanh thu
 exports.getRevenueStatistics = (req, res) => {
   const { startDate, endDate } = req.query;
+
+  if (!startDate || !endDate) {
+    return res.status(400).json({ message: "Thiếu ngày bắt đầu hoặc ngày kết thúc." });
+  }
+
   const sql = `
     SELECT 
+      DATE(created_at) AS Date,
       SUM(total_amount) AS TotalRevenue
     FROM 
       orders
@@ -62,17 +68,28 @@ exports.getRevenueStatistics = (req, res) => {
       created_at >= ? 
       AND created_at <= ?
       AND Status = 5
+    GROUP BY 
+      DATE(created_at)
+    ORDER BY 
+      Date ASC
   `;
+
   const startDateTime = `${startDate} 00:00:00`;
   const endDateTime = `${endDate} 23:59:59`;
-  db.query(sql, [startDateTime, endDateTime], (err, data) => {
+
+  db.query(sql, [startDateTime, endDateTime], (err, results) => {
     if (err) {
-      return res.status(500).json({ message: "Lỗi khi lấy dữ liệu tổng doanh thu", error: err });
+      return res.status(500).json({ message: "Lỗi truy vấn cơ sở dữ liệu", error: err });
     }
 
-    res.json(data[0]); // Trả về đối tượng chứa tổng doanh thu
+    if (!results.length) {
+      return res.status(404).json({ message: "Không có dữ liệu doanh thu trong khoảng thời gian này." });
+    }
+
+    res.status(200).json({ data: results });
   });
 };
+
 //Lấy tổng số doanh thu
 exports.getTotalRevenue = (req, res) => {
   const sql = `
@@ -103,7 +120,10 @@ exports.DailySaleProByDateRange = (req, res) => {
   const sql = `
     SELECT 
       Products.Product_Name AS productName, 
-      SUM(order_details.Quantity) AS totalQuantity
+      Products.Price AS productPrice, 
+      Products.Promotion AS productPromotion, 
+      SUM(order_details.Quantity) AS totalQuantity,
+      MAX(Products.Image) AS productImage
     FROM 
       orders
     JOIN 
@@ -113,7 +133,7 @@ exports.DailySaleProByDateRange = (req, res) => {
     WHERE 
       orders.created_at >= ? AND orders.created_at <= ? AND orders.Status = 5
     GROUP BY 
-      Products.Product_Name
+      Products.Product_Name, Products.Price, Products.Promotion
   `;
 
   const startDateTime = `${startDate} 00:00:00`;
@@ -124,9 +144,10 @@ exports.DailySaleProByDateRange = (req, res) => {
       return res.status(500).json({ message: "Lỗi khi lấy dữ liệu tổng doanh thu", error: err });
     }
 
-    res.json(data); // Trả về mảng sản phẩm với số lượng bán được
+    res.json(data); // Trả về mảng sản phẩm với số lượng bán được và hình ảnh
   });
 };
+
 
 
 

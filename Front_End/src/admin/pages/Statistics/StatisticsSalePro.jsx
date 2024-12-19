@@ -44,7 +44,7 @@ const StatisticsSalePro = () => {
 
   const handleFetchData = () => {
     setLoading(true);
-    fetch(`http://localhost:3000/admin/stats-statisticsSalePro?startDate=${startDate}&endDate=${endDate}`, {
+    fetch(`${process.env.REACT_APP_HOST_URL}admin/stats-statisticsSalePro?startDate=${startDate}&endDate=${endDate}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -107,9 +107,9 @@ const StatisticsSalePro = () => {
             onChange={(e) => setEndDate(e.target.value)}
           />
         </label>
-        <button onClick={handleFetchData} disabled={loading}>
+        {/* <button onClick={handleFetchData} disabled={loading}>
           {loading ? "Đang tải..." : "Thống kê"}
-        </button>
+        </button> */}
       </div>
       {error && <p style={{ color: "red" }}>{error}</p>}
 
@@ -119,6 +119,9 @@ const StatisticsSalePro = () => {
             <thead>
               <tr>
                 <th>Tên sản phẩm</th>
+                <th>Hình ảnh</th>
+                <th>Giá gốc</th>
+                <th>Giá khuyến mãi</th>
                 <th>Số lượng bán</th>
               </tr>
             </thead>
@@ -126,6 +129,9 @@ const StatisticsSalePro = () => {
               {salesData.map((item, index) => (
                 <tr key={index}>
                   <td>{item.productName}</td>
+                  <td><img src={item.productImage} alt="" style={{ width: '100px', height: 'auto' }} /></td>
+                  <td>{Number(item.productPrice).toLocaleString("vi")}VNĐ</td>
+                  <td>{Number(item.productPrice - (item.productPrice * item.productPromotion) / 100).toLocaleString("vi")}VNĐ</td>
                   <td>{item.totalQuantity}</td>
                 </tr>
               ))}

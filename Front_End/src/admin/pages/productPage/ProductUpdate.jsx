@@ -307,7 +307,7 @@ const ProductUpdate = () => {
                                 style={{ height: '130px' }} 
                             ></textarea>
                         </div>
-                        <div className="form-group">
+                        {/* <div className="form-group">
                             <label htmlFor="product-category">Lượt xem</label>
                             <input
                                 type="number"
@@ -318,7 +318,7 @@ const ProductUpdate = () => {
                                     setProductUpdate({ ...productUpdate, Views: e.target.value })
                                 }
                             />
-                        </div>
+                        </div> */}
                         <div className="form-group">
                             <label>Ẩn/Hiện</label>
                             <div className="radio-group">

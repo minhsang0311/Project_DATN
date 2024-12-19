@@ -37,7 +37,7 @@ const PaymentPage = () => {
 
         const storedUserId = JSON.parse(localStorage.getItem('user'));
         if (!storedUserId) {
-           toast.error('Bạn cần phải đăng nhập để thanh toán');
+            toast.error('Bạn cần phải đăng nhập để thanh toán');
             navigate('/register_login');
         } else {
             if (storedUserId.role !== 0) {
@@ -48,41 +48,30 @@ const PaymentPage = () => {
 
         setUserId(storedUserId?.id || null);
     }, [navigate, productDetails]);
-
     useEffect(() => {
-        const tokenUser = localStorage.getItem("tokenUser");
-        const debounceTimeout = setTimeout(() => {
-            if (voucherCode) {
-                fetch(`${process.env.REACT_APP_HOST_URL}user/voucher`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${tokenUser}`
-                    },
-                    body: JSON.stringify({ code: voucherCode }),
+        // Gọi API để lấy thông tin người dùng khi userId được thiết lập
+        if (userId) {
+            fetch(`${process.env.REACT_APP_HOST_URL}user/userDetail/${userId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+                    if (data.success) {
+                        const { User_Name, Email } = data.data;
+                        setName(User_Name || '');
+                        setEmail(Email || '');
+                    } else {
+                        toast.error('Không thể lấy thông tin người dùng.');
+                    }
                 })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success === true) {
-                            toast.error(data.discount);
-                            toast.success(`Voucher áp dụng thành công! Giảm ${data.discount}%`);
-                        } else {
-                            setDiscount(0);
-                            toast.error(data.message);
-                        }
-                    })
-                    .catch(() => {
-                        setDiscount(0);
-                        setVoucherMessage('Lỗi xảy ra vui lòng kiểm tra voucher.');
-                    });
-            } else {
-                setDiscount(0);
-                setVoucherMessage('');
-            }
-        }, 1000); // 1 giây debounce
+                .catch(() => toast.error('Lỗi khi lấy thông tin người dùng.'));
+        }
+    }, [userId]);
 
-        return () => clearTimeout(debounceTimeout);
-    }, [voucherCode]);
 
     const handleVoucherChange = (e) => {
         setVoucherCode(e.target.value);
@@ -99,7 +88,35 @@ const PaymentPage = () => {
         if (!paymentMethod) {
             return toast.error('Vui lòng chọn phương thức thanh toán.');
         }
-
+        const tokenUser = localStorage.getItem("tokenUser");
+        if (voucherCode) {
+            fetch(`${process.env.REACT_APP_HOST_URL}user/voucher`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${tokenUser}`
+                },
+                body: JSON.stringify({ code: voucherCode }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success === true) {
+                        toast.error(data.discount);
+                        toast.success(`Voucher áp dụng thành công! Giảm ${data.discount}%`);
+                    } else {
+                        setDiscount(0);
+                        toast.error(data.message);
+                    }
+                })
+                .catch(() => {
+                    setDiscount(0);
+                    setVoucherMessage('Lỗi xảy ra vui lòng kiểm tra voucher.');
+                });
+        } else {
+            setDiscount(0);
+            setVoucherMessage('');
+        } // 1 giây debounce
+        ;
         const orderData = {
             User_Name: name,
             Address: address,
@@ -110,6 +127,7 @@ const PaymentPage = () => {
             total_quantity: totalQuantity,
             items: cartItems.map(item => ({
                 Product_ID: item.id,
+                Product_Name: item.name,
                 Quantity: item.quantity,
                 Price: item.price
             })),
@@ -117,7 +135,7 @@ const PaymentPage = () => {
             Voucher_ID: voucherCode || null,
             Note: note || null
         };
-
+        console.log("cartItems", cartItems)
         if (paymentMethod === 'COD') {
             fetch(`${process.env.REACT_APP_HOST_URL}user/payment`, {
                 method: 'POST',
@@ -131,15 +149,15 @@ const PaymentPage = () => {
                     if (data.success === true) {
                         alert('Thanh toán COD thành công!');
                         if (!productDetails) {
-                            localStorage.removeItem('cart'); // Xóa giỏ hàng nếu không phải "Mua ngay"
+                            localStorage.removeItem('cart');
                         }
                         navigate('/order');
                     } else {
-                      
+
                     }
                 })
                 .catch(error => {
-                    console.error('Error:', error);
+                    console.log('Error:', error);
                     alert('Lỗi khi xử lý thanh toán COD.');
                 });
         } else if (paymentMethod === 'Online') {
@@ -176,12 +194,12 @@ const PaymentPage = () => {
         <Fragment>
             <Header />
             <div className='container-pay'>
-            <Toaster position="top-right" reverseOrder={false} /> {/* Thêm Toaster */}
+                <Toaster position="top-right" reverseOrder={false} /> {/* Thêm Toaster */}
 
                 <h1>THANH TOÁN</h1>
                 <div className="container-payment">
                     <div className="section">
-                        <h2>Thông tin mua hàng</h2>
+                        <h2>Thông tin mua hàng</h2>
                         <form>
                             <div className="form-group">
                                 <label htmlFor="ho-ten">Họ và Tên*</label>
@@ -229,7 +247,6 @@ const PaymentPage = () => {
                             </div>
                         </form>
                     </div>
-
                     <div className="section">
                         <h2>Phương thức thanh toán</h2>
                         <div className='method-pay'>

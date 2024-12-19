@@ -58,23 +58,22 @@ const ProductList = ({ searchResults }) => {
                 <div className="grid-header">Tên sản phẩm</div>
                 <div className="grid-header">Hình ảnh</div>
                 <div className="grid-header">Giá</div>
-                <div className="grid-header">Mô tả</div>
+                <div className="grid-header">Hãng</div>
+                <div className="grid-header">Danh mục</div>
                 <div className="grid-header">Lượt xem</div>
                 <div className="grid-header">Ẩn_Hiện</div>
                 <div className="grid-header">Thao tác</div>
                 {displayProducts.map((product, index) => (
                     <Fragment key={product.Product_ID}>
+                        {console.log(product)}
                         <div className="grid-item grid-item-element">{product.Product_ID}</div>
                         <div className="grid-item grid-item-element">{product.Product_Name}</div>
                         <div className="grid-item grid-item-element">
                             <img src={product.Image} alt={product.Product_Name} className="product-img" />
                         </div>
                         <div className="grid-item grid-item-element">{Number(product.Price).toLocaleString("vi")} VNĐ</div>
-                        <div className="grid-item">
-                            {product.Description.split('\n').map((desc, index) => (
-                                <div className="description" key={index}>{desc.replace('-', '')}</div>
-                            ))}
-                        </div>
+                        <div className="grid-item grid-item-element">{product.brand_name}</div>
+                        <div className="grid-item grid-item-element">{product.category_name}</div>
                         <div className="grid-item grid-item-element">{product.Views}</div>
                         <div className="grid-item grid-item-element">{product.Show_Hidden === 1 ? "Hiện" : "Ẩn"}</div>
                         <div className="grid-item grid-item-button">
