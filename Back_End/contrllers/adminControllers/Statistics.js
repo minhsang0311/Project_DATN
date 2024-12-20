@@ -90,6 +90,7 @@ exports.getRevenueStatistics = (req, res) => {
   });
 };
 
+
 //Lấy tổng số doanh thu
 exports.getTotalRevenue = (req, res) => {
   const sql = `
@@ -120,7 +121,8 @@ exports.DailySaleProByDateRange = (req, res) => {
   const sql = `
     SELECT 
       products.Product_Name AS productName, 
-      products.Price AS productPrice, 
+      products.Price AS productPrice,
+      DATE(orders.created_at) AS orderDate,
       products.Promotion AS productPromotion, 
       SUM(order_details.Quantity) AS totalQuantity,
       MAX(products.Image) AS productImage
@@ -131,9 +133,9 @@ exports.DailySaleProByDateRange = (req, res) => {
     JOIN 
       products ON order_details.Product_ID = products.Product_ID
     WHERE 
-      orders.created_at >= ? AND orders.created_at <= ? AND orders.Status = 5
+      orders.created_at BETWEEN ? AND ? AND orders.Status = 5
     GROUP BY 
-      products.Product_Name, products.Price, products.Promotion
+      products.Product_Name, products.Price, products.Promotion, orderDate
   `;
 
   const startDateTime = `${startDate} 00:00:00`;
@@ -141,10 +143,10 @@ exports.DailySaleProByDateRange = (req, res) => {
 
   db.query(sql, [startDateTime, endDateTime], (err, data) => {
     if (err) {
-      return res.status(500).json({ message: "Lỗi khi lấy dữ liệu tổng doanh thu", error: err });
+      return res.status(500).json({ message: "Lỗi khi lấy dữ liệu thống kê sản phẩm", error: err });
     }
 
-    res.json(data); // Trả về mảng sản phẩm với số lượng bán được và hình ảnh
+    res.json(data);
   });
 };
 
