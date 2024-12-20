@@ -219,6 +219,7 @@ exports.getAllProducts_Brand =  (req, res) => {
         res.json(result);
     });
 };
+
 exports.getAllProducts_Search = (req, res) => {
     const searchQuery = req.query.query; 
     if (!searchQuery) {

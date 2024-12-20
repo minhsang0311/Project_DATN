@@ -60,7 +60,7 @@ function Search() {
             <Header/>
         <div className="search-page">
             <div className="header1">
-                <p>Có  <span>{searchResults.length}</span>      sản phẩm với từ khóa " <span>{searchQuery}</span> "</p>
+                <p>Có  <span>{searchResults.length}</span> sản phẩm với từ khóa " <span>{searchQuery}</span> "</p>
             </div>
             <div className="box-sp">
                 {searchResults.length > 0 ? (
