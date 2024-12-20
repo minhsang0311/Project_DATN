@@ -29,7 +29,7 @@ function OrderDetail() {
             return;
         }
 
-        axios.get(`${process.env.REACT_APP_HOST_URL}user/orderDetail/${orderId}`, {
+        axios.get(`http://localhost:3000/user/orderDetail/${orderId}`, {
             headers: { Authorization: `Bearer ${token}` }
         })
             .then(res => setOrderDetail(res.data[0]))  // Lấy dữ liệu đơn hàng chi tiết từ API
@@ -49,14 +49,14 @@ function OrderDetail() {
 
         const token = localStorage.getItem('tokenUser');
         try {
-            await axios.put(`${process.env.REACT_APP_HOST_URL}user/cancelOrder/${orderId}`, 
-                { reason: finalReason },
+            await axios.put(`http://localhost:3000/user/cancelOrder/${orderId}`, 
+                { reason: finalReason }, // Gửi lý do hủy
                 { headers: { 'Authorization': `Bearer ${token}` } }
             );
             toast.success("Đơn hàng đã được hủy");
-            navigate('/order');
+            navigate('/order');  // Quay về trang đơn hàng sau khi hủy
         } catch (err) {
-            toast.error("Không thể hủy đơn hàng");
+            toast.error("Không thể hủy đơn hàng", err);
         }
     };
 
@@ -76,7 +76,7 @@ function OrderDetail() {
                 <h2>Chi tiết đơn hàng</h2>
                 <div className="order-info">
                     <p><strong>Mã đơn hàng:</strong> {orderDetail.Order_ID}</p>
-                    <p><strong>Tên khách hàng:</strong> {orderDetail.User_Name}</p>
+<p><strong>Tên khách hàng:</strong> {orderDetail.User_Name}</p>
                     <p><strong>Số điện thoại:</strong> {orderDetail.Phone}</p>
                     <p><strong>Địa chỉ:</strong> {orderDetail.Address}</p>
                     <p>
@@ -92,16 +92,16 @@ function OrderDetail() {
                     <p><strong>Trạng thái:</strong> {orderDetail.Status}</p>
                     <p><strong>Ngày đặt hàng:</strong> {orderDetail.created_at}</p>
                 </div>
-                {orderDetail.Status === 'Chờ xác nhận' && (
+                {orderDetail.Status === 'Chờ xác nhận'  && (  // Kiểm tra trạng thái "Chờ xác nhận" (Giá trị 1)
                     <div className="cancel-order">
                         <select 
                             onChange={(e) => setCancelReason(e.target.value)}
                             value={cancelReason}
                         >
                             <option value="">Chọn lý do hủy đơn hàng</option>
-                            { Array.isArray(suggestedReasons) ? suggestedReasons.map((reason, index) => (
+                            {suggestedReasons.map((reason, index) => (
                                 <option key={index} value={reason}>{reason}</option>
-                            )) : null }
+                            ))}
                         </select>
                         {cancelReason === "Lý do khác" && (
                             <textarea

@@ -25,6 +25,7 @@ JOIN order_status os ON o.Status = os.Status_ID
 JOIN order_details od ON o.Order_ID = od.Order_ID
 JOIN products p ON od.Product_ID = p.Product_ID
 WHERE o.User_ID = ?
+
     `;
     db.query(sql, [userId], (err, data) => {
         if (err) {
@@ -74,10 +75,8 @@ exports.getOrderDetailById = (req, res) => {
     });
 };
 
-
-
 exports.putcancelOrder = (req, res) => {
-    const { orderId } = req.params;
+    const orderDetailId = req.params.orderDetailId;  // Lấy Order_Detail_ID từ URL
     const { reason } = req.body;  // Lý do hủy
 
     // Kiểm tra xem lý do hủy có tồn tại không
@@ -85,34 +84,48 @@ exports.putcancelOrder = (req, res) => {
         return res.status(400).json({ message: 'Vui lòng cung cấp lý do hủy.' });
     }
 
-    // Truy vấn để kiểm tra trạng thái đơn hàng
-    const query = 'SELECT * FROM orders WHERE Order_ID = ?';
-    db.query(query, [orderId], (err, results) => {
+    // Truy vấn để lấy Order_ID từ Order_Detail_ID
+    const query = 'SELECT Order_ID FROM order_details WHERE Order_Detail_ID = ?';
+    db.query(query, [orderDetailId], (err, results) => {
         if (err) {
-            console.error(err);
-            return res.status(500).json({ message: 'Lỗi khi lấy thông tin đơn hàng.' });
+            return res.status(500).json({ message: 'Lỗi khi lấy thông tin chi tiết đơn hàng.' });
         }
 
         if (results.length === 0) {
-            return res.status(404).json({ message: 'Đơn hàng không tồn tại.' });
+            return res.status(404).json({ message: 'Chi tiết đơn hàng không tồn tại.' });
         }
 
-        const order = results[0];
-
-        // Kiểm tra xem đơn hàng có trạng thái "Chờ xác nhận" không
-        if (order.Status !== 1) {
-            return res.status(400).json({ message: 'Không thể hủy đơn hàng khi đã xác nhận hoặc đang trong quá trình vận chuyển.' });
-        }
-
-        // Cập nhật trạng thái đơn hàng và lý do hủy
-        const updateQuery = 'UPDATE orders SET Status = ?, canceled_reason = ? WHERE Order_ID = ?';
-        db.query(updateQuery, [ 6, reason, orderId], (err, result) => {
+        const orderId = results[0].Order_ID;  // Lấy Order_ID từ kết quả truy vấn
+// Truy vấn để lấy thông tin đơn hàng từ bảng orders
+        const orderQuery = 'SELECT * FROM orders WHERE Order_ID = ?';
+        db.query(orderQuery, [orderId], (err, orderResults) => {
             if (err) {
-                console.error(err);
-                return res.status(500).json({ message: 'Lỗi khi cập nhật trạng thái đơn hàng.' });
+                return res.status(500).json({ message: 'Lỗi khi lấy thông tin đơn hàng.' });
             }
 
-            return res.status(200).json({ message: 'Đơn hàng đã được hủy', orderId });
+            if (orderResults.length === 0) {
+                return res.status(404).json({ message: 'Đơn hàng không tồn tại.' });
+            }
+
+            const order = orderResults[0];
+
+            // Kiểm tra trạng thái của đơn hàng chính
+            if (order.Status !== 1) {  
+                return res.status(400).json({ message: 'Không thể hủy đơn hàng khi đã xác nhận hoặc đang trong quá trình vận chuyển.' });
+            }
+
+            // Cập nhật lý do hủy và trạng thái trong bảng orders
+            const updateOrderQuery = 'UPDATE orders SET canceled_reason = ?, Status = ? WHERE Order_ID = ?';
+            const newStatus = 6; 
+            db.query(updateOrderQuery, [reason, newStatus, orderId], (err, result) => {
+                if (err) {
+                    console.error(err);
+                    return res.status(500).json({ message: 'Lỗi khi cập nhật lý do hủy trong đơn hàng chính.' });
+                }
+
+                // Trả về phản hồi thành công
+                return res.status(200).json({ message: 'Đơn hàng đã được hủy và lý do hủy đã được lưu.', orderDetailId });
+            });
         });
     });
 };

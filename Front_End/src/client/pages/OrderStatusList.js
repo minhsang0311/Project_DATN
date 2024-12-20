@@ -59,7 +59,7 @@ function OrderStatus() {
                         </tr>
                     </thead>
                     <tbody>
-                        { Array.isArray(orders) ? orders.map((order) => (
+                        {orders.map((order) => (
                             
                             <tr key={order.Order_ID}>
                                 <td>{order.Order_ID}</td>
@@ -74,8 +74,8 @@ function OrderStatus() {
 </button>
 
                                 </td>
-                            </tr>
-                        )) : null }
+</tr>
+                        ))}
                     </tbody>
                 </table>
             </div>
