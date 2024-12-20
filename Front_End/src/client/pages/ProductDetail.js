@@ -110,11 +110,7 @@ const ProductDetail = () => {
             <Toaster position="top-right" reverseOrder={false} /> {/* Thêm Toaster */}
             <div className="home">
                 <div className='thanh-dieu-huong'>
-<<<<<<< HEAD
                     <Link to="/"><h3>Trang chủ</h3></Link> /
-=======
-                    <Link to="/"><h3>Trang chủ</h3></Link>
->>>>>>> cbe420690dd04e270c3136986b57c8a5c5bb08c6
                     <Link to="/cuahang"><h3>{sp.Product_Name}</h3></Link>
                 </div>
                 <div className="spchitiet">

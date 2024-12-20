@@ -73,11 +73,10 @@ function App() {
           </Route>
           <Route path="/" element={<Home />} />
           <Route path="/cuahang" element={<Cuahang />} />
+          <Route path="/about" element={<About />} />
           <Route path="/register_login" element={<RegisterLogin />} />
           <Route path="/search" element={<Search />} />
           <Route path="/productDetail/:id" element={<ProductDetail />} />
-          <Route path="/search" element={<Search />} />
-          <Route path="/about" element={<About />} />
           <Route path="/category/:Category_ID" element={<CategoryProducts />} />
           <Route path="/brand/:Brand_ID" element={<BrandProducts />} />
           <Route path="/cart" element={<CartPage />} />
