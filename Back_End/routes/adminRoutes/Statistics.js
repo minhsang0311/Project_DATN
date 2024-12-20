@@ -6,7 +6,7 @@ const { adminMiddleware } = require('../../middlewares/adminMiddlware');
 
 router.get('/stats-procate', adminMiddleware, StatisticsController.StatisticsProCate);
 router.get('/stats-probrand', adminMiddleware, StatisticsController.StatisticsProBrand);
-router.get('/stats-statisticsRevenue', adminMiddleware, StatisticsController.getRevenueStatistics);
+router.get('/stats-statisticsRevenue', StatisticsController.getRevenueStatistics);
 router.get('/stats-statisticsSalePro', StatisticsController.DailySaleProByDateRange);
 router.get('/stats-orderStatus', adminMiddleware, StatisticsController.OrderStatusStats);
 router.get('/stats-totalRevenue', adminMiddleware,StatisticsController.getTotalRevenue)

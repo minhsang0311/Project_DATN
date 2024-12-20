@@ -20,28 +20,33 @@ const StatisticsSalePro = () => {
     const firstDayLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
     const lastDayLastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
 
-    const formatDate = (date) => {
-      return date.toLocaleDateString('en-CA');
-    };
+    const formatDate = (date) => date.toLocaleDateString("en-CA");
 
     const start = formatDate(firstDayLastMonth);
     const end = formatDate(lastDayLastMonth);
 
     setStartDate(start);
     setEndDate(end);
-    handleFetchData();
+
+    // Lấy dữ liệu thống kê cho tháng trước
+    fetchData(start, end);
   }, []);
 
-  // Tự động gọi API khi `startDate` và `endDate` được thiết lập
-  useEffect(() => {
-    if (startDate && endDate) {
-      handleFetchData();
+  const fetchData = (start, end) => {
+    if (!start || !end) {
+      setError("Vui lòng nhập đầy đủ ngày bắt đầu và ngày kết thúc!");
+      return;
     }
-  }, [startDate, endDate]);
 
-  const handleFetchData = () => {
+    if (start > end) {
+      setError("Ngày bắt đầu không thể lớn hơn ngày kết thúc!");
+      return;
+    }
+
+    setError("");
     setLoading(true);
-    fetch(`${process.env.REACT_APP_HOST_URL}admin/stats-statisticsSalePro?startDate=${startDate}&endDate=${endDate}`, {
+
+    fetch(`${process.env.REACT_APP_HOST_URL}admin/stats-statisticsSalePro?startDate=${start}&endDate=${end}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -50,37 +55,34 @@ const StatisticsSalePro = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        if (startDate > endDate) {
-          alert("Ngày bắt đầu và ngày kết thúc không hợp lệ");
+        if (!Array.isArray(data)) {
+          setError("Dữ liệu trả về không hợp lệ.");
           return;
         }
 
-        // Kiểm tra xem dữ liệu trả về có phải là mảng không
-        if (Array.isArray(data)) {
-          setSalesData(data);
+        setSalesData(data);
 
-          const totalQuantitySold = data.reduce((acc, item) => acc + item.totalQuantity, 0);
-          setChartData({
-            labels: ["Tổng số sản phẩm bán được"], // Only one label
-            datasets: [
-              {
-                label: "Tổng số sản phẩm bán được",
-                data: [totalQuantitySold], // Single value for the total sales
-                backgroundColor: "rgba(75, 192, 192, 0.5)",
-                borderColor: "rgba(75, 192, 192, 1)",
-                borderWidth: 1,
-              },
-            ],
-          });
-        }
+        const totalQuantitySold = data.reduce((acc, item) => acc + item.totalQuantity, 0);
+        setChartData({
+          labels: ["Tổng số sản phẩm bán được"], // Only one label
+          datasets: [
+            {
+              label: "Tổng số sản phẩm bán được",
+              data: [totalQuantitySold], // Single value for the total sales
+              backgroundColor: "rgba(75, 192, 192, 0.5)",
+              borderColor: "rgba(75, 192, 192, 1)",
+              borderWidth: 1,
+            },
+          ],
+        });
       })
-      .catch((err) => {
-        setError("Lỗi khi lấy dữ liệu thống kê.");
-      })
+      .catch(() => setError("Lỗi khi lấy dữ liệu thống kê."))
       .finally(() => setLoading(false));
-    setError("");
   };
 
+  const handleFetchData = () => {
+    fetchData(startDate, endDate);
+  };
 
   return (
     <div className="revenue-statistics">
@@ -102,9 +104,9 @@ const StatisticsSalePro = () => {
             onChange={(e) => setEndDate(e.target.value)}
           />
         </label>
-        {/* <button onClick={handleFetchData} disabled={loading}>
+        <button onClick={handleFetchData} disabled={loading}>
           {loading ? "Đang tải..." : "Thống kê"}
-        </button> */}
+        </button>
       </div>
       {error && <p style={{ color: "red" }}>{error}</p>}
 
@@ -114,6 +116,7 @@ const StatisticsSalePro = () => {
             <thead>
               <tr>
                 <th>Tên sản phẩm</th>
+                <th>Ngày mua</th>
                 <th>Hình ảnh</th>
                 <th>Giá gốc</th>
                 <th>Giá khuyến mãi</th>
@@ -121,15 +124,18 @@ const StatisticsSalePro = () => {
               </tr>
             </thead>
             <tbody>
-              { Array.isArray(salesData) ? salesData.map((item, index) => (
+              {salesData.map((item, index) => (
                 <tr key={index}>
                   <td>{item.productName}</td>
-                  <td><img src={item.productImage} alt="" style={{ width: '100px', height: 'auto' }} /></td>
+                  <td>{item.orderDate.split("T")[0]}</td>
+                  <td>
+                    <img src={item.productImage} alt="" style={{ width: "100px", height: "auto" }} />
+                  </td>
                   <td>{Number(item.productPrice).toLocaleString("vi")}VNĐ</td>
                   <td>{Number(item.productPrice - (item.productPrice * item.productPromotion) / 100).toLocaleString("vi")}VNĐ</td>
                   <td>{item.totalQuantity}</td>
                 </tr>
-              )) : null }
+              ))}
             </tbody>
           </table>
         )}
@@ -161,7 +167,7 @@ const StatisticsSalePro = () => {
             }}
           />
         ) : (
-          <p>Chọn ngày để hiển thị biểu đồ.</p>
+          <p>Đang tải dữ liệu...</p>
         )}
       </div>
     </div>

@@ -121,7 +121,7 @@ function Wishlist() {
                                 </button>
                             </div>
                         </Fragment>
-                    )) : null }
+                    )) : null}
                 </div>
             </div>
             <Footer />

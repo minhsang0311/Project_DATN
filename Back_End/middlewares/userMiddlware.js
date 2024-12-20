@@ -28,23 +28,25 @@ zvsNyKTaSkVwP+kC5buFTYphvL5ciIFCK45opYgdAoGAdCi0DlLUuoVQXW32Q50E
 bz3UR6ztD6EweJb4u7Cyx6G3uSQyN43stuBxdzrFLL3+efQggsq34jQHBLfZEg8v
 WilJio5ddYii3EMBNv7eszmEaBrICeaZJtK9cGMbUsra6yAa3bjBCz8FjcFm+ZsS
 y/xS/zHy35xFnliUvUP2Hb0=`
+
 const roleUser = 0;
+
 exports.userMiddleware = (req, res, next) => {
-  let tokenUser = req.headers.authorization;
-  console.log('tokenUser', tokenUser)
-  if (!tokenUser) {
-      return res.status(401).json({ message: "Không có tokenUser! Không phận sự miễn vào :)" });
-  }
-  tokenUser = tokenUser.split(' ')[1];
-  jwt.verify(tokenUser, PRIVATE_KEY, (err, decodedData) => {
-    console.log('decodedDataUser', decodedData)
-      if (err) return res.status(401).json({ message: "Lỗi xác thực tokenUser: " + err });
-      if (decodedData.roleUser !== roleUser) {
-          return res.status(403).json({ message: "Bạn không đủ quyền user để vào" });
-      }
-      req.decodedData = decodedData;
-      next();
-  });
+    let tokenUser = req.headers.authorization;
+
+    if (!tokenUser) {
+        return res.status(401).json({ message: "Không có tokenUser! Không phận sự miễn vào :)" });
+    }
+
+    tokenUser = tokenUser.split(' ')[1];
+    jwt.verify(tokenUser, PRIVATE_KEY, (err, decodedData) => {
+        if (err) return res.status(401).json({ message: "Lỗi xác thực tokenUser: " + err });
+        if (decodedData.roleUser !== roleUser) {
+            return res.status(403).json({ message: "Bạn không đủ quyền user để vào" });
+        }
+        req.decodedData = decodedData;
+        next();
+    });
 };
 
 
