@@ -111,10 +111,6 @@ const ProductDetail = () => {
             <div className="home">
                 <div className='thanh-dieu-huong'>
                     <Link to="/"><h3>Trang chủ</h3></Link> /
-<<<<<<< HEAD
-=======
-
->>>>>>> 6d0e350b16fabed2ce6544cf7686ac5f12aa776e
                     <Link to="/cuahang"><h3>{sp.Product_Name}</h3></Link>
                 </div>
                 <div className="spchitiet">
