@@ -14,6 +14,7 @@ import ProductUpdate from './admin/pages/productPage/ProductUpdate.jsx';
 import Comments from './admin/pages/commentPage/commentList.jsx';
 import Statistics from './admin/pages/Statistics/Statistics.jsx';
 import AdminOrder from './admin/pages/orderPage/AdminOrder.jsx';
+import OrderDetail from './admin/pages/orderPage/OrderDetail.jsx'
 import Customer from './admin/pages/customerPage/customerList.jsx';
 import VouchersList from './admin/pages/voucherPage/VoucherList.jsx';
 import VoucherAdd from './admin/pages/voucherPage/voucherAdd.jsx';
@@ -61,6 +62,7 @@ function App() {
             <Route path="categoryUpdate/:id" element={<CategoryUpdate />} />
             <Route path="comments" element={<Comments />} />
             <Route path="order" element={<AdminOrder />} />
+            <Route path="order/:orderId" element={<OrderDetail />} />
             <Route path="customers" element={<Customer />} />
             <Route path="vouchers" element={<VouchersList />} />
             <Route path="voucherAdd" element={<VoucherAdd />} />

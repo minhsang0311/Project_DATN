@@ -110,11 +110,8 @@ const ProductDetail = () => {
             <Toaster position="top-right" reverseOrder={false} /> {/* Thêm Toaster */}
             <div className="home">
                 <div className='thanh-dieu-huong'>
-<<<<<<< HEAD
                     <Link to="/"><h3>Trang chủ</h3></Link> /
-=======
-                    <Link to="/"><h3>Trang chủ</h3></Link>
->>>>>>> cbe420690dd04e270c3136986b57c8a5c5bb08c6
+
                     <Link to="/cuahang"><h3>{sp.Product_Name}</h3></Link>
                 </div>
                 <div className="spchitiet">
@@ -129,7 +126,7 @@ const ProductDetail = () => {
                                     <img id="mainImage" src={mainImage} alt="Sản phẩm" height="380px" />
                                 </div>
                                 <div className="thumbnail-images">
-                                    { Array.isArray(images) ? images.map((imageSrc, index) => (
+                                    {Array.isArray(images) ? images.map((imageSrc, index) => (
                                         <img
                                             key={index}
                                             className="thumbnail"
@@ -138,15 +135,15 @@ const ProductDetail = () => {
                                             width="100px"
                                             onClick={() => handleThumbnailClick(imageSrc)}
                                         />
-                                    )) : null }
+                                    )) : null}
                                 </div>
                             </div>
                             <div className="product-info">
                                 <h1 className="product-title">{sp.Product_Name}</h1>
                                 <hr />
-                                <p className="product-description">{ Array.isArray(sp) ? sp.Description.split('\n').map((desc, index) => (
+                                <p className="product-description">{Array.isArray(sp) ? sp.Description.split('\n').map((desc, index) => (
                                     <li key={index}>{desc.replace('-', '')}</li>
-                                )) : null }</p>
+                                )) : null}</p>
                                 <div className="product-price">
                                     {sp.Promotion > 0 ? (
                                         <>
@@ -177,9 +174,9 @@ const ProductDetail = () => {
                                         <td>Model</td>
                                         <td>
                                             <ul style={{ padding: 0, margin: 0 }}>
-                                                { Array.isArray(sp) ? sp.Description.split('\n').map((desc, index) => (
+                                                {Array.isArray(sp) ? sp.Description.split('\n').map((desc, index) => (
                                                     <li key={index}>{desc.replace('-', '').trim()}</li>
-                                                )) : null }
+                                                )) : null}
                                             </ul>
                                         </td>
                                     </tr>
