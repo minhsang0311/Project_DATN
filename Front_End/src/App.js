@@ -5,26 +5,26 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 // Component Admin
 import HomeAdmin from './admin/components/HomeAdmin.js';
-import ProductList from './admin/pages/productPage/ProductList.jsx';
-import ProductAdd from './admin/pages/productPage/ProductAdd.jsx';
-import CategoryList from './admin/pages/categoryPage/CategoryList.jsx';
-import CategoryAdd from './admin/pages/categoryPage/CategoryAdd.jsx';
-import CategoryUpdate from './admin/pages/categoryPage/CategoryUpdate.jsx';
-import ProductUpdate from './admin/pages/productPage/ProductUpdate.jsx';
-import Comments from './admin/pages/commentPage/commentList.jsx';
-import Statistics from './admin/pages/Statistics/Statistics.jsx';
-import AdminOrder from './admin/pages/orderPage/AdminOrder.jsx';
-import OrderDetail from './admin/pages/orderPage/OrderDetail.jsx'
-import Customer from './admin/pages/customerPage/customerList.jsx';
-import VouchersList from './admin/pages/voucherPage/VoucherList.jsx';
-import VoucherAdd from './admin/pages/voucherPage/voucherAdd.jsx';
-import VoucherUpdate from './admin/pages/voucherPage/voucherUpdate.jsx';
-import CustomerList from './admin/pages/customerPage/customerList.jsx';
-import CustomerAdd from './admin/pages/customerPage/customerAdd.jsx';
-import CustomerUpdate from './admin/pages/customerPage/customerUpdate.jsx';
-import ManufacturerList from './admin/pages/manufacturer/manufacturerList.jsx';
-import ManufacturerAdd from './admin/pages/manufacturer/manufacturerAdd.jsx';
-import ManufacturerUpdate from './admin/pages/manufacturer/manufacturerUpdate.jsx';
+import ProductList from './admin/pages/productPage/ProductList.js';
+import ProductAdd from './admin/pages/productPage/ProductAdd.js';
+import CategoryList from './admin/pages/categoryPage/CategoryList.js';
+import CategoryAdd from './admin/pages/categoryPage/CategoryAdd.js';
+import CategoryUpdate from './admin/pages/categoryPage/CategoryUpdate.js';
+import ProductUpdate from './admin/pages/productPage/ProductUpdate.js';
+import Comments from './admin/pages/commentPage/commentList.js';
+import Statistics from './admin/pages/Statistics/Statistics.js';
+import AdminOrder from './admin/pages/orderPage/AdminOrder.js';
+import OrderDetail from './admin/pages/orderPage/OrderDetail.js'
+import Customer from './admin/pages/customerPage/customerList.js';
+import VouchersList from './admin/pages/voucherPage/VoucherList.js';
+import VoucherAdd from './admin/pages/voucherPage/voucherAdd.js';
+import VoucherUpdate from './admin/pages/voucherPage/voucherUpdate.js';
+import CustomerList from './admin/pages/customerPage/customerList.js';
+import CustomerAdd from './admin/pages/customerPage/customerAdd.js';
+import CustomerUpdate from './admin/pages/customerPage/customerUpdate.js';
+import ManufacturerList from './admin/pages/manufacturer/manufacturerList.js';
+import ManufacturerAdd from './admin/pages/manufacturer/manufacturerAdd.js';
+import ManufacturerUpdate from './admin/pages/manufacturer/manufacturerUpdate.js';
 
 // Component Client
 import ProductDetail from './client/pages/ProductDetail';
@@ -34,7 +34,7 @@ import Cuahang from './client/pages/Cuahang.js';
 import CategoryProducts from './client/pages/CategoryProducts.js';
 import BrandProducts from './client/pages/BrandProducts.js';
 import Search from './client/pages/Search.js';
-import RegisterLogin from './client/pages/register_login/register_login.jsx';
+import RegisterLogin from './client/pages/register_login/register_login.js';
 import CartPage from './client/pages/CartPage.js';
 import ForgotPassword from './client/pages/forgotPassword.js';
 import ResetPassword from './client/pages/resetPassword.js';
