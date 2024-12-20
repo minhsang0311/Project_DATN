@@ -25,7 +25,7 @@ const StatisticsPro = () => {
             method: 'get',
             headers: {'Content-type':'application/json', 'Authorization': 'Bearer ' + token}
         }
-        fetch('http://localhost:3000/admin/stats-procate', opt)
+        fetch(`${process.env.REACT_APP_HOST_URL}admin/stats-procate`, opt)
             .then(res => res.json())
             .then(data => {
                 setCategoryData(data);
@@ -42,7 +42,7 @@ const StatisticsPro = () => {
             method: 'get',
             headers: {'Content-type':'application/json', 'Authorization': 'Bearer ' + token}
         }
-        fetch('http://localhost:3000/admin/stats-probrand', opt)
+        fetch(`${process.env.REACT_APP_HOST_URL}admin/stats-probrand`, opt)
             .then(res => res.json())
             .then(data => {
                 setBrandData(data);
@@ -60,10 +60,10 @@ const StatisticsPro = () => {
 
     // Dữ liệu cho biểu đồ tròn (ProCate)
     const pieData = categoryData.length > 0 ? {
-        labels: categoryData.map(item => item.Category_Name),
+        labels: Array.isArray(categoryData) ? categoryData.map(item => item.Category_Name) : null,
         datasets: [
             {
-                data: categoryData.map(item => item.totalProCate),
+                data: Array.isArray(categoryData) ? categoryData.map(item => item.totalProCate) : null ,
                 backgroundColor: ['#36A2EB', '#FF6384', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40'],
                 hoverBackgroundColor: ['#38A2EB', '#FF6384', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40'],
             },
@@ -72,10 +72,10 @@ const StatisticsPro = () => {
 
     // Dữ liệu cho biểu đồ tròn (ProBrand)
     const pieProBrand = branData.length > 0 ? {
-        labels: branData.map(item => item.Brand_Name),
+        labels: Array.isArray(branData) ? branData.map(item => item.Brand_Name) : null,
         datasets: [
             {
-                data: branData.map(item => item.totalProBrand),
+                data: Array.isArray(branData) ? branData.map(item => item.totalProBrand) : null,
                 backgroundColor: ['#36A2EB', '#FF6384', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40'],
                 hoverBackgroundColor: ['#38A2EB', '#FF6384', '#FFCE56','#4BC0C0', '#9966FF', '#FF9F40'],
             },

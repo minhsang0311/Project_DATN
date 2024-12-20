@@ -15,7 +15,7 @@ function CategoryUpdate() {
                 'Authorization': 'Bearer ' + token
             }
         };
-        fetch(`http://localhost:3000/admin/categoryDetail/${id}`, opt)
+        fetch(`${process.env.REACT_APP_HOST_URL}/categoryDetail/${id}`, opt)
             .then(res => res.json())
             .then(data => setCategory(data))
             .catch(error => console.error("Lỗi khi lấy dữ liệu:", error));
@@ -32,10 +32,9 @@ function CategoryUpdate() {
             }
         };
 
-        fetch(`http://localhost:3000/admin/categoryUpdate/${id}`, opt)
+        fetch(`${process.env.REACT_APP_HOST_URL}admin/categoryUpdate/${id}`, opt)
             .then(res => res.json())
             .then(data => {
-                console.log("Kết quả =", data);
                 navigate("/admin/category");
             })
             .catch(error => console.error("Lỗi khi cập nhật:", error));

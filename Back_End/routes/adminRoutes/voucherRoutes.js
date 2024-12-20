@@ -11,7 +11,7 @@ router.get('/vouchers',adminMiddleware,  voucherController.getAllVoucher);
 router.post('/postVoucher',adminMiddleware, voucherController.postVoucher);
 router.get('/getVoucherDetail/:id',adminMiddleware, voucherController.getVoucherDetail)
 router.put('/putVoucher/:id', adminMiddleware, voucherController.putVoucher)
-router.patch('/vouchers/:id/lock', adminMiddleware, voucherController.lockVoucher)
+// router.patch('/vouchers/:id/lock', adminMiddleware, voucherController.lockVoucher)
 
 
 

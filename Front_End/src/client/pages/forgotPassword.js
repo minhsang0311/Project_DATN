@@ -11,7 +11,6 @@ const ForgotPassword = () => {
         e.preventDefault();
         axios.post(`${process.env.REACT_APP_HOST_URL}user/forgot-password`, { email })
             .then(response => {
-                console.log(response)
                
                 toast.success(response.data.message_success)
             })

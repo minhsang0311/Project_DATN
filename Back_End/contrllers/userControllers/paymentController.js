@@ -37,7 +37,7 @@ exports.paymentController = (req, res) => {
     }
     const orderItems = items
         .filter(item => item.Product_ID && item.Quantity > 0 && item.Price >= 0)
-        .map(item => [null, item.Product_ID, item.Quantity, item.Price]);
+        .map(item => [null, item.Product_ID, item.Product_Name, item.Quantity, item.Price]);
 
     if (orderItems.length === 0) {
         return res.status(400).json({ success: false, message: 'Trang giỏ hàng không chứa sản phẩm' });
@@ -77,8 +77,9 @@ exports.paymentController = (req, res) => {
 
                     console.log("order detail", result)
                     const URL = payment(result[0].Order_ID, "VNPAY", "", result[0].total_amount)
-                    const detailsQuery = 'INSERT INTO order_details (Order_ID, Product_ID, Quantity, Price) VALUES ?';
+                    const detailsQuery = 'INSERT INTO order_details (Order_ID, Product_ID, Product_Name, Quantity, Price) VALUES ?';
                     const values = orderItems.map(item => [orderId, ...item.slice(1)]);
+                    console.log(detailsQuery)
                     db.query(detailsQuery, [values], (err) => {
                         if (err) {
                             return res.status(500).json({ success: false, message: 'Lỗi lưu chi tiết đơn hàng', err });
@@ -99,7 +100,7 @@ exports.paymentController = (req, res) => {
     if (Voucher_ID) {
         const checkVoucherQuery = `
             SELECT v.Voucher_ID, v.Expiration_Date, o.User_ID AS Used_By
-            FROM Vouchers v
+            FROM vouchers v
             LEFT JOIN orders o ON v.Voucher_ID = o.Voucher_ID
             WHERE v.Code = ? AND v.Expiration_Date > NOW()
         `;
@@ -176,3 +177,41 @@ exports.vnpay_return = (req, res) => {
         return res.status(200).json({ status: 'fail', code: '97' });
     }
 };
+exports.getUserDetail = (req, res) => {
+    const userId = req.params.id; // Lấy User_ID từ URL hoặc req.params
+
+    if (!userId) {
+        return res.status(400).json({
+            success: false,
+            message: "Thiếu User_ID",
+        });
+    }
+
+    // Truy vấn thông tin người dùng từ cơ sở dữ liệu
+    const query = `
+        SELECT User_ID, User_Name, Email
+        FROM users
+        WHERE User_ID = ?
+    `;
+    db.query(query, [userId], (err, result) => {
+        if (err) {
+            return res.status(500).json({
+                success: false,
+                message: "Lỗi truy vấn cơ sở dữ liệu",
+                error: err,
+            });
+        }
+        if (result.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: "Không tìm thấy thông tin người dùng",
+            });
+        }
+        // Trả về thông tin người dùng
+        return res.status(200).json({
+            success: true,
+            data: result[0],
+        });
+    });
+};
+

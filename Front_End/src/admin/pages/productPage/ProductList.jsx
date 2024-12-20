@@ -4,7 +4,7 @@ import "../../styles/pages/productList.css";
 
 const ProductList = ({ searchResults }) => {
     const token = localStorage.getItem('token');
-    const url = `http://localhost:3000/admin`;
+    const url = `${process.env.REACT_APP_HOST_URL}admin`;
     const [productList, setProductList] = useState([]);
 
     useEffect(() => {
@@ -58,23 +58,21 @@ const ProductList = ({ searchResults }) => {
                 <div className="grid-header">Tên sản phẩm</div>
                 <div className="grid-header">Hình ảnh</div>
                 <div className="grid-header">Giá</div>
-                <div className="grid-header">Mô tả</div>
+                <div className="grid-header">Hãng</div>
+                <div className="grid-header">Danh mục</div>
                 <div className="grid-header">Lượt xem</div>
                 <div className="grid-header">Ẩn_Hiện</div>
                 <div className="grid-header">Thao tác</div>
-                {displayProducts.map((product, index) => (
+                { Array.isArray(displayProducts) ? displayProducts.map((product, index) => (
                     <Fragment key={product.Product_ID}>
-                        <div className="grid-item grid-item-element">{product.Product_ID}</div>
+                        <div className="grid-item grid-item-element">{index + 1}</div>
                         <div className="grid-item grid-item-element">{product.Product_Name}</div>
                         <div className="grid-item grid-item-element">
                             <img src={product.Image} alt={product.Product_Name} className="product-img" />
                         </div>
                         <div className="grid-item grid-item-element">{Number(product.Price).toLocaleString("vi")} VNĐ</div>
-                        <div className="grid-item">
-                            {product.Description.split('\n').map((desc, index) => (
-                                <div className="description" key={index}>{desc.replace('-', '')}</div>
-                            ))}
-                        </div>
+                        <div className="grid-item grid-item-element">{product.brand_name}</div>
+                        <div className="grid-item grid-item-element">{product.category_name}</div>
                         <div className="grid-item grid-item-element">{product.Views}</div>
                         <div className="grid-item grid-item-element">{product.Show_Hidden === 1 ? "Hiện" : "Ẩn"}</div>
                         <div className="grid-item grid-item-button">
@@ -82,7 +80,7 @@ const ProductList = ({ searchResults }) => {
                             <button className="delete-btn" onClick={() => deleteProduct(product.Product_ID)}>🗑️</button>
                         </div>
                     </Fragment>
-                ))}
+                )) : null }
             </div>
         </div>
     );

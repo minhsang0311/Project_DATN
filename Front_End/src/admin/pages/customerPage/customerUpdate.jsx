@@ -20,7 +20,7 @@ const CustomerUpdate = () => {
   useEffect(() => {
     const fetchCustomer = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/admin/customerDetail/${id}`, {
+        const response = await axios.get(`${process.env.REACT_APP_HOST_URL}admin/customerDetail/${id}`, {
           headers: {
             'Authorization': `Bearer ${token}`  // Include token in the Authorization header
           }
@@ -48,7 +48,7 @@ const CustomerUpdate = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:3000/admin/customerUpdate/${id}`, customer, {
+      await axios.put(`${process.env.REACT_APP_HOST_URL}admin/customerUpdate/${id}`, customer, {
         headers: {
           'Authorization': `Bearer ${token}`  // Include token in the Authorization header
         }

@@ -2,7 +2,7 @@ const db = require('../../config/db');
 
 
 exports.productNew = (req, res) => {
-    let sql = `SELECT * FROM Products ORDER BY Product_ID DESC`;  
+    let sql = `SELECT * FROM products ORDER BY Product_ID DESC`;  
     db.query(sql, (err, data) => {
         if (err) {
             res.json({ "message": "Lỗi lấy danh sách sản phẩm", err });
@@ -12,7 +12,7 @@ exports.productNew = (req, res) => {
     });
 }
 exports.productMostView =  (req, res) => {
-    let sql = `SELECT * FROM Products ORDER BY Views DESC`;  // Sắp xếp theo ID giảm dần
+    let sql = `SELECT * FROM products ORDER BY Views DESC`;  // Sắp xếp theo ID giảm dần
     db.query(sql, (err, data) => {
         if (err) {
             res.json({ "message": "Lỗi lấy danh sách sản phẩm", err });
@@ -22,7 +22,7 @@ exports.productMostView =  (req, res) => {
     });
 }
 exports.productKhuyenMai =  (req, res) => {
-    let sql = `SELECT * FROM Products ORDER BY Promotion DESC`;  
+    let sql = `SELECT * FROM products ORDER BY Promotion DESC`;  
     db.query(sql, (err, data) => {
         if (err) {
             res.json({ "message": "Lỗi lấy danh sách sản phẩm", err });
@@ -33,7 +33,7 @@ exports.productKhuyenMai =  (req, res) => {
 }
 
 exports.getAllProducts = (req, res) => {
-    let sql = `SELECT * FROM Products`;
+    let sql = `SELECT * FROM products`;
     db.query(sql, (err, data) => {
         if (err) return res.json({ "message": "Lỗi lấy danh sách sản phẩm", err });
         res.json(data);
@@ -45,7 +45,7 @@ exports.getAllProducts = (req, res) => {
 
 //Route lấy danh sách sản phẩm
 exports.getAllProducts_Cuahang = (req, res) => {
-    let sql = `SELECT * FROM Products`;
+    let sql = `SELECT * FROM products`;
     db.query(sql, (err, data) => {
         if (err) {
             res.json({ "message": "Lỗi lấy danh sách sản phẩm", err });
@@ -58,7 +58,7 @@ exports.getAllProducts_Cuahang = (req, res) => {
 exports.getFilteredProducts = (req, res) => {
     const { minPrice, maxPrice, sortOrder, brand } = req.query;
 
-    let sql = `SELECT Product_ID, Category_ID, Brand_ID ,Product_Name, Image, Price, Description, Views, Show_Hidden FROM Products WHERE Show_Hidden = 1`;
+    let sql = `SELECT Product_ID, Category_ID, Brand_ID ,Product_Name, Image, Price, Description, Views, Show_Hidden FROM products WHERE Show_Hidden = 1`;
 
     // Thêm điều kiện lọc giá nếu có minPrice và maxPrice
     if (minPrice) {
@@ -179,7 +179,7 @@ exports.getAllsan_pham_lien_quan = function (req, res) {
 };
 exports.getAllproductNew = (req, res) => {
     let sql = `SELECT Product_ID, Category_ID, Product_Name, Image, Price, Description, Views, Show_Hidden 
-               FROM Products 
+               FROM products 
                ORDER BY Product_ID DESC`;  // Sắp xếp theo ID giảm dần
     db.query(sql, (err, data) => {
         if (err) {
@@ -192,7 +192,7 @@ exports.getAllproductNew = (req, res) => {
 //lấy sản phẩm xem nhiều
 exports.getAllproductMostView =  (req, res) => {
     let sql = `SELECT Product_ID, Category_ID, Product_Name, Image, Price, Description, Views, Show_Hidden 
-               FROM Products 
+               FROM products 
                ORDER BY Views DESC`;  // Sắp xếp theo ID giảm dần
     db.query(sql, (err, data) => {
         if (err) {
@@ -205,7 +205,7 @@ exports.getAllproductMostView =  (req, res) => {
 //Route lấy sản phẩm của một loại
 exports.getAllProducts_Category =  (req, res) => {
     const { Category_ID } = req.params;
-    const sql = 'SELECT * FROM Products WHERE Category_ID = ?';
+    const sql = 'SELECT * FROM products WHERE Category_ID = ?';
     db.query(sql, [Category_ID], (err, result) => {
         if (err) return res.json({ message: 'Lỗi lấy sản phẩm', err });
         res.json(result);
@@ -213,7 +213,7 @@ exports.getAllProducts_Category =  (req, res) => {
 };
 exports.getAllProducts_Brand =  (req, res) => {
     const { Brand_ID } = req.params;
-    const sql = 'SELECT * FROM Products WHERE Brand_ID = ?';
+    const sql = 'SELECT * FROM products WHERE Brand_ID = ?';
     db.query(sql, [Brand_ID], (err, result) => {
         if (err) return res.json({ message: 'Lỗi lấy sản phẩm', err });
         res.json(result);

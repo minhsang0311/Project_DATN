@@ -70,7 +70,7 @@ function Header() {
               {showDropdown && (
                 <div className="dropdown">
                   <Link to="/change-password" className="change-pw">Đổi mật khẩu</Link>
-                  <button onClick={() => { localStorage.removeItem('tokenUser'); localStorage.removeItem('user'); setUserName(null); navigate('/'); }}>Thoát</button>
+                  <button onClick={() => { localStorage.removeItem('tokenUser'); localStorage.removeItem('user'); setUserName(null); navigate('/'); }}>Đăng xuất</button>
                 </div>
               )}
             </li>

@@ -25,7 +25,7 @@ exports.forgotPassword = (req, res) => {
                 from: process.env.USER_EMAIL,
                 to: email,
                 subject: 'Yêu cầu đặt lại mật khẩu',
-                text: `Click vào link để đặt lại mật khẩu của bạn: http://localhost:4200/reset-password/${token}`,
+                text: `Click vào link để đặt lại mật khẩu của bạn: ${process.env.RESET_PASSWORD_URL}/reset-password/${token}`,
             };
             transporter.sendMail(mailOptions, (error, info) => {
                 if (error) return res.status(500).json({ message: 'Không thể gửi email', error });

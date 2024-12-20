@@ -24,7 +24,7 @@ function SpMoi() {
             if (userId) {
                 const response = await fetch(`${process.env.REACT_APP_HOST_URL}user/wishlist/${userId}`);
                 const data = await response.json();
-                setLikedProducts(data.map(item => item.Product_ID)); // Lưu ID sản phẩm đã yêu thích
+                setLikedProducts(Array.isArray(data) ? data.map(item => item.Product_ID) : null ); // Lưu ID sản phẩm đã yêu thích
             }
         };
 
@@ -115,7 +115,7 @@ function SpMoi() {
                 // navigate('/register_login')
             }
         } catch (error) {
-            console.log("Lỗi khi thêm/xóa sản phẩm khỏi yêu thích:", error);
+            console.error("Lỗi khi thêm/xóa sản phẩm khỏi yêu thích:", error);
         }
     };
 
@@ -132,7 +132,7 @@ function SpMoi() {
                     <h1>DEAL DÀNH CHO BẠN</h1>
                 </div>
                 <div className="box-sp">
-                    {listsp.slice(0, 10).map((sp, i) => (
+                    { Array.isArray(listsp) ? listsp.slice(0, 10).map((sp, i) => (
                         <div className="product" key={i}>
                             {sp.Promotion > 0 && (
                                 <div className="discount-label">
@@ -175,7 +175,7 @@ function SpMoi() {
 
                             </div>
                         </div>
-                    ))}
+                    )) : null }
                 </div>
             </div>
         </div>

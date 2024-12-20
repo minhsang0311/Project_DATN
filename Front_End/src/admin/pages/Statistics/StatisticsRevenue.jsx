@@ -25,9 +25,6 @@ const StatisticsRevenue = () => {
     const start = formatDate(firstDayLastMonth);
     const end = formatDate(lastDayLastMonth);
 
-    console.log("Start Date: ", start);  // Kiểm tra giá trị startDate
-    console.log("End Date: ", end);  // Kiểm tra giá trị endDate
-
     setStartDate(start);
     setEndDate(end);
     fetchTotalRevenue();
@@ -39,7 +36,7 @@ const StatisticsRevenue = () => {
   }, [startDate, endDate]);
   // Hàm lấy tổng tất cả doanh thu
   const fetchTotalRevenue = () => {
-    fetch("http://localhost:3000/admin/stats-totalRevenue", {
+    fetch(`${process.env.REACT_APP_HOST_URL}admin/stats-totalRevenue`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -49,7 +46,7 @@ const StatisticsRevenue = () => {
       .then((res) => res.json())
       .then((data) => {
         if (!data || typeof data.TotalRevenue === "undefined") {
-          alert("Dữ liệu trả về không hợp lệ.");
+          alert("Dữ liệu trả về không hợp lệ.");
           return;
         }
 
@@ -68,7 +65,7 @@ const StatisticsRevenue = () => {
     }
 
     setLoading(true);
-    fetch(`http://localhost:3000/admin/stats-statisticsRevenue?startDate=${startDate}&endDate=${endDate}`, {
+    fetch(`${process.env.REACT_APP_HOST_URL}admin/stats-statisticsRevenue?startDate=${startDate}&endDate=${endDate}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -77,22 +74,20 @@ const StatisticsRevenue = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data)
-        if (!data || typeof data.TotalRevenue === "undefined") {
-          alert("Dữ liệu trả về không hợp lệ.");
+        if (!data || !data.data) {
+          alert("Ngày bắt đầu và ngày kết thúc không hợp lệ.");
           return;
         }
 
-        const totalRevenue = parseFloat(data.TotalRevenue);
-
-        const label = `Tổng doanh thu (${startDate} đến ${endDate})`;
+        const labels = Array.isArray(data.data) ? data.data.map((entry) => entry.Date.split("T")[0]) : null;
+        const revenues = Array.isArray(data.data) ? data.data.map((entry) => parseFloat(entry.TotalRevenue)) : null;
 
         setChartData({
-          labels: [label],
+          labels: labels,
           datasets: [
             {
-              label: "Tổng Doanh thu (VNĐ)",
-              data: [totalRevenue],
+              label: "Doanh thu (VNĐ)",
+              data: revenues,
               backgroundColor: "rgba(75, 192, 192, 0.5)",
               borderColor: "rgba(75, 192, 192, 1)",
               borderWidth: 1,
@@ -101,11 +96,12 @@ const StatisticsRevenue = () => {
         });
       })
       .catch((error) => {
-        console.error("Error fetching total revenue data:", error);
-        alert("Lỗi khi lấy dữ liệu tổng doanh thu.");
+        console.error("Error fetching revenue data:", error);
+        alert("Lỗi khi lấy dữ liệu doanh thu.");
       })
       .finally(() => setLoading(false));
   };
+
 
   return (
     <div className="revenue-statistics">
@@ -121,7 +117,6 @@ const StatisticsRevenue = () => {
             <tbody>
               <tr>
                 <td>{totalRevenue.toLocaleString()} VNĐ</td>
-                {console.log(totalRevenue)}
               </tr>
             </tbody>
           </table>
@@ -136,9 +131,9 @@ const StatisticsRevenue = () => {
           Ngày kết thúc:
           <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
         </label>
-        <button onClick={handleFetchData} disabled={loading}>
+        {/* <button onClick={handleFetchData} disabled={loading}>
           {loading ? "Đang tải..." : "Thống kê"}
-        </button>
+        </button> */}
       </div>
       <div className="chart-section">
         {chartData ? (
@@ -156,8 +151,18 @@ const StatisticsRevenue = () => {
                 },
               },
               scales: {
+                x: {
+                  title: {
+                    display: true,
+                    // text: "Ngày",
+                  },
+                },
                 y: {
                   beginAtZero: true,
+                  title: {
+                    display: true,
+                    text: "Doanh thu (VNĐ)",
+                  },
                   ticks: {
                     callback: (value) => `${value.toLocaleString()} VNĐ`,
                   },
@@ -169,6 +174,7 @@ const StatisticsRevenue = () => {
           <p>Chọn ngày để hiển thị biểu đồ.</p>
         )}
       </div>
+
     </div>
   );
 };

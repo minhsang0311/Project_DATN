@@ -4,24 +4,23 @@ import "../../styles/pages/customerList.css";
 
 const CustomerList = ({ searchResults }) => {
   const token = localStorage.getItem('token');
-  const url = `http://localhost:3000/admin`;
+  const url = `${process.env.REACT_APP_HOST_URL}admin`;
   const [customers, setcustomersList] = useState([]);
   const [loading, setLoading] = useState(false); // Loading state
   const [error, setError] = useState(null); // Error state
 
   useEffect(() => {
     if (!searchResults || searchResults.length === 0) {
-        // Fetch toàn bộ danh sách khách hàng khi không có kết quả tìm kiếm
-        fetch(`${url}/customers`, {
-            method: 'GET',
-            headers: { "Content-type": "application/json", 'Authorization': 'Bearer ' + token }
+      // Fetch toàn bộ danh sách khách hàng khi không có kết quả tìm kiếm
+      fetch(`${url}/customers`, {
+        method: 'GET',
+        headers: { "Content-type": "application/json", 'Authorization': 'Bearer ' + token }
+      })
+        .then(res => res.json())
+        .then(data => {
+          setcustomersList(data)
         })
-            .then(res => res.json())
-            .then(data => {
-              console.log(data)
-              setcustomersList(data)
-            })
-            .catch(error => console.error('Error fetching customer list:', error));
+        .catch(error => console.error('Error fetching customer list:', error));
     }
   }, [token, searchResults]);
 
@@ -43,10 +42,11 @@ const CustomerList = ({ searchResults }) => {
         } else {
           alert(`Đã ${action} khách hàng.`);
           setcustomersList(prev =>
-            prev.map(customer =>
-              customer.User_ID === userId ? { ...customer, is_locked: !currentLockStatus } : customer
-            )
-          );
+            Array.isArray(prev) ?
+              prev.map(customer =>
+                customer.User_ID === userId ? { ...customer, is_locked: !currentLockStatus } : customer
+              ) : null
+          )
         }
       } catch (error) {
         console.error('Error locking/unlocking customer:', error);
@@ -78,7 +78,7 @@ const CustomerList = ({ searchResults }) => {
         <div className="grid-header">Điện thoại</div>
         <div className="grid-header">Vai trò</div>
         <div className="grid-header">Thao tác</div>
-        {displayCustomers.map((customer, index) => (
+        {Array.isArray(displayCustomers) ? displayCustomers.map((customer, index) => (
           <Fragment key={customer.User_ID}>
             <div className="grid-item grid-item-element">{index + 1}</div>
             <div className="grid-item grid-item-element">{customer.User_Name}</div>
@@ -95,7 +95,7 @@ const CustomerList = ({ searchResults }) => {
               </button>
             </div>
           </Fragment>
-        ))}
+        )) : null}
       </div>
     </div>
   );

@@ -12,13 +12,13 @@ const ProductAdd = () => {
     const [brands, setBrands] = useState([]);
     const navigate = useNavigate()
     useEffect(() => {
-        fetch(`http://localhost:3000/admin/category`, {
+        fetch(`${process.env.REACT_APP_HOST_URL}admin/category`, {
             method: "get",
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }
         })
             .then(res => res.json())
             .then(data => setCategories(data))
-        fetch(`http://localhost:3000/admin/brand`, {
+        fetch(`${process.env.REACT_APP_HOST_URL}admin/brand`, {
             method: "get",
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
         })
@@ -36,14 +36,13 @@ const ProductAdd = () => {
             alert("Bạn không thể thêm quá 10 ảnh bổ sung");
             return;
         }
-
-        setAdditionalImages(prevImages => [
-            ...prevImages,
-            ...files.map(file => ({
-                file,
-                preview: URL.createObjectURL(file)
-            }))
-        ]);
+            setAdditionalImages(prevImages => [
+                ...prevImages,
+                ...files.map(file => ({
+                    file,
+                    preview: URL.createObjectURL(file)
+                }))
+            ])
     };
 
 
@@ -71,10 +70,6 @@ const ProductAdd = () => {
             alert("Vui lòng chọn hình ảnh chính cho sản phẩm!");
             return;
         }
-        if (!product.Views) {
-            alert("Vui lòng chọn số lượt xem cho sản phẩm!");
-            return;
-        }
 
         if (!product.Description) {
             alert("Vui lòng nhập mô tả cho sản phẩm!");
@@ -92,24 +87,22 @@ const ProductAdd = () => {
         formData.append('Category_ID', product.Category_ID);
         formData.append('Brand_ID', product.Brand_ID);
         formData.append('Image', image); // Ảnh chính
-        formData.append('Views', product.Views);
+        // formData.append('Views', product.Views);
         formData.append('Description', product.Description);
         formData.append('Show_Hidden', product.Show_Hidden);
 
         // Thêm danh sách ảnh nhỏ
         additionalImages.forEach((imgObj, index) => {
-            console.log(`Thêm ảnh bổ sung ${index + 1}:`, imgObj.file.name);
             formData.append('additionalImages', imgObj.file);
         });
 
-        fetch(`http://localhost:3000/admin/productAdd`, {
+        fetch(`${process.env.REACT_APP_HOST_URL}admin/productAdd`, {
             method: 'POST',
             body: formData,
             headers: { Authorization: `Bearer ${token}` },
         })
             .then((res) => res.json())
             .then((data) => {
-                console.log(data);
                 if (data.message) {
                     alert(data.message);
                     navigate('/admin/products')
@@ -178,11 +171,11 @@ const ProductAdd = () => {
                                 }
                             >
                                 <option value="">Chọn danh mục sản phẩm ...</option>
-                                {categories.map(category => (
+                                { Array.isArray(categories) ? categories.map(category => (
                                     <option key={category.Category_ID} value={category.Category_ID}>
                                         {category.Category_Name}
                                     </option>
-                                ))}
+                                )) : null }
                             </select>
                         </div>
                         <div className="form-group">
@@ -195,11 +188,11 @@ const ProductAdd = () => {
                                 }
                             >
                                 <option value="">Chọn hãng sản phẩm ...</option>
-                                {brands.map(brand => (
+                                { Array.isArray(brands) ? brands.map(brand => (
                                     <option key={brand.Brand_ID} value={brand.Brand_ID}>
                                         {brand.Brand_Name}
                                     </option>
-                                ))}
+                                )) : null }
                             </select>
                         </div>
                     </div>
@@ -222,7 +215,7 @@ const ProductAdd = () => {
                             />
                         </div>
                         <div className="image-preview-container">
-                            {additionalImages.map((imageObj, index) => (
+                            { Array.isArray(additionalImages) ? additionalImages.map((imageObj, index) => (
                                 <div key={index} className="image-preview-item">
                                     <img
                                         style={{ width: '50px', height: "50px" }}
@@ -239,7 +232,7 @@ const ProductAdd = () => {
                                         <i class="bi bi-x-circle"></i>
                                     </button>
                                 </div>
-                            ))}
+                            )) : null }
                         </div>
 
                         <div className="form-group">
@@ -254,7 +247,7 @@ const ProductAdd = () => {
                                 }}
                             />
                         </div>
-                        <div className="form-group">
+                        {/* <div className="form-group">
                             <label htmlForfor="product-category">Lượt xem</label>
                             <input
                                 type="number"
@@ -264,9 +257,9 @@ const ProductAdd = () => {
                                 onChange={e =>
                                     setProduct({ ...product, Views: e.target.value })
                                 } />
-                        </div>
+                        </div> */}
                         <div className="radio-group">
-                        <label>Ẩn/Hiện</label>
+                            <label>Ẩn/Hiện</label>
                             <label>
                                 <input
                                     type="radio"
