@@ -11,6 +11,7 @@ function Header() {
   const [wishlistCount, setWishlistCount] = useState(0); // Lưu số lượng sản phẩm yêu thích
   const navigate = useNavigate();
 
+  
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
