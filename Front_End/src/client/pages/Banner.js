@@ -45,11 +45,11 @@ const Banner = () => {
           <i className="fa-solid fa-bars"></i> <p>Hãng sản phẩm</p>
         </div>
         <ul id="danh-muc-list" style={{ display: isDanhMucVisible ? 'none' : 'block' }}>
-          {listbrands.map((brand) => (
+          { Array.isArray(listbrands) ? listbrands.map((brand) => (
             <li key={brand.Brand_ID}>
               <Link to={`/brand/${brand.Brand_ID}`}>{brand.Brand_Name}</Link>
             </li>
-          ))}
+          )) : null }
         </ul>
       </div>
 
@@ -59,7 +59,7 @@ const Banner = () => {
           className="image-container"
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
         >
-          {images.map((image, index) => (
+          { Array.isArray(images) ? images.map((image, index) => (
             <img
               key={index}
               src={image.src}
@@ -67,7 +67,7 @@ const Banner = () => {
               className="banner-image"
               onClick={() => handleImageClick(image.productId)} // Thêm sự kiện onClick
             />
-          ))}
+          )) : null }
         </div>
 
         {/* Nút chuyển ảnh */}
@@ -86,13 +86,13 @@ const Banner = () => {
 
         {/* Chỉ báo ảnh */}
         <div className="indicators">
-          {images.map((_, index) => (
+          { Array.isArray(images) ? images.map((_, index) => (
             <div
               key={index}
               className={`dot ${index === currentIndex ? 'active' : ''}`}
               onClick={() => setCurrentIndex(index)}
             ></div>
-          ))}
+          )) : null}
         </div>
       </div>
     </div>

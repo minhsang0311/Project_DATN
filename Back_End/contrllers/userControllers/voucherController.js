@@ -6,7 +6,7 @@ exports.CheckVoucher = (req, res) => {
 
     const query = `
         SELECT v.*, o.User_ID AS Used_By
-        FROM Vouchers v
+        FROM vouchers v
         LEFT JOIN orders o ON v.Voucher_ID = o.Voucher_ID
         WHERE v.Code = ? AND v.Expiration_Date > NOW()
     `;

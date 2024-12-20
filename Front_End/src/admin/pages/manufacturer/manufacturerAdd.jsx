@@ -29,7 +29,7 @@ const ManufacturerAdd = () => {
         setLoading(true); // Set loading state to true before making the request
 
         // Make the API request
-        fetch('http://localhost:3000/admin/brandAdd', {
+        fetch(`${process.env.REACT_APP_HOST_URL}admin/brandAdd`, {
             method: 'POST',
             body: formData,
             headers: {
@@ -48,8 +48,7 @@ const ManufacturerAdd = () => {
             }
         })
         .catch(error => {
-            setLoading(false); // Set loading to false on error
-            console.log("Error adding manufacturer:", error);
+            setLoading(false);
             setError('Lỗi khi thêm nhà sản xuất.');
         });
     };

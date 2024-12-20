@@ -31,7 +31,7 @@ function SpMostView() {
             if (userId) {
                 const response = await fetch(`${process.env.REACT_APP_HOST_URL}user/wishlist/${userId}`);
                 const data = await response.json();
-                setLikedProducts(data.map(item => item.Product_ID)); // Lưu ID sản phẩm đã yêu thích
+                setLikedProducts( Array.isArray(data) ? data.map(item => item.Product_ID) : null ); // Lưu ID sản phẩm đã yêu thích
             }
         }
         fetchWishlist();
@@ -117,7 +117,7 @@ function SpMostView() {
                 // navigate('/register_login')
             }
         } catch (error) {
-            console.log("Lỗi khi thêm/xóa sản phẩm khỏi yêu thích:", error);
+            console.error("Lỗi khi thêm/xóa sản phẩm khỏi yêu thích:", error);
         }
     };
 
@@ -138,7 +138,7 @@ function SpMostView() {
 
                 </div>
                 <div className="box-sp">
-                    {listsp.slice(0, 8).map((sp, i) => (
+                    { Array.isArray(listsp) ? listsp.slice(0, 8).map((sp, i) => (
                         <div className="product" key={i}>
                             {sp.Promotion > 0 && (
                                 <div className="discount-label">
@@ -178,7 +178,7 @@ function SpMostView() {
                                 </div>
                             </div>
                         </div>
-                    ))}
+                    )) : null }
                 </div>
             </div>
         </div>

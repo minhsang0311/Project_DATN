@@ -91,18 +91,18 @@ function Cuahang() {
                         <h4>Thương hiệu</h4>
                         <select onChange={(e) => setBrand(e.target.value)} value={brand}>
                             <option value="">Chọn hãng</option>
-                            {brands.map((brand) => (
+                            { Array.isArray(brands) ? brands.map((brand) => (
                                 <option key={brand.Brand_ID} value={brand.Brand_ID}>
                                     {brand.Brand_Name}
                                 </option>
-                            ))}
+                            )) : null }
                         </select>
                     </div>
                     <div className="right-products">
                         <div className="box-sp">
-                            {spTrong1Trang.map((sp, index) => (
+                            { Array.isArray(spTrong1Trang) ? spTrong1Trang.map((sp, index) => (
                                 <Product key={index} product={sp} />
-                            ))}
+                            )) : null }
                         </div>
                         {tongSoTrang > 1 && (
                             <ReactPaginate

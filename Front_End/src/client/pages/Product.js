@@ -80,9 +80,9 @@ function Product({ product }) {
 
                 if (response.ok) {
                     setIsLiked(true); // Cập nhật trạng thái yêu thích
-                   toast.success(data.message || 'Đã thêm sản phẩm vào danh sách yêu thích');
+                    toast.success(data.message || 'Đã thêm sản phẩm vào danh sách yêu thích');
                 } else {
-                   toast.error(data.message || 'Có lỗi xảy ra khi thêm sản phẩm');
+                    toast.error(data.message || 'Có lỗi xảy ra khi thêm sản phẩm');
                 }
             }
         } catch (error) {
@@ -109,7 +109,7 @@ function Product({ product }) {
 
     return (
         <div className="product">
-                        <Toaster position="top-right" reverseOrder={false} /> {/* Thêm Toaster */}
+            <Toaster position="top-right" reverseOrder={false} /> {/* Thêm Toaster */}
 
             {product.Promotion > 0 && (
                 <div className="discount-label">-{product.Promotion}%</div>

@@ -2,7 +2,7 @@ const db = require('../../config/db');
 
 //Hiện danh sách vouchers
 exports.getAllVoucher = function (req, res) {
-    let sql = `SELECT * FROM Vouchers`;
+    let sql = `SELECT * FROM vouchers`;
     db.query(sql, (err, data) => {
         if (err) res.json({ "message": "Lỗi lấy voucher", err })
         else res.json(data);
@@ -17,7 +17,7 @@ exports.postVoucher = function (req, res) {
     }
 
     // Kiểm tra mã Code đã tồn tại hay chưa
-    const checkCodeSQL = 'SELECT * FROM Vouchers WHERE Code = ?';
+    const checkCodeSQL = 'SELECT * FROM vouchers WHERE Code = ?';
     db.query(checkCodeSQL, [Code], (err, results) => {
         if (err) {
             console.error("Lỗi kiểm tra mã voucher:", err);
@@ -29,7 +29,7 @@ exports.postVoucher = function (req, res) {
         }
 
         // Nếu mã Code chưa tồn tại, tiến hành thêm vào database
-        const insertSQL = 'INSERT INTO Vouchers (Code, Discount, Expiration_Date) VALUES (?, ?, ?)';
+        const insertSQL = 'INSERT INTO vouchers (Code, Discount, Expiration_Date) VALUES (?, ?, ?)';
         db.query(insertSQL, [Code, Discount, Expiration_Date], (err, result) => {
             if (err) {
                 console.error("Lỗi khi thêm voucher:", err);
@@ -63,8 +63,8 @@ exports.putVoucher = function (req, res) {
 
     const checkSQL = `
         SELECT 
-            (SELECT COUNT(*) FROM Orders WHERE Voucher_ID = ?) AS used,
-            (SELECT COUNT(*) FROM Vouchers WHERE Voucher_ID = ? AND User_ID IS NOT NULL) AS assigned`;
+            (SELECT COUNT(*) FROM orders WHERE Voucher_ID = ?) AS used,
+            (SELECT COUNT(*) FROM vouchers WHERE Voucher_ID = ? AND User_ID IS NOT NULL) AS assigned`;
 
     db.query(checkSQL, [id, id], (err, results) => {
         if (err) {
@@ -84,7 +84,7 @@ exports.putVoucher = function (req, res) {
         }
 
         const updateSQL = `
-        UPDATE Vouchers 
+        UPDATE vouchers 
         SET Code = ?, Discount = ?, Expiration_Date = ?, Locked = ?
         WHERE Voucher_ID = ?`;
 
@@ -107,7 +107,7 @@ exports.getVoucherDetail = function (req, res) {
 
     let sql = `
         SELECT Voucher_ID, Code, Discount, Expiration_Date, Locked
-        FROM Vouchers 
+        FROM vouchers 
         WHERE Voucher_ID = ?`;
 
     db.query(sql, id, (err, data) => {
@@ -124,25 +124,76 @@ exports.getVoucherDetail = function (req, res) {
     });
 };
 
-//lock voucher
-exports.lockVoucher = (req, res) => {
-    const id = req.params.id;
+// //lock voucher
+// exports.lockVoucher = (req, res) => {
+//     const id = req.params.id;
 
-    if (!id || isNaN(id) || id <= 0) {
-        return res.status(400).json({ message: "ID không hợp lệ" });
-    }
+//     // Validate voucher ID
+//     if (!id || isNaN(id) || id <= 0) {
+//         return res.status(400).json({ message: "ID không hợp lệ" });
+//     }
 
-    const sql = `UPDATE Vouchers SET Locked = 1 WHERE Voucher_ID = ?`;
-    db.query(sql, [id], (err, results) => {
-        if (err) {
-            console.error("Lỗi khóa voucher:", err);
-            return res.status(500).json({ message: "Lỗi server khi khóa voucher", error: err.message });
-        }
+//     // Check if voucher exists in the database
+//     const sql = `SELECT * FROM vouchers WHERE Voucher_ID = ?`;
+//     db.query(sql, [id], (err, results) => {
+//         if (err) {
+//             console.error("Error checking voucher:", err);
+//             return res.status(500).json({ message: "Lỗi server khi kiểm tra voucher", error: err.message });
+//         }
 
-        if (results.affectedRows === 0) {
-            return res.status(404).json({ message: "Voucher không tồn tại" });
-        }
+//         if (results.length === 0) {
+//             return res.status(404).json({ message: "Voucher không tồn tại" });
+//         }
 
-        res.json({ message: "Voucher đã được khóa thành công" });
-    });
-};
+//         const voucher = results[0];
+
+//         // Check if the voucher has been assigned to a user (exists in the users table)
+//         const userSql = `SELECT * FROM users WHERE Voucher_ID = ?`;
+//         db.query(userSql, [id], (err, userResults) => {
+//             if (err) {
+//                 console.error("Error checking user:", err);
+//                 return res.status(500).json({ message: "Lỗi server khi kiểm tra người dùng", error: err.message });
+//             }
+
+//             if (userResults.length > 0) {
+//                 return res.status(400).json({ message: "Voucher đã được cung cấp cho người dùng và không thể khóa" });
+//             }
+
+//             // Check if voucher is used in any orders that are not canceled
+//             const orderSql = `SELECT * FROM orders WHERE Voucher_ID = ? AND Status <> 3`; // Assuming Status 3 is canceled
+//             db.query(orderSql, [id], (err, orderResults) => {
+//                 if (err) {
+//                     console.error("Error checking orders:", err);
+//                     return res.status(500).json({ message: "Lỗi server khi kiểm tra đơn hàng", error: err.message });
+//                 }
+
+//                 if (orderResults.length > 0) {
+//                     return res.status(400).json({ message: "Voucher đã được sử dụng trong đơn hàng và không thể khóa" });
+//                 }
+
+//                 // Check if the voucher has expired
+//                 const currentDate = new Date();
+//                 const expiryDate = new Date(voucher.Expiration_Date);
+//                 if (expiryDate < currentDate) {
+//                     return res.status(400).json({ message: "Voucher đã hết hạn và không thể khóa" });
+//                 }
+
+//                 // Lock the voucher
+//                 const lockSql = `UPDATE vouchers SET Locked = 1 WHERE Voucher_ID = ?`;
+//                 db.query(lockSql, [id], (err, updateResults) => {
+//                     if (err) {
+//                         console.error("Error locking voucher:", err);
+//                         return res.status(500).json({ message: "Lỗi server khi khóa voucher", error: err.message });
+//                     }
+
+//                     if (updateResults.affectedRows === 0) {
+//                         return res.status(404).json({ message: "Voucher không tồn tại" });
+//                     }
+
+//                     return res.json({ message: "Voucher đã được khóa thành công" });
+//                 });
+//             });
+//         });
+//     });
+// };
+

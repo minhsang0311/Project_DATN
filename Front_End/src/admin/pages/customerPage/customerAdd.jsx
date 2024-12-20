@@ -36,8 +36,6 @@ const CustomerAdd = () => {
             Phone: customer.Phone,
             Role: customer.Role
         };
-
-        const url = `http://localhost:3000/admin/customerAdd`; // Make sure this is correct
         const options = {
             method: "POST",
             headers: {
@@ -48,7 +46,7 @@ const CustomerAdd = () => {
         };
 
         try {
-            const response = await fetch(url, options);
+            const response = await fetch(`${process.env.REACT_APP_HOST_URL}admin/customerAdd`, options);
             const result = await response.json();
 
             if (!response.ok) {

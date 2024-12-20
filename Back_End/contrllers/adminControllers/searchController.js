@@ -17,7 +17,7 @@ exports.generalSearch = (req, res) => {
     // Xây dựng truy vấn tìm kiếm dựa trên `entityType`
     switch (entityType) {
         case 'products':
-            sql = `SELECT * FROM Products WHERE Product_Name LIKE ?`;
+            sql = `SELECT * FROM products WHERE Product_Name LIKE ?`;
             params = [searchPattern];
             break;
 

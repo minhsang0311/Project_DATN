@@ -3,9 +3,9 @@ const db = require('../../config/db');
 //Thống kê sản phẩm theo danh mục
 exports.StatisticsProCate = (req, res) => {
   const sqlProCate = `
-        SELECT Categories.Category_Name, COUNT(Products.Product_ID) AS totalProCate
-        FROM Products
-        JOIN Categories ON Products.Category_ID = Categories.Category_ID
+        SELECT Categories.Category_Name, COUNT(products.Product_ID) AS totalProCate
+        FROM products
+        JOIN Categories ON products.Category_ID = Categories.Category_ID
         GROUP BY Categories.Category_Name
     `;
   db.query(sqlProCate, (err, results) => {
@@ -18,9 +18,9 @@ exports.StatisticsProCate = (req, res) => {
 //Thống kê sản phẩm theo hãng
 exports.StatisticsProBrand = (req, res) => {
   const sqlProBrand = `
-        SELECT Brands.Brand_Name, COUNT(Products.Product_ID) as totalProBrand
-        FROM Products
-        JOIN Brands ON Products.Brand_ID = Brands.Brand_ID
+        SELECT Brands.Brand_Name, COUNT(products.Product_ID) as totalProBrand
+        FROM products
+        JOIN Brands ON products.Brand_ID = Brands.Brand_ID
         GROUP BY Brands.Brand_Name
     `;
   db.query(sqlProBrand, (err, results) => {
@@ -53,8 +53,14 @@ exports.OrderStatusStats = (req, res) => {
 //Thống kê doanh thu
 exports.getRevenueStatistics = (req, res) => {
   const { startDate, endDate } = req.query;
+
+  if (!startDate || !endDate) {
+    return res.status(400).json({ message: "Thiếu ngày bắt đầu hoặc ngày kết thúc." });
+  }
+
   const sql = `
     SELECT 
+      DATE(created_at) AS Date,
       SUM(total_amount) AS TotalRevenue
     FROM 
       orders
@@ -62,17 +68,28 @@ exports.getRevenueStatistics = (req, res) => {
       created_at >= ? 
       AND created_at <= ?
       AND Status = 5
+    GROUP BY 
+      DATE(created_at)
+    ORDER BY 
+      Date ASC
   `;
+
   const startDateTime = `${startDate} 00:00:00`;
   const endDateTime = `${endDate} 23:59:59`;
-  db.query(sql, [startDateTime, endDateTime], (err, data) => {
+
+  db.query(sql, [startDateTime, endDateTime], (err, results) => {
     if (err) {
-      return res.status(500).json({ message: "Lỗi khi lấy dữ liệu tổng doanh thu", error: err });
+      return res.status(500).json({ message: "Lỗi truy vấn cơ sở dữ liệu", error: err });
     }
 
-    res.json(data[0]); // Trả về đối tượng chứa tổng doanh thu
+    if (!results.length) {
+      return res.status(404).json({ message: "Không có dữ liệu doanh thu trong khoảng thời gian này." });
+    }
+
+    res.status(200).json({ data: results });
   });
 };
+
 //Lấy tổng số doanh thu
 exports.getTotalRevenue = (req, res) => {
   const sql = `
@@ -102,18 +119,21 @@ exports.DailySaleProByDateRange = (req, res) => {
 
   const sql = `
     SELECT 
-      Products.Product_Name AS productName, 
-      SUM(order_details.Quantity) AS totalQuantity
+      products.Product_Name AS productName, 
+      products.Price AS productPrice, 
+      products.Promotion AS productPromotion, 
+      SUM(order_details.Quantity) AS totalQuantity,
+      MAX(products.Image) AS productImage
     FROM 
       orders
     JOIN 
       order_details ON orders.Order_ID = order_details.Order_ID
     JOIN 
-      Products ON order_details.Product_ID = Products.Product_ID
+      products ON order_details.Product_ID = products.Product_ID
     WHERE 
       orders.created_at >= ? AND orders.created_at <= ? AND orders.Status = 5
     GROUP BY 
-      Products.Product_Name
+      products.Product_Name, products.Price, products.Promotion
   `;
 
   const startDateTime = `${startDate} 00:00:00`;
@@ -124,9 +144,10 @@ exports.DailySaleProByDateRange = (req, res) => {
       return res.status(500).json({ message: "Lỗi khi lấy dữ liệu tổng doanh thu", error: err });
     }
 
-    res.json(data); // Trả về mảng sản phẩm với số lượng bán được
+    res.json(data); // Trả về mảng sản phẩm với số lượng bán được và hình ảnh
   });
 };
+
 
 
 

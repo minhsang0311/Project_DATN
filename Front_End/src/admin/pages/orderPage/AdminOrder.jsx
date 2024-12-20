@@ -22,7 +22,7 @@ const AdminOrder = ({ searchResults }) => {
         }
 
         try {
-          const response = await axios.get('http://localhost:3000/admin/order', {
+          const response = await axios.get(`${process.env.REACT_APP_HOST_URL}admin/order`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -47,7 +47,7 @@ const AdminOrder = ({ searchResults }) => {
 
     try {
       await axios.put(
-        `http://localhost:3000/admin/order/${orderId}`,
+        `${process.env.REACT_APP_HOST_URL}admin/order/${orderId}`,
         { Status: newStatus },
         {
           headers: {
@@ -58,9 +58,9 @@ const AdminOrder = ({ searchResults }) => {
 
       // Cập nhật trạng thái trong danh sách đơn hàng
       setOrders((prevOrders) => {
-        let updatedOrders = prevOrders.map((order) =>
+        let updatedOrders = Array.isArray(prevOrders) ? prevOrders.map((order) =>
           order.Order_ID === orderId ? { ...order, Status: newStatus } : order
-        );
+        ) : null ;
         return updatedOrders;
       });
 
@@ -91,7 +91,7 @@ const AdminOrder = ({ searchResults }) => {
             <div className="grid-header">Địa chỉ</div>
             <div className="grid-header">Trạng thái</div>
             <div className="grid-header">Cập nhật trạng thái</div>
-          {displayOrders.map((order) => (
+          { Array.isArray(displayOrders) ? displayOrders.map((order) => (
             <Fragment key={order.Order_ID}>
               <div className="grid-item grid-item-element">{order.Order_ID}</div>
               <div className="grid-item grid-item-element">{order.User_Name}</div>
@@ -137,7 +137,7 @@ const AdminOrder = ({ searchResults }) => {
                 )}
               </div>
             </Fragment>
-          ))}
+          )) : null }
       </div>
     </div>
   );

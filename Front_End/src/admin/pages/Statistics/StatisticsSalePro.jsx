@@ -27,9 +27,6 @@ const StatisticsSalePro = () => {
     const start = formatDate(firstDayLastMonth);
     const end = formatDate(lastDayLastMonth);
 
-    console.log("Start Date: ", start);  // Kiểm tra giá trị startDate
-    console.log("End Date: ", end);  // Kiểm tra giá trị endDate
-
     setStartDate(start);
     setEndDate(end);
     handleFetchData();
@@ -44,7 +41,7 @@ const StatisticsSalePro = () => {
 
   const handleFetchData = () => {
     setLoading(true);
-    fetch(`http://localhost:3000/admin/stats-statisticsSalePro?startDate=${startDate}&endDate=${endDate}`, {
+    fetch(`${process.env.REACT_APP_HOST_URL}admin/stats-statisticsSalePro?startDate=${startDate}&endDate=${endDate}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -53,7 +50,6 @@ const StatisticsSalePro = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data)
         if (startDate > endDate) {
           alert("Ngày bắt đầu và ngày kết thúc không hợp lệ");
           return;
@@ -79,7 +75,6 @@ const StatisticsSalePro = () => {
         }
       })
       .catch((err) => {
-        console.log("Lỗi khi lấy dữ liệu thống kê.", err);
         setError("Lỗi khi lấy dữ liệu thống kê.");
       })
       .finally(() => setLoading(false));
@@ -107,9 +102,9 @@ const StatisticsSalePro = () => {
             onChange={(e) => setEndDate(e.target.value)}
           />
         </label>
-        <button onClick={handleFetchData} disabled={loading}>
+        {/* <button onClick={handleFetchData} disabled={loading}>
           {loading ? "Đang tải..." : "Thống kê"}
-        </button>
+        </button> */}
       </div>
       {error && <p style={{ color: "red" }}>{error}</p>}
 
@@ -119,16 +114,22 @@ const StatisticsSalePro = () => {
             <thead>
               <tr>
                 <th>Tên sản phẩm</th>
+                <th>Hình ảnh</th>
+                <th>Giá gốc</th>
+                <th>Giá khuyến mãi</th>
                 <th>Số lượng bán</th>
               </tr>
             </thead>
             <tbody>
-              {salesData.map((item, index) => (
+              { Array.isArray(salesData) ? salesData.map((item, index) => (
                 <tr key={index}>
                   <td>{item.productName}</td>
+                  <td><img src={item.productImage} alt="" style={{ width: '100px', height: 'auto' }} /></td>
+                  <td>{Number(item.productPrice).toLocaleString("vi")}VNĐ</td>
+                  <td>{Number(item.productPrice - (item.productPrice * item.productPromotion) / 100).toLocaleString("vi")}VNĐ</td>
                   <td>{item.totalQuantity}</td>
                 </tr>
-              ))}
+              )) : null }
             </tbody>
           </table>
         )}

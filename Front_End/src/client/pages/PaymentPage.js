@@ -48,41 +48,29 @@ const PaymentPage = () => {
 
         setUserId(storedUserId?.id || null);
     }, [navigate, productDetails]);
-
     useEffect(() => {
-        const tokenUser = localStorage.getItem("tokenUser");
-        const debounceTimeout = setTimeout(() => {
-            if (voucherCode) {
-                fetch(`${process.env.REACT_APP_HOST_URL}user/voucher`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${tokenUser}`
-                    },
-                    body: JSON.stringify({ code: voucherCode }),
+        // Gọi API để lấy thông tin người dùng khi userId được thiết lập
+        if (userId) {
+            fetch(`${process.env.REACT_APP_HOST_URL}user/userDetail/${userId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const { User_Name, Email } = data.data;
+                        setName(User_Name || '');
+                        setEmail(Email || '');
+                    } else {
+                        toast.error('Không thể lấy thông tin người dùng.');
+                    }
                 })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success === true) {
-                            toast.error(data.discount);
-                            toast.success(`Voucher áp dụng thành công! Giảm ${data.discount}%`);
-                        } else {
-                            setDiscount(0);
-                            toast.error(data.message);
-                        }
-                    })
-                    .catch(() => {
-                        setDiscount(0);
-                        setVoucherMessage('Lỗi xảy ra vui lòng kiểm tra voucher.');
-                    });
-            } else {
-                setDiscount(0);
-                setVoucherMessage('');
-            }
-        }, 1000); // 1 giây debounce
+                .catch(() => toast.error('Lỗi khi lấy thông tin người dùng.'));
+        }
+    }, [userId]);
 
-        return () => clearTimeout(debounceTimeout);
-    }, [voucherCode]);
 
     const handleVoucherChange = (e) => {
         setVoucherCode(e.target.value);
@@ -99,7 +87,35 @@ const PaymentPage = () => {
         if (!paymentMethod) {
             return toast.error('Vui lòng chọn phương thức thanh toán.');
         }
-
+        const tokenUser = localStorage.getItem("tokenUser");
+        if (voucherCode) {
+            fetch(`${process.env.REACT_APP_HOST_URL}user/voucher`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${tokenUser}`
+                },
+                body: JSON.stringify({ code: voucherCode }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success === true) {
+                        toast.error(data.discount);
+                        toast.success(`Voucher áp dụng thành công! Giảm ${data.discount}%`);
+                    } else {
+                        setDiscount(0);
+                        toast.error(data.message);
+                    }
+                })
+                .catch(() => {
+                    setDiscount(0);
+                    setVoucherMessage('Lỗi xảy ra vui lòng kiểm tra voucher.');
+                });
+        } else {
+            setDiscount(0);
+            setVoucherMessage('');
+        } // 1 giây debounce
+        ;
         const orderData = {
             User_Name: name,
             Address: address,
@@ -108,16 +124,16 @@ const PaymentPage = () => {
             payment_method: paymentMethod,
             total_amount: finalAmount,
             total_quantity: totalQuantity,
-            items: cartItems.map(item => ({
+            items: Array.isArray(cartItems) ? cartItems.map(item => ({
                 Product_ID: item.id,
+                Product_Name: item.name,
                 Quantity: item.quantity,
                 Price: item.price
-            })),
+            })) : null,
             User_ID: userId,
             Voucher_ID: voucherCode || null,
             Note: note || null
         };
-
         if (paymentMethod === 'COD') {
             fetch(`${process.env.REACT_APP_HOST_URL}user/payment`, {
                 method: 'POST',
@@ -131,7 +147,7 @@ const PaymentPage = () => {
                     if (data.success === true) {
                         alert('Thanh toán COD thành công!');
                         if (!productDetails) {
-                            localStorage.removeItem('cart'); // Xóa giỏ hàng nếu không phải "Mua ngay"
+                            localStorage.removeItem('cart');
                         }
                         navigate('/order');
                     } else {
@@ -139,7 +155,6 @@ const PaymentPage = () => {
                     }
                 })
                 .catch(error => {
-                    console.error('Error:', error);
                     alert('Lỗi khi xử lý thanh toán COD.');
                 });
         } else if (paymentMethod === 'Online') {
@@ -238,7 +253,7 @@ const PaymentPage = () => {
                                 <a href>Tạm Tính</a>
                             </div>
                             <div class="order-summary">
-                                {cartItems.map((item, index) => (
+                                { Array.isArray(cartItems) ? cartItems.map((item, index) => (
                                     <div key={index} className="product-item">
                                         <div className="product-info">
                                             <img src={item.image} alt={item.name} />
@@ -248,7 +263,7 @@ const PaymentPage = () => {
                                             <a href>{item.price.toLocaleString('vi')}₫</a>
                                         </div>
                                     </div>
-                                ))}
+                                )) : null }
                                 <div className='voucher'>
                                     <label>
                                         Nhập voucher :

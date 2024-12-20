@@ -25,8 +25,6 @@ JOIN order_status os ON o.Status = os.Status_ID
 JOIN order_details od ON o.Order_ID = od.Order_ID
 JOIN products p ON od.Product_ID = p.Product_ID
 WHERE o.User_ID = ?
-
->>>>>>> 959a6115732e0eed67e98b95fe3ea2efa2de6a7d
     `;
     db.query(sql, [userId], (err, data) => {
         if (err) {

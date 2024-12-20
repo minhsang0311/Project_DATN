@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 const VoucherAdd = () => {
     const token = localStorage.getItem("token");
+    const navigate = useNavigate()
     const [voucher, setVoucher] = useState({
         Code: "",
         Discount: "",
@@ -16,7 +19,17 @@ const VoucherAdd = () => {
             return;
         }
 
-        fetch(`http://localhost:3000/admin/postVoucher`, {
+        const currentDate = new Date();
+        const expirationDate = new Date(voucher.Expiration_Date);
+
+        // Kiểm tra nếu ngày hết hạn nhỏ hơn ngày hiện tại
+        if (expirationDate < currentDate) {
+            alert("Ngày hết hạn của voucher phải lớn hơn ngày hiện tại.");
+            return;
+        }
+
+        // Nếu dữ liệu hợp lệ, tiếp tục gửi yêu cầu đến server
+        fetch(`${process.env.REACT_APP_HOST_URL}admin/postVoucher`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -27,7 +40,10 @@ const VoucherAdd = () => {
             .then((res) => res.json())
             .then((data) => {
                 if (data.message) {
-                    alert(data.message); // Hiển thị thông báo từ server
+                    alert(data.message);
+                    if(data.message === "Thêm voucher thành công") {
+                        navigate("/admin/vouchers")
+                    }
                 }
 
                 // Chỉ reset form khi thêm voucher thành công

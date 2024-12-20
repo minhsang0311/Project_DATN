@@ -26,13 +26,13 @@ function BrandProducts() {
     const { spTrong1Trang, tongSoTrang, currentPage, handlePageChange } = usePagination(listsp, pageSize);
 
     useEffect(() => {
-        fetch(`http://localhost:3000/user/Products_brand/${Brand_ID}`)
+        fetch(`${process.env.REACT_APP_HOST_URL}user/Products_brand/${Brand_ID}`)
           .then(res => res.json())
           .then(data => {
             setListSP(data);
           });
     
-        fetch(`http://localhost:3000/user/brand/${Brand_ID}`) // API lấy thông tin danh mục
+        fetch(`${process.env.REACT_APP_HOST_URL}user/brand/${Brand_ID}`) // API lấy thông tin danh mục
           .then(res => res.json())
           .then(brandData => {
             
@@ -56,9 +56,9 @@ function BrandProducts() {
                     </div>
                     <div className="right-products">
                         <div className="box-sp">
-                            {spTrong1Trang.map((sp, index) => (
+                            { Array.isArray(spTrong1Trang) ? spTrong1Trang.map((sp, index) => (
                                 <Product key={index} product={sp} />
-                            ))}
+                            )) : null }
                         </div>
                         {tongSoTrang > 1 && (
                             <ReactPaginate

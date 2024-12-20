@@ -2,7 +2,16 @@ const db = require('../../config/db');
 // const removeDiacritics = require('diacritics').remove;
 
 exports.getAllProducts = (req, res) => {
-    let sql = `SELECT * FROM Products`;
+    let sql = `SELECT 
+    products.*,
+    brands.Brand_Name AS brand_name,
+    categories.Category_Name AS category_name
+FROM 
+    products
+JOIN 
+    brands ON products.Brand_ID = brands.Brand_ID
+JOIN 
+    categories ON products.Category_ID = categories.Category_ID;`;
     db.query(sql, (err, data) => {
         if (err) return res.json({ "message": "Lỗi lấy danh sách sản phẩm", err });
         res.json(data);
@@ -16,7 +25,7 @@ exports.getProductDetail = (req, res) => {
         return;
     }
     let sql = `SELECT Product_ID, Category_ID,Brand_ID, Product_Name, Image, Price, Promotion, Description, Views, Show_Hidden 
-                FROM Products WHERE Product_ID = ?`
+                FROM products WHERE Product_ID = ?`
     db.query(sql, id, (err, data) => {
         if (err) res.json({ "message": "Lỗi lấy chi tiết một sản phẩm", err })
         else res.json(data[0]);
@@ -55,7 +64,7 @@ exports.postProduct = (req, res) => {
     data.Show_Hidden = data.Show_Hidden === 'true' || data.Show_Hidden == 1 ? 1 : 0;
 
     // SQL thêm sản phẩm chính
-    const sql = `INSERT INTO Products SET ?`;
+    const sql = `INSERT INTO products SET ?`;
     db.query(sql, data, (err, result) => {
         if (err) {
             console.error("Lỗi thêm sản phẩm:", err);
@@ -105,7 +114,7 @@ exports.putProduct = (req, res) => {
     }
 
     // Cập nhật thông tin sản phẩm
-    const updateProductSql = "UPDATE Products SET ? WHERE Product_ID=?";
+    const updateProductSql = "UPDATE products SET ? WHERE Product_ID=?";
     db.query(updateProductSql, [data, productId], (err) => {
         if (err) {
             console.error("Lỗi cập nhật sản phẩm:", err);
@@ -151,7 +160,18 @@ exports.deleteProduct = (req, res) => {
         if (result[0].count > 0) {
             return res.status(400).json({ message: "Không thể xóa sản phẩm vì đã tồn tại trong đơn hàng chi tiết." });
         }
-        let deleteSql = `DELETE FROM Products WHERE Product_ID=?`;
+        let checkWishlist = `SELECT COUNT(*) AS wishlist FROM wishlist WHERE Product_ID = ?`
+        db.query(checkWishlist, id, (err, result) => {
+            console.log(result)
+            if (err) {
+                return res.json({ message: "Lỗi kiểm tra danh sách yêu thích", err });
+            }
+            // Nếu sản phẩm đã tồn tại trong danh sách yêu thích, thông báo không thể xóa
+            if (result[0].wishlist > 0) {
+                return res.status(400).json({ message: "Không thể xóa sản phẩm vì đã tồn tại trong danh sách yêu thích." });
+            }
+        })
+        let deleteSql = `DELETE FROM products WHERE Product_ID=?`;
         db.query(deleteSql, id, (err, data) => {
             if (err) {
                 res.json({ "message": "Lỗi xóa sản phẩm", err });
@@ -185,7 +205,7 @@ exports.searchProducts = (req, res) => {
         return res.status(400).json({ message: "Vui lòng cung cấp từ khóa tìm kiếm." });
     }
 
-    const sql = `SELECT * FROM Products WHERE Product_Name LIKE ?`;
+    const sql = `SELECT * FROM products WHERE Product_Name LIKE ?`;
     db.query(sql, [`%${keyword}%`], (err, data) => {
         if (err) {
             console.error("Database error:", err);

@@ -49,7 +49,7 @@ const Comments = ({ productId }) => {
             if (!userId) return;  // Nếu không có userId, không kiểm tra quyền bình luận
 
             try {
-                const response = await fetch(`http://localhost:3000/user/orders/canComment/${userId}/${productId}`, {
+                const response = await fetch(`${process.env.REACT_APP_HOST_URL}user/orders/canComment/${userId}/${productId}`, {
                     method: 'GET',
                     headers: {
                         "Content-Type": "application/json",
@@ -126,7 +126,7 @@ const Comments = ({ productId }) => {
 
             <ul>
                 {comments.length > 0 ? (
-                    comments.map((comment) => (
+                    Array.isArray(comments) ? comments.map((comment) => (
                         <li key={comment.Review_ID} className="comment-item">
                             <img
                                 src="https://i.pinimg.com/736x/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg"
@@ -139,7 +139,7 @@ const Comments = ({ productId }) => {
                                 <p>{comment.Comment}</p>
                             </div>
                         </li>
-                    ))
+                    )) : null
                 ) : (
                     <li><p>Chưa có bình luận nào cho sản phẩm này.</p></li>
                 )}

@@ -5,10 +5,10 @@ exports.getWishlist = async (req, res) => {
 
     try {
         const wishlist = await db.query(
-            `SELECT Products.* 
-             FROM Wishlist 
-             JOIN Products ON Wishlist.Product_ID = Products.Product_ID
-             WHERE Wishlist.User_ID = ?`,
+            `SELECT products.* 
+             FROM wishlist 
+             JOIN products ON wishlist.Product_ID = products.Product_ID
+             WHERE wishlist.User_ID = ?`,
             [userId]
         );
 
@@ -23,13 +23,13 @@ exports.postWishlist = async (req, res) => {
     const { userId, productId } = req.body;
     try {
         const existing = await db.query(
-            'SELECT * FROM Wishlist WHERE User_ID = ? AND Product_ID = ?',
+            'SELECT * FROM wishlist WHERE User_ID = ? AND Product_ID = ?',
             [userId, productId]
         );
         if (existing.length > 0) {
             return res.status(400).json({ message: 'Sản phẩm đã có trong danh sách yêu thích.' });
         }
-        await db.query('INSERT INTO Wishlist (User_ID, Product_ID) VALUES (?, ?)', [userId, productId]);
+        await db.query('INSERT INTO wishlist (User_ID, Product_ID) VALUES (?, ?)', [userId, productId]);
 
         res.status(200).json({ message: 'Thêm vào danh sách yêu thích thành công.' });
     } catch (error) {
@@ -47,7 +47,7 @@ exports.deleteWishlist = async (req, res) => {
         }
 
         // Xóa sản phẩm yêu thích trong database
-        await db.query('DELETE FROM Wishlist WHERE User_ID = ? AND Product_ID = ?', [userId, productId]);
+        await db.query('DELETE FROM wishlist WHERE User_ID = ? AND Product_ID = ?', [userId, productId]);
         res.status(200).json({ message: 'Đã xóa sản phẩm khỏi danh sách yêu thích.' });
     } catch (error) {
         console.error(error);

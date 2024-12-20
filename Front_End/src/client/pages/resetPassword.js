@@ -28,8 +28,6 @@ const ResetPassword = () => {
                 `${process.env.REACT_APP_HOST_URL}user/reset-password/${token}`,
                 { newPassword }
             );
-            console.log(response)
-            console.log(response.data.message)
           toast.success(response.data.message);
 
             navigate('/register_login'); // Chuyển hướng người dùng đến trang đăng nhập

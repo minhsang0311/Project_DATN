@@ -29,7 +29,7 @@ function OrderDetail() {
             return;
         }
 
-        axios.get(`http://localhost:3000/user/orderDetail/${orderId}`, {
+        axios.get(`${process.env.REACT_APP_HOST_URL}user/orderDetail/${orderId}`, {
             headers: { Authorization: `Bearer ${token}` }
         })
             .then(res => setOrderDetail(res.data[0]))  // Lấy dữ liệu đơn hàng chi tiết từ API
@@ -49,7 +49,7 @@ function OrderDetail() {
 
         const token = localStorage.getItem('tokenUser');
         try {
-            await axios.put(`http://localhost:3000/user/cancelOrder/${orderId}`, 
+            await axios.put(`${process.env.REACT_APP_HOST_URL}user/cancelOrder/${orderId}`, 
                 { reason: finalReason },
                 { headers: { 'Authorization': `Bearer ${token}` } }
             );
@@ -99,9 +99,9 @@ function OrderDetail() {
                             value={cancelReason}
                         >
                             <option value="">Chọn lý do hủy đơn hàng</option>
-                            {suggestedReasons.map((reason, index) => (
+                            { Array.isArray(suggestedReasons) ? suggestedReasons.map((reason, index) => (
                                 <option key={index} value={reason}>{reason}</option>
-                            ))}
+                            )) : null }
                         </select>
                         {cancelReason === "Lý do khác" && (
                             <textarea
