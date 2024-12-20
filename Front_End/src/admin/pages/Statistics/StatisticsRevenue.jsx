@@ -25,9 +25,6 @@ const StatisticsRevenue = () => {
     const start = formatDate(firstDayLastMonth);
     const end = formatDate(lastDayLastMonth);
 
-    console.log("Start Date: ", start);  // Kiểm tra giá trị startDate
-    console.log("End Date: ", end);  // Kiểm tra giá trị endDate
-
     setStartDate(start);
     setEndDate(end);
     fetchTotalRevenue();
@@ -39,7 +36,7 @@ const StatisticsRevenue = () => {
   }, [startDate, endDate]);
   // Hàm lấy tổng tất cả doanh thu
   const fetchTotalRevenue = () => {
-    fetch("http://localhost:3000/admin/stats-totalRevenue", {
+    fetch(`${process.env.REACT_APP_HOST_URL}admin/stats-totalRevenue`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -82,9 +79,8 @@ const StatisticsRevenue = () => {
           return;
         }
 
-        const labels = data.data.map((entry) => entry.Date.split("T")[0]);
-        console.log(labels)
-        const revenues = data.data.map((entry) => parseFloat(entry.TotalRevenue));
+        const labels = Array.isArray(data.data) ? data.data.map((entry) => entry.Date.split("T")[0]) : null;
+        const revenues = Array.isArray(data.data) ? data.data.map((entry) => parseFloat(entry.TotalRevenue)) : null;
 
         setChartData({
           labels: labels,
@@ -121,7 +117,6 @@ const StatisticsRevenue = () => {
             <tbody>
               <tr>
                 <td>{totalRevenue.toLocaleString()} VNĐ</td>
-                {console.log(totalRevenue)}
               </tr>
             </tbody>
           </table>

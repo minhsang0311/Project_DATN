@@ -92,7 +92,7 @@ function Wishlist() {
                     <div className="grid-header">Giá</div>
                     <div className="grid-header">Mô tả</div>
                     <div className="grid-header">Thao tác</div>
-                    {wishlist.map((product, index) => (
+                    { Array.isArray(wishlist) ? wishlist.map((product, index) => (
                         <Fragment key={product.Product_ID}>
 
                             <div className="grid-item grid-item-element">{index + 1}</div>
@@ -108,9 +108,9 @@ function Wishlist() {
                             </div>
                             <div className="grid-item grid-item-element">{Number(product.Price).toLocaleString("vi")} VNĐ</div>
                             <div className="grid-item">
-                                {product.Description.split('\n').map((desc, index) => (
+                                {Array.isArray(product) ? product.Description.split('\n').map((desc, index) => (
                                     <div className="description" key={index}>{desc.replace('-', '')}</div>
-                                ))}
+                                )) : null }
                             </div>
                             <div className="grid-item grid-item-button">
                                 <button
@@ -121,7 +121,7 @@ function Wishlist() {
                                 </button>
                             </div>
                         </Fragment>
-                    ))}
+                    )) : null }
                 </div>
             </div>
             <Footer />

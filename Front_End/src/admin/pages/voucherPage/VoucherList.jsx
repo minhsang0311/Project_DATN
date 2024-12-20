@@ -4,7 +4,7 @@ import "../../styles/pages/voucherList.css";
 
 const VouchersList = ({ searchResults }) => {
     const token = localStorage.getItem('token');
-    const url = `http://localhost:3000/admin`;
+    const url = `${process.env.REACT_APP_HOST_URL}admin`;
     const [vouchers, setVouchers] = useState([]);
 
     // Fetch voucher list
@@ -23,52 +23,52 @@ const VouchersList = ({ searchResults }) => {
         }
     }, [token, searchResults]);
 
-    // Function to lock/unlock voucher
-    const toggleVoucherLock = (id, expirationDate, isUsed, isLocked) => {
-        const currentDate = new Date();
-        const expiryDate = new Date(expirationDate);
+    // // Function to lock/unlock voucher
+    // const toggleVoucherLock = (id, expirationDate, isUsed, isLocked) => {
+    //     const currentDate = new Date();
+    //     const expiryDate = new Date(expirationDate);
 
-        // Check if the voucher has been used and cannot be modified
-        if (isUsed) {
-            alert("Voucher đã được cung cấp cho người dùng và không thể thay đổi trạng thái.");
-            return;
-        }
+    //     // Check if the voucher has been used and cannot be modified
+    //     if (isUsed) {
+    //         alert("Voucher đã được cung cấp cho người dùng và không thể thay đổi trạng thái.");
+    //         return;
+    //     }
 
-        // Check if the voucher has expired
-        if (expiryDate < currentDate) {
-            alert("Voucher đã hết hạn và không thể thay đổi trạng thái.");
-            return;
-        }
+    //     // Check if the voucher has expired
+    //     if (expiryDate < currentDate) {
+    //         alert("Voucher đã hết hạn và không thể thay đổi trạng thái.");
+    //         return;
+    //     }
 
-        const action = isLocked ? 'Mở khóa' : 'Khóa';
-        if (!window.confirm(`Bạn có chắc chắn muốn ${action.toLowerCase()} voucher này không?`)) {
-            return;
-        }
+    //     const action = isLocked ? 'Mở khóa' : 'Khóa';
+    //     if (!window.confirm(`Bạn có chắc chắn muốn ${action.toLowerCase()} voucher này không?`)) {
+    //         return;
+    //     }
 
-        // Gọi API để khóa/mở khóa voucher
-        fetch(`${url}/vouchers/${id}/lock`, {
-            method: 'PATCH',
-            headers: {
-                "Content-type": "application/json",
-                'Authorization': 'Bearer ' + token,
-            }
-        })
-            .then(res => res.json())
-            .then(data => {
-                if (data.message.includes("không tồn tại")) {
-                    alert(data.message);
-                } else {
-                    alert(`Voucher đã được ${action.toLowerCase()} thành công!`);
-                    // Cập nhật lại trạng thái của voucher sau khi đã thay đổi
-                    setVouchers(prev => 
-                        prev.map(voucher =>
-                            voucher.Voucher_ID === id ? { ...voucher, Locked: !isLocked } : voucher
-                        )
-                    );
-                }
-            })
-            .catch(error => console.error("Error toggling voucher lock:", error));
-    };
+    //     // Gọi API để khóa/mở khóa voucher
+    //     fetch(`${url}/vouchers/${id}/lock`, {
+    //         method: 'PATCH',
+    //         headers: {
+    //             "Content-type": "application/json",
+    //             'Authorization': 'Bearer ' + token,
+    //         }
+    //     })
+    //         .then(res => res.json())
+    //         .then(data => {
+    //             if (data.message.includes("không tồn tại")) {
+    //                 alert(data.message);
+    //             } else {
+    //                 alert(`Voucher đã được ${action.toLowerCase()} thành công!`);
+    //                 // Cập nhật lại trạng thái của voucher sau khi đã thay đổi
+    //                 setVouchers(prev => 
+    //                     prev.map(voucher =>
+    //                         voucher.Voucher_ID === id ? { ...voucher, Locked: !isLocked } : voucher
+    //                     )
+    //                 );
+    //             }
+    //         })
+    //         .catch(error => console.error("Error toggling voucher lock:", error));
+    // };
 
     const displayVouchers = searchResults && searchResults.length > 0 ? searchResults : vouchers;
 
@@ -89,7 +89,7 @@ const VouchersList = ({ searchResults }) => {
                 <div className="grid-header-voucher">Thời Hạn</div>
                 <div className="grid-header-voucher">Trạng thái</div>
                 <div className="grid-header-voucher">Thao tác</div>
-                {displayVouchers.map((voucher, index) => (
+                { Array.isArray(displayVouchers) ? displayVouchers.map((voucher, index) => (
                     <Fragment key={voucher.Voucher_ID}>
                         <div className="grid-item-voucher">{index + 1}</div>
                         <div className="grid-item-voucher">{voucher.Code}</div>
@@ -104,16 +104,16 @@ const VouchersList = ({ searchResults }) => {
                             >
                                 ✏️
                             </Link>
-                            <button
+                            {/* <button
                                 onClick={() => toggleVoucherLock(voucher.Voucher_ID, voucher.Expiration_Date, voucher.isUsed, voucher.Locked)} // Passing params
                                 className={`delete-btn ${voucher.Locked ? "disabled" : ""}`}
                                 disabled={voucher.Locked}
                             >
                                 {voucher.Locked ? "Mở khóa" : "Khóa"}
-                            </button>
+                            </button> */}
                         </div>
                     </Fragment>
-                ))}
+                )) : null }
             </div>
         </div>
     );

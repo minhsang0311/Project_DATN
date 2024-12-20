@@ -13,7 +13,7 @@ const ManufacturerUpdate = () => {
 
   // Fetch the current brand details when the component mounts
   useEffect(() => {
-    axios.get(`http://localhost:3000/admin/brandDetail/${id}`, {
+    axios.get(`${process.env.REACT_APP_HOST_URL}admin/brandDetail/${id}`, {
       headers: {
         'Authorization': `Bearer ${token}`, // Include token in the Authorization header
       },
@@ -36,7 +36,7 @@ const ManufacturerUpdate = () => {
 
     setLoading(true);
 
-    axios.put(`http://localhost:3000/admin/brandUpdate/${id}`, formData, {
+    axios.put(`${process.env.REACT_APP_HOST_URL}admin/brandUpdate/${id}`, formData, {
       headers: {
         'Authorization': `Bearer ${token}`, // Include token in the Authorization header
       },

@@ -17,7 +17,7 @@ const VoucherUpdate = () => {
 
     useEffect(() => {
         // Lấy chi tiết voucher
-        fetch(`http://localhost:3000/admin/getVoucherDetail/${id}`, {
+        fetch(`${process.env.REACT_APP_HOST_URL}admin/getVoucherDetail/${id}`, {
             headers: { Authorization: `Bearer ${token}` },
         })
             .then((res) => {
@@ -56,7 +56,7 @@ const VoucherUpdate = () => {
             return;
         }
         try {
-            const response = await fetch(`http://localhost:3000/admin/putVoucher/${id}`, {
+            const response = await fetch(`${process.env.REACT_APP_HOST_URL}/admin/putVoucher/${id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",

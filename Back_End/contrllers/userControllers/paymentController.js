@@ -100,7 +100,7 @@ exports.paymentController = (req, res) => {
     if (Voucher_ID) {
         const checkVoucherQuery = `
             SELECT v.Voucher_ID, v.Expiration_Date, o.User_ID AS Used_By
-            FROM Vouchers v
+            FROM vouchers v
             LEFT JOIN orders o ON v.Voucher_ID = o.Voucher_ID
             WHERE v.Code = ? AND v.Expiration_Date > NOW()
         `;

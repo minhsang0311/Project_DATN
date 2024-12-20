@@ -72,7 +72,7 @@ const HomeAdmin = () => {
     const handleSearch = async () => {
         const token = localStorage.getItem('token');
         try {
-            const response = await axios.get('http://localhost:3000/admin/searchAdmin', {
+            const response = await axios.get(`${process.env.REACT_APP_HOST_URL}admin/searchAdmin`, {
                 headers: { "Authorization": 'Bearer ' + token },
                 params: { searchTerm, entityType }
             });

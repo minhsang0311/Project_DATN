@@ -30,7 +30,6 @@ function Search() {
                 })
                 .then(data => {
                     setSearchResults(data);
-                    console.log("Search results", data); // Log the fetched data
                 })
                 .catch(error => console.error("Error fetching search results:", error));
         } else {
@@ -61,11 +60,11 @@ function Search() {
             <Header/>
         <div className="search-page">
             <div className="header1">
-                <p>Có <span>{searchResults.length}</span> sản phẩm với từ khóa " <span>{searchQuery}</span> "</p>
+                <p>Có  <span>{searchResults.length}</span>      sản phẩm với từ khóa " <span>{searchQuery}</span> "</p>
             </div>
             <div className="box-sp">
                 {searchResults.length > 0 ? (
-                    searchResults.map((sp, i) => (
+                     Array.isArray(searchResults) ? searchResults.map((sp, i) => (
                         <div key={i} className="product">
                             {sp.Promotion > 0 && (
                                 <p className="discount-label">-{sp.Promotion}%</p>
@@ -88,7 +87,7 @@ function Search() {
                                 <button className="add-to-cart" onClick={() => handleAddToCart(sp)}>Giỏ hàng</button>
                             </div>
                         </div>
-                    ))
+                    )) : null
                 ) : (
                     ""
                 )}

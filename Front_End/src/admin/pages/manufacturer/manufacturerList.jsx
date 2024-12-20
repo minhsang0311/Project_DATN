@@ -17,7 +17,7 @@ const ManufacturerList = ({ searchResults }) => {
           setLoading(true);
           
           // Making the request with token in the Authorization header
-          const response = await axios.get('http://localhost:3000/admin/brands', {
+          const response = await axios.get(`${process.env.REACT_APP_HOST_URL}admin/brands`, {
             headers: {
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${token}`  // Include token in headers for authorization
@@ -43,7 +43,7 @@ const ManufacturerList = ({ searchResults }) => {
 
     try {
       // Send delete request with token for authorization
-      const response = await axios.delete(`http://localhost:3000/admin/brandDelete/${id}`, {
+      const response = await axios.delete(`${process.env.REACT_APP_HOST_URL}admin/brandDelete/${id}`, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}` // Include token in headers for authorization
@@ -83,7 +83,7 @@ const ManufacturerList = ({ searchResults }) => {
           <div className="grid-header">ID</div>
           <div className="grid-header">Tên nhà sản xuất</div>
           <div className="grid-header">Thao tác</div>
-          {displayManufacturers.map(manufacturer => (
+          { Array.isArray(displayManufacturers) ? displayManufacturers.map(manufacturer => (
             <Fragment key={manufacturer.Brand_ID}>
               <div className="grid-item grid-item-element">{manufacturer.Brand_ID}</div>
               <div className="grid-item grid-item-element">{manufacturer.Brand_Name}</div>
@@ -92,7 +92,7 @@ const ManufacturerList = ({ searchResults }) => {
                 <button className="delete-btn" onClick={() => deleteManufacturer(manufacturer.Brand_ID)}>🗑️</button>
               </div>
             </Fragment>
-          ))}
+          )) : null }
         </div>
       ) : (
         <p className='manufacturerList-p'>Không có nhà sản xuất nào để hiển thị.</p>

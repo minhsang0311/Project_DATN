@@ -4,7 +4,7 @@ import "../../styles/pages/productList.css";
 
 const ProductList = ({ searchResults }) => {
     const token = localStorage.getItem('token');
-    const url = `http://localhost:3000/admin`;
+    const url = `${process.env.REACT_APP_HOST_URL}admin`;
     const [productList, setProductList] = useState([]);
 
     useEffect(() => {
@@ -63,10 +63,9 @@ const ProductList = ({ searchResults }) => {
                 <div className="grid-header">Lượt xem</div>
                 <div className="grid-header">Ẩn_Hiện</div>
                 <div className="grid-header">Thao tác</div>
-                {displayProducts.map((product, index) => (
+                { Array.isArray(displayProducts) ? displayProducts.map((product, index) => (
                     <Fragment key={product.Product_ID}>
-                        {console.log(product)}
-                        <div className="grid-item grid-item-element">{product.Product_ID}</div>
+                        <div className="grid-item grid-item-element">{index + 1}</div>
                         <div className="grid-item grid-item-element">{product.Product_Name}</div>
                         <div className="grid-item grid-item-element">
                             <img src={product.Image} alt={product.Product_Name} className="product-img" />
@@ -81,7 +80,7 @@ const ProductList = ({ searchResults }) => {
                             <button className="delete-btn" onClick={() => deleteProduct(product.Product_ID)}>🗑️</button>
                         </div>
                     </Fragment>
-                ))}
+                )) : null }
             </div>
         </div>
     );

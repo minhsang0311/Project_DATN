@@ -6,7 +6,7 @@ import "../../styles/pages/productUpdate.css";
 const ProductUpdate = () => {
     const token = localStorage.getItem('token');
     let { id } = useParams();
-    let url = `http://localhost:3000/admin`;
+    let url = `${process.env.REACT_APP_HOST_URL}admin`;
     const [productUpdate, setProductUpdate] = useState([]);
     const [image, setImage] = useState(null);
     const [imageFile, setImageFile] = useState(null); // lưu hình ảnh cũ khi không thay đổi hình ảnh cũ
@@ -30,7 +30,6 @@ const ProductUpdate = () => {
                 }
             })
             .catch(error => {
-                console.log("Đã có lỗi lấy chi tiết sản phẩm", error);
                 alert("Đã có lỗi lấy chi tiết sản phẩm", error);
             });
 
@@ -44,7 +43,6 @@ const ProductUpdate = () => {
                 setCategories(data);
             })
             .catch(error => {
-                console.log("Đã có lỗi lấy danh sách danh mục", error);
                 alert("Đã có lỗi lấy danh sách danh mục", error);
             });
 
@@ -58,7 +56,6 @@ const ProductUpdate = () => {
                 setBrands(data);
             })
             .catch(error => {
-                console.log("Đã có lỗi lấy danh sách hãng", error);
                 alert("Đã có lỗi lấy danh sách hãng", error);
             });
         fetch(`${url}/productImageDetail/${id}`, {
@@ -73,7 +70,6 @@ const ProductUpdate = () => {
                 }
             })
             .catch(error => {
-                console.log("Đã có lỗi lấy ảnh bổ sung", error);
                 alert("Đã có lỗi lấy ảnh bổ sung", error);
             });
     }, [id, token, reloadImages]);
@@ -137,18 +133,16 @@ const ProductUpdate = () => {
             formData.append("additionalImages", file);
         });
 
-        fetch(`http://localhost:3000/admin/productUpdate/${id}`, {
+        fetch(`${url}/productUpdate/${id}`, {
             method: "PUT",
             body: formData,
             headers: { 'Authorization': 'Bearer ' + token },
         })
             .then(res => res.json())
             .then(data => {
-                console.log("data", data);
                 window.location.href = '/admin/products';
             })
             .catch(error => {
-                console.log("Đã có lỗi sửa sản phẩm", error);
                 alert("Đã có lỗi sửa sản phẩm", error);
             });
     };
@@ -190,7 +184,7 @@ const ProductUpdate = () => {
 
                             <div className="additional-images">
                                 {/* Hiển thị ảnh cũ */}
-                                {additionalImages.map((img, index) => (
+                                { Array.isArray(additionalImages) ? additionalImages.map((img, index) => (
                                     <div key={index} className="additional-image-item">
                                         <img src={img.Image_URL} alt={`Ảnh bổ sung ${index + 1}`} className="additional-image-preview" />
                                         <button
@@ -200,10 +194,10 @@ const ProductUpdate = () => {
                                             x
                                         </button>
                                     </div>
-                                ))}
+                                )) : null }
 
                                 {/* Hiển thị ảnh mới */}
-                                {newAdditionalImages.map((file, index) => (
+                                { Array.isArray(newAdditionalImages) ? newAdditionalImages.map((file, index) => (
                                     <div key={`new-${index}`} className="additional-image-item">
                                         <img
                                             src={URL.createObjectURL(file)}
@@ -217,7 +211,7 @@ const ProductUpdate = () => {
                                             x
                                         </button>
                                     </div>
-                                ))}
+                                )) : null }
                             </div>
                         </div>
                         <div className="form-group">
@@ -243,11 +237,11 @@ const ProductUpdate = () => {
                                 }
                             >
                                 <option value="">Chọn danh mục sản phẩm...</option>
-                                {categories.map(category => (
+                                {  Array.isArray(categories) ? categories.map(category => (
                                     <option key={category.Category_ID} value={category.Category_ID}>
                                         {category.Category_Name}
                                     </option>
-                                ))}
+                                )) : null }
                             </select>
                         </div>
 
@@ -263,11 +257,11 @@ const ProductUpdate = () => {
                                 }
                             >
                                 <option value="">Chọn hãng sản phẩm...</option>
-                                {brands.map(brand => (
+                                { Array.isArray(brands) ? brands.map(brand => (
                                     <option key={brand.Brand_ID} value={brand.Brand_ID}>
                                         {brand.Brand_Name}
                                     </option>
-                                ))}
+                                )) : null }
                             </select>
                         </div>
                         <div className="form-group">

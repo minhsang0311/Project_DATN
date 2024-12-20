@@ -59,7 +59,6 @@ const PaymentPage = () => {
             })
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data)
                     if (data.success) {
                         const { User_Name, Email } = data.data;
                         setName(User_Name || '');
@@ -125,17 +124,16 @@ const PaymentPage = () => {
             payment_method: paymentMethod,
             total_amount: finalAmount,
             total_quantity: totalQuantity,
-            items: cartItems.map(item => ({
+            items: Array.isArray(cartItems) ? cartItems.map(item => ({
                 Product_ID: item.id,
                 Product_Name: item.name,
                 Quantity: item.quantity,
                 Price: item.price
-            })),
+            })) : null,
             User_ID: userId,
             Voucher_ID: voucherCode || null,
             Note: note || null
         };
-        console.log("cartItems", cartItems)
         if (paymentMethod === 'COD') {
             fetch(`${process.env.REACT_APP_HOST_URL}user/payment`, {
                 method: 'POST',
@@ -157,7 +155,6 @@ const PaymentPage = () => {
                     }
                 })
                 .catch(error => {
-                    console.log('Error:', error);
                     alert('Lỗi khi xử lý thanh toán COD.');
                 });
         } else if (paymentMethod === 'Online') {
@@ -193,120 +190,137 @@ const PaymentPage = () => {
     return (
         <Fragment>
             <Header />
-            <div className='container-pay'>
-                <Toaster position="top-right" reverseOrder={false} /> {/* Thêm Toaster */}
+            <div className="wrapper-pay">
+                <div className='container-pay'>
+                    <Toaster position="top-right" reverseOrder={false} /> {/* Thêm Toaster */}
 
-                <h1>THANH TOÁN</h1>
-                <div className="container-payment">
-                    <div className="section">
-                        <h2>Thông tin mua hàng</h2>
-                        <form>
-                            <div className="form-group">
-                                <label htmlFor="ho-ten">Họ và Tên*</label>
-                                <input
-                                    type="text"
-                                    id="ho-ten"
-                                    name="ho-ten"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
-                                    required
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="dia-chi">Địa chỉ nhận hàng*</label>
-                                <input
-                                    type="text"
-                                    id="dia-chi"
-                                    name="dia-chi"
-                                    value={address}
-                                    onChange={(e) => setAddress(e.target.value)}
-                                    required
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="so-dien-thoai">Số điện thoại*</label>
-                                <input
-                                    type="tel"
-                                    id="so-dien-thoai"
-                                    name="so-dien-thoai"
-                                    value={phone}
-                                    onChange={(e) => setPhone(e.target.value)}
-                                    required
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="email">Email*</label>
-                                <input
-                                    type="email"
-                                    id="email"
-                                    name="email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    required
-                                />
-                            </div>
-                        </form>
-                    </div>
-                    <div className="section">
-                        <h2>Phương thức thanh toán</h2>
-                        <div className='method-pay'>
-                            <div className='section_radio'>
-                                <input
-                                    type="radio"
-                                    value="COD"
-                                    checked={paymentMethod === 'COD'}
-                                    onChange={(e) => setPaymentMethod(e.target.value)}
-                                />
-                                <label>Thanh toán khi nhận hàng</label>
-                            </div>
-                            <div className='section_radio'>
-                                <input
-                                    type="radio"
-                                    value="Online"
-                                    checked={paymentMethod === 'Online'}
-                                    onChange={(e) => setPaymentMethod(e.target.value)}
-                                />
-                                <label>Thanh toán online</label>
-                            </div>
+                    <h1>THANH TOÁN</h1>
+                    <div className="container-payment">
+                        <div className="trai">
+                            <h2>Thông tin mua hàng</h2>
+                            <form>
+                                <div className="thongtin_khachhang">
+                                    <label htmlFor="ho-ten">Họ và Tên*</label>
+                                    <input
+                                        type="text"
+                                        id="ho-ten"
+                                        name="ho-ten"
+                                        value={name}
+                                        onChange={(e) => setName(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                                <div className="thongtin_khachhang">
+                                    <label htmlFor="dia-chi">Địa chỉ nhận hàng*</label>
+                                    <input
+                                        type="text"
+                                        id="dia-chi"
+                                        name="dia-chi"
+                                        value={address}
+                                        onChange={(e) => setAddress(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                                <div className="thongtin_khachhang">
+                                    <label htmlFor="so-dien-thoai">Số điện thoại*</label>
+                                    <input
+                                        type="tel"
+                                        id="so-dien-thoai"
+                                        name="so-dien-thoai"
+                                        value={phone}
+                                        onChange={(e) => setPhone(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                                <div className="thongtin_khachhang">
+                                    <label htmlFor="email">Email*</label>
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        name="email"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                            </form>
                         </div>
-                        <h2>Ghi chú</h2>
-                        <textarea
-                            name="ghi-chu"
-                            id="ghi-chu"
-                            value={note}
-                            onChange={(e) => setNote(e.target.value)}
-                            placeholder="Ghi chú về đơn hàng, ví dụ: thời gian hoặc chỉ dẫn địa điểm giao hàng chi tiết hơn."
-                        ></textarea>
-                    </div>
 
-                    <div className="section">
-                        <h2>Đơn hàng ({cartItems.length} sản phẩm)</h2>
-                        {cartItems.map((item, index) => (
-                            <div key={index} className="product-payment">
-                                <img src={item.image} alt={item.name} />
-                                <div className="product-info">
-                                    <p><span>Tên sản phẩm:</span> {item.name}</p>
-                                    <p><span>Số lượng:</span> x{item.quantity}</p>
-                                    <p><span>Giá:</span> {item.price.toLocaleString('vi')}₫</p>
+                        <div className="phai">
+                            <h2>Đơn hàng của bạn({cartItems.length} sản phẩm)</h2>
+                            <div class="tieude">
+                                <a href>Sản phẩm</a>
+                                <a href>Tạm Tính</a>
+                            </div>
+                            <div class="order-summary">
+                                { Array.isArray(cartItems) ? cartItems.map((item, index) => (
+                                    <div key={index} className="product-item">
+                                        <div className="product-info">
+                                            <img src={item.image} alt={item.name} />
+                                            <a href>{item.name} x <b>{item.quantity}</b></a>
+                                        </div>
+                                        <div class="product-price">
+                                            <a href>{item.price.toLocaleString('vi')}₫</a>
+                                        </div>
+                                    </div>
+                                )) : null }
+                                <div className='voucher'>
+                                    <label>
+                                        Nhập voucher :
+                                        <input
+                                            type='text'
+                                            value={voucherCode}
+                                            onChange={handleVoucherChange}
+                                        />
+                                    </label>
+                                    {voucherMessage && <p className="voucher-message">{voucherMessage}</p>}
+                                </div>
+                                <div class="order-total">
+                                    <p>Tổng tiền :<i><strong> {total.toLocaleString('vi')}₫</strong> </i></p>
+                                    <p>Tổng tiền sau giảm giá :<i><strong> {finalAmount.toLocaleString('vi')}₫</strong></i></p>
                                 </div>
                             </div>
-                        ))}
-                        <div className='voucher'>
-                            <label>
-                                Nhập voucher
-                                <input
-                                    type='text'
-                                    value={voucherCode}
-                                    onChange={handleVoucherChange}
-                                />
-                            </label>
-                            {voucherMessage && <p className="voucher-message">{voucherMessage}</p>}
+
+                            <div className='phuongthuc_thanhtoan'>
+                                <h2>Phương thức thanh toán</h2>
+                                <div className='method-pay'>
+                                    <div className='section_radio'>
+                                        <input
+                                            type="radio"
+                                            value="COD"
+                                            checked={paymentMethod === 'COD'}
+                                            onChange={(e) => setPaymentMethod(e.target.value)}
+                                        />
+                                        <label>Thanh toán khi nhận hàng</label>
+                                    </div>
+                                    <div className='section_radio'>
+                                        <input
+                                            type="radio"
+                                            value="Online"
+                                            checked={paymentMethod === 'Online'}
+                                            onChange={(e) => setPaymentMethod(e.target.value)}
+                                        />
+                                        <label>Thanh toán online</label>
+                                    </div>
+                                </div>
+                                <h2>Ghi chú</h2>
+                                <textarea
+                                    name="ghi-chu"
+                                    id="ghi-chu"
+                                    value={note}
+                                    onChange={(e) => setNote(e.target.value)}
+                                    placeholder="Ghi chú về đơn hàng, ví dụ: thời gian hoặc chỉ dẫn địa điểm giao hàng chi tiết hơn."
+                                ></textarea>
+                                <button className='payment_button' onClick={handlePayment}>Thanh toán</button>
+                            </div>
+
+                            <div class="shipping-policy">
+                                <span>Thông tin cá nhân của bạn sẽ được sử dụng đề xử lý đơn hàng,
+                                    tăng trải nghiệm sử dụng website, và cho các mục đích cụ thể khác
+                                    đã được mô tả trong chính sách riêng tư của chúng tôi.</span>
+
+                            </div>
                         </div>
-                        <div className='money'>
-                            <p className='total_money'><span>Tổng tiền: </span>{total.toLocaleString('vi')}₫</p>
-                            <p className='total_sale'><span>Tổng tiền sau giảm giá: </span>{finalAmount.toLocaleString('vi')}₫</p>
-                        </div>
-                        <button className='payment_button' onClick={handlePayment}>Thanh toán</button>
                     </div>
                 </div>
             </div>

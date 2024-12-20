@@ -27,9 +27,6 @@ const StatisticsSalePro = () => {
     const start = formatDate(firstDayLastMonth);
     const end = formatDate(lastDayLastMonth);
 
-    console.log("Start Date: ", start);  // Kiểm tra giá trị startDate
-    console.log("End Date: ", end);  // Kiểm tra giá trị endDate
-
     setStartDate(start);
     setEndDate(end);
     handleFetchData();
@@ -53,7 +50,6 @@ const StatisticsSalePro = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data)
         if (startDate > endDate) {
           alert("Ngày bắt đầu và ngày kết thúc không hợp lệ");
           return;
@@ -79,7 +75,6 @@ const StatisticsSalePro = () => {
         }
       })
       .catch((err) => {
-        console.log("Lỗi khi lấy dữ liệu thống kê.", err);
         setError("Lỗi khi lấy dữ liệu thống kê.");
       })
       .finally(() => setLoading(false));
@@ -126,7 +121,7 @@ const StatisticsSalePro = () => {
               </tr>
             </thead>
             <tbody>
-              {salesData.map((item, index) => (
+              { Array.isArray(salesData) ? salesData.map((item, index) => (
                 <tr key={index}>
                   <td>{item.productName}</td>
                   <td><img src={item.productImage} alt="" style={{ width: '100px', height: 'auto' }} /></td>
@@ -134,7 +129,7 @@ const StatisticsSalePro = () => {
                   <td>{Number(item.productPrice - (item.productPrice * item.productPromotion) / 100).toLocaleString("vi")}VNĐ</td>
                   <td>{item.totalQuantity}</td>
                 </tr>
-              ))}
+              )) : null }
             </tbody>
           </table>
         )}

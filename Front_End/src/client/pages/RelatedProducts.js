@@ -13,7 +13,6 @@ const SPLienQuan = ({ id, sosp }) => {
     fetch(`${process.env.REACT_APP_HOST_URL}user/san_pham_lien_quan/${id}/${sosp}`)
       .then((res) => res.json())
       .then((data) => {
-        console.log('Dữ liệu trả về từ API:', data); // Log để kiểm tra cấu trúc dữ liệu
         if (Array.isArray(data) && data.length > 0) {
           setListSP(data);
         } else if (data && data.products && Array.isArray(data.products) && data.products.length > 0) {
@@ -52,15 +51,12 @@ const SPLienQuan = ({ id, sosp }) => {
     }, 3000); // Hiện thông báo trong 3 giây
   };
 
-  console.log('Danh sách sản phẩm liên quan:', listsp); // Log danh sách sản phẩm liên quan
-
   return (
     <div className="splienquan">
-      <h2>Sản phẩm liên quan</h2>
       {showToast && <div className="toast">Đã thêm vào giỏ hàng</div>}
       <div className="products-grid">
         {listsp.length > 0 ? (
-          listsp.slice(0, 5).map((sp, i) => (
+          Array.isArray(listsp) ? listsp.slice(0, 5).map((sp, i) => (
             <div className="relatedproduct" key={i}>
               {sp.Promotion > 0 && (
                 <div className="discount-label">
@@ -86,7 +82,7 @@ const SPLienQuan = ({ id, sosp }) => {
                   <button className="add-to-cart" onClick={() => handleAddToCart(sp)}>Giỏ hàng</button>
               </div>
             </div>
-          ))
+          )) : null
         ) : (
           <p>Không có sản phẩm liên quan</p>
         )}

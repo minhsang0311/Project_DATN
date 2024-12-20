@@ -8,7 +8,7 @@ const Comments = ({ searchResults }) => {
         if (!searchResults || searchResults.length === 0) {
             const fetchComments = async () => {
                 try {
-                    const response = await fetch('http://localhost:3000/admin/reviews', {
+                    const response = await fetch(`${process.env.REACT_APP_HOST_URL}admin/reviews`, {
                         method: 'GET',
                         headers: {
                             "Content-Type": "application/json",
@@ -27,7 +27,7 @@ const Comments = ({ searchResults }) => {
     const handleVisibilityToggle = async (id, currentStatus) => {
         const newStatus = currentStatus === 1 ? 0 : 1;
         try {
-            const response = await fetch(`http://localhost:3000/admin/reviews/${id}`, {
+            const response = await fetch(`${process.env.REACT_APP_HOST_URL}admin/reviews/${id}`, {
                 method: 'PUT',
                 headers: {
                     "Content-Type": "application/json",
@@ -62,7 +62,7 @@ const Comments = ({ searchResults }) => {
                 <div className="grid-header">Tên sản phẩm</div>
                 <div className="grid-header">Bình luận</div>
                 <div className="grid-header">Ẩn/ Hiện</div>
-                {displayComents.map(comment => (
+                { Array.isArray(displayComents) ? displayComents.map(comment => (
                     <Fragment key={comment.Review_ID}>
 
                         <div className="grid-item grid-item-element">{comment.Review_ID}</div>
@@ -77,7 +77,7 @@ const Comments = ({ searchResults }) => {
 
                         </div>
                     </Fragment>
-                ))}
+                )) : null }
             </div>
         </div>
     );

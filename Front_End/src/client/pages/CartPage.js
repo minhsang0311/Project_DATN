@@ -51,7 +51,7 @@ const CartPage = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {items.map((item, index) => (
+                            { Array.isArray(items) ? items.map((item, index) => (
                                 <tr key={item.id}>
                                     <td>{index + 1}</td>
                                     <td >{item.name}</td>
@@ -71,7 +71,7 @@ const CartPage = () => {
                                         <button onClick={() => dispatch(removeFromCart(item.id))}>🗑️</button>
                                     </td>
                                 </tr>
-                            ))}
+                            )) : null }
                         </tbody>
                     </table>
                 )}

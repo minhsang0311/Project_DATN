@@ -3,9 +3,9 @@ const db = require('../../config/db');
 //Thống kê sản phẩm theo danh mục
 exports.StatisticsProCate = (req, res) => {
   const sqlProCate = `
-        SELECT Categories.Category_Name, COUNT(Products.Product_ID) AS totalProCate
-        FROM Products
-        JOIN Categories ON Products.Category_ID = Categories.Category_ID
+        SELECT Categories.Category_Name, COUNT(products.Product_ID) AS totalProCate
+        FROM products
+        JOIN Categories ON products.Category_ID = Categories.Category_ID
         GROUP BY Categories.Category_Name
     `;
   db.query(sqlProCate, (err, results) => {
@@ -18,9 +18,9 @@ exports.StatisticsProCate = (req, res) => {
 //Thống kê sản phẩm theo hãng
 exports.StatisticsProBrand = (req, res) => {
   const sqlProBrand = `
-        SELECT Brands.Brand_Name, COUNT(Products.Product_ID) as totalProBrand
-        FROM Products
-        JOIN Brands ON Products.Brand_ID = Brands.Brand_ID
+        SELECT Brands.Brand_Name, COUNT(products.Product_ID) as totalProBrand
+        FROM products
+        JOIN Brands ON products.Brand_ID = Brands.Brand_ID
         GROUP BY Brands.Brand_Name
     `;
   db.query(sqlProBrand, (err, results) => {
@@ -119,21 +119,21 @@ exports.DailySaleProByDateRange = (req, res) => {
 
   const sql = `
     SELECT 
-      Products.Product_Name AS productName, 
-      Products.Price AS productPrice, 
-      Products.Promotion AS productPromotion, 
+      products.Product_Name AS productName, 
+      products.Price AS productPrice, 
+      products.Promotion AS productPromotion, 
       SUM(order_details.Quantity) AS totalQuantity,
-      MAX(Products.Image) AS productImage
+      MAX(products.Image) AS productImage
     FROM 
       orders
     JOIN 
       order_details ON orders.Order_ID = order_details.Order_ID
     JOIN 
-      Products ON order_details.Product_ID = Products.Product_ID
+      products ON order_details.Product_ID = products.Product_ID
     WHERE 
       orders.created_at >= ? AND orders.created_at <= ? AND orders.Status = 5
     GROUP BY 
-      Products.Product_Name, Products.Price, Products.Promotion
+      products.Product_Name, products.Price, products.Promotion
   `;
 
   const startDateTime = `${startDate} 00:00:00`;

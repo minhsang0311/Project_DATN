@@ -29,7 +29,7 @@ const VoucherAdd = () => {
         }
 
         // Nếu dữ liệu hợp lệ, tiếp tục gửi yêu cầu đến server
-        fetch(`http://localhost:3000/admin/postVoucher`, {
+        fetch(`${process.env.REACT_APP_HOST_URL}admin/postVoucher`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

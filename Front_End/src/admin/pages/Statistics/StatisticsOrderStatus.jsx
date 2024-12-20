@@ -32,13 +32,13 @@ const StatisticsOrderStatus = () => {
       headers: { "Content-type": "application/json", 'Authorization': 'Bearer ' + token }
     };
 
-    axios.get('http://localhost:3000/admin/stats-orderStatus', opt)
+    axios.get(`${process.env.REACT_APP_HOST_URL}admin/stats-orderStatus`, opt)
       .then(response => setStatusData(response.data))
       .catch(error => console.error('Lỗi lấy dữ liệu thống kê trạng thái đơn hàng:', error));
   }, []);
 
-  const statusLabels = statusData.map(item => `${item.Status_Name}`);
-  const orderCounts = statusData.map(item => item.order_count);
+  const statusLabels = Array.isArray(statusData) ? statusData.map(item => `${item.Status_Name}`) : null 
+  const orderCounts = Array.isArray(statusData) ? statusData.map(item => item.order_count) : null 
 
   const pieChartData = {
     labels: statusLabels,

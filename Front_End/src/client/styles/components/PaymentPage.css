@@ -1,91 +1,65 @@
-.container-pay {
-    margin-top: 150px;
-}
+.wrapper-pay{margin-top: 150px;border: 1px solid rgb(223, 209, 209);border-radius: 10px;background-color: #ffffff;padding: 20px;max-width: 1300px;margin: 150px auto 0;box-shadow: 0 0 10px rgba(0, 0, 0, 0.1)}
+
 
 .container-pay h1 {
     align-items: center;
-    padding-left: 30px;
+    padding-left: 350px;
     display: flex;
     color: white;
     border-radius: 10px;
     font-size: 25px;
     height: 40px;
-    margin-left: 100px;
-    margin-right: 100px;
-    margin-bottom: 30px;
+    max-width: 900px;
+    margin: 0px auto 10px;
     background-color: #56A4FF;
 }
 
-.container-payment {
-    border: 1px solid black;
-    width: 87%;
-    display: grid;
-    grid-template-columns: 30% 30% 30%;
-    gap: 6%;
-    margin: 0 auto;
-    margin-bottom: 40px;
-    padding: 20px;
-}
+.container-payment {display: flex;justify-content: space-between;padding: 20px;max-width: 1200px;margin: 0 auto;}
+.container-payment .trai,.phai {background-color: #fff;padding: 20px;border: 1px solid rgb(245, 237, 237);}
+.container-payment .trai {width: 45%;}
+.container-payment .phai {width: 50%;}
 
-.container-payment > .section {
-    margin-bottom: 20px;
-    margin-right: 5px;
-}
+.container-payment h2{color: #333;margin-bottom: 30px;font-weight: 500;font-size: 20px;font-weight:bold;}
+.container-payment .thongtin_khachhang {display: flex;flex-direction: column;}
+.container-payment label {margin-bottom: 5px;font-weight: bold;}
+.container-payment input[type="text"],
+.container-payment input[type="email"],
+.container-payment input[type="tel"],
+.container-payment textarea {margin-bottom: 20px;padding: 10px;border: 1px solid #ccc;border-radius: 5px;outline: none;}
 
-.form-group {
-    margin-bottom: 10px;
-}
-.section_radio {
-    display: flex;
-    align-items: center;
-}
-.section_radio input {
-    width: 30px;
-}
-.voucher input {
-    width: 350px;
-}
-
-textarea {
-    width: 100%;
+.container-payment .phai .tieude{display:flex;justify-content: space-between;}
+.container-payment .phai .tieude a{color:#000;font-size: 17px;font-weight: 600;}
+.container-payment .order-summary{border-bottom: 1px solid #ccc;border-top: 1px solid #ccc;margin-bottom: 10px;}
+.container-payment .product-item {display: flex;justify-content: space-between;align-items: center; padding: 10px 0;}
+.container-payment .product-info {display: flex;align-items: center;}
+.container-payment .product-info img {width: 70px;height: 70px;margin-right: 10px;}
+.container-payment .product-price a{color: #ff0000;font-weight: bold;}
+.container-payment .voucher {display: flex;justify-content: flex-end; align-items: center;}
+.container-payment .voucher label {align-items: center; font-weight: normal;}
+.container-payment .voucher input[type="text"] {
     padding: 10px;
     border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    width: 250px; /* Điều chỉnh độ rộng của ô input */
+    transition: border-color 0.3s;
+    margin-left: 10px;
+    margin-top: 5px;
 }
+.container-payment .voucher input[type="text"]:focus {border-color: #8f9eae;}
+.container-payment .order-total {text-align: right;margin-bottom: 10px;display:flex;flex-direction: column;gap:10px}
+.container-payment .order-total i {font-size: 16px;color: #ff0000;}
+.container-payment .order-total p{font-size: 16px;color:#534141;font-weight: 600;}
+.container-payment .shipping-policy {margin-top: 20px;}
+.container-payment .shipping-policy span{font-size: 15px;line-height: 1.5;}
 
-.payment_button {
-    padding: 10px 20px;
-    background-color: #56A4FF;
-    border-radius: 10px;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-
-.product-payment {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-}
-.product-payment img{
-    width: 100px;
-    height: 100px;
-}
-.product-info {
-    margin-left: 20px;
-}
-.product-info span {
-    font-weight: bold;
-}
-.voucher label {
-    font-weight: bold
-}
-.voucher input{
-    height: 30px;
-    padding: 10px;
-}
-.money {
-    margin: 12px 0px;
-}
-.total_money span, .total_sale span{
-    font-weight: bold;
-}
+.phuongthuc_thanhtoan {margin-top: 30px; padding: 20px; background-color: #f9f9f9; border: 1px solid #ddd;border-radius: 10px;box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);}
+.phuongthuc_thanhtoan h2 {color: #333;margin-bottom: 15px;font-size: 20px;font-weight: bold;}
+.method-pay {display: flex;flex-direction: column;gap: 10px;margin-bottom: 20px;}
+.section_radio {display: flex;align-items: center;gap: 10px;}
+.section_radio input[type="radio"] {accent-color: #56A4FF; width: 15px;height: 15px;cursor: pointer;}
+.section_radio label {font-size: 16px;color: #555;cursor: pointer;}
+.phuongthuc_thanhtoan textarea {width: 100%;padding: 10px;border: 1px solid #ccc;border-radius: 5px;outline: none;resize: vertical;min-height: 100px;transition: border-color 0.3s;}
+.payment_button {padding: 12px 20px;background-color: #56A4FF;color: white;font-size: 18px;font-weight: bold;border: none;border-radius: 5px;cursor: pointer;width: 100%;text-align: center;transition: background-color 0.3s;}
+.payment_button:hover {background-color: #4591e3;}
+  

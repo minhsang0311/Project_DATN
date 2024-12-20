@@ -15,7 +15,7 @@ function CategoryList({ searchResults }) {
 
     // Hàm để lấy danh sách danh mục
     const fetchCategories = () => {
-        fetch("http://localhost:3000/admin/category", fetchOptions)
+        fetch(`${process.env.REACT_APP_HOST_URL}admin/category`, fetchOptions)
             .then(res => res.json())
             .then(data => setCategories(data))
             .catch(err => console.error("Lỗi khi tải danh mục:", err));
@@ -25,7 +25,7 @@ function CategoryList({ searchResults }) {
     const deleteCategory = (id) => {
         if (!window.confirm('Bạn có muốn xóa loại không?')) return;
 
-        fetch(`http://localhost:3000/admin/category/${id}`, {
+        fetch(`${process.env.REACT_APP_HOST_URL}admin/category/${id}`, {
             method: "DELETE",
             headers: { "Content-Type": "application/json", 'Authorization': 'Bearer ' + token }
         })
@@ -69,7 +69,7 @@ function CategoryList({ searchResults }) {
                 <div className="grid-header-category">Tên sản phẩm</div>
                 <div className="grid-header-category">Ẩn/Hiện</div>
                 <div className="grid-header-category">Thao tác</div>
-                {displayCategories.map((category, index) => (
+                {Array.isArray(displayCategories) ? displayCategories.map((category, index) => (
                     <React.Fragment key={category.Category_ID}>
                         <div className="grid-item-category">{index + 1}</div>
                         <div className="grid-item-category">{category.Category_Name}</div>
@@ -79,7 +79,7 @@ function CategoryList({ searchResults }) {
                             <button className="delete-btn" onClick={() => deleteCategory(category.Category_ID)}>🗑️</button>
                         </div>
                     </React.Fragment>
-                ))}
+                )) : null }
             </div>
         </div>
     );
