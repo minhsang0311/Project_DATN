@@ -110,14 +110,14 @@ function Header() {
           </div>
           <div className="wishlist">
             {/* Sử dụng userId từ localStorage trong đường dẫn */}
-            {userId && (
+            {/* {userId && ( */}
               <Link to={`/wishlist/${userId}`}>
                 <div className="wishlist-icon">
                   <i className="bi bi-heart-fill"></i>
                   {wishlistCount > 0 && <span className="wishlist-count">{wishlistCount}</span>}
                 </div>
               </Link>
-            )}
+            {/* )} */}
           </div>
           <div className="trangthai">
             <Link to="/order"><i className="bi bi-truck"></i></Link>
