@@ -20,7 +20,7 @@ header .middle form.timkiem {
 header .middle .right{display: flex;justify-content: center;gap: 30px;padding-top: 20px;}
 header .middle .right i{font-size: 25px;color: #333;transition: 0.3s;}
 header .middle .right i:hover{color: #5b94d1;}
-header .middle .right .giohang .cart-icon {
+header .middle .right .giohang .cart-icon, .wishlist-icon {
   position: relative;
   display: inline-block;
 }
@@ -94,17 +94,17 @@ header .middle form.timkiem input {
 }
 .wishlist-count {
   position: absolute;
-  top: 40px;             
-  right: 138px;          
-  background-color: red; 
-  color: white;          
-  font-size: 13px;      
+  top: -8px;             /* Adjust vertical position */
+  right: -10px;          /* Adjust horizontal position */
+  background-color: red; /* Background color for quantity */
+  color: white;          /* Text color */
+  font-size: 13px;       /* Adjust font size */
   font-weight: bold;
-  border-radius: 50%;    
-  width: 18px;           
-  height: 18px;          
+  border-radius: 50%;    /* Make it a circle */
+  width: 18px;           /* Set width */
+  height: 18px;          /* Set height */
   display: flex;
-  align-items: center;   
+  align-items: center;   /* Center the number vertically */
   justify-content: center; 
 }
 
@@ -143,7 +143,7 @@ header .middle form.timkiem input {
   header .middle .right i {
     font-size: 20px;
   }
-  .cart-count{
+  .cart-count, .wishlist-count{
     font-size: 10px;
     width: 15px;
     height: 15px;

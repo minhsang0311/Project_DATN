@@ -86,7 +86,7 @@
    -webkit-box-orient: vertical;
    overflow: hidden;
    text-overflow: ellipsis;
-   margin: 10px 0;
+   margin: 10px 5px;
    line-height: 1.5; /* Điều chỉnh chiều cao dòng */
    max-height: calc(2em * 2); /* Tương ứng với 2 dòng */
    font-size: 15px;
