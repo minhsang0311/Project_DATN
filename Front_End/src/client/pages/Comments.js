@@ -16,9 +16,7 @@ const Comments = ({ productId }) => {
             const user = JSON.parse(storedUser);
             setUserId(user.id);
             setUsername(user.username);
-        } else {
-            toast.error("Bạn cần đăng nhập để bình luận.");
-        }
+        } 
     }, []);
 
     useEffect(() => {

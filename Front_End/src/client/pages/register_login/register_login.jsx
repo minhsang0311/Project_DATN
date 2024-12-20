@@ -151,7 +151,7 @@ const RegisterLogin = () => {
                         placeholder='Nhập họ tên'
                         value={formData.User_Name}
                         onChange={handleChange}
-                        required
+                        
                     />
                     <input
                         className='input_register'
@@ -160,7 +160,7 @@ const RegisterLogin = () => {
                         placeholder="Nhập email"
                         value={formData.Email}
                         onChange={handleChange}
-                        required
+                        
                     />
                     <div className="input-container">
                         <input
@@ -170,7 +170,7 @@ const RegisterLogin = () => {
                             placeholder="Nhập mật khẩu"
                             value={formData.Password}
                             onChange={handleChange}
-                            required
+                            
                         />
                         <span
                             className="icon"
@@ -186,7 +186,7 @@ const RegisterLogin = () => {
                             placeholder="Nhập lại mật khẩu"
                             value={confirmPassword}
                             onChange={handleConfirmPasswordChange}
-                            required
+                            
                         />
                         <span
                             className="icon"
@@ -202,7 +202,7 @@ const RegisterLogin = () => {
                         placeholder="Nhập số điện thoại"
                         value={formData.Phone}
                         onChange={handleChange}
-                        required
+                        
                     /> */}
                     <button className='button_register' type="submit">Đăng ký</button>
                 </form>
@@ -216,7 +216,7 @@ const RegisterLogin = () => {
                         type="text"
                         placeholder="Nhập email"
                         ref={userNameRef}
-                        required
+                        
                     />
                     <div className="input-container">
                         <input
@@ -225,7 +225,7 @@ const RegisterLogin = () => {
                             name="Password"
                             placeholder="Nhập mật khẩu"
                             ref={pwRef}
-                            required
+                            
                         />
 
                         <span

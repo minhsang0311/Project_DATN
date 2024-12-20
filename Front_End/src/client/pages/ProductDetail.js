@@ -24,6 +24,7 @@ const ProductDetail = () => {
             try {
                 const response = await fetch(`${process.env.REACT_APP_HOST_URL}user/productDetail/${id}`);
                 const data = await response.json();
+                console.log(data)
                 if (data.message) {
                     setError(data.message);
                 } else {
@@ -140,9 +141,9 @@ const ProductDetail = () => {
                             <div className="product-info">
                                 <h1 className="product-title">{sp.Product_Name}</h1>
                                 <hr />
-                                <p className="product-description">{Array.isArray(sp) ? sp.Description.split('\n').map((desc, index) => (
+                                <p className="product-description">{sp.Description.split('\n').map((desc, index) => (
                                     <li key={index}>{desc.replace('-', '')}</li>
-                                )) : null}</p>
+                                ))}</p>
                                 <div className="product-price">
                                     {sp.Promotion > 0 ? (
                                         <>
@@ -173,9 +174,9 @@ const ProductDetail = () => {
                                         <td>Model</td>
                                         <td>
                                             <ul style={{ padding: 0, margin: 0 }}>
-                                                {Array.isArray(sp) ? sp.Description.split('\n').map((desc, index) => (
+                                                { sp.Description.split('\n').map((desc, index) => (
                                                     <li key={index}>{desc.replace('-', '').trim()}</li>
-                                                )) : null}
+                                                ))}
                                             </ul>
                                         </td>
                                     </tr>

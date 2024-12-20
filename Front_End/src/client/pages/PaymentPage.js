@@ -100,7 +100,6 @@ const PaymentPage = () => {
                 .then(response => response.json())
                 .then(data => {
                     if (data.success === true) {
-                        toast.error(data.discount);
                         toast.success(`Voucher áp dụng thành công! Giảm ${data.discount}%`);
                     } else {
                         setDiscount(0);
@@ -252,7 +251,7 @@ const PaymentPage = () => {
                                 <a href>Sản phẩm</a>
                                 <a href>Tạm Tính</a>
                             </div>
-                            <div class="order-summary">
+                            <div class="order-summari">
                                 { Array.isArray(cartItems) ? cartItems.map((item, index) => (
                                     <div key={index} className="product-item">
                                         <div className="product-info">
@@ -276,8 +275,8 @@ const PaymentPage = () => {
                                     {voucherMessage && <p className="voucher-message">{voucherMessage}</p>}
                                 </div>
                                 <div class="order-total">
-                                    <p>Tổng tiền :<i><strong> {total.toLocaleString('vi')}₫</strong> </i></p>
-                                    <p>Tổng tiền sau giảm giá :<i><strong> {finalAmount.toLocaleString('vi')}₫</strong></i></p>
+                                    <p>Tổng tiền :<i> {total.toLocaleString('vi')}₫ </i></p>
+                                    <p>Tổng tiền sau giảm giá :<i> {finalAmount.toLocaleString('vi')}₫</i></p>
                                 </div>
                             </div>
 

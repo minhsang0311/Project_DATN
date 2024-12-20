@@ -56,7 +56,7 @@ const VoucherUpdate = () => {
             return;
         }
         try {
-            const response = await fetch(`${process.env.REACT_APP_HOST_URL}/admin/putVoucher/${id}`, {
+            const response = await fetch(`${process.env.REACT_APP_HOST_URL}admin/putVoucher/${id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -81,7 +81,7 @@ const VoucherUpdate = () => {
             }
         } catch (err) {
             setError("Không thể kết nối đến server.");
-            console.error("Lỗi cập nhật voucher:", err);
+            console.log("Lỗi cập nhật voucher:", err);
         }
     };
 

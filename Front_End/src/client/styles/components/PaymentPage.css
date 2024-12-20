@@ -29,7 +29,7 @@
 
 .container-payment .phai .tieude{display:flex;justify-content: space-between;}
 .container-payment .phai .tieude a{color:#000;font-size: 17px;font-weight: 600;}
-.container-payment .order-summary{border-bottom: 1px solid #ccc;border-top: 1px solid #ccc;margin-bottom: 10px;}
+.container-payment .order-summari{border-bottom: 1px solid #ccc;border-top: 1px solid #ccc;margin-bottom: 10px;}
 .container-payment .product-item {display: flex;justify-content: space-between;align-items: center; padding: 10px 0;}
 .container-payment .product-info {display: flex;align-items: center;}
 .container-payment .product-info img {width: 70px;height: 70px;margin-right: 10px;}
