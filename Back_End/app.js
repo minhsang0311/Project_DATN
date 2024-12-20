@@ -1,8 +1,10 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
+app.use(cookieParser());
 const corsOpt = {
-    origin: "*",
+    origin: "http://localhost:4200",
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,

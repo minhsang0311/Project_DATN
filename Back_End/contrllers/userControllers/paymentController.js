@@ -169,12 +169,45 @@ exports.vnpay_return = (req, res) => {
     let signData = querystring.stringify(vnp_Params, { encode: false });
     let hmac = crypto.createHmac("sha512", secretKey);
     let signed = hmac.update(Buffer.from(signData, 'utf-8')).digest("hex");
-
+    const orderId = vnp_Params["vnp_TxnRef"];
     if (secureHash === signed) {
         // Kiểm tra dữ liệu trong DB nếu cần thiết, sau đó trả kết quả
-        return res.status(200).json({ status: 'success', code: vnp_Params['vnp_ResponseCode'] });
+        if (vnp_Params['vnp_ResponseCode'] === "00") {
+            let sql = `SELECT * FROM orders WHERE Order_ID = ?`
+            db.query(sql, orderId, (err, result) => {
+                result.forEach(o => {
+                    const isProduction = process.env.NODE_ENV === "production";
+                    res.cookie("order", JSON.stringify({
+                        totalAmount: o.total_amount,
+                        created_at: o.created_at,
+                        paymentMethod: o.payment_method,
+                        orderCode: o.Order_ID,
+                    }), {
+                        httpOnly: true,
+                        secure: isProduction,
+                        sameSite: isProduction ? "lax" : "strict",
+                        maxAge: 24 * 60 * 60 * 1000,
+                    })
+                })
+                res.redirect(`http://localhost:4200/paymentThanks`);
+            })
+        }
+
     } else {
         return res.status(200).json({ status: 'fail', code: '97' });
+    }
+
+};
+exports.getOrderReturn = (req, res) => {
+    const { order } = req.cookies;
+
+    console.log("order cookie test: ", req.cookies);
+    console.log("order test: ", order);
+    if (order) {
+        const parsedOrder = JSON.parse(order);
+        res.status(200).json(parsedOrder);
+    } else {
+        res.status(404).json({ message: "Order not found" });
     }
 };
 exports.getUserDetail = (req, res) => {

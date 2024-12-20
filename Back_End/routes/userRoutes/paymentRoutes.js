@@ -9,6 +9,7 @@ const { userMiddleware } = require('../../middlewares/userMiddlware');
 
 router.post('/payment', paymentController.paymentController);
 router.get('/getBankList', paymentController.getBankList)
+router.get('/getOrderReturn', paymentController.getOrderReturn)
 router.get('/vnpay_return', paymentController.vnpay_return)
 router.get('/userDetail/:id',paymentController.getUserDetail);
 
