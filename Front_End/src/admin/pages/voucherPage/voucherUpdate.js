@@ -42,21 +42,28 @@ const VoucherUpdate = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+    
         if (!voucher.Code || !voucher.Discount || !voucher.Expiration_Date) {
             setError("Vui lòng điền đầy đủ thông tin.");
             return;
         }
+    
         const currentDate = new Date();
         const expirationDate = new Date(voucher.Expiration_Date);
-
-        // Kiểm tra nếu ngày hết hạn nhỏ hơn ngày hiện tại
+    
         if (expirationDate < currentDate) {
             alert("Ngày hết hạn của voucher phải lớn hơn ngày hiện tại.");
             return;
         }
+    
+        // Xác thực dữ liệu trước khi gửi lên server
+        if (voucher.Discount <= 0 || voucher.Discount > 100) {
+            setError("Giảm giá không hợp lệ, phải từ 0 đến 100.");
+            return;
+        }
+    
         try {
-            const response = await fetch(`${process.env.REACT_APP_HOST_URL}/admin/putVoucher/${id}`, {
+            const response = await fetch(`${process.env.REACT_APP_HOST_URL}admin/putVoucher/${id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -67,13 +74,13 @@ const VoucherUpdate = () => {
                     Locked: parseInt(voucher.Locked, 10), // Đảm bảo Locked là số
                 }),
             });
-
+    
             if (!response.ok) {
                 const errorData = await response.json();
                 setError(errorData.message || "Lỗi cập nhật voucher.");
                 return;
             }
-
+    
             const data = await response.json();
             alert(data.message);
             if (data.message.includes("thành công")) {
@@ -81,9 +88,10 @@ const VoucherUpdate = () => {
             }
         } catch (err) {
             setError("Không thể kết nối đến server.");
-            console.error("Lỗi cập nhật voucher:", err);
+            console.log("Lỗi cập nhật voucher:", err);
         }
     };
+
 
     return (
         <div className="form-container-productadd">
