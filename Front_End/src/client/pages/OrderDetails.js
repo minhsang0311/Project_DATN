@@ -50,13 +50,13 @@ function OrderDetail() {
         const token = localStorage.getItem('tokenUser');
         try {
             await axios.put(`http://localhost:3000/user/cancelOrder/${orderId}`, 
-                { reason: finalReason },
+                { reason: finalReason }, // Gửi lý do hủy
                 { headers: { 'Authorization': `Bearer ${token}` } }
             );
             toast.success("Đơn hàng đã được hủy");
-            navigate('/order');
+            navigate('/order');  // Quay về trang đơn hàng sau khi hủy
         } catch (err) {
-            toast.error("Không thể hủy đơn hàng");
+            toast.error("Không thể hủy đơn hàng", err);
         }
     };
 
@@ -92,7 +92,7 @@ function OrderDetail() {
                     <p><strong>Trạng thái:</strong> {orderDetail.Status}</p>
                     <p><strong>Ngày đặt hàng:</strong> {orderDetail.created_at}</p>
                 </div>
-                {orderDetail.Status === 'Chờ xác nhận' && (
+                {orderDetail.Status === 'Chờ xác nhận'  && (  // Kiểm tra trạng thái "Chờ xác nhận" (Giá trị 1)
                     <div className="cancel-order">
                         <select 
                             onChange={(e) => setCancelReason(e.target.value)}

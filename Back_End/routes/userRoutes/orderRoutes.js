@@ -5,7 +5,7 @@ const orderController = require('../../contrllers/userControllers/orderControlle
 const { userMiddleware } = require('../../middlewares/userMiddlware');
 // Route to get orders based on user ID
 router.get('/orders/:userId', orderController.getOrderList);
-router.get('/orderDetail/:orderDetailId',userMiddleware, orderController.getOrderDetailById);
-router.put('/cancelOrder/:orderId', userMiddleware, orderController.putcancelOrder);
+router.get('/orderDetail/:orderDetailId', orderController.getOrderDetailById);
+router.put('/cancelOrder/:orderDetailId', orderController.putcancelOrder);
 
 module.exports = router;
