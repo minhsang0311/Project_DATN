@@ -1,0 +1,74 @@
+/* PaymentThanks.css */
+.container-paymentthanks {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-family: Arial, sans-serif;
+    color: #333;
+}
+
+.h1_paymentthanks {
+    font-size: 24px;
+    font-weight: bold;
+    color: #4CAF50;
+    margin-bottom: 15px;
+}
+
+.h1_paymentthanks {
+    font-size: 16px;
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+.order-info {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    text-align: left;
+}
+
+.order-info h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.order-info p {
+    margin: 5px 0;
+    font-size: 16px;
+}
+
+strong {
+    color: #555;
+}
+
+.button_paymentthnkas {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #56A4FF;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: #45a049;
+}
+
+.footer {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #666;
+}
